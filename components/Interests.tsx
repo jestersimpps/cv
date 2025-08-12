@@ -32,7 +32,7 @@ export default function Interests() {
         {interests.map((interest, index) => (
           <span
             key={index}
-            className="px-4 py-2 bg-gradient-to-r from-orange-200 via-amber-200 to-yellow-200 dark:from-orange-900/30 dark:via-amber-900/30 dark:to-yellow-900/30 text-orange-800 dark:text-orange-200 rounded-lg text-sm font-semibold border-2 border-orange-300 dark:border-orange-600 hover:shadow-lg hover:scale-105 transition-all"
+            className="px-4 py-2 bg-white/20 dark:bg-white/10 backdrop-blur-sm text-neutral-700 dark:text-neutral-200 rounded-lg text-sm font-semibold border border-white/30 dark:border-white/20 hover:bg-white/30 dark:hover:bg-white/15 hover:shadow-lg hover:scale-105 transition-all"
           >
             {interest}
           </span>

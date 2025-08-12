@@ -9,12 +9,12 @@ import TerminalBackground from "@/components/TerminalBackground";
 
 export default function Home() {
   return (
-    <div className="min-h-screen relative overflow-hidden bg-gray-950">
+    <div className="min-h-screen relative overflow-hidden" style={{ backgroundColor: 'var(--background)' }}>
       {/* Terminal background */}
       <TerminalBackground />
       
-      {/* Overlay for readability */}
-      <div className="fixed inset-0 bg-gradient-to-b from-black/30 via-black/40 to-black/30"></div>
+      {/* Soft gradient overlay */}
+      <div className="fixed inset-0 bg-gradient-to-br from-white/10 via-transparent to-gray-100/20"></div>
       <div className="relative max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
         <Header />
         <PersonalInfo />

@@ -56,7 +56,7 @@ export default function PersonalInfo() {
         <div className="flex flex-wrap gap-2">
           {["Team player", "Customer friendly", "Analytical mindset", "Can work autonomously", 
             "Flexible", "No false promises", "Pro-active", "Stubborn problem solver"].map((skill) => (
-            <span key={skill} className="px-3 py-1.5 bg-gradient-to-r from-emerald-200 via-teal-200 to-cyan-200 dark:from-emerald-900/30 dark:via-teal-900/30 dark:to-cyan-900/30 text-teal-800 dark:text-teal-200 rounded-full text-sm font-semibold border-2 border-teal-300 dark:border-teal-600 hover:shadow-lg hover:scale-105 transition-all">
+            <span key={skill} className="px-3 py-1.5 bg-white/20 dark:bg-white/10 backdrop-blur-sm text-neutral-700 dark:text-neutral-200 rounded-full text-sm font-semibold border border-white/30 dark:border-white/20 hover:bg-white/30 dark:hover:bg-white/15 hover:shadow-lg hover:scale-105 transition-all">
               {skill}
             </span>
           ))}
@@ -90,8 +90,8 @@ export default function PersonalInfo() {
                     key={i}
                     className={`h-4 flex-1 rounded-full relative overflow-hidden ${
                       i < Math.ceil(lang.percentage / 20)
-                        ? "bg-gradient-to-r from-purple-400 via-pink-400 to-cyan-400 shadow-lg border border-white/30"
-                        : "bg-neutral-200/30 dark:bg-neutral-700/30 backdrop-blur-sm border border-white/10"
+                        ? "bg-white/40 dark:bg-white/20 backdrop-blur-sm shadow-lg border border-white/50 dark:border-white/30"
+                        : "bg-white/10 dark:bg-white/5 backdrop-blur-sm border border-white/20 dark:border-white/10"
                     }`}
                   >
                     {i < Math.ceil(lang.percentage / 20) && (

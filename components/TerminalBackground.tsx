@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 
 const terminalLines = [
-  { text: "$ npm run build", color: "text-green-500", bold: true, delay: 500 },
+  { text: "$ npm run build", color: "text-green-400", bold: true, delay: 500 },
   { text: "> jocv@1.0.0 build", color: "text-gray-400", delay: 200 },
   { text: "> next build", color: "text-gray-400", delay: 150 },
   { text: "", color: "", delay: 300 },
@@ -46,9 +46,9 @@ const terminalLines = [
   { text: "○  (Static)  prerendered as static content", color: "text-gray-500", delay: 100 },
   { text: "λ  (Dynamic) server-rendered on demand", color: "text-gray-500", delay: 100 },
   { text: "", color: "", delay: 400 },
-  { text: "✨ Build completed in 13.72s", color: "text-green-500", bold: true, delay: 200 },
+  { text: "✨ Build completed in 13.72s", color: "text-green-400", bold: true, delay: 200 },
   { text: "", color: "", delay: 500 },
-  { text: "$ npm test", color: "text-green-500", bold: true, delay: 600 },
+  { text: "$ npm test", color: "text-green-400", bold: true, delay: 600 },
   { text: "> jest --coverage --watchAll=false", color: "text-gray-400", delay: 200 },
   { text: "", color: "", delay: 400 },
   { text: "PASS  __tests__/Header.test.tsx", color: "text-green-400", delay: 800 },
@@ -70,12 +70,12 @@ const terminalLines = [
   { text: "Time:        3.456s", color: "text-gray-400", delay: 100 },
   { text: "Coverage:    94.2%", color: "text-green-400", delay: 200 },
   { text: "", color: "", delay: 400 },
-  { text: "$ git add -A", color: "text-green-500", bold: true, delay: 500 },
-  { text: "$ git commit -m \"feat: update CV with new experience\"", color: "text-green-500", bold: true, delay: 300 },
+  { text: "$ git add -A", color: "text-green-400", bold: true, delay: 500 },
+  { text: "$ git commit -m \"feat: update CV with new experience\"", color: "text-green-400", bold: true, delay: 300 },
   { text: "[main 7a3f2d1] feat: update CV with new experience", color: "text-gray-400", delay: 400 },
   { text: " 5 files changed, 247 insertions(+), 18 deletions(-)", color: "text-gray-400", delay: 100 },
   { text: "", color: "", delay: 300 },
-  { text: "$ git push origin main", color: "text-green-500", bold: true, delay: 500 },
+  { text: "$ git push origin main", color: "text-green-400", bold: true, delay: 500 },
   { text: "Enumerating objects: 15, done.", color: "text-gray-400", delay: 200 },
   { text: "Counting objects: 100% (15/15), done.", color: "text-gray-400", delay: 300 },
   { text: "Delta compression using up to 8 threads", color: "text-gray-400", delay: 200 },
@@ -85,7 +85,7 @@ const terminalLines = [
   { text: "To github.com:user/jocv.git", color: "text-gray-400", delay: 100 },
   { text: "   3f4d5e6..7a3f2d1  main -> main", color: "text-gray-400", delay: 200 },
   { text: "", color: "", delay: 400 },
-  { text: "✅ Successfully deployed!", color: "text-green-500", bold: true, delay: 600 },
+  { text: "✅ Successfully deployed!", color: "text-green-400", bold: true, delay: 600 },
 ];
 
 export default function TerminalBackground() {
@@ -114,9 +114,9 @@ export default function TerminalBackground() {
   }, [currentIndex]);
 
   return (
-    <div className="fixed inset-0 bg-black">
+    <div className="fixed inset-0 bg-gray-50 dark:bg-black">
       <div className="fixed inset-0 p-4 font-mono text-sm leading-relaxed overflow-hidden">
-        <div className="space-y-0.5" style={{ textShadow: '0 0 8px currentColor' }}>
+        <div className="space-y-0.5 opacity-10 dark:opacity-100" style={{ textShadow: '0 0 8px currentColor' }}>
           {terminalLines.slice(0, visibleLines).map((line, index) => (
             <div
               key={index}
@@ -138,7 +138,7 @@ export default function TerminalBackground() {
       {/* Scanline effect */}
       <div className="fixed inset-0 pointer-events-none opacity-30"
            style={{
-             backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 255, 255, 0.03) 2px, rgba(0, 255, 255, 0.03) 4px)',
+             backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 0, 0, 0.01) 2px, rgba(0, 0, 0, 0.01) 4px)',
            }}>
       </div>
     </div>
