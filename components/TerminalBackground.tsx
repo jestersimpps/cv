@@ -116,14 +116,14 @@ export default function TerminalBackground() {
   return (
     <div className="fixed inset-0 bg-gray-50 dark:bg-black">
       <div className="fixed inset-0 p-4 font-mono text-sm leading-relaxed overflow-hidden">
-        <div className="space-y-0.5 opacity-10 dark:opacity-100" style={{ textShadow: '0 0 8px currentColor' }}>
+        <div className="space-y-0.5 opacity-5 dark:opacity-30" style={{ textShadow: '0 0 4px currentColor' }}>
           {terminalLines.slice(0, visibleLines).map((line, index) => (
             <div
               key={index}
               className={`${line.color} ${line.bold ? 'font-bold' : ''} animate-fadeIn`}
               style={{
                 animation: 'fadeIn 0.3s ease-out',
-                opacity: index < visibleLines - 10 ? 0.6 : 1
+                opacity: index < visibleLines - 10 ? 0.3 : 0.8
               }}
             >
               {line.text || '\u00A0'}
@@ -136,9 +136,9 @@ export default function TerminalBackground() {
       </div>
       
       {/* Scanline effect */}
-      <div className="fixed inset-0 pointer-events-none opacity-30"
+      <div className="fixed inset-0 pointer-events-none opacity-10"
            style={{
-             backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 0, 0, 0.01) 2px, rgba(0, 0, 0, 0.01) 4px)',
+             backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 0, 0, 0.005) 2px, rgba(0, 0, 0, 0.005) 4px)',
            }}>
       </div>
     </div>

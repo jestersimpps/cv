@@ -6,6 +6,7 @@ import Skills from "@/components/Skills";
 import Interests from "@/components/Interests";
 import ExportButton from "@/components/ExportButton";
 import TerminalBackground from "@/components/TerminalBackground";
+import AIChatBubble from "@/components/AIChatBubble";
 
 export default function Home() {
   return (
@@ -24,6 +25,7 @@ export default function Home() {
         <Interests />
       </div>
       <ExportButton />
+      <AIChatBubble />
     </div>
   );
 }
