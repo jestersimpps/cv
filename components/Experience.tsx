@@ -81,7 +81,7 @@ const experiences: ExperienceItem[] = [
   {
     title: "Senior Frontend Developer / Architect",
     company: "AWV agentschap wegen en verkeer",
-    period: "May 2022 - February 2024",
+    period: "May 2022 - September 2025",
     description: [
       "Migrated several existing Angular applications into a new monorepo architecture",
       "Entire build and architecture from the ground up",
@@ -389,7 +389,9 @@ export default function Experience() {
 
   return (
     <>
-      <section className="bg-white/80 dark:bg-neutral-800/80 backdrop-blur-sm rounded-2xl shadow-xl p-6 mb-6 border border-primary-100 dark:border-primary-900/30">
+      <section className="relative bg-white/5 dark:bg-neutral-900/5 backdrop-blur-sm rounded-2xl shadow-2xl p-6 mb-6 border border-white/20 dark:border-white/10 overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-white/5 dark:from-white/10 dark:to-white/5 rounded-2xl"></div>
+        <div className="relative">
         <div className="flex items-center mb-8">
           <Briefcase className="w-6 h-6 text-primary-600 dark:text-primary-400 mr-2" />
           <h2 className="text-2xl font-semibold text-neutral-900 dark:text-white">
@@ -398,7 +400,7 @@ export default function Experience() {
         </div>
         <div className="relative">
           {/* Timeline line - centered on large screens */}
-          <div className="absolute left-4 lg:left-1/2 lg:-translate-x-1 top-0 bottom-0 w-2 bg-gradient-to-b from-purple-500 via-pink-500 to-blue-500 rounded-full shadow-lg"></div>
+          <div className="absolute left-4 lg:left-1/2 lg:-translate-x-1 top-0 bottom-0 w-2 bg-white/40 dark:bg-white/20 backdrop-blur-sm rounded-full shadow-2xl"></div>
           
           {experiences.map((exp, index) => {
             // Extract year from period (e.g., "June 2025 - ongoing" -> "2025")
@@ -410,24 +412,24 @@ export default function Experience() {
               <div key={index} className={`relative mb-8 lg:mb-12 ${showYear ? 'mt-12' : ''}`}>
                 {/* Year label - only show if different from previous */}
                 {showYear && (
-                  <div className="absolute left-4 lg:left-1/2 -translate-x-1/2 -top-10 bg-gradient-primary text-white px-4 py-1.5 rounded-full text-sm font-bold shadow-lg z-10">
+                  <div className="absolute left-4 lg:left-1/2 -translate-x-1/2 -top-10 bg-white/60 dark:bg-white/20 backdrop-blur-md text-purple-900 dark:text-white px-4 py-1.5 rounded-full text-sm font-bold shadow-xl border border-white/40 z-10">
                     {year}
                   </div>
                 )}
                 
                 {/* Timeline dot */}
-                <div className="absolute left-4 lg:left-1/2 w-6 h-6 -translate-x-1/2 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full ring-4 ring-white dark:ring-neutral-800 shadow-xl z-10"></div>
+                <div className="absolute left-4 lg:left-1/2 w-6 h-6 -translate-x-1/2 bg-white/80 dark:bg-white/40 backdrop-blur-sm rounded-full ring-4 ring-white/50 dark:ring-white/20 shadow-2xl z-10"></div>
                 
                 {/* Content container */}
-                <div className={`grid grid-cols-1 lg:grid-cols-2 lg:gap-8 ml-12 lg:ml-0`}>
+                <div className={`grid grid-cols-1 lg:grid-cols-2 lg:gap-4 ml-12 lg:ml-0`}>
                   {/* Left side - Images */}
-                  <div className="lg:pr-8">
+                  <div className="lg:pr-4">
                     {exp.projectImages && exp.projectImages.length > 0 ? (
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-4 lg:mb-0">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-4 lg:mb-0 lg:ml-auto lg:max-w-md">
                         {exp.projectImages.map((image, imgIndex) => (
                           <div 
                             key={imgIndex} 
-                            className="relative aspect-video rounded-lg overflow-hidden border border-primary-200 dark:border-primary-700 cursor-pointer shadow-md hover:shadow-glow transition-all duration-300"
+                            className="relative aspect-video rounded-lg overflow-hidden border border-white/30 dark:border-white/20 cursor-pointer shadow-xl hover:shadow-2xl transition-all duration-300 bg-white/10 backdrop-blur-sm"
                             onClick={() => setSelectedImage({ image, title: `${exp.company} - ${exp.title}` })}
                           >
                             <Image
@@ -446,9 +448,9 @@ export default function Experience() {
                   </div>
                   
                   {/* Right side - Info */}
-                  <div className="lg:pl-8">
-                    <div className="relative bg-white dark:bg-neutral-900 p-5 rounded-xl shadow-lg border border-primary-200 dark:border-primary-700 overflow-hidden">
-                      <div className="absolute inset-0 bg-gradient-primary opacity-5"></div>
+                  <div className="lg:pl-4">
+                    <div className="relative bg-white/20 dark:bg-neutral-900/20 backdrop-blur-sm p-5 rounded-xl shadow-lg border border-white/30 dark:border-white/10 overflow-hidden">
+                      <div className="absolute inset-0 bg-gradient-to-br from-white/30 to-white/10 dark:from-white/10 dark:to-white/5"></div>
                       <div className="relative">
                       <h3 className="text-lg font-bold text-neutral-900 dark:text-white">
                         {exp.title}
@@ -468,7 +470,7 @@ export default function Experience() {
                           </a>
                         )}
                       </div>
-                      <p className="text-sm text-neutral-500 dark:text-neutral-500 mb-3 font-medium">
+                      <p className="text-sm text-neutral-700 dark:text-neutral-300 mb-3 font-semibold">
                         {exp.period}
                       </p>
                       <ul className="list-disc list-inside space-y-1">
@@ -485,6 +487,7 @@ export default function Experience() {
             </div>
             );
           })}
+        </div>
         </div>
       </section>
       

@@ -2,10 +2,9 @@ import Image from "next/image";
 
 export default function Header() {
   return (
-    <header className="relative bg-gradient-electric rounded-2xl shadow-xl p-8 mb-6 overflow-hidden">
-      {/* Background decoration */}
-      <div className="absolute inset-0 bg-gradient-mesh opacity-20"></div>
-      <div className="absolute inset-0 bg-white/90 dark:bg-neutral-900/90"></div>
+    <header className="relative bg-white/5 dark:bg-neutral-900/5 backdrop-blur-sm rounded-2xl shadow-2xl p-8 mb-6 overflow-hidden border border-white/20 dark:border-white/10">
+      {/* Glass effect overlay */}
+      <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-white/5 dark:from-white/10 dark:to-white/5 rounded-2xl"></div>
       
       <div className="relative flex flex-col sm:flex-row items-center sm:items-start gap-6">
         <div className="relative w-32 h-32 rounded-full overflow-hidden ring-4 ring-white/50 dark:ring-primary-500/30 shadow-glow">

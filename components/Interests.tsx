@@ -19,7 +19,9 @@ export default function Interests() {
   ];
 
   return (
-    <section className="bg-white/80 dark:bg-neutral-800/80 backdrop-blur-sm rounded-2xl shadow-xl p-6 mb-6 border border-primary-100 dark:border-primary-900/30">
+    <section className="relative bg-white/5 dark:bg-neutral-900/5 backdrop-blur-sm rounded-2xl shadow-2xl p-6 mb-6 border border-white/20 dark:border-white/10 overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-white/5 dark:from-white/10 dark:to-white/5 rounded-2xl"></div>
+      <div className="relative">
       <div className="flex items-center mb-4">
         <Sparkles className="w-6 h-6 text-primary-600 dark:text-primary-400 mr-2" />
         <h2 className="text-2xl font-semibold text-neutral-900 dark:text-white">
@@ -35,6 +37,7 @@ export default function Interests() {
             {interest}
           </span>
         ))}
+      </div>
       </div>
     </section>
   );

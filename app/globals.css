@@ -24,3 +24,45 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.animation-delay-2000 {
+  animation-delay: 2s;
+}
+.animation-delay-4000 {
+  animation-delay: 4s;
+}
+.animation-delay-6000 {
+  animation-delay: 6s;
+}
+
+/* Compilation animation - lines appear one by one */
+@keyframes fadeInLine {
+  0% { opacity: 0; transform: translateY(10px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  0% { opacity: 0; transform: translateY(5px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.animate-compile-1 { animation: fadeInLine 0.3s ease-out 0.5s forwards; }
+.animate-compile-2 { animation: fadeInLine 0.3s ease-out 0.8s forwards; }
+.animate-compile-3 { animation: fadeInLine 0.3s ease-out 1.1s forwards; }
+.animate-compile-4 { animation: fadeInLine 0.3s ease-out 1.4s forwards; }
+.animate-compile-5 { animation: fadeInLine 0.3s ease-out 1.6s forwards; }
+.animate-compile-6 { animation: fadeInLine 0.3s ease-out 1.8s forwards; }
+.animate-compile-7 { animation: fadeInLine 0.3s ease-out 2.1s forwards; }
+.animate-compile-8 { animation: fadeInLine 0.3s ease-out 2.4s forwards; }
+.animate-compile-9 { animation: fadeInLine 0.3s ease-out 2.7s forwards; }
+.animate-compile-10 { animation: fadeInLine 0.3s ease-out 3.0s forwards; }
+.animate-compile-11 { animation: fadeInLine 0.3s ease-out 3.3s forwards; }
+.animate-compile-12 { animation: fadeInLine 0.3s ease-out 3.6s forwards; }
+.animate-compile-13 { animation: fadeInLine 0.3s ease-out 3.8s forwards; }
+.animate-compile-14 { animation: fadeInLine 0.3s ease-out 4.0s forwards; }
+.animate-compile-15 { animation: fadeInLine 0.3s ease-out 4.5s forwards; }
+.animate-compile-16 { animation: fadeInLine 0.3s ease-out 4.8s forwards; }
+.animate-compile-17 { animation: fadeInLine 0.3s ease-out 5.1s forwards; }
+.animate-compile-18 { animation: fadeInLine 0.3s ease-out 5.4s forwards; }
+.animate-compile-19 { animation: fadeInLine 0.3s ease-out 5.7s forwards; }
+.animate-compile-20 { animation: fadeInLine 0.3s ease-out 6.0s forwards; }

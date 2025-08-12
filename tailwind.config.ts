@@ -71,6 +71,10 @@ const config: Config = {
         'gradient-xy': 'gradient-xy 15s ease infinite',
         'float': 'float 6s ease-in-out infinite',
         'glow': 'glow 2s ease-in-out infinite',
+        'blob': 'blob 7s infinite',
+        'rain': 'rain 1.5s linear infinite',
+        'scroll-up': 'scroll-up 20s linear infinite',
+        'scan': 'scan 8s linear infinite',
       },
       keyframes: {
         'gradient-y': {
@@ -110,6 +114,52 @@ const config: Config = {
         glow: {
           '0%, 100%': { opacity: '1' },
           '50%': { opacity: '0.7' },
+        },
+        blob: {
+          '0%': {
+            transform: 'translate(0px, 0px) scale(1)',
+          },
+          '33%': {
+            transform: 'translate(30px, -50px) scale(1.1)',
+          },
+          '66%': {
+            transform: 'translate(-20px, 20px) scale(0.9)',
+          },
+          '100%': {
+            transform: 'translate(0px, 0px) scale(1)',
+          },
+        },
+        rain: {
+          '0%': {
+            transform: 'translateY(-100vh)',
+            opacity: '0',
+          },
+          '10%': {
+            opacity: '1',
+          },
+          '90%': {
+            opacity: '1',
+          },
+          '100%': {
+            transform: 'translateY(100vh)',
+            opacity: '0',
+          },
+        },
+        'scroll-up': {
+          '0%': {
+            transform: 'translateY(0)',
+          },
+          '100%': {
+            transform: 'translateY(-50%)',
+          },
+        },
+        scan: {
+          '0%': {
+            transform: 'translateY(0)',
+          },
+          '100%': {
+            transform: 'translateY(100vh)',
+          },
         }
       },
       boxShadow: {

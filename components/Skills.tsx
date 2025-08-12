@@ -62,14 +62,16 @@ const skillCategories: SkillCategory[] = [
 
 export default function Skills() {
   return (
-    <section className="bg-white/80 dark:bg-neutral-800/80 backdrop-blur-sm rounded-2xl shadow-xl p-6 mb-6 border border-primary-100 dark:border-primary-900/30">
+    <section className="relative bg-white/5 dark:bg-neutral-900/5 backdrop-blur-sm rounded-2xl shadow-2xl p-6 mb-6 border border-white/20 dark:border-white/10 overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-white/5 dark:from-white/10 dark:to-white/5 rounded-2xl"></div>
+      <div className="relative">
       <div className="flex items-center mb-4">
         <Code2 className="w-6 h-6 text-primary-600 dark:text-primary-400 mr-2" />
         <h2 className="text-2xl font-semibold text-neutral-900 dark:text-white">
           Technical Experience
         </h2>
       </div>
-      <div className="space-y-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {skillCategories.map((category, index) => (
           <div key={index}>
             <h3 className="text-lg font-bold text-neutral-900 dark:text-white mb-2">
@@ -87,6 +89,7 @@ export default function Skills() {
             </div>
           </div>
         ))}
+      </div>
       </div>
     </section>
   );

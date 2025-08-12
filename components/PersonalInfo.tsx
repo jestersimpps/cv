@@ -2,7 +2,9 @@ import { Mail, Phone, MapPin, Globe, Github } from "lucide-react";
 
 export default function PersonalInfo() {
   return (
-    <section className="bg-white/80 dark:bg-neutral-800/80 backdrop-blur-sm rounded-2xl shadow-xl p-6 mb-6 border border-primary-100 dark:border-primary-900/30">
+    <section className="relative bg-white/5 dark:bg-neutral-900/5 backdrop-blur-sm rounded-2xl shadow-2xl p-6 mb-6 border border-white/20 dark:border-white/10 overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-white/5 dark:from-white/10 dark:to-white/5 rounded-2xl"></div>
+      <div className="relative">
       <h2 className="text-2xl font-semibold text-neutral-900 dark:text-white mb-4">
         Contact Information
       </h2>
@@ -64,7 +66,7 @@ export default function PersonalInfo() {
         <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
           Languages
         </h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-3">
           {[
             { language: "🇳🇱 Dutch", level: "Native", percentage: 100 },
             { language: "🇬🇧 English", level: "Native/Very good", percentage: 95 },
@@ -86,17 +88,25 @@ export default function PersonalInfo() {
                 {[...Array(5)].map((_, i) => (
                   <div
                     key={i}
-                    className={`h-2 flex-1 rounded-full ${
+                    className={`h-4 flex-1 rounded-full relative overflow-hidden ${
                       i < Math.ceil(lang.percentage / 20)
-                        ? "bg-gradient-to-r from-purple-400 via-pink-400 to-cyan-400"
-                        : "bg-neutral-200 dark:bg-neutral-700"
+                        ? "bg-gradient-to-r from-purple-400 via-pink-400 to-cyan-400 shadow-lg border border-white/30"
+                        : "bg-neutral-200/30 dark:bg-neutral-700/30 backdrop-blur-sm border border-white/10"
                     }`}
-                  />
+                  >
+                    {i < Math.ceil(lang.percentage / 20) && (
+                      <>
+                        <div className="absolute inset-0 bg-gradient-to-b from-white/40 to-transparent"></div>
+                        <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-gradient-to-t from-black/20 to-transparent"></div>
+                      </>
+                    )}
+                  </div>
                 ))}
               </div>
             </div>
           ))}
         </div>
+      </div>
       </div>
     </section>
   );

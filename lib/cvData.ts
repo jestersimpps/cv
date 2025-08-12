@@ -86,7 +86,7 @@ export const cvData = {
     {
       title: "Senior Frontend Developer / Architect",
       company: "AWV agentschap wegen en verkeer",
-      period: "May 2022 - February 2024",
+      period: "May 2022 - September 2025",
       description: [
         "Migrated several existing Angular applications into a new monorepo architecture",
         "Entire build and architecture from the ground up",
