@@ -8,8 +8,10 @@ import ExportButton from "@/components/ExportButton";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <div className="max-w-4xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gradient-sunset">
+      <div className="fixed inset-0 bg-gradient-mesh opacity-30 pointer-events-none"></div>
+      <div className="fixed inset-0 bg-neutral-50/95 dark:bg-neutral-950/95 pointer-events-none"></div>
+      <div className="relative max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
         <Header />
         <PersonalInfo />
         <Experience />

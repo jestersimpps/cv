@@ -20,7 +20,7 @@ export default function ExportButton() {
   return (
     <button
       onClick={handleExport}
-      className="fixed bottom-6 right-6 bg-blue-600 hover:bg-blue-700 text-white rounded-full p-4 shadow-lg hover:shadow-xl transition-all duration-300 z-50"
+      className="fixed bottom-6 right-6 bg-gradient-vibrant hover:bg-gradient-primary text-white rounded-full p-4 shadow-2xl hover:shadow-[0_0_40px_rgba(247,37,133,0.5)] transition-all duration-300 z-50 hover:scale-110 animate-gradient-xy"
       title="Export CV to Markdown"
     >
       <Download className="w-6 h-6" />

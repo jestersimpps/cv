@@ -62,24 +62,24 @@ const skillCategories: SkillCategory[] = [
 
 export default function Skills() {
   return (
-    <section className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-6">
+    <section className="bg-white/80 dark:bg-neutral-800/80 backdrop-blur-sm rounded-2xl shadow-xl p-6 mb-6 border border-primary-100 dark:border-primary-900/30">
       <div className="flex items-center mb-4">
-        <Code2 className="w-6 h-6 text-gray-700 dark:text-gray-300 mr-2" />
-        <h2 className="text-2xl font-semibold text-gray-900 dark:text-white">
+        <Code2 className="w-6 h-6 text-primary-600 dark:text-primary-400 mr-2" />
+        <h2 className="text-2xl font-semibold text-neutral-900 dark:text-white">
           Technical Experience
         </h2>
       </div>
       <div className="space-y-4">
         {skillCategories.map((category, index) => (
           <div key={index}>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+            <h3 className="text-lg font-bold text-neutral-900 dark:text-white mb-2">
               {category.category}
             </h3>
             <div className="flex flex-wrap gap-2">
               {category.skills.map((skill, i) => (
                 <span
                   key={i}
-                  className="px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-sm"
+                  className="px-3 py-1.5 bg-gradient-to-r from-violet-200 via-pink-200 to-cyan-200 dark:from-violet-900/30 dark:via-pink-900/30 dark:to-cyan-900/30 text-purple-800 dark:text-purple-200 rounded-full text-sm font-semibold border-2 border-purple-300 dark:border-purple-600 hover:shadow-lg hover:scale-105 transition-all"
                 >
                   {skill}
                 </span>

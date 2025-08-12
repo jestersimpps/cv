@@ -389,68 +389,102 @@ export default function Experience() {
 
   return (
     <>
-      <section className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-6">
-        <div className="flex items-center mb-4">
-          <Briefcase className="w-6 h-6 text-gray-700 dark:text-gray-300 mr-2" />
-          <h2 className="text-2xl font-semibold text-gray-900 dark:text-white">
+      <section className="bg-white/80 dark:bg-neutral-800/80 backdrop-blur-sm rounded-2xl shadow-xl p-6 mb-6 border border-primary-100 dark:border-primary-900/30">
+        <div className="flex items-center mb-8">
+          <Briefcase className="w-6 h-6 text-primary-600 dark:text-primary-400 mr-2" />
+          <h2 className="text-2xl font-semibold text-neutral-900 dark:text-white">
             Work Experience
           </h2>
         </div>
-        <div className="space-y-6">
-          {experiences.map((exp, index) => (
-            <div key={index} className="border-l-2 border-gray-200 dark:border-gray-700 pl-4 ml-2">
-              <div className="relative -left-[9px] w-4 h-4 bg-blue-600 rounded-full"></div>
-              <div className="-mt-4 ml-4">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                  {exp.title}
-                </h3>
-                <div className="flex items-center gap-2">
-                  <p className="text-gray-600 dark:text-gray-400 font-medium">
-                    {exp.company} {exp.location && `• ${exp.location}`}
-                  </p>
-                  {exp.websiteUrl && (
-                    <a
-                      href={exp.websiteUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
-                    >
-                      <ExternalLink className="w-3 h-3" />
-                    </a>
-                  )}
-                </div>
-                <p className="text-sm text-gray-500 dark:text-gray-500 mb-2">
-                  {exp.period}
-                </p>
-                <ul className="list-disc list-inside space-y-1">
-                  {exp.description.map((item, i) => (
-                    <li key={i} className="text-gray-700 dark:text-gray-300 text-sm">
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-                {exp.projectImages && exp.projectImages.length > 0 && (
-                  <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
-                    {exp.projectImages.map((image, imgIndex) => (
-                      <div 
-                        key={imgIndex} 
-                        className="relative aspect-video rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700 cursor-pointer"
-                        onClick={() => setSelectedImage({ image, title: `${exp.company} - ${exp.title}` })}
-                      >
-                        <Image
-                          src={image}
-                          alt={`${exp.company} screenshot ${imgIndex + 1}`}
-                          fill
-                          className="object-cover hover:scale-105 transition-transform duration-300"
-                          unoptimized
-                        />
-                      </div>
-                    ))}
+        <div className="relative">
+          {/* Timeline line - centered on large screens */}
+          <div className="absolute left-4 lg:left-1/2 lg:-translate-x-1 top-0 bottom-0 w-2 bg-gradient-to-b from-purple-500 via-pink-500 to-blue-500 rounded-full shadow-lg"></div>
+          
+          {experiences.map((exp, index) => {
+            // Extract year from period (e.g., "June 2025 - ongoing" -> "2025")
+            const year = exp.period.match(/\d{4}/)?.[0] || "";
+            const prevYear = index > 0 ? experiences[index - 1].period.match(/\d{4}/)?.[0] : "";
+            const showYear = year !== prevYear;
+            
+            return (
+              <div key={index} className={`relative mb-8 lg:mb-12 ${showYear ? 'mt-12' : ''}`}>
+                {/* Year label - only show if different from previous */}
+                {showYear && (
+                  <div className="absolute left-4 lg:left-1/2 -translate-x-1/2 -top-10 bg-gradient-primary text-white px-4 py-1.5 rounded-full text-sm font-bold shadow-lg z-10">
+                    {year}
                   </div>
                 )}
+                
+                {/* Timeline dot */}
+                <div className="absolute left-4 lg:left-1/2 w-6 h-6 -translate-x-1/2 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full ring-4 ring-white dark:ring-neutral-800 shadow-xl z-10"></div>
+                
+                {/* Content container */}
+                <div className={`grid grid-cols-1 lg:grid-cols-2 lg:gap-8 ml-12 lg:ml-0`}>
+                  {/* Left side - Images */}
+                  <div className="lg:pr-8">
+                    {exp.projectImages && exp.projectImages.length > 0 ? (
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-4 lg:mb-0">
+                        {exp.projectImages.map((image, imgIndex) => (
+                          <div 
+                            key={imgIndex} 
+                            className="relative aspect-video rounded-lg overflow-hidden border border-primary-200 dark:border-primary-700 cursor-pointer shadow-md hover:shadow-glow transition-all duration-300"
+                            onClick={() => setSelectedImage({ image, title: `${exp.company} - ${exp.title}` })}
+                          >
+                            <Image
+                              src={image}
+                              alt={`${exp.company} screenshot ${imgIndex + 1}`}
+                              fill
+                              className="object-cover hover:scale-105 transition-transform duration-300"
+                              unoptimized
+                            />
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="hidden lg:block"></div>
+                    )}
+                  </div>
+                  
+                  {/* Right side - Info */}
+                  <div className="lg:pl-8">
+                    <div className="relative bg-white dark:bg-neutral-900 p-5 rounded-xl shadow-lg border border-primary-200 dark:border-primary-700 overflow-hidden">
+                      <div className="absolute inset-0 bg-gradient-primary opacity-5"></div>
+                      <div className="relative">
+                      <h3 className="text-lg font-bold text-neutral-900 dark:text-white">
+                        {exp.title}
+                      </h3>
+                      <div className="flex items-center gap-2">
+                        <p className="text-neutral-600 dark:text-neutral-400 font-medium">
+                          {exp.company} {exp.location && `• ${exp.location}`}
+                        </p>
+                        {exp.websiteUrl && (
+                          <a
+                            href={exp.websiteUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center text-primary-600 dark:text-primary-400 hover:text-accent-600 dark:hover:text-accent-400 transition-colors"
+                          >
+                            <ExternalLink className="w-3 h-3" />
+                          </a>
+                        )}
+                      </div>
+                      <p className="text-sm text-neutral-500 dark:text-neutral-500 mb-3 font-medium">
+                        {exp.period}
+                      </p>
+                      <ul className="list-disc list-inside space-y-1">
+                        {exp.description.map((item, i) => (
+                          <li key={i} className="text-neutral-700 dark:text-neutral-300 text-sm">
+                            {item}
+                          </li>
+                        ))}
+                      </ul>
+                      </div>
+                    </div>
+                  </div>
               </div>
             </div>
-          ))}
+            );
+          })}
         </div>
       </section>
       

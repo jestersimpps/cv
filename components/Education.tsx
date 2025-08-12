@@ -32,29 +32,29 @@ const education: EducationItem[] = [
 
 export default function Education() {
   return (
-    <section className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-6">
+    <section className="bg-white/80 dark:bg-neutral-800/80 backdrop-blur-sm rounded-2xl shadow-xl p-6 mb-6 border border-primary-100 dark:border-primary-900/30">
       <div className="flex items-center mb-4">
-        <GraduationCap className="w-6 h-6 text-gray-700 dark:text-gray-300 mr-2" />
-        <h2 className="text-2xl font-semibold text-gray-900 dark:text-white">
+        <GraduationCap className="w-6 h-6 text-primary-600 dark:text-primary-400 mr-2" />
+        <h2 className="text-2xl font-semibold text-neutral-900 dark:text-white">
           Education & Certifications
         </h2>
       </div>
       <div className="space-y-4">
         {education.map((edu, index) => (
           <div key={index}>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+            <h3 className="text-lg font-bold text-neutral-900 dark:text-white">
               {edu.degree}
             </h3>
-            <p className="text-gray-600 dark:text-gray-400 font-medium">
+            <p className="text-neutral-600 dark:text-neutral-400 font-medium">
               {edu.institution} {edu.location && `• ${edu.location}`}
             </p>
-            <p className="text-sm text-gray-500 dark:text-gray-500 mb-2">
+            <p className="text-sm text-neutral-500 dark:text-neutral-500 mb-2">
               {edu.period} {edu.gpa && `• GPA: ${edu.gpa}`}
             </p>
             {edu.achievements && (
               <ul className="list-disc list-inside space-y-1">
                 {edu.achievements.map((achievement, i) => (
-                  <li key={i} className="text-gray-700 dark:text-gray-300">
+                  <li key={i} className="text-neutral-700 dark:text-neutral-300">
                     {achievement}
                   </li>
                 ))}
@@ -62,12 +62,12 @@ export default function Education() {
             )}
           </div>
         ))}
-        <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+        <div className="mt-4 pt-4 border-t border-primary-200 dark:border-primary-800/30">
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
             Certifications
           </h3>
           <ul className="list-disc list-inside space-y-1">
-            <li className="text-gray-700 dark:text-gray-300">
+            <li className="text-neutral-700 dark:text-neutral-300">
               ITIL v3 Foundation
             </li>
           </ul>
