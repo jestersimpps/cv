@@ -4,6 +4,7 @@ import Experience from "@/components/Experience";
 import Education from "@/components/Education";
 import Skills from "@/components/Skills";
 import Interests from "@/components/Interests";
+import ExportButton from "@/components/ExportButton";
 
 export default function Home() {
   return (
@@ -16,6 +17,7 @@ export default function Home() {
         <Skills />
         <Interests />
       </div>
+      <ExportButton />
     </div>
   );
 }

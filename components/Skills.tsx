@@ -16,7 +16,7 @@ const skillCategories: SkillCategory[] = [
   },
   {
     category: "Backend",
-    skills: ["Node.js", "NestJS", "Express", "Laravel (4-5.1)", "Django", ".NET", "Mongoose", "GraphQL", "Apollo", "Socket.io"]
+    skills: ["Node.js", "NestJS", "Express", "Laravel (4-5.1)", "Django", ".NET", "Mongoose", "GraphQL", "Apollo", "Socket.io", "Temporal"]
   },
   {
     category: "Databases",
