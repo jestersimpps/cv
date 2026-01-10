@@ -11,7 +11,7 @@ export const cvData = {
     website: "bicraw.ai",
     github: "jestersimpps"
   },
-  summary: "Over 10 years of experience building ERP, SAAS applications and web platforms. Highly familiar with a wide variety of web development technologies, frameworks and build tools. Preference towards full typescript stacks. Currently specializing in TypeScript-first architectures with Angular/Next.js/NestJS and exploring Web3/blockchain technologies and AI integrations.",
+  summary: "Over 10 years of experience building ERP, SAAS applications and web platforms. Highly familiar with a wide variety of web development technologies, frameworks and build tools. Preference towards full typescript stacks with Convex as my go-to backend. Currently specializing in TypeScript-first architectures with Angular/Next.js/NestJS and exploring Web3/blockchain technologies and AI integrations.",
   personalSkills: [
     "Team player",
     "Customer friendly",
@@ -52,7 +52,7 @@ export const cvData = {
     },
     {
       title: "Personal Project",
-      company: "Copyscalper",
+      company: "Hyperscalper",
       period: "January 2026 - ongoing",
       websiteUrl: "https://hyperscalper.vercel.app",
       description: [

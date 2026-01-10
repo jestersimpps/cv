@@ -1,9 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { Briefcase, ExternalLink } from "lucide-react";
+import { Briefcase, ExternalLink, LayoutGrid, AlignJustify } from "lucide-react";
 import Image from "next/image";
 import ImageModal from "./ImageModal";
+
+type ViewMode = "timeline" | "grid";
 
 interface ExperienceItem {
   title: string;
@@ -40,7 +42,7 @@ const experiences: ExperienceItem[] = [
   },
   {
     title: "Personal Project",
-    company: "Copyscalper",
+    company: "Hyperscalper",
     period: "January 2026 - ongoing",
     websiteUrl: "https://hyperscalper.vercel.app",
     description: [
@@ -508,108 +510,172 @@ const experiences: ExperienceItem[] = [
 
 export default function Experience() {
   const [selectedImage, setSelectedImage] = useState<{ image: string; title: string } | null>(null);
+  const [viewMode, setViewMode] = useState<ViewMode>("timeline");
+
+  const projectsWithLinks = experiences.filter((exp) => exp.websiteUrl);
 
   return (
     <>
       <section className="relative bg-white/5 dark:bg-neutral-900/5 backdrop-blur-sm rounded-2xl shadow-2xl p-6 mb-6 border border-white/20 dark:border-white/10 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-white/5 dark:from-white/10 dark:to-white/5 rounded-2xl"></div>
         <div className="relative">
-        <div className="flex items-center mb-8">
-          <Briefcase className="w-6 h-6 text-primary-600 dark:text-primary-400 mr-2" />
-          <h2 className="text-2xl font-semibold text-neutral-900 dark:text-white">
-            Work Experience
-          </h2>
+        <div className="flex items-center justify-between mb-8">
+          <div className="flex items-center">
+            <Briefcase className="w-6 h-6 text-primary-600 dark:text-primary-400 mr-2" />
+            <h2 className="text-2xl font-semibold text-neutral-900 dark:text-white">
+              Work Experience
+            </h2>
+          </div>
+          <div className="flex items-center gap-1 bg-white/20 dark:bg-white/10 rounded-lg p-1">
+            <button
+              onClick={() => setViewMode("timeline")}
+              className={`p-2 rounded-md transition-all ${viewMode === "timeline" ? "bg-white/40 dark:bg-white/20 shadow-md" : "hover:bg-white/20"}`}
+              title="Timeline view"
+            >
+              <AlignJustify className="w-4 h-4 text-neutral-700 dark:text-neutral-200" />
+            </button>
+            <button
+              onClick={() => setViewMode("grid")}
+              className={`p-2 rounded-md transition-all ${viewMode === "grid" ? "bg-white/40 dark:bg-white/20 shadow-md" : "hover:bg-white/20"}`}
+              title="Grid view"
+            >
+              <LayoutGrid className="w-4 h-4 text-neutral-700 dark:text-neutral-200" />
+            </button>
+          </div>
         </div>
-        <div className="relative">
-          {/* Timeline line - centered on large screens */}
-          <div className="absolute left-4 lg:left-1/2 lg:-translate-x-1 top-0 bottom-0 w-2 bg-white/40 dark:bg-white/20 backdrop-blur-sm rounded-full shadow-2xl"></div>
-          
-          {experiences.map((exp, index) => {
-            // Extract year from period (e.g., "June 2025 - ongoing" -> "2025")
-            const year = exp.period.match(/\d{4}/)?.[0] || "";
-            const prevYear = index > 0 ? experiences[index - 1].period.match(/\d{4}/)?.[0] : "";
-            const showYear = year !== prevYear;
-            
-            return (
-              <div key={index} className={`relative mb-8 lg:mb-12 ${showYear ? 'mt-12' : ''}`}>
-                {/* Year label - only show if different from previous */}
-                {showYear && (
-                  <div className="absolute left-4 lg:left-1/2 -translate-x-1/2 -top-10 bg-white/60 dark:bg-white/20 backdrop-blur-md text-purple-900 dark:text-white px-4 py-1.5 rounded-full text-sm font-bold shadow-xl border border-white/40 z-10">
-                    {year}
-                  </div>
-                )}
-                
-                {/* Timeline dot */}
-                <div className="absolute left-4 lg:left-1/2 w-6 h-6 -translate-x-1/2 bg-white/80 dark:bg-white/40 backdrop-blur-sm rounded-full ring-4 ring-white/50 dark:ring-white/20 shadow-2xl z-10"></div>
-                
-                {/* Content container */}
-                <div className={`grid grid-cols-1 lg:grid-cols-2 lg:gap-4 ml-12 lg:ml-0`}>
-                  {/* Left side - Images */}
-                  <div className="lg:pr-4">
-                    {exp.projectImages && exp.projectImages.length > 0 ? (
-                      <div className={`grid gap-2 mb-4 lg:mb-0 lg:ml-auto lg:max-w-md ${exp.projectImages.length === 1 ? 'grid-cols-1 justify-items-end' : 'grid-cols-1 sm:grid-cols-2'}`}>
-                        {exp.projectImages.map((image, imgIndex) => (
-                          <div
-                            key={imgIndex}
-                            className={`relative aspect-video rounded-lg overflow-hidden border border-white/30 dark:border-white/20 cursor-pointer shadow-xl hover:shadow-2xl transition-all duration-300 bg-white/10 backdrop-blur-sm ${exp.projectImages.length === 1 ? 'w-full max-w-sm' : ''}`}
-                            onClick={() => setSelectedImage({ image, title: `${exp.company} - ${exp.title}` })}
-                          >
-                            <Image
-                              src={image}
-                              alt={`${exp.company} screenshot ${imgIndex + 1}`}
-                              fill
-                              className="object-cover hover:scale-105 transition-transform duration-300"
-                              unoptimized
-                            />
-                          </div>
-                        ))}
-                      </div>
-                    ) : (
-                      <div className="hidden lg:block"></div>
-                    )}
-                  </div>
-                  
-                  {/* Right side - Info */}
-                  <div className="lg:pl-4">
-                    <div className="relative bg-white/20 dark:bg-neutral-900/20 backdrop-blur-sm p-5 rounded-xl shadow-lg border border-white/30 dark:border-white/10 overflow-hidden">
-                      <div className="absolute inset-0 bg-gradient-to-br from-white/30 to-white/10 dark:from-white/10 dark:to-white/5"></div>
-                      <div className="relative">
-                      <h3 className="text-lg font-bold text-neutral-900 dark:text-white">
-                        {exp.title}
-                      </h3>
-                      <div className="flex items-center gap-2">
-                        <p className="text-neutral-600 dark:text-neutral-400 font-medium">
-                          {exp.company} {exp.location && `• ${exp.location}`}
+        {viewMode === "timeline" && (
+          <div className="relative">
+            <div className="absolute left-4 lg:left-1/2 lg:-translate-x-1 top-0 bottom-0 w-2 bg-white/40 dark:bg-white/20 backdrop-blur-sm rounded-full shadow-2xl"></div>
+
+            {experiences.map((exp, index) => {
+              const year = exp.period.match(/\d{4}/)?.[0] || "";
+              const prevYear = index > 0 ? experiences[index - 1].period.match(/\d{4}/)?.[0] : "";
+              const showYear = year !== prevYear;
+
+              return (
+                <div key={index} className={`relative mb-8 lg:mb-12 ${showYear ? 'mt-12' : ''}`}>
+                  {showYear && (
+                    <div className="absolute left-4 lg:left-1/2 -translate-x-1/2 -top-10 bg-white/60 dark:bg-white/20 backdrop-blur-md text-purple-900 dark:text-white px-4 py-1.5 rounded-full text-sm font-bold shadow-xl border border-white/40 z-10">
+                      {year}
+                    </div>
+                  )}
+
+                  <div className="absolute left-4 lg:left-1/2 w-6 h-6 -translate-x-1/2 bg-white/80 dark:bg-white/40 backdrop-blur-sm rounded-full ring-4 ring-white/50 dark:ring-white/20 shadow-2xl z-10"></div>
+
+                  <div className={`grid grid-cols-1 lg:grid-cols-2 lg:gap-4 ml-12 lg:ml-0`}>
+                    <div className="lg:pr-4">
+                      {exp.projectImages && exp.projectImages.length > 0 ? (
+                        <div className={`grid gap-2 mb-4 lg:mb-0 lg:ml-auto lg:max-w-md ${exp.projectImages.length === 1 ? 'grid-cols-1 justify-items-end' : 'grid-cols-1 sm:grid-cols-2'}`}>
+                          {exp.projectImages.map((image, imgIndex) => (
+                            <div
+                              key={imgIndex}
+                              className={`relative aspect-video rounded-lg overflow-hidden border border-white/30 dark:border-white/20 cursor-pointer shadow-xl hover:shadow-2xl transition-all duration-300 bg-white/10 backdrop-blur-sm ${exp.projectImages.length === 1 ? 'w-full max-w-sm' : ''}`}
+                              onClick={() => setSelectedImage({ image, title: `${exp.company} - ${exp.title}` })}
+                            >
+                              <Image
+                                src={image}
+                                alt={`${exp.company} screenshot ${imgIndex + 1}`}
+                                fill
+                                className="object-cover hover:scale-105 transition-transform duration-300"
+                                unoptimized
+                              />
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <div className="hidden lg:block"></div>
+                      )}
+                    </div>
+
+                    <div className="lg:pl-4">
+                      <div className="relative bg-white/20 dark:bg-neutral-900/20 backdrop-blur-sm p-5 rounded-xl shadow-lg border border-white/30 dark:border-white/10 overflow-hidden">
+                        <div className="absolute inset-0 bg-gradient-to-br from-white/30 to-white/10 dark:from-white/10 dark:to-white/5"></div>
+                        <div className="relative">
+                        <h3 className="text-lg font-bold text-neutral-900 dark:text-white">
+                          {exp.title}
+                        </h3>
+                        <div className="flex items-center gap-2">
+                          <p className="text-neutral-600 dark:text-neutral-400 font-medium">
+                            {exp.company} {exp.location && `• ${exp.location}`}
+                          </p>
+                          {exp.websiteUrl && (
+                            <a
+                              href={exp.websiteUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="inline-flex items-center text-primary-600 dark:text-primary-400 hover:text-accent-600 dark:hover:text-accent-400 transition-colors"
+                            >
+                              <ExternalLink className="w-3 h-3" />
+                            </a>
+                          )}
+                        </div>
+                        <p className="text-sm text-neutral-700 dark:text-neutral-300 mb-3 font-semibold">
+                          {exp.period}
                         </p>
-                        {exp.websiteUrl && (
-                          <a
-                            href={exp.websiteUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center text-primary-600 dark:text-primary-400 hover:text-accent-600 dark:hover:text-accent-400 transition-colors"
-                          >
-                            <ExternalLink className="w-3 h-3" />
-                          </a>
-                        )}
-                      </div>
-                      <p className="text-sm text-neutral-700 dark:text-neutral-300 mb-3 font-semibold">
-                        {exp.period}
-                      </p>
-                      <ul className="list-disc list-inside space-y-1">
-                        {exp.description.map((item, i) => (
-                          <li key={i} className="text-neutral-700 dark:text-neutral-300 text-sm">
-                            {item}
-                          </li>
-                        ))}
-                      </ul>
+                        <ul className="list-disc list-inside space-y-1">
+                          {exp.description.map((item, i) => (
+                            <li key={i} className="text-neutral-700 dark:text-neutral-300 text-sm">
+                              {item}
+                            </li>
+                          ))}
+                        </ul>
+                        </div>
                       </div>
                     </div>
-                  </div>
+                </div>
               </div>
-            </div>
-            );
-          })}
-        </div>
+              );
+            })}
+          </div>
+        )}
+
+        {viewMode === "grid" && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {projectsWithLinks.map((exp, index) => (
+              <a
+                key={index}
+                href={exp.websiteUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group relative bg-white/20 dark:bg-neutral-900/20 backdrop-blur-sm rounded-xl shadow-lg border border-white/30 dark:border-white/10 overflow-hidden hover:shadow-2xl hover:scale-[1.02] transition-all duration-300"
+              >
+                {exp.projectImages && exp.projectImages[0] ? (
+                  <div className="relative aspect-video">
+                    <Image
+                      src={exp.projectImages[0]}
+                      alt={exp.company}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-300"
+                      unoptimized
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                  </div>
+                ) : (
+                  <div className="aspect-video bg-gradient-to-br from-primary-500/20 to-accent-500/20 flex items-center justify-center">
+                    <Briefcase className="w-12 h-12 text-white/40" />
+                  </div>
+                )}
+                <div className="p-4 bg-gradient-to-t from-black/80 via-black/60 to-transparent absolute bottom-0 left-0 right-0">
+                  <div className="flex items-center gap-2">
+                    <h3 className="text-lg font-bold text-white drop-shadow-lg">
+                      {exp.company}
+                    </h3>
+                    <ExternalLink className="w-4 h-4 text-white/80 group-hover:text-white transition-colors" />
+                  </div>
+                  <p className="text-sm text-white/80 font-medium">
+                    {exp.title}
+                  </p>
+                  <p className="text-xs text-white/70 mt-1 line-clamp-2">
+                    {exp.description[0]}
+                  </p>
+                  <p className="text-xs text-white/50 mt-1">
+                    {exp.period}
+                  </p>
+                </div>
+              </a>
+            ))}
+          </div>
+        )}
         </div>
       </section>
       

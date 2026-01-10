@@ -20,7 +20,7 @@ const skillCategories: SkillCategory[] = [
   },
   {
     category: "Databases",
-    skills: ["PostgreSQL", "MySQL", "MongoDB", "Redis", "Microsoft Access", "Firebase", "Supabase", "BAAS"]
+    skills: ["PostgreSQL", "MySQL", "MongoDB", "Redis", "Microsoft Access", "Firebase", "Supabase", "Convex", "BAAS"]
   },
   {
     category: "Testing & Quality",
