@@ -1,22 +1,7 @@
-"use client";
-
 import Image from "next/image";
-import { Github, Linkedin, Globe, Download } from "lucide-react";
-import { exportToMarkdown } from "@/lib/cvData";
+import { Github, Linkedin, Globe } from "lucide-react";
 
 export default function Header() {
-  const handleDownload = () => {
-    const markdown = exportToMarkdown();
-    const blob = new Blob([markdown], { type: "text/markdown" });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = "jo-vinkenroye-cv.md";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-  };
   return (
     <header id="header" className="relative bg-white/5 dark:bg-neutral-900/5 backdrop-blur-sm rounded-2xl shadow-2xl p-8 mb-6 overflow-hidden border border-white/20 dark:border-white/10">
       <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-white/5 dark:from-white/10 dark:to-white/5 rounded-2xl"></div>
@@ -70,13 +55,6 @@ export default function Header() {
             >
               <Globe className="w-5 h-5 text-neutral-700 dark:text-neutral-300" />
             </a>
-            <button
-              onClick={handleDownload}
-              className="flex items-center gap-2 px-4 py-2 bg-primary-500/20 hover:bg-primary-500/30 text-primary-700 dark:text-primary-300 rounded-lg font-semibold text-sm transition-all hover:scale-105 border border-primary-500/30 ml-2"
-            >
-              <Download className="w-4 h-4" />
-              Download CV
-            </button>
           </div>
         </div>
       </div>
