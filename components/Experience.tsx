@@ -340,10 +340,12 @@ const experiences: ExperienceItem[] = [
     period: "January 2018 - 2020",
     description: [
       "Created project templates (boilerplates) for Hyperledger Fabric projects",
+      "Won Odyssey Hackathon 2019 with team",
       "Stack: EC2, AWS SQS, NestJS, Pusher, Hyperledger Fabric Node SDK, Auth0",
       "GitHub: hyperledger-typescript-boilerplate"
     ],
-    websiteUrl: "https://theledger.be"
+    websiteUrl: "https://medium.com/wearetheledger",
+    projectImages: ["/assets/projects/theledger.png"]
   },
   {
     title: "Frontend Developer",
@@ -364,7 +366,8 @@ const experiences: ExperienceItem[] = [
       "Insurance card (greencard) registration on blockchain",
       "Stack: Angular 5, NestJS, AWS, Hyperledger Fabric, Go chaincode, CircleCI, Auth0"
     ],
-    websiteUrl: "https://theledger.be"
+    websiteUrl: "https://medium.com/wearetheledger",
+    projectImages: ["/assets/projects/theledger.png"]
   },
   {
     title: "Founder",
