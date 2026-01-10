@@ -2,10 +2,11 @@
 
 import { useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
-import { Briefcase, LayoutGrid, AlignJustify, X, ExternalLink, ArrowLeft } from 'lucide-react';
+import { Briefcase, LayoutGrid, AlignJustify, X, ExternalLink, ArrowLeft, Download } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { experiences, filterCategories, getProjectTags } from '@/lib/experiences';
+import { exportToMarkdown } from '@/lib/cvData';
 import ImageModal from '@/components/ImageModal';
 import GradientOrbs from '@/components/ui/GradientOrbs';
 import GridLines from '@/components/ui/GridLines';
@@ -34,6 +35,19 @@ export default function ExperiencePage() {
   };
 
   const clearFilters = () => setActiveFilters([]);
+
+  const handleDownload = () => {
+    const markdown = exportToMarkdown();
+    const blob = new Blob([markdown], { type: 'text/markdown' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'jo-vinkenroye-cv.md';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
 
   return (
     <div className="min-h-screen bg-black text-white">
@@ -102,6 +116,14 @@ export default function ExperiencePage() {
             <div className="text-sm text-neutral-500">
               {filteredProjects.length} of {experiences.length} projects
             </div>
+
+            <button
+              onClick={handleDownload}
+              className="flex items-center gap-2 px-4 py-2 bg-white/10 border border-white/20 rounded-xl text-white hover:bg-white/20 transition-colors"
+            >
+              <Download className="w-4 h-4" />
+              Download CV
+            </button>
           </motion.div>
         </div>
       </section>

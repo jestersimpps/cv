@@ -1,10 +1,11 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Briefcase, ArrowRight } from 'lucide-react';
+import { Briefcase, ArrowRight, Download } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import GridLines from '@/components/ui/GridLines';
+import { exportToMarkdown } from '@/lib/cvData';
 
 interface Experience {
   title: string;
@@ -41,6 +42,19 @@ const highlights: Experience[] = [
 ];
 
 export default function ExperienceSection() {
+  const handleDownload = () => {
+    const markdown = exportToMarkdown();
+    const blob = new Blob([markdown], { type: 'text/markdown' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'jo-vinkenroye-cv.md';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <section id="experience" className="py-24 bg-gradient-to-b from-neutral-900 via-neutral-950 to-black relative overflow-hidden">
       <GridLines />
@@ -97,7 +111,7 @@ export default function ExperienceSection() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="text-center"
+          className="flex flex-wrap justify-center gap-4"
         >
           <Link
             href="/experience"
@@ -106,6 +120,13 @@ export default function ExperienceSection() {
             View Full Experience
             <ArrowRight className="w-4 h-4" />
           </Link>
+          <button
+            onClick={handleDownload}
+            className="inline-flex items-center gap-2 px-6 py-3 bg-white/10 border border-white/20 text-white rounded-full font-medium hover:bg-white/20 transition-colors"
+          >
+            <Download className="w-4 h-4" />
+            Download CV
+          </button>
         </motion.div>
       </div>
     </section>

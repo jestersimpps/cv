@@ -5,7 +5,6 @@ import ExperienceSection from "@/components/landing/ExperienceSection";
 import EducationSection from "@/components/landing/EducationSection";
 import ContactSection from "@/components/landing/ContactSection";
 import AIChatBubble from "@/components/AIChatBubble";
-import ExportButton from "@/components/ExportButton";
 import SectionDivider from "@/components/ui/SectionDivider";
 
 export default function Home() {
@@ -23,7 +22,6 @@ export default function Home() {
       <SectionDivider />
       <ContactSection />
       <AIChatBubble />
-      <ExportButton />
     </div>
   );
 }
