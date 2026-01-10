@@ -3,7 +3,9 @@
 import React from 'react';
 import { motion, useScroll, useTransform, useSpring, MotionValue } from 'framer-motion';
 import Image from 'next/image';
+import { Download } from 'lucide-react';
 import { Project } from '@/lib/projects';
+import { exportToMarkdown } from '@/lib/cvData';
 
 interface HeroParallaxProps {
   products: Project[];
@@ -79,6 +81,19 @@ const Header = ({
   bottomTitle: string;
   subTitle: string;
 }) => {
+  const handleDownload = () => {
+    const markdown = exportToMarkdown();
+    const blob = new Blob([markdown], { type: 'text/markdown' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'jo-vinkenroye-cv.md';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <div className="max-w-7xl relative mx-auto py-20 md:py-40 px-4 w-full left-0 top-0 z-50">
       <h1 className="text-4xl md:text-7xl font-bold text-white">
@@ -87,19 +102,20 @@ const Header = ({
         <span className="text-neutral-400">{bottomTitle}</span>
       </h1>
       <p className="max-w-2xl mt-8 text-base md:text-xl text-neutral-300">{subTitle}</p>
-      <div className="flex gap-4 mt-8 relative z-50">
+      <div className="flex flex-wrap gap-4 mt-8 relative z-50">
         <a
           href="#contact"
           className="px-8 py-3 bg-white text-black rounded-full font-medium hover:bg-neutral-200 transition-colors"
         >
           Get in Touch
         </a>
-        <a
-          href="#about"
-          className="px-8 py-3 border border-white/20 text-white rounded-full font-medium hover:bg-white/10 transition-colors"
+        <button
+          onClick={handleDownload}
+          className="flex items-center gap-2 px-8 py-3 border border-white/20 text-white rounded-full font-medium hover:bg-white/10 transition-colors"
         >
-          Learn More
-        </a>
+          <Download className="w-4 h-4" />
+          Download CV
+        </button>
       </div>
     </div>
   );
