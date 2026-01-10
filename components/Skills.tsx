@@ -44,7 +44,11 @@ const skillCategories: SkillCategory[] = [
   },
   {
     category: "AI & ML",
-    skills: ["OpenAI", "Anthropic", "Groq", "DeepL", "AI Integrations", "Process Automation", "Multi-Agent Architecture"]
+    skills: ["Claude", "Codex", "Gemini", "Goose", "Llama", "OpenAI", "Anthropic", "Groq", "DeepL"]
+  },
+  {
+    category: "AI-Assisted Development",
+    skills: ["Claude Code", "AI Agents", "Skills", "MCPs", "Commands", "Hooks", "AI-powered Workflows", "Token Optimization", "Context Management", "Multi-Agent Architecture"]
   },
   {
     category: "Specialized",

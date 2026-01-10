@@ -468,7 +468,8 @@ export const cvData = {
     "Testing & Quality": ["Cypress", "Jest", "Jasmine", "Karma", "Mocha", "Spectator", "Wiremock", "TDD"],
     "DevOps & Tools": ["Docker", "AWS", "DigitalOcean", "Heroku", "Fly.io", "Vercel", "Jenkins", "TeamCity", "CircleCI", "Wercker", "PM2", "Nginx", "Cloudflare"],
     "Blockchain & Web3": ["Hyperledger Fabric", "Ethereum", "Solidity", "IPFS", "OpenSea", "EtherJS", "Ganache", "Truffle", "Smart Contracts", "NFTs"],
-    "AI & ML": ["OpenAI", "Anthropic", "Groq", "DeepL", "AI Integrations", "Process Automation", "Multi-Agent Architecture"]
+    "AI & ML": ["Claude", "Codex", "Gemini", "Goose", "Llama", "OpenAI", "Anthropic", "Groq", "DeepL"],
+    "AI-Assisted Development": ["Claude Code", "AI Agents", "Skills", "MCPs", "Commands", "Hooks", "AI-powered Workflows", "Token Optimization", "Context Management", "Multi-Agent Architecture"]
   },
   interests: [
     "Building Side Projects",
