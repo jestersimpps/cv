@@ -42,7 +42,7 @@ const certifications = [
 export default function EducationSection() {
   return (
     <section id="education" className="py-24 bg-gradient-to-b from-black via-neutral-950 to-neutral-900 relative overflow-hidden">
-      <DotGrid dotColor="rgba(255, 255, 255, 0.03)" spacing={28} />
+      <DotGrid dotColor="rgba(255, 255, 255, 0.07)" spacing={28} />
       <GradientOrbs variant="cyan" />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <motion.div

@@ -99,7 +99,7 @@ export default function ContactSection() {
   return (
     <section id="contact" className="py-24 bg-gradient-to-b from-neutral-900 via-neutral-950 to-black relative overflow-hidden">
       <GradientOrbs variant="purple" />
-      <DotGrid dotColor="rgba(255, 255, 255, 0.03)" spacing={32} />
+      <DotGrid dotColor="rgba(255, 255, 255, 0.07)" spacing={32} />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

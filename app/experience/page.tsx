@@ -131,7 +131,7 @@ export default function ExperiencePage() {
       <SectionDivider />
 
       <section className="py-12 bg-gradient-to-b from-black via-neutral-950 to-black relative overflow-hidden">
-        <DotGrid dotColor="rgba(255, 255, 255, 0.03)" spacing={28} />
+        <DotGrid dotColor="rgba(255, 255, 255, 0.07)" spacing={28} />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           {viewMode === 'grid' && (
             <motion.div

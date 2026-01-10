@@ -42,7 +42,7 @@ const socialLinks = [
 export default function AboutSection() {
   return (
     <section id="about" className="py-24 bg-gradient-to-b from-neutral-900 via-neutral-950 to-black relative overflow-hidden">
-      <DotGrid dotColor="rgba(255, 255, 255, 0.04)" spacing={24} />
+      <DotGrid dotColor="rgba(255, 255, 255, 0.08)" spacing={24} />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

@@ -7,7 +7,7 @@ interface DotGridProps {
 
 export default function DotGrid({
   className = '',
-  dotColor = 'rgba(255, 255, 255, 0.05)',
+  dotColor = 'rgba(255, 255, 255, 0.08)',
   dotSize = 1,
   spacing = 24,
 }: DotGridProps) {

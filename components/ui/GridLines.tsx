@@ -11,7 +11,7 @@ export default function GridLines({ className = '' }: GridLinesProps) {
             <path
               d="M 60 0 L 0 0 0 60"
               fill="none"
-              stroke="rgba(255, 255, 255, 0.04)"
+              stroke="rgba(255, 255, 255, 0.08)"
               strokeWidth="1"
             />
           </pattern>
