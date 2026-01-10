@@ -78,14 +78,14 @@ export default function AIChatBubble() {
       {/* Chat Bubble Button */}
       <button
         onClick={() => setIsOpen(true)}
-        className={`fixed bottom-6 right-6 z-50 p-4 bg-white/80 dark:bg-white/20 backdrop-blur-md rounded-full shadow-2xl border border-white/50 hover:scale-110 transition-all duration-300 ${
+        className={`fixed bottom-6 right-6 z-50 px-5 py-3 bg-white/10 backdrop-blur-md rounded-full shadow-2xl border border-white/20 hover:bg-white/20 hover:scale-105 transition-all duration-300 ${
           isOpen ? "hidden" : "flex"
         } items-center gap-2`}
         aria-label="Open AI Chat"
       >
-        <Bot className="w-6 h-6 text-neutral-700 dark:text-neutral-200" />
-        <span className="hidden sm:inline text-sm font-semibold text-neutral-700 dark:text-neutral-200">
-          Ask about CV
+        <Bot className="w-5 h-5 text-white" />
+        <span className="hidden sm:inline text-sm font-medium text-white">
+          Ask AI
         </span>
       </button>
 

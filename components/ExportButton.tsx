@@ -20,11 +20,11 @@ export default function ExportButton() {
   return (
     <button
       onClick={handleExport}
-      className="fixed bottom-6 left-6 z-50 px-6 py-4 bg-white/80 dark:bg-white/20 backdrop-blur-md rounded-full shadow-2xl border border-white/50 hover:scale-110 transition-all duration-300 flex items-center gap-3"
+      className="fixed bottom-6 left-6 z-50 px-5 py-3 bg-white/10 backdrop-blur-md rounded-full shadow-2xl border border-white/20 hover:bg-white/20 hover:scale-105 transition-all duration-300 flex items-center gap-2"
       title="Download CV as Markdown"
     >
-      <Download className="w-6 h-6 text-neutral-700 dark:text-neutral-200" />
-      <span className="text-sm font-semibold text-neutral-700 dark:text-neutral-200">
+      <Download className="w-5 h-5 text-white" />
+      <span className="text-sm font-medium text-white">
         Download CV
       </span>
     </button>
