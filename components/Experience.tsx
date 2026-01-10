@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { Briefcase, ExternalLink, LayoutGrid, AlignJustify } from "lucide-react";
+import { useState, useMemo } from "react";
+import { Briefcase, ExternalLink, LayoutGrid, AlignJustify, X } from "lucide-react";
 import Image from "next/image";
 import ImageModal from "./ImageModal";
 
@@ -16,6 +16,33 @@ interface ExperienceItem {
   websiteUrl?: string;
   projectImages?: string[];
 }
+
+const filterCategories: Record<string, string[]> = {
+  "Next.js": ["Next.js", "next.js", "NextJS"],
+  "React": ["React", "ReactJS", "react"],
+  "Angular": ["Angular"],
+  "TypeScript": ["TypeScript", "typescript"],
+  "Node.js": ["Node.js", "NodeJS", "NestJS", "Express"],
+  "AI/ML": ["AI", "OpenAI", "Anthropic", "Groq", "Claude", "Gemini", "GPT", "DeepL"],
+  "Web3": ["Web3", "Solidity", "Ethereum", "NFT", "Blockchain", "IPFS", "Smart Contract"],
+  "Swift": ["Swift", "SwiftUI", "iOS"],
+  "Python": ["Python", "Django", "FastAPI"],
+  "Mobile": ["Swift", "iOS", "Ionic", "React Native", "Garmin"],
+  "Database": ["PostgreSQL", "MySQL", "MongoDB", "Redis", "Firebase", "Supabase", "Convex"],
+};
+
+const getProjectTags = (exp: ExperienceItem): string[] => {
+  const text = exp.description.join(" ");
+  const tags: string[] = [];
+
+  Object.entries(filterCategories).forEach(([category, keywords]) => {
+    if (keywords.some(keyword => text.toLowerCase().includes(keyword.toLowerCase()))) {
+      tags.push(category);
+    }
+  });
+
+  return tags;
+};
 
 const experiences: ExperienceItem[] = [
   {
@@ -289,7 +316,8 @@ const experiences: ExperienceItem[] = [
       "Stack: Monorepo using Nrwl.io, Angular CLI, Storybook",
       "Cypress e2e tests, Jest/Spectator unit testing"
     ],
-    websiteUrl: "https://www.fednot.be"
+    websiteUrl: "https://www.fednot.be",
+    projectImages: ["/assets/projects/fednot.png"]
   },
   {
     title: "Founder",
@@ -362,7 +390,8 @@ const experiences: ExperienceItem[] = [
       "Ng2 Transitions from release candidate to 2.0",
       "Stack: WebApi, .NET, Angular 2, Bitbucket, ag-grid"
     ],
-    websiteUrl: "https://www.digipolis.be"
+    websiteUrl: "https://www.digipolis.be",
+    projectImages: ["/assets/projects/digipolis.png"]
   },
   {
     title: "Frontend Developer Sirius",
@@ -374,7 +403,8 @@ const experiences: ExperienceItem[] = [
       "Ng2 Transitions between release candidates from RC1 – RC4",
       "Stack: WebApi, .NET, Angular 2, Bitbucket"
     ],
-    websiteUrl: "https://www.digipolis.be"
+    websiteUrl: "https://www.digipolis.be",
+    projectImages: ["/assets/projects/digipolis.png"]
   },
   {
     title: "API Developer",
@@ -511,15 +541,30 @@ const experiences: ExperienceItem[] = [
 export default function Experience() {
   const [selectedImage, setSelectedImage] = useState<{ image: string; title: string } | null>(null);
   const [viewMode, setViewMode] = useState<ViewMode>("timeline");
+  const [activeFilters, setActiveFilters] = useState<string[]>([]);
 
-  const projectsWithLinks = experiences.filter((exp) => exp.websiteUrl);
+  const filteredProjects = useMemo(() => {
+    if (activeFilters.length === 0) return experiences;
+    return experiences.filter((exp) => {
+      const tags = getProjectTags(exp);
+      return activeFilters.some((filter) => tags.includes(filter));
+    });
+  }, [activeFilters]);
+
+  const toggleFilter = (filter: string) => {
+    setActiveFilters((prev) =>
+      prev.includes(filter) ? prev.filter((f) => f !== filter) : [...prev, filter]
+    );
+  };
+
+  const clearFilters = () => setActiveFilters([]);
 
   return (
     <>
       <section id="experience" className="relative bg-white/5 dark:bg-neutral-900/5 backdrop-blur-sm rounded-2xl shadow-2xl p-6 mb-6 border border-white/20 dark:border-white/10 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-white/5 dark:from-white/10 dark:to-white/5 rounded-2xl"></div>
         <div className="relative">
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex items-center justify-between mb-4">
           <div className="flex items-center">
             <Briefcase className="w-6 h-6 text-primary-600 dark:text-primary-400 mr-2" />
             <h2 className="text-2xl font-semibold text-neutral-900 dark:text-white">
@@ -543,6 +588,33 @@ export default function Experience() {
             </button>
           </div>
         </div>
+
+        {viewMode === "grid" && (
+          <div className="flex flex-wrap gap-2 mb-6">
+            {Object.keys(filterCategories).map((category) => (
+              <button
+                key={category}
+                onClick={() => toggleFilter(category)}
+                className={`px-3 py-1.5 rounded-full text-sm font-medium transition-all ${
+                  activeFilters.includes(category)
+                    ? "bg-primary-500/30 text-primary-700 dark:text-primary-300 border border-primary-500/50"
+                    : "bg-white/20 dark:bg-white/10 text-neutral-700 dark:text-neutral-300 border border-white/30 dark:border-white/20 hover:bg-white/30"
+                }`}
+              >
+                {category}
+              </button>
+            ))}
+            {activeFilters.length > 0 && (
+              <button
+                onClick={clearFilters}
+                className="px-3 py-1.5 rounded-full text-sm font-medium bg-red-500/20 text-red-700 dark:text-red-300 border border-red-500/30 hover:bg-red-500/30 transition-all flex items-center gap-1"
+              >
+                <X className="w-3 h-3" />
+                Clear
+              </button>
+            )}
+          </div>
+        )}
         {viewMode === "timeline" && (
           <div className="relative">
             <div className="absolute left-4 lg:left-1/2 lg:-translate-x-1 top-0 bottom-0 w-2 bg-white/40 dark:bg-white/20 backdrop-blur-sm rounded-full shadow-2xl"></div>
@@ -631,49 +703,73 @@ export default function Experience() {
 
         {viewMode === "grid" && (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {projectsWithLinks.map((exp, index) => (
-              <a
-                key={index}
-                href={exp.websiteUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group relative bg-white/20 dark:bg-neutral-900/20 backdrop-blur-sm rounded-xl shadow-lg border border-white/30 dark:border-white/10 overflow-hidden hover:shadow-2xl hover:scale-[1.02] transition-all duration-300"
-              >
-                {exp.projectImages && exp.projectImages[0] ? (
-                  <div className="relative aspect-video">
-                    <Image
-                      src={exp.projectImages[0]}
-                      alt={exp.company}
-                      fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-300"
-                      unoptimized
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                  </div>
-                ) : (
-                  <div className="aspect-video bg-gradient-to-br from-primary-500/20 to-accent-500/20 flex items-center justify-center">
-                    <Briefcase className="w-12 h-12 text-white/40" />
-                  </div>
-                )}
-                <div className="p-4 bg-gradient-to-t from-black/80 via-black/60 to-transparent absolute bottom-0 left-0 right-0">
-                  <div className="flex items-center gap-2">
-                    <h3 className="text-lg font-bold text-white drop-shadow-lg">
-                      {exp.company}
-                    </h3>
-                    <ExternalLink className="w-4 h-4 text-white/80 group-hover:text-white transition-colors" />
-                  </div>
-                  <p className="text-sm text-white/80 font-medium">
-                    {exp.title}
-                  </p>
-                  <p className="text-xs text-white/70 mt-1 line-clamp-2">
-                    {exp.description[0]}
-                  </p>
-                  <p className="text-xs text-white/50 mt-1">
-                    {exp.period}
-                  </p>
-                </div>
-              </a>
-            ))}
+            {filteredProjects.length === 0 ? (
+              <div className="col-span-full text-center py-12 text-neutral-500 dark:text-neutral-400">
+                No projects match the selected filters
+              </div>
+            ) : (
+              filteredProjects.map((exp, index) => {
+                const tags = getProjectTags(exp);
+                const CardWrapper = exp.websiteUrl ? 'a' : 'div';
+                const cardProps = exp.websiteUrl
+                  ? { href: exp.websiteUrl, target: "_blank", rel: "noopener noreferrer" }
+                  : {};
+
+                return (
+                  <CardWrapper
+                    key={index}
+                    {...cardProps}
+                    className={`group relative bg-white/20 dark:bg-neutral-900/20 backdrop-blur-sm rounded-xl shadow-lg border border-white/30 dark:border-white/10 overflow-hidden hover:shadow-2xl hover:scale-[1.02] transition-all duration-300 ${exp.websiteUrl ? 'cursor-pointer' : ''}`}
+                  >
+                    {exp.projectImages && exp.projectImages[0] ? (
+                      <div className="relative aspect-video">
+                        <Image
+                          src={exp.projectImages[0]}
+                          alt={exp.company}
+                          fill
+                          className="object-cover group-hover:scale-105 transition-transform duration-300"
+                          unoptimized
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                      </div>
+                    ) : (
+                      <div className="aspect-video bg-gradient-to-br from-primary-500/20 to-accent-500/20 flex items-center justify-center">
+                        <Briefcase className="w-12 h-12 text-white/40" />
+                      </div>
+                    )}
+                    <div className="p-4 bg-gradient-to-t from-black/80 via-black/60 to-transparent absolute bottom-0 left-0 right-0">
+                      <div className="flex items-center gap-2">
+                        <h3 className="text-lg font-bold text-white drop-shadow-lg">
+                          {exp.company}
+                        </h3>
+                        {exp.websiteUrl && (
+                          <ExternalLink className="w-4 h-4 text-white/80 group-hover:text-white transition-colors" />
+                        )}
+                      </div>
+                      <p className="text-sm text-white/80 font-medium">
+                        {exp.title}
+                      </p>
+                      <p className="text-xs text-white/70 mt-1 line-clamp-2">
+                        {exp.description[0]}
+                      </p>
+                      <div className="flex flex-wrap gap-1 mt-2">
+                        {tags.slice(0, 3).map((tag) => (
+                          <span
+                            key={tag}
+                            className="px-2 py-0.5 bg-white/20 rounded-full text-[10px] text-white/80 font-medium"
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                      <p className="text-xs text-white/50 mt-1">
+                        {exp.period}
+                      </p>
+                    </div>
+                  </CardWrapper>
+                );
+              })
+            )}
           </div>
         )}
         </div>

@@ -464,18 +464,21 @@ export const cvData = {
     "Programming Languages": ["TypeScript", "JavaScript (ES2015/ES6)", "Python", "Swift", "PHP", "C#", "VB.NET", "VBA", "SAP ABAP", "Solidity", "Go"],
     "Frontend": ["Angular (2-16)", "React.js", "Next.js", "Vue.js", "Ionic", "StencilJS", "D3.js", "jQuery", "HTML5", "CSS/SASS", "Bootstrap", "Foundation", "Material UI", "Tailwind CSS"],
     "Backend": ["Node.js", "NestJS", "Express", "Laravel (4-5.1)", "Django", ".NET", "Mongoose", "GraphQL", "Apollo", "Socket.io"],
-    "Databases": ["PostgreSQL", "MySQL", "MongoDB", "Redis", "Microsoft Access", "Firebase", "Supabase", "BAAS"],
+    "Databases": ["PostgreSQL", "MySQL", "MongoDB", "Redis", "Microsoft Access", "Firebase", "Supabase", "Convex", "BAAS"],
     "Testing & Quality": ["Cypress", "Jest", "Jasmine", "Karma", "Mocha", "Spectator", "Wiremock", "TDD"],
     "DevOps & Tools": ["Docker", "AWS", "DigitalOcean", "Heroku", "Fly.io", "Vercel", "Jenkins", "TeamCity", "CircleCI", "Wercker", "PM2", "Nginx", "Cloudflare"],
     "Blockchain & Web3": ["Hyperledger Fabric", "Ethereum", "Solidity", "IPFS", "OpenSea", "EtherJS", "Ganache", "Truffle", "Smart Contracts", "NFTs"],
     "AI & ML": ["OpenAI", "Anthropic", "Groq", "DeepL", "AI Integrations", "Process Automation", "Multi-Agent Architecture"]
   },
   interests: [
-    "Process Automation",
-    "AI/ML Implementation",
-    "Startup Architecture & Migration",
-    "Web3 & NFT Development",
-    "Lean Startups"
+    "Building Side Projects",
+    "AI Automation",
+    "Indie Hacking",
+    "Open Source",
+    "Trading Bots",
+    "Language Learning",
+    "Fitness Tech",
+    "Traveling"
   ]
 };
 
