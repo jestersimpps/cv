@@ -545,7 +545,7 @@ const experiences: ExperienceItem[] = [
 
 export default function Experience() {
   const [selectedImage, setSelectedImage] = useState<{ image: string; title: string } | null>(null);
-  const [viewMode, setViewMode] = useState<ViewMode>("timeline");
+  const [viewMode, setViewMode] = useState<ViewMode>("grid");
   const [activeFilters, setActiveFilters] = useState<string[]>([]);
 
   const filteredProjects = useMemo(() => {
