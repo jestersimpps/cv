@@ -11,7 +11,7 @@ export const cvData = {
     website: "bicraw.ai",
     github: "jestersimpps"
   },
-  summary: "Over 10 years of experience building ERP, SAAS applications and web platforms. Highly familiar with a wide variety of web development technologies, frameworks and build tools. Preference towards full typescript stacks with Convex as my go-to backend. Currently specializing in TypeScript-first architectures with Angular/Next.js/NestJS and exploring Web3/blockchain technologies and AI integrations.",
+  summary: "Over 13 years of experience building ERP, SAAS applications and web platforms. Highly familiar with a wide variety of web development technologies, frameworks and build tools. Preference towards full typescript stacks with Convex as my go-to backend. Currently specializing in TypeScript-first architectures with Angular/Next.js/NestJS and exploring Web3/blockchain technologies and AI integrations. Embracing AI-assisted coding tools for over 2 years, with Claude Code as my primary development companion for over a year.",
   personalSkills: [
     "Team player",
     "Customer friendly",
