@@ -239,7 +239,9 @@ const experiences: ExperienceItem[] = [
       "Transformed maintenance hell project into maintainable codebase",
       "OpenLayers map, integration with complex geolocation & backend APIs",
       "Angular 13-16, ngrx, fp-ts, rxjs"
-    ]
+    ],
+    websiteUrl: "https://wegenenverkeer.be",
+    projectImages: ["/assets/projects/awv.png"]
   },
   {
     title: "NFT Creator",
