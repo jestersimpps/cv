@@ -17,12 +17,128 @@ interface ExperienceItem {
 
 const experiences: ExperienceItem[] = [
   {
+    title: "Personal Project",
+    company: "Ad Forge",
+    period: "January 2026 - ongoing",
+    description: [
+      "AI-powered ad creative generation tool",
+      "Stack: Next.js, Fal AI, OpenAI, Google Genai, FFmpeg"
+    ]
+  },
+  {
+    title: "Personal Project",
+    company: "Smallshop",
+    period: "January 2026 - ongoing",
+    websiteUrl: "https://smallshop.website",
+    description: [
+      "E-commerce platform with 3D product visualization",
+      "Stack: Next.js, Three.js, Stripe, Clerk, Convex"
+    ],
+    projectImages: [
+      "/assets/projects/smallshop.png"
+    ]
+  },
+  {
+    title: "Personal Project",
+    company: "Copyscalper",
+    period: "January 2026 - ongoing",
+    websiteUrl: "https://hyperscalper.vercel.app",
+    description: [
+      "High-performance copy trading bot for Hyperliquid DEX",
+      "Real-time copy trading with multi-account support and smart position sizing",
+      "Stack: TypeScript, Node.js, Express, WebSocket, Telegram Bot API"
+    ],
+    projectImages: [
+      "/assets/projects/hyperscalper.png"
+    ]
+  },
+  {
+    title: "Personal Project",
+    company: "Global Pet Sitter",
+    period: "January 2026 - ongoing",
+    websiteUrl: "https://www.globalpetsitter.com",
+    description: [
+      "Pet sitting marketplace connecting pet owners with sitters",
+      "Real-time messaging, reviews, and map integration",
+      "Stack: Next.js, Clerk, Convex, Supabase, MapLibre GL"
+    ],
+    projectImages: [
+      "/assets/projects/globalpetsitter.png"
+    ]
+  },
+  {
+    title: "Personal Project",
+    company: "Garmigotchi",
+    period: "December 2025 - ongoing",
+    websiteUrl: "https://garmigotchi.vercel.app",
+    description: [
+      "Tamagotchi-style health companion watchface for Garmin Instinct 3 Solar",
+      "Interactive virtual pet that reacts to real-time health metrics",
+      "Stack: Monkey C (Garmin SDK)"
+    ],
+    projectImages: [
+      "/assets/projects/garmigotchi.png"
+    ]
+  },
+  {
+    title: "Personal Project",
+    company: "Rollercoaster Store",
+    period: "December 2025",
+    websiteUrl: "https://rollercoaster-store.vercel.app",
+    description: [
+      "E-commerce store for Garmin watchfaces and apps",
+      "Stack: Next.js, Tailwind CSS"
+    ],
+    projectImages: [
+      "/assets/projects/rollercoaster.png"
+    ]
+  },
+  {
+    title: "Personal Project",
+    company: "MenuScanner",
+    period: "December 2025",
+    description: [
+      "iOS app that scans restaurant menus using AI vision",
+      "Menu OCR/translation with AI explanations and generated dish images",
+      "Stack: SwiftUI, Firebase, Google Gemini 2.0 Flash, Imagen 3"
+    ]
+  },
+  {
+    title: "Personal Project",
+    company: "ImproveMyWebsite",
+    period: "December 2025",
+    description: [
+      "Website analysis and improvement tool powered by Claude AI",
+      "Stack: Next.js, Anthropic SDK, Cheerio"
+    ]
+  },
+  {
+    title: "Personal Project",
+    company: "Juriscan",
+    period: "November 2025",
+    websiteUrl: "https://juriscan-mu.vercel.app",
+    description: [
+      "Legal document scanner and analyzer with multi-language support",
+      "Extracts, embeds, and analyzes legal articles/laws",
+      "Stack: Next.js, Google Genai, Supabase, next-intl"
+    ],
+    projectImages: [
+      "/assets/projects/juriscan.png"
+    ]
+  },
+  {
     title: "Swift Developer",
     company: "BarterBay",
     period: "June 2025 - ongoing",
     description: [
       "iOS application development using Swift",
       "Building mobile marketplace platform"
+    ],
+    projectImages: [
+      "/assets/projects/barterbay-1.png",
+      "/assets/projects/barterbay-2.png",
+      "/assets/projects/barterbay-3.png",
+      "/assets/projects/barterbay-4.png"
     ]
   },
   {
@@ -34,7 +150,10 @@ const experiences: ExperienceItem[] = [
       "Solutions help organizations capture, analyze, and leverage insights from meetings and communications",
       "Drive better decision-making and productivity through AI"
     ],
-    websiteUrl: "https://kaimeleon.ai"
+    websiteUrl: "https://kaimeleon.ai",
+    projectImages: [
+      "/assets/projects/kaimeleon.png"
+    ]
   },
   {
     title: "Personal Project",
@@ -58,7 +177,10 @@ const experiences: ExperienceItem[] = [
       "Helping businesses take advantage of AI to scale and automate their business processes",
       "AI consulting and implementation services"
     ],
-    websiteUrl: "https://bicraw.ai"
+    websiteUrl: "https://bicraw.ai",
+    projectImages: [
+      "/assets/projects/bicraw.png"
+    ]
   },
   {
     title: "Personal Project",
@@ -425,11 +547,11 @@ export default function Experience() {
                   {/* Left side - Images */}
                   <div className="lg:pr-4">
                     {exp.projectImages && exp.projectImages.length > 0 ? (
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-4 lg:mb-0 lg:ml-auto lg:max-w-md">
+                      <div className={`grid gap-2 mb-4 lg:mb-0 lg:ml-auto lg:max-w-md ${exp.projectImages.length === 1 ? 'grid-cols-1 justify-items-end' : 'grid-cols-1 sm:grid-cols-2'}`}>
                         {exp.projectImages.map((image, imgIndex) => (
-                          <div 
-                            key={imgIndex} 
-                            className="relative aspect-video rounded-lg overflow-hidden border border-white/30 dark:border-white/20 cursor-pointer shadow-xl hover:shadow-2xl transition-all duration-300 bg-white/10 backdrop-blur-sm"
+                          <div
+                            key={imgIndex}
+                            className={`relative aspect-video rounded-lg overflow-hidden border border-white/30 dark:border-white/20 cursor-pointer shadow-xl hover:shadow-2xl transition-all duration-300 bg-white/10 backdrop-blur-sm ${exp.projectImages.length === 1 ? 'w-full max-w-sm' : ''}`}
                             onClick={() => setSelectedImage({ image, title: `${exp.company} - ${exp.title}` })}
                           >
                             <Image

@@ -32,6 +32,98 @@ export const cvData = {
   ],
   experience: [
     {
+      title: "Personal Project",
+      company: "Ad Forge",
+      period: "January 2026 - ongoing",
+      description: [
+        "AI-powered ad creative generation tool",
+        "Stack: Next.js, Fal AI, OpenAI, Google Genai, FFmpeg"
+      ]
+    },
+    {
+      title: "Personal Project",
+      company: "Smallshop",
+      period: "January 2026 - ongoing",
+      websiteUrl: "https://smallshop.website",
+      description: [
+        "E-commerce platform with 3D product visualization",
+        "Stack: Next.js, Three.js, Stripe, Clerk, Convex"
+      ]
+    },
+    {
+      title: "Personal Project",
+      company: "Copyscalper",
+      period: "January 2026 - ongoing",
+      websiteUrl: "https://hyperscalper.vercel.app",
+      description: [
+        "High-performance copy trading bot for Hyperliquid DEX",
+        "Real-time copy trading with multi-account support and smart position sizing",
+        "Stack: TypeScript, Node.js, Express, WebSocket, Telegram Bot API"
+      ]
+    },
+    {
+      title: "Personal Project",
+      company: "Global Pet Sitter",
+      period: "January 2026 - ongoing",
+      websiteUrl: "https://www.globalpetsitter.com",
+      description: [
+        "Pet sitting marketplace connecting pet owners with sitters",
+        "Real-time messaging, reviews, and map integration",
+        "Stack: Next.js, Clerk, Convex, Supabase, MapLibre GL"
+      ]
+    },
+    {
+      title: "Personal Project",
+      company: "Garmigotchi",
+      period: "December 2025 - ongoing",
+      websiteUrl: "https://garmigotchi.vercel.app",
+      description: [
+        "Tamagotchi-style health companion watchface for Garmin Instinct 3 Solar",
+        "Interactive virtual pet that reacts to real-time health metrics",
+        "Stack: Monkey C (Garmin SDK)"
+      ]
+    },
+    {
+      title: "Personal Project",
+      company: "Rollercoaster Store",
+      period: "December 2025",
+      websiteUrl: "https://rollercoaster-store.vercel.app",
+      description: [
+        "E-commerce store for Garmin watchfaces and apps",
+        "Stack: Next.js, Tailwind CSS"
+      ]
+    },
+    {
+      title: "Personal Project",
+      company: "MenuScanner",
+      period: "December 2025",
+      description: [
+        "iOS app that scans restaurant menus using AI vision",
+        "Menu OCR/translation with AI explanations and generated dish images",
+        "Stack: SwiftUI, Firebase, Google Gemini 2.0 Flash, Imagen 3"
+      ]
+    },
+    {
+      title: "Personal Project",
+      company: "ImproveMyWebsite",
+      period: "December 2025",
+      description: [
+        "Website analysis and improvement tool powered by Claude AI",
+        "Stack: Next.js, Anthropic SDK, Cheerio"
+      ]
+    },
+    {
+      title: "Personal Project",
+      company: "Juriscan",
+      period: "November 2025",
+      websiteUrl: "https://juriscan-mu.vercel.app",
+      description: [
+        "Legal document scanner and analyzer with multi-language support",
+        "Extracts, embeds, and analyzes legal articles/laws",
+        "Stack: Next.js, Google Genai, Supabase, next-intl"
+      ]
+    },
+    {
       title: "Swift Developer",
       company: "BarterBay",
       period: "June 2025 - ongoing",
