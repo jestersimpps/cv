@@ -516,7 +516,7 @@ export default function Experience() {
 
   return (
     <>
-      <section className="relative bg-white/5 dark:bg-neutral-900/5 backdrop-blur-sm rounded-2xl shadow-2xl p-6 mb-6 border border-white/20 dark:border-white/10 overflow-hidden">
+      <section id="experience" className="relative bg-white/5 dark:bg-neutral-900/5 backdrop-blur-sm rounded-2xl shadow-2xl p-6 mb-6 border border-white/20 dark:border-white/10 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-white/5 dark:from-white/10 dark:to-white/5 rounded-2xl"></div>
         <div className="relative">
         <div className="flex items-center justify-between mb-8">
@@ -565,11 +565,11 @@ export default function Experience() {
                   <div className={`grid grid-cols-1 lg:grid-cols-2 lg:gap-4 ml-12 lg:ml-0`}>
                     <div className="lg:pr-4">
                       {exp.projectImages && exp.projectImages.length > 0 ? (
-                        <div className={`grid gap-2 mb-4 lg:mb-0 lg:ml-auto lg:max-w-md ${exp.projectImages.length === 1 ? 'grid-cols-1 justify-items-end' : 'grid-cols-1 sm:grid-cols-2'}`}>
+                        <div className={`grid gap-2 mb-4 lg:mb-0 lg:ml-auto lg:max-w-md ${exp.projectImages?.length === 1 ? 'grid-cols-1 justify-items-end' : 'grid-cols-1 sm:grid-cols-2'}`}>
                           {exp.projectImages.map((image, imgIndex) => (
                             <div
                               key={imgIndex}
-                              className={`relative aspect-video rounded-lg overflow-hidden border border-white/30 dark:border-white/20 cursor-pointer shadow-xl hover:shadow-2xl transition-all duration-300 bg-white/10 backdrop-blur-sm ${exp.projectImages.length === 1 ? 'w-full max-w-sm' : ''}`}
+                              className={`relative aspect-video rounded-lg overflow-hidden border border-white/30 dark:border-white/20 cursor-pointer shadow-xl hover:shadow-2xl transition-all duration-300 bg-white/10 backdrop-blur-sm ${exp.projectImages?.length === 1 ? 'w-full max-w-sm' : ''}`}
                               onClick={() => setSelectedImage({ image, title: `${exp.company} - ${exp.title}` })}
                             >
                               <Image

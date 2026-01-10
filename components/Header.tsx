@@ -1,11 +1,11 @@
 import Image from "next/image";
+import { Github, Linkedin, Globe, Download } from "lucide-react";
 
 export default function Header() {
   return (
-    <header className="relative bg-white/5 dark:bg-neutral-900/5 backdrop-blur-sm rounded-2xl shadow-2xl p-8 mb-6 overflow-hidden border border-white/20 dark:border-white/10">
-      {/* Glass effect overlay */}
+    <header id="header" className="relative bg-white/5 dark:bg-neutral-900/5 backdrop-blur-sm rounded-2xl shadow-2xl p-8 mb-6 overflow-hidden border border-white/20 dark:border-white/10">
       <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-white/5 dark:from-white/10 dark:to-white/5 rounded-2xl"></div>
-      
+
       <div className="relative flex flex-col sm:flex-row items-center sm:items-start gap-6">
         <div className="relative w-32 h-32 rounded-full overflow-hidden ring-4 ring-white/50 dark:ring-primary-500/30 shadow-glow">
           <div className="absolute inset-0 bg-gradient-to-br from-primary-400 to-accent-400 opacity-20"></div>
@@ -27,6 +27,42 @@ export default function Header() {
           <p className="text-lg text-neutral-600 dark:text-neutral-400 mt-2">
             13+ years building ERP systems, SaaS platforms, and modern web applications
           </p>
+          <div className="flex items-center gap-3 mt-4 justify-center sm:justify-start">
+            <a
+              href="https://github.com/jestersimpps"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-2 bg-white/20 hover:bg-white/30 dark:bg-white/10 dark:hover:bg-white/20 rounded-lg transition-all hover:scale-110"
+              title="GitHub"
+            >
+              <Github className="w-5 h-5 text-neutral-700 dark:text-neutral-300" />
+            </a>
+            <a
+              href="https://linkedin.com/in/jovinkenroye"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-2 bg-white/20 hover:bg-white/30 dark:bg-white/10 dark:hover:bg-white/20 rounded-lg transition-all hover:scale-110"
+              title="LinkedIn"
+            >
+              <Linkedin className="w-5 h-5 text-neutral-700 dark:text-neutral-300" />
+            </a>
+            <a
+              href="https://bicraw.ai"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-2 bg-white/20 hover:bg-white/30 dark:bg-white/10 dark:hover:bg-white/20 rounded-lg transition-all hover:scale-110"
+              title="Website"
+            >
+              <Globe className="w-5 h-5 text-neutral-700 dark:text-neutral-300" />
+            </a>
+            <a
+              href="/cv.pdf"
+              className="flex items-center gap-2 px-4 py-2 bg-primary-500/20 hover:bg-primary-500/30 text-primary-700 dark:text-primary-300 rounded-lg font-semibold text-sm transition-all hover:scale-105 border border-primary-500/30 ml-2"
+            >
+              <Download className="w-4 h-4" />
+              Download CV
+            </a>
+          </div>
         </div>
       </div>
     </header>
