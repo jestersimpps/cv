@@ -78,7 +78,7 @@ export default function AIChatBubble() {
       {/* Chat Bubble Button */}
       <button
         onClick={() => setIsOpen(true)}
-        className={`fixed bottom-6 right-6 z-50 px-5 py-3 bg-white/10 backdrop-blur-md rounded-full shadow-2xl border border-white/20 hover:bg-white/20 hover:scale-105 transition-all duration-300 ${
+        className={`fixed bottom-20 sm:bottom-6 right-6 z-50 px-5 py-3 bg-white/10 backdrop-blur-md rounded-full shadow-2xl border border-white/20 hover:bg-white/20 hover:scale-105 transition-all duration-300 ${
           isOpen ? "hidden" : "flex"
         } items-center gap-2`}
         aria-label="Open AI Chat"
@@ -91,7 +91,7 @@ export default function AIChatBubble() {
 
       {/* Chat Window */}
       {isOpen && (
-        <div className="fixed bottom-6 right-6 z-50 w-96 h-[600px] max-w-[calc(100vw-3rem)] max-h-[calc(100vh-6rem)] bg-white/90 dark:bg-neutral-900/90 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/50 dark:border-white/20 flex flex-col overflow-hidden">
+        <div className="fixed bottom-20 sm:bottom-6 right-6 z-50 w-96 h-[600px] max-w-[calc(100vw-3rem)] max-h-[calc(100vh-6rem)] bg-white/90 dark:bg-neutral-900/90 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/50 dark:border-white/20 flex flex-col overflow-hidden">
           {/* Header */}
           <div className="flex items-center justify-between p-4 border-b border-white/20 dark:border-white/10 bg-white/50 dark:bg-white/5">
             <div className="flex items-center gap-2">
