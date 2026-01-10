@@ -55,8 +55,7 @@ const experiences: ExperienceItem[] = [
     description: [
       "AI-powered ad creative generation tool",
       "Stack: Next.js, Fal AI, OpenAI, Google Genai, FFmpeg"
-    ],
-    projectImages: ["/assets/projects/adforge.png"]
+    ]
   },
   {
     title: "Personal Project",
@@ -134,8 +133,7 @@ const experiences: ExperienceItem[] = [
       "iOS app that scans restaurant menus using AI vision",
       "Menu OCR/translation with AI explanations and generated dish images",
       "Stack: SwiftUI, Firebase, Google Gemini 2.0 Flash, Imagen 3"
-    ],
-    projectImages: ["/assets/projects/menuscanner.png"]
+    ]
   },
   {
     title: "Personal Project",
@@ -144,8 +142,7 @@ const experiences: ExperienceItem[] = [
     description: [
       "Website analysis and improvement tool powered by Claude AI",
       "Stack: Next.js, Anthropic SDK, Cheerio"
-    ],
-    projectImages: ["/assets/projects/improvemywebsite.png"]
+    ]
   },
   {
     title: "Personal Project",
@@ -362,8 +359,7 @@ const experiences: ExperienceItem[] = [
       "Creating components and media queries",
       "Stack on top of PHP Symphony"
     ],
-    websiteUrl: "https://www.bazookas.be",
-    projectImages: ["/assets/projects/bazookas.png"]
+    websiteUrl: "https://www.bazookas.be"
   },
   {
     title: "Hyperledger Developer",
@@ -429,8 +425,7 @@ const experiences: ExperienceItem[] = [
       "Code refactoring & Mongoose / Express work",
       "Lucene queries (elasticsearch)",
       "Stack: Heroku, Node.js, Redis, RabbitMQ, Wercker, Bitbucket, Mlab, Cloudflare, Laravel"
-    ],
-    projectImages: ["/assets/projects/siverra.png"]
+    ]
   },
   {
     title: "Technical Co-founder",
@@ -461,8 +456,7 @@ const experiences: ExperienceItem[] = [
       "Building responsive ERP web applications and business intelligence tools",
       "Shopify theme modifications and custom apps",
       "Integration with external services / databases"
-    ],
-    projectImages: ["/assets/projects/bicraw-consulting.png"]
+    ]
   },
   {
     title: "Frontend Developer",
@@ -476,8 +470,7 @@ const experiences: ExperienceItem[] = [
       "Node.js script to build static HTML pages for merchants",
       "Stack: Spring, Django, Angular 1.3, Rundeck, Jenkins"
     ],
-    websiteUrl: "https://mobilevikings.be",
-    projectImages: ["/assets/projects/vikingco.png"]
+    websiteUrl: "https://mobilevikings.be"
   },
   {
     title: "Web Application Developer",
@@ -489,8 +482,7 @@ const experiences: ExperienceItem[] = [
       "Firebase (Before Google acquisition)",
       "PHP API for file uploads"
     ],
-    websiteUrl: "https://arabianhorseresults.com",
-    projectImages: ["/assets/projects/pdiusa.png"]
+    websiteUrl: "https://arabianhorseresults.com"
   },
   {
     title: "Founder",
@@ -516,8 +508,7 @@ const experiences: ExperienceItem[] = [
     description: [
       "MECOMS / Dynamics AX development for Gasunie client"
     ],
-    websiteUrl: "https://www.accenture.com",
-    projectImages: ["/assets/projects/accenture.png"]
+    websiteUrl: "https://www.accenture.com"
   },
   {
     title: "SAP ABAP Developer",
@@ -528,8 +519,7 @@ const experiences: ExperienceItem[] = [
       "Implementation of SAP notes, ABAP troubleshooting and module creation",
       "Development of SAP note suite in .NET to speed up SEPA implementation"
     ],
-    websiteUrl: "https://www.accenture.com",
-    projectImages: ["/assets/projects/accenture.png"]
+    websiteUrl: "https://www.accenture.com"
   },
   {
     title: "Supply Chain Specialist - J1 Internship",
@@ -540,8 +530,7 @@ const experiences: ExperienceItem[] = [
       "Development of theoretical model for ATO supply chain",
       "VBA solutions to accommodate business processes",
       "ERP development in VB.NET using Microsoft Access"
-    ],
-    projectImages: ["/assets/projects/cardinal.png"]
+    ]
   },
   {
     title: "Project Management Support",
@@ -553,8 +542,7 @@ const experiences: ExperienceItem[] = [
       "Excel work and VBA for Excel development",
       "3D architectural representations using ArchiCAD",
       "Brochures in InDesign"
-    ],
-    projectImages: ["/assets/projects/prodev.png"]
+    ]
   }
 ];
 
@@ -753,8 +741,17 @@ export default function Experience() {
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                       </div>
                     ) : (
-                      <div className="aspect-video bg-gradient-to-br from-primary-500/20 to-accent-500/20 flex items-center justify-center">
-                        <Briefcase className="w-12 h-12 text-white/40" />
+                      <div className={`aspect-video flex items-center justify-center ${[
+                        'bg-gradient-to-br from-violet-600/40 to-indigo-600/40',
+                        'bg-gradient-to-br from-rose-500/40 to-orange-500/40',
+                        'bg-gradient-to-br from-emerald-500/40 to-teal-500/40',
+                        'bg-gradient-to-br from-blue-500/40 to-cyan-500/40',
+                        'bg-gradient-to-br from-amber-500/40 to-yellow-500/40',
+                        'bg-gradient-to-br from-pink-500/40 to-purple-500/40',
+                        'bg-gradient-to-br from-sky-500/40 to-blue-600/40',
+                        'bg-gradient-to-br from-fuchsia-500/40 to-pink-500/40',
+                      ][index % 8]}`}>
+                        <span className="text-4xl font-bold text-white/30">{exp.company.charAt(0)}</span>
                       </div>
                     )}
                     <div className="p-4 bg-gradient-to-t from-black/80 via-black/60 to-transparent absolute bottom-0 left-0 right-0">
