@@ -19,12 +19,12 @@ interface ExperienceItem {
 
 const filterCategories: Record<string, string[]> = {
   "Next.js": ["Next.js", "next.js", "NextJS"],
-  "React": ["React", "ReactJS", "react"],
+  "React": ["React", "ReactJS"],
   "Angular": ["Angular"],
-  "TypeScript": ["TypeScript", "typescript"],
+  "TypeScript": ["TypeScript"],
   "Node.js": ["Node.js", "NodeJS", "NestJS", "Express"],
-  "AI/ML": ["AI", "OpenAI", "Anthropic", "Groq", "Claude", "Gemini", "GPT", "DeepL"],
-  "Web3": ["Web3", "Solidity", "Ethereum", "NFT", "Blockchain", "IPFS", "Smart Contract"],
+  "AI/ML": ["AI", "OpenAI", "Anthropic", "Groq", "Claude", "Gemini", "GPT", "DeepL", "Fal AI", "Google Genai", "artificial intelligence"],
+  "Web3": ["Web3", "Solidity", "Ethereum", "NFT", "Blockchain", "IPFS", "Smart Contract", "Hyperledger", "crypto", "cryptocurrency", "bitcoin", "altcoin"],
   "Swift": ["Swift", "SwiftUI", "iOS"],
   "Python": ["Python", "Django", "FastAPI"],
   "Mobile": ["Swift", "iOS", "Ionic", "React Native", "Garmin"],
@@ -36,7 +36,10 @@ const getProjectTags = (exp: ExperienceItem): string[] => {
   const tags: string[] = [];
 
   Object.entries(filterCategories).forEach(([category, keywords]) => {
-    if (keywords.some(keyword => text.toLowerCase().includes(keyword.toLowerCase()))) {
+    if (keywords.some(keyword => {
+      const regex = new RegExp(`\\b${keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i');
+      return regex.test(text);
+    })) {
       tags.push(category);
     }
   });
@@ -52,7 +55,8 @@ const experiences: ExperienceItem[] = [
     description: [
       "AI-powered ad creative generation tool",
       "Stack: Next.js, Fal AI, OpenAI, Google Genai, FFmpeg"
-    ]
+    ],
+    projectImages: ["/assets/projects/adforge.png"]
   },
   {
     title: "Personal Project",
@@ -130,7 +134,8 @@ const experiences: ExperienceItem[] = [
       "iOS app that scans restaurant menus using AI vision",
       "Menu OCR/translation with AI explanations and generated dish images",
       "Stack: SwiftUI, Firebase, Google Gemini 2.0 Flash, Imagen 3"
-    ]
+    ],
+    projectImages: ["/assets/projects/menuscanner.png"]
   },
   {
     title: "Personal Project",
@@ -139,7 +144,8 @@ const experiences: ExperienceItem[] = [
     description: [
       "Website analysis and improvement tool powered by Claude AI",
       "Stack: Next.js, Anthropic SDK, Cheerio"
-    ]
+    ],
+    projectImages: ["/assets/projects/improvemywebsite.png"]
   },
   {
     title: "Personal Project",
@@ -356,7 +362,8 @@ const experiences: ExperienceItem[] = [
       "Creating components and media queries",
       "Stack on top of PHP Symphony"
     ],
-    websiteUrl: "https://www.bazookas.be"
+    websiteUrl: "https://www.bazookas.be",
+    projectImages: ["/assets/projects/bazookas.png"]
   },
   {
     title: "Hyperledger Developer",
@@ -422,7 +429,8 @@ const experiences: ExperienceItem[] = [
       "Code refactoring & Mongoose / Express work",
       "Lucene queries (elasticsearch)",
       "Stack: Heroku, Node.js, Redis, RabbitMQ, Wercker, Bitbucket, Mlab, Cloudflare, Laravel"
-    ]
+    ],
+    projectImages: ["/assets/projects/siverra.png"]
   },
   {
     title: "Technical Co-founder",
@@ -453,7 +461,8 @@ const experiences: ExperienceItem[] = [
       "Building responsive ERP web applications and business intelligence tools",
       "Shopify theme modifications and custom apps",
       "Integration with external services / databases"
-    ]
+    ],
+    projectImages: ["/assets/projects/bicraw-consulting.png"]
   },
   {
     title: "Frontend Developer",
@@ -467,7 +476,8 @@ const experiences: ExperienceItem[] = [
       "Node.js script to build static HTML pages for merchants",
       "Stack: Spring, Django, Angular 1.3, Rundeck, Jenkins"
     ],
-    websiteUrl: "https://mobilevikings.be"
+    websiteUrl: "https://mobilevikings.be",
+    projectImages: ["/assets/projects/vikingco.png"]
   },
   {
     title: "Web Application Developer",
@@ -479,7 +489,8 @@ const experiences: ExperienceItem[] = [
       "Firebase (Before Google acquisition)",
       "PHP API for file uploads"
     ],
-    websiteUrl: "https://arabianhorseresults.com"
+    websiteUrl: "https://arabianhorseresults.com",
+    projectImages: ["/assets/projects/pdiusa.png"]
   },
   {
     title: "Founder",
@@ -505,7 +516,8 @@ const experiences: ExperienceItem[] = [
     description: [
       "MECOMS / Dynamics AX development for Gasunie client"
     ],
-    websiteUrl: "https://www.accenture.com"
+    websiteUrl: "https://www.accenture.com",
+    projectImages: ["/assets/projects/accenture.png"]
   },
   {
     title: "SAP ABAP Developer",
@@ -516,7 +528,8 @@ const experiences: ExperienceItem[] = [
       "Implementation of SAP notes, ABAP troubleshooting and module creation",
       "Development of SAP note suite in .NET to speed up SEPA implementation"
     ],
-    websiteUrl: "https://www.accenture.com"
+    websiteUrl: "https://www.accenture.com",
+    projectImages: ["/assets/projects/accenture.png"]
   },
   {
     title: "Supply Chain Specialist - J1 Internship",
@@ -527,7 +540,8 @@ const experiences: ExperienceItem[] = [
       "Development of theoretical model for ATO supply chain",
       "VBA solutions to accommodate business processes",
       "ERP development in VB.NET using Microsoft Access"
-    ]
+    ],
+    projectImages: ["/assets/projects/cardinal.png"]
   },
   {
     title: "Project Management Support",
@@ -539,7 +553,8 @@ const experiences: ExperienceItem[] = [
       "Excel work and VBA for Excel development",
       "3D architectural representations using ArchiCAD",
       "Brochures in InDesign"
-    ]
+    ],
+    projectImages: ["/assets/projects/prodev.png"]
   }
 ];
 
