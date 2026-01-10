@@ -85,7 +85,7 @@ const experiences: ExperienceItem[] = [
     ]
   },
   {
-    title: "Personal Project",
+    title: "Co-Founder",
     company: "Global Pet Sitter",
     period: "January 2026 - ongoing",
     websiteUrl: "https://www.globalpetsitter.com",
