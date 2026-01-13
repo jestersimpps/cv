@@ -18,24 +18,30 @@ const siteUrl = "https://www.jovweb.dev";
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Jo Vinkenroye - Web Application Developer",
+    default: "Jo Vinkenroye - Senior Web & Blockchain Developer | Available for Hire",
     template: "%s | Jo Vinkenroye",
   },
-  description: "13+ years building ERP systems, SaaS platforms, and modern web applications. Specializing in AI integration, blockchain development, and scalable architectures.",
+  description: "Senior Full Stack Developer with 13+ years experience. Specializing in React, Next.js, Web3, Solidity smart contracts, and AI integration. Available for remote positions and contract work.",
   keywords: [
-    "Web Developer",
-    "Full Stack Developer",
-    "Frontend Developer",
-    "React Developer",
+    "Hire Web Developer",
+    "Hire Full Stack Developer",
+    "Senior Frontend Developer",
+    "React Developer for Hire",
     "Next.js Developer",
     "Angular Developer",
-    "TypeScript",
-    "AI Integration",
-    "Blockchain Developer",
-    "Web3",
-    "Belgium",
-    "Remote",
-    "Freelance",
+    "TypeScript Expert",
+    "Blockchain Developer for Hire",
+    "Solidity Developer",
+    "Smart Contract Developer",
+    "Web3 Developer",
+    "DeFi Developer",
+    "AI Integration Specialist",
+    "Remote Developer",
+    "Freelance Web Developer",
+    "Contract Developer Belgium",
+    "Senior Software Engineer",
+    "ERP Developer",
+    "SaaS Developer",
   ],
   authors: [{ name: "Jo Vinkenroye", url: siteUrl }],
   creator: "Jo Vinkenroye",
@@ -56,20 +62,64 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: siteUrl,
     siteName: "Jo Vinkenroye",
-    title: "Jo Vinkenroye - Web Application Developer",
-    description: "13+ years building ERP systems, SaaS platforms, and modern web applications. Specializing in AI integration, blockchain development, and scalable architectures.",
+    title: "Jo Vinkenroye - Senior Web & Blockchain Developer | Available for Hire",
+    description: "Senior Full Stack Developer with 13+ years experience. Specializing in React, Next.js, Web3, Solidity smart contracts, and AI integration. Available for remote positions and contract work.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Jo Vinkenroye - Web Application Developer",
-    description: "13+ years building ERP systems, SaaS platforms, and modern web applications. Specializing in AI integration, blockchain development, and scalable architectures.",
-    creator: "@jovinkenroye",
+    title: "Jo Vinkenroye - Senior Web & Blockchain Developer | Available for Hire",
+    description: "Senior Full Stack Developer with 13+ years experience. Specializing in React, Next.js, Web3, Solidity smart contracts, and AI integration. Available for remote positions and contract work.",
+    creator: "@jestersimpps",
+  },
+  other: {
+    "linkedin:author": "Jo Vinkenroye",
   },
   icons: {
     icon: "/favicon.ico",
   },
   alternates: {
     canonical: siteUrl,
+  },
+};
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "Jo Vinkenroye",
+  url: siteUrl,
+  jobTitle: "Senior Full Stack Developer",
+  description: "Senior Full Stack Developer with 13+ years experience specializing in React, Next.js, Web3, blockchain development, and AI integration.",
+  knowsAbout: [
+    "Web Development",
+    "React",
+    "Next.js",
+    "TypeScript",
+    "Blockchain",
+    "Solidity",
+    "Web3",
+    "Smart Contracts",
+    "AI Integration",
+    "Node.js",
+    "Angular",
+    "ERP Systems",
+    "SaaS Development",
+  ],
+  sameAs: [
+    "https://github.com/jestersimpps",
+    "https://www.linkedin.com/in/jo-vinkenroye-459a7963/",
+    "https://x.com/jestersimpps",
+  ],
+  worksFor: {
+    "@type": "Organization",
+    name: "Freelance / Available for Hire",
+  },
+  address: {
+    "@type": "PostalAddress",
+    addressCountry: "Belgium",
+  },
+  workLocation: {
+    "@type": "Place",
+    name: "Remote",
   },
 };
 
@@ -80,6 +130,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark scroll-smooth">
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-black text-white`}
       >
