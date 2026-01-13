@@ -1,8 +1,9 @@
 'use client';
 
 import { useState, useMemo } from 'react';
+import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { BookOpen } from 'lucide-react';
+import { BookOpen, Home } from 'lucide-react';
 import { BlogPost, BlogCategory } from '@/lib/models/blog';
 import { BlogList, CategoryFilter, TagFilter } from '@/components/blog';
 import GradientOrbs from '@/components/ui/GradientOrbs';
@@ -44,6 +45,14 @@ export default function BlogPageClient({ posts, tags }: BlogPageClientProps) {
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-white/5 via-transparent to-transparent" />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <Link
+            href="/"
+            className="inline-flex items-center gap-2 text-neutral-400 hover:text-white transition-colors mb-8"
+          >
+            <Home className="w-4 h-4" />
+            Back to Home
+          </Link>
+
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}

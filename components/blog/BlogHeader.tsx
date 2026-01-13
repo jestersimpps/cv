@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowLeft, Clock, Calendar, User } from 'lucide-react';
+import { ArrowLeft, Clock, Calendar, User, Home } from 'lucide-react';
 import { BlogPost } from '@/lib/models/blog';
 import { formatDate } from '@/lib/utils/date';
 
@@ -14,13 +14,23 @@ interface BlogHeaderProps {
 export default function BlogHeader({ post }: BlogHeaderProps) {
   return (
     <header className="mb-12">
-      <Link
-        href="/blog"
-        className="inline-flex items-center gap-2 text-neutral-400 hover:text-white transition-colors mb-8"
-      >
-        <ArrowLeft className="w-4 h-4" />
-        Back to Blog
-      </Link>
+      <nav className="flex items-center gap-4 mb-8">
+        <Link
+          href="/"
+          className="inline-flex items-center gap-2 text-neutral-400 hover:text-white transition-colors"
+        >
+          <Home className="w-4 h-4" />
+          Home
+        </Link>
+        <span className="text-neutral-600">/</span>
+        <Link
+          href="/blog"
+          className="inline-flex items-center gap-2 text-neutral-400 hover:text-white transition-colors"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          Blog
+        </Link>
+      </nav>
 
       <motion.div
         initial={{ opacity: 0, y: 20 }}
