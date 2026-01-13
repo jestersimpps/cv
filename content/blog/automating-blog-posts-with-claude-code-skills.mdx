@@ -1,0 +1,199 @@
+---
+title: "Automating Blog Posts with Claude Code Skills"
+description: "i built a custom skill that turns writing blog posts from a 30-minute chore into a 30-second command"
+publishedAt: "2026-01-13"
+author: "Jo Vinkenroye"
+category: "Development"
+tags: ["Claude Code", "Automation", "AI", "Developer Tools"]
+featured: false
+---
+
+i built a custom claude code skill that turns writing blog posts from a 30-minute chore into a 30-second command
+
+## the problem
+
+every time i wanted to write about a project, i'd go through the same tedious steps:
+- find screenshots in the project folder
+- copy them to the blog assets directory
+- create a new mdx file with the right frontmatter
+- write the content
+- remember the correct category and tag format
+- commit everything
+- start the dev server to preview
+
+it's not hard. but it's friction. and friction kills momentum
+
+## claude code skills 101
+
+skills live in `~/.claude/skills/` as markdown files. each file defines a slash command that claude code can execute. the structure is simple:
+
+```
+~/.claude/
+├── CLAUDE.md          # global instructions
+└── skills/
+    ├── blog.md        # /blog command
+    ├── rewrite.md     # /rewrite command
+    ├── tweet.md       # /tweet command
+    └── commit.md      # /commit command
+```
+
+when you type `/blog` in claude code, it loads the corresponding skill file and follows the instructions
+
+## anatomy of a skill
+
+here's the structure of my blog skill:
+
+```markdown
+# Blog Post Skill
+
+Create a new blog post for jocv.io about a project or topic.
+
+## Usage
+/blog [project-folder-or-topic]
+
+## Arguments
+- $ARGUMENTS: path to a project folder or a topic to write about
+
+## Instructions
+
+### 1. Determine the Subject
+- Parse $ARGUMENTS to get the project folder or topic
+- If a folder path is provided, explore it to understand:
+  - What the project does (check README, package.json, main source files)
+  - Key features and technologies used
+  - Any screenshots or images in the repo
+
+### 2. Find Images
+- Search the project folder for potential cover images:
+  - Look in: `/public`, `/assets`, `/images`, `/screenshots`
+  - File types: `.png`, `.jpg`, `.jpeg`, `.webp`, `.gif`
+- Copy the best image to `/path/to/blog/public/assets/blog/`
+
+### 3. Write the Blog Post Content
+- Create an outline based on:
+  - What problem does this project solve?
+  - How does it work?
+  - Key features or interesting technical decisions
+- Use the `/rewrite` skill to convert to personal style
+
+### 4. Create the MDX File
+- Location: `/path/to/blog/content/blog/`
+- Filename: kebab-case based on topic
+- Include frontmatter with title, description, date, category, tags
+```
+
+the key thing here is `$ARGUMENTS`. this is how you pass input to a skill. whatever comes after `/blog` gets injected there
+
+## chaining skills together
+
+the blog skill calls another skill: `/rewrite`. this converts my drafts into my writing style
+
+```markdown
+# Rewrite Skill
+
+## Instructions
+1. Parse the text from $ARGUMENTS
+2. Rewrite using the style guide below
+3. Show the rewritten version
+
+## Style Guide
+- start with lowercase
+- use "i" not "I"
+- no ending punctuation
+- short, direct sentences
+- stream of consciousness flow
+```
+
+skills calling skills. it's composable automation
+
+## the execution flow
+
+when i run `/blog ~/Sites/hyperscalper`:
+
+```
+1. claude code loads ~/.claude/skills/blog.md
+2. $ARGUMENTS = "~/Sites/hyperscalper"
+3. claude explores the folder:
+   - reads README.md
+   - checks package.json for dependencies
+   - scans src/ for main functionality
+4. finds images in ~/Sites/hyperscalper/public/
+5. copies best image to blog assets
+6. drafts the post content
+7. calls /rewrite to apply my style
+8. creates content/blog/building-hyperscalper.mdx
+9. runs: git add . && git commit -m "add hyperscalper blog post"
+10. runs: npm run dev (if not running)
+11. opens http://localhost:3000/blog/building-hyperscalper
+```
+
+all from one command
+
+## the mdx output
+
+the skill knows exactly what frontmatter my blog needs:
+
+```yaml
+---
+title: "Building Hyperscalper"
+description: "a real-time trading dashboard for crypto markets"
+publishedAt: "2026-01-13"
+author: "Jo Vinkenroye"
+category: "Development"
+tags: ["Trading", "Crypto", "Real-time", "Next.js"]
+coverImage: "/assets/blog/hyperscalper-cover.png"
+featured: false
+---
+```
+
+categories, tags, image paths. all defined in the skill so i don't have to remember
+
+## the meta part
+
+this post was written using the skill i'm writing about. /blog about the blog skill :D
+
+## building your own
+
+start simple. create `~/.claude/skills/your-skill.md` with:
+
+```markdown
+# Your Skill Name
+
+Description of what it does.
+
+## Usage
+/your-skill [arguments]
+
+## Instructions
+1. First step
+2. Second step
+3. ...
+```
+
+think about what you do repeatedly:
+- reviewing prs → `/review` skill with your checklist
+- setting up projects → `/init` skill with your preferred stack
+- writing docs → `/docs` skill with your format
+- posting updates → `/tweet` skill with your voice
+
+## the stack
+
+my blog runs on next.js 14 with mdx. posts are just files:
+
+```
+content/blog/
+├── automating-blog-posts.mdx
+├── building-hyperscalper.mdx
+└── ...
+```
+
+no database. no cms. just markdown and git. the skill writes directly to the repo
+
+## what's next
+
+i'm thinking about adding:
+- `/imagen` integration for auto-generating cover images
+- pulling in relevant code snippets automatically
+- cross-posting to dev.to with `/crosspost`
+
+but for now, it's already saving me time and—more importantly—removing the friction that stopped me from writing in the first place
