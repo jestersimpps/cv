@@ -33,7 +33,7 @@ export async function generateMetadata({ params }: BlogPostPageProps) {
 
   if (!post) return { title: 'Post Not Found' };
 
-  const siteUrl = 'https://www.jocv.dev';
+  const siteUrl = 'https://www.jovweb.dev';
   const postUrl = `${siteUrl}/blog/${slug}`;
   const coverImageUrl = post.coverImage ? `${siteUrl}${post.coverImage}` : null;
 
