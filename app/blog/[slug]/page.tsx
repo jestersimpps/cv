@@ -98,7 +98,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid lg:grid-cols-4 gap-12">
-            <article className="lg:col-span-3 prose prose-invert max-w-none">
+            <article className="lg:col-span-3 prose prose-invert max-w-none overflow-hidden">
               <MDXRemote
                 source={post.content}
                 components={MDXComponents}

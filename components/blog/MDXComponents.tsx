@@ -16,7 +16,7 @@ function extractTextFromChildren(children: ReactNode): string {
 
 function InlineCode({ children }: { children: ReactNode }) {
   return (
-    <code className="px-1.5 py-0.5 bg-white/10 border border-white/5 rounded-md text-[13px] font-mono text-pink-300">
+    <code className="px-1.5 py-0.5 bg-white/10 border border-white/5 rounded-md text-[13px] font-mono text-pink-300 break-words">
       {children}
     </code>
   );
@@ -62,7 +62,7 @@ export const MDXComponents = {
       return <>{children}</>;
     }
 
-    return <p className="text-neutral-300 leading-relaxed mb-4">{children}</p>;
+    return <p className="text-neutral-300 leading-relaxed mb-4 break-words">{children}</p>;
   },
   a: ({ href, children }: { href?: string; children: ReactNode }) => (
     <Link
