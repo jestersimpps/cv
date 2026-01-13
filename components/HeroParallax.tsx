@@ -3,7 +3,8 @@
 import React from 'react';
 import { motion, useScroll, useTransform, useSpring, MotionValue } from 'framer-motion';
 import Image from 'next/image';
-import { Download } from 'lucide-react';
+import Link from 'next/link';
+import { Download, BookOpen } from 'lucide-react';
 import { Project } from '@/lib/projects';
 import { exportToMarkdown } from '@/lib/cvData';
 
@@ -116,6 +117,13 @@ const Header = ({
           <Download className="w-4 h-4" />
           Download CV
         </button>
+        <Link
+          href="/blog"
+          className="flex items-center gap-2 px-8 py-3 border border-white/20 text-white rounded-full font-medium hover:bg-white/10 transition-colors"
+        >
+          <BookOpen className="w-4 h-4" />
+          Blog
+        </Link>
       </div>
     </div>
   );

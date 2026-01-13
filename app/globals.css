@@ -105,3 +105,50 @@ body {
   animation: float-fast 12s ease-in-out infinite;
   animation-delay: -3s;
 }
+
+/* Prose headings - ensure no syntax highlighting colors or underlines */
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4,
+.prose h5,
+.prose h6 {
+  color: white !important;
+}
+
+.prose h1 *,
+.prose h2 *,
+.prose h3 *,
+.prose h4 *,
+.prose h5 *,
+.prose h6 * {
+  color: inherit !important;
+  text-decoration: none !important;
+}
+
+.prose h1 a,
+.prose h2 a,
+.prose h3 a,
+.prose h4 a,
+.prose h5 a,
+.prose h6 a {
+  text-decoration: none !important;
+}
+
+/* Code block scrollbar */
+pre::-webkit-scrollbar {
+  height: 8px;
+}
+
+pre::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+pre::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+pre::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}

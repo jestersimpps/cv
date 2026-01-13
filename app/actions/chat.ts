@@ -43,6 +43,71 @@ Over 10 years of experience building ERP, SAAS applications and web platforms. H
 - **Chinese:** Basic
 
 ## Work Experience
+### Founder
+**Ad Forge** | January 2026 - ongoing
+
+- AI-powered ad creative generation tool
+- Stack: Next.js, Fal AI, OpenAI, Google Genai, FFmpeg
+
+### Founder
+**Smallshop** | January 2026 - ongoing
+*Website: https://smallshop.website*
+
+- E-commerce platform with 3D product visualization
+- Stack: Next.js, Three.js, Stripe, Clerk, Convex
+
+### Founder
+**Hyperscalper** | January 2026 - ongoing
+*Website: https://hyperscalper.vercel.app*
+
+- High-performance copy trading bot for Hyperliquid DEX
+- Real-time copy trading with multi-account support and smart position sizing
+- Stack: TypeScript, Node.js, Express, WebSocket, Telegram Bot API
+
+### Co-Founder
+**Global Pet Sitter** | January 2026 - ongoing
+*Website: https://www.globalpetsitter.com*
+
+- Pet sitting marketplace connecting pet owners with sitters
+- Real-time messaging, reviews, and map integration
+- Stack: Next.js, Clerk, Convex, Supabase, MapLibre GL
+
+### Garmin Developer
+**Garmigotchi** | December 2025 - ongoing
+*Website: https://garmigotchi.vercel.app*
+
+- Tamagotchi-style health companion watchface for Garmin Instinct 3 Solar
+- Interactive virtual pet that reacts to real-time health metrics
+- Stack: Monkey C (Garmin SDK)
+
+### Founder
+**Rollercoaster Store** | December 2025
+*Website: https://rollercoaster-store.vercel.app*
+
+- E-commerce store for Garmin watchfaces and apps
+- Stack: Next.js, Tailwind CSS
+
+### iOS Developer
+**MenuScanner** | December 2025
+
+- iOS app that scans restaurant menus using AI vision
+- Menu OCR/translation with AI explanations and generated dish images
+- Stack: SwiftUI, Firebase, Google Gemini 2.0 Flash, Imagen 3
+
+### Full Stack Developer
+**ImproveMyWebsite** | December 2025
+
+- Website analysis and improvement tool powered by Claude AI
+- Stack: Next.js, Anthropic SDK, Cheerio
+
+### Full Stack Developer
+**Juriscan** | November 2025
+*Website: https://juriscan-mu.vercel.app*
+
+- Legal document scanner and analyzer with multi-language support
+- Extracts, embeds, and analyzes legal articles/laws
+- Stack: Next.js, Google Genai, Supabase, next-intl
+
 ### Swift Developer
 **BarterBay** | June 2025 - ongoing
 
@@ -57,7 +122,7 @@ Over 10 years of experience building ERP, SAAS applications and web platforms. H
 - Solutions help organizations capture, analyze, and leverage insights from meetings and communications
 - Drive better decision-making and productivity through AI
 
-### Personal Project
+### AI Artist
 **Neural Surrealism** | August 2024 - December 2024
 
 - Generating abstract art with AI from global events
@@ -72,7 +137,7 @@ Over 10 years of experience building ERP, SAAS applications and web platforms. H
 - Helping businesses take advantage of AI to scale and automate their business processes
 - AI consulting and implementation services
 
-### Personal Project
+### Founder & iOS Developer
 **EchoLingo** | July 2024 - August 2024
 
 - Language learning iOS app built with Swift and SwiftUI
@@ -143,9 +208,10 @@ Over 10 years of experience building ERP, SAAS applications and web platforms. H
 
 ### Open Source Developer
 **THELEDGER** | January 2018 - 2020
-*Website: https://theledger.be*
+*Website: https://medium.com/wearetheledger*
 
 - Created project templates (boilerplates) for Hyperledger Fabric projects
+- Won Odyssey Hackathon 2019 with team
 - Stack: EC2, AWS SQS, NestJS, Pusher, Hyperledger Fabric Node SDK, Auth0
 - GitHub: hyperledger-typescript-boilerplate
 
@@ -159,7 +225,7 @@ Over 10 years of experience building ERP, SAAS applications and web platforms. H
 
 ### Hyperledger Developer
 **THELEDGER - Greencards POC** | January 2018 - April 2018
-*Website: https://theledger.be*
+*Website: https://medium.com/wearetheledger*
 
 - Insurance card (greencard) registration on blockchain
 - Stack: Angular 5, NestJS, AWS, Hyperledger Fabric, Go chaincode, CircleCI, Auth0
@@ -294,28 +360,28 @@ Two year Master's programme taught in English, 120 ECTS spread over two years
 
 ## Technical Skills
 ### Programming Languages
-TypeScript, JavaScript (ES2015/ES6), Python, Swift, PHP, C#, VB.NET, VBA, SAP ABAP, Solidity, Go
+TypeScript, JavaScript (ES2015/ES6), Python, Swift, PHP, C#, VB.NET, VBA, SAP ABAP, Solidity, Go, Monkey C (Garmin SDK)
 
 ### Frontend
-Angular (2-16), React.js, Next.js, Vue.js, Ionic, StencilJS, D3.js, jQuery, HTML5, CSS/SASS, Bootstrap, Foundation, Material UI, Tailwind CSS
+Angular (2-16), React.js, Next.js, Vue.js, Ionic, StencilJS, D3.js, Three.js, jQuery, HTML5, CSS/SASS, Bootstrap, Foundation, Material UI, Tailwind CSS
 
 ### Backend
-Node.js, NestJS, Express, Laravel (4-5.1), Django, .NET, Mongoose, GraphQL, Apollo, Socket.io
+Node.js, NestJS, Express, Laravel (4-5.1), Django, .NET, Mongoose, GraphQL, Apollo, Socket.io, WebSocket
 
 ### Databases
-PostgreSQL, MySQL, MongoDB, Redis, Microsoft Access, Firebase, Supabase, BAAS
+PostgreSQL, MySQL, MongoDB, Redis, Microsoft Access, Firebase, Supabase, Convex, BAAS
 
 ### Testing & Quality
 Cypress, Jest, Jasmine, Karma, Mocha, Spectator, Wiremock, TDD
 
 ### DevOps & Tools
-Docker, AWS, DigitalOcean, Heroku, Fly.io, Vercel, Jenkins, TeamCity, CircleCI, Wercker, PM2, Nginx, Cloudflare
+Docker, AWS, DigitalOcean, Heroku, Fly.io, Vercel, Jenkins, TeamCity, CircleCI, Wercker, PM2, Nginx, Cloudflare, FFmpeg
 
 ### Blockchain & Web3
-Hyperledger Fabric, Ethereum, Solidity, IPFS, OpenSea, EtherJS, Ganache, Truffle, Smart Contracts, NFTs
+Hyperledger Fabric, Ethereum, Solidity, IPFS, OpenSea, EtherJS, Ganache, Truffle, Smart Contracts, NFTs, Hyperliquid DEX
 
 ### AI & ML
-OpenAI, Anthropic, Groq, DeepL, AI Integrations, Process Automation, Multi-Agent Architecture
+OpenAI, Anthropic (Claude), Google Genai (Gemini), Groq, DeepL, Fal AI, Imagen 3, AI Integrations, Process Automation, Multi-Agent Architecture
 
 ## Interests & Specializations
 - Process Automation
