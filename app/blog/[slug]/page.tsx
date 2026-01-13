@@ -33,8 +33,9 @@ export async function generateMetadata({ params }: BlogPostPageProps) {
 
   if (!post) return { title: 'Post Not Found' };
 
-  const siteUrl = 'https://cv-nine-bay.vercel.app';
+  const siteUrl = 'https://www.jocv.dev';
   const postUrl = `${siteUrl}/blog/${slug}`;
+  const coverImageUrl = post.coverImage ? `${siteUrl}${post.coverImage}` : null;
 
   return {
     title: post.title,
@@ -46,20 +47,24 @@ export async function generateMetadata({ params }: BlogPostPageProps) {
       description: post.description,
       type: 'article',
       url: postUrl,
+      siteName: 'Jo Vinkenroye',
+      locale: 'en_US',
       publishedTime: post.publishedAt,
       modifiedTime: post.updatedAt || post.publishedAt,
       authors: [post.author],
       tags: post.tags,
       section: post.category,
-      images: post.coverImage
-        ? [{ url: post.coverImage, width: 1200, height: 630, alt: post.title }]
+      images: coverImageUrl
+        ? [{ url: coverImageUrl, width: 1200, height: 630, alt: post.title }]
         : [],
     },
     twitter: {
       card: 'summary_large_image',
+      site: '@jestersimpps',
+      creator: '@jestersimpps',
       title: post.title,
       description: post.description,
-      images: post.coverImage ? [post.coverImage] : [],
+      images: coverImageUrl ? [coverImageUrl] : [],
     },
     alternates: {
       canonical: postUrl,
