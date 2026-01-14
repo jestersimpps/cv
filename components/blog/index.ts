@@ -6,5 +6,6 @@ export { default as TableOfContents } from './TableOfContents';
 export { default as RelatedPosts } from './RelatedPosts';
 export { default as TagFilter } from './TagFilter';
 export { default as CategoryFilter } from './CategoryFilter';
+export { default as TimelineNav } from './TimelineNav';
 export { MDXComponents } from './MDXComponents';
 export { default as Comments } from './Comments';

@@ -3,9 +3,9 @@
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { BookOpen, Home } from 'lucide-react';
-import { BlogPost, BlogCategory } from '@/lib/models/blog';
-import { BlogList, CategoryFilter, TagFilter } from '@/components/blog';
+import { BookOpen, Home, X } from 'lucide-react';
+import { BlogPost, BlogCategory, BLOG_CATEGORIES } from '@/lib/models/blog';
+import { BlogList } from '@/components/blog';
 import GradientOrbs from '@/components/ui/GradientOrbs';
 import GridLines from '@/components/ui/GridLines';
 import DotGrid from '@/components/ui/DotGrid';
@@ -19,6 +19,19 @@ interface BlogPageClientProps {
 export default function BlogPageClient({ posts, tags }: BlogPageClientProps) {
   const [selectedCategory, setSelectedCategory] = useState<BlogCategory | null>(null);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [selectedYear, setSelectedYear] = useState<number | null>(null);
+
+  const { years, postCountByYear } = useMemo(() => {
+    const countByYear: Record<number, number> = {};
+    posts.forEach((post) => {
+      const year = new Date(post.publishedAt).getFullYear();
+      countByYear[year] = (countByYear[year] || 0) + 1;
+    });
+    const sortedYears = Object.keys(countByYear)
+      .map(Number)
+      .sort((a, b) => b - a);
+    return { years: sortedYears, postCountByYear: countByYear };
+  }, [posts]);
 
   const filteredPosts = useMemo(() => {
     return posts.filter((post) => {
@@ -27,14 +40,28 @@ export default function BlogPageClient({ posts, tags }: BlogPageClientProps) {
       const tagsMatch =
         selectedTags.length === 0 ||
         selectedTags.some((tag) => post.tags.includes(tag));
-      return categoryMatch && tagsMatch;
+      const yearMatch =
+        !selectedYear ||
+        new Date(post.publishedAt).getFullYear() === selectedYear;
+      return categoryMatch && tagsMatch && yearMatch;
     });
-  }, [posts, selectedCategory, selectedTags]);
+  }, [posts, selectedCategory, selectedTags, selectedYear]);
 
   const toggleTag = (tag: string) => {
     setSelectedTags((prev) =>
       prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
     );
+  };
+
+  const hasActiveFilters =
+    selectedCategory !== null ||
+    selectedTags.length > 0 ||
+    selectedYear !== null;
+
+  const clearAllFilters = () => {
+    setSelectedCategory(null);
+    setSelectedTags([]);
+    setSelectedYear(null);
   };
 
   return (
@@ -77,21 +104,114 @@ export default function BlogPageClient({ posts, tags }: BlogPageClientProps) {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="mt-8 space-y-4"
+            className="mt-8 space-y-6"
           >
-            <CategoryFilter
-              selectedCategory={selectedCategory}
-              onCategorySelect={setSelectedCategory}
-            />
-            <TagFilter
-              tags={tags}
-              selectedTags={selectedTags}
-              onTagToggle={toggleTag}
-              onClear={() => setSelectedTags([])}
-            />
-            <p className="text-sm text-neutral-500">
-              {filteredPosts.length} of {posts.length} articles
-            </p>
+            <div className="flex items-center justify-between">
+              <p className="text-sm text-neutral-400">
+                Showing{' '}
+                <span className="text-white font-medium">
+                  {filteredPosts.length}
+                </span>{' '}
+                of {posts.length} articles
+              </p>
+              {hasActiveFilters && (
+                <button
+                  onClick={clearAllFilters}
+                  className="flex items-center gap-1.5 px-3 py-1.5 text-sm text-neutral-400 hover:text-white bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg transition-all"
+                >
+                  <X className="w-3.5 h-3.5" />
+                  Clear filters
+                </button>
+              )}
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-[auto_1fr] gap-4 items-start">
+              <span className="text-xs uppercase tracking-wider text-neutral-500 pt-2.5">
+                Category
+              </span>
+              <div className="flex flex-wrap gap-2">
+                <button
+                  onClick={() => setSelectedCategory(null)}
+                  className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${
+                    selectedCategory === null
+                      ? 'bg-white text-black'
+                      : 'bg-white/5 text-neutral-400 hover:text-white hover:bg-white/10 border border-white/10'
+                  }`}
+                >
+                  All
+                </button>
+                {BLOG_CATEGORIES.map((category) => (
+                  <button
+                    key={category}
+                    onClick={() => setSelectedCategory(category)}
+                    className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${
+                      selectedCategory === category
+                        ? 'bg-white text-black'
+                        : 'bg-white/5 text-neutral-400 hover:text-white hover:bg-white/10 border border-white/10'
+                    }`}
+                  >
+                    {category}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-[auto_1fr] gap-4 items-start">
+              <span className="text-xs uppercase tracking-wider text-neutral-500 pt-2.5">
+                Year
+              </span>
+              <div className="flex flex-wrap gap-2">
+                <button
+                  onClick={() => setSelectedYear(null)}
+                  className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${
+                    selectedYear === null
+                      ? 'bg-white text-black'
+                      : 'bg-white/5 text-neutral-400 hover:text-white hover:bg-white/10 border border-white/10'
+                  }`}
+                >
+                  All
+                </button>
+                {years.map((year) => (
+                  <button
+                    key={year}
+                    onClick={() => setSelectedYear(year)}
+                    className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${
+                      selectedYear === year
+                        ? 'bg-white text-black'
+                        : 'bg-white/5 text-neutral-400 hover:text-white hover:bg-white/10 border border-white/10'
+                    }`}
+                  >
+                    {year}
+                    <span className="ml-1.5 text-xs opacity-60">
+                      ({postCountByYear[year]})
+                    </span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {tags.length > 0 && (
+              <div className="grid grid-cols-1 md:grid-cols-[auto_1fr] gap-4 items-start">
+                <span className="text-xs uppercase tracking-wider text-neutral-500 pt-2.5">
+                  Tags
+                </span>
+                <div className="flex flex-wrap gap-2">
+                  {tags.map((tag) => (
+                    <button
+                      key={tag}
+                      onClick={() => toggleTag(tag)}
+                      className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${
+                        selectedTags.includes(tag)
+                          ? 'bg-white text-black'
+                          : 'bg-white/5 text-neutral-400 hover:text-white hover:bg-white/10 border border-white/10'
+                      }`}
+                    >
+                      #{tag}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
           </motion.div>
         </div>
       </section>
@@ -106,7 +226,7 @@ export default function BlogPageClient({ posts, tags }: BlogPageClientProps) {
               No posts match the selected filters
             </div>
           ) : (
-            <BlogList posts={filteredPosts} />
+            <BlogList posts={filteredPosts} groupByYear={!selectedYear} />
           )}
         </div>
       </section>
