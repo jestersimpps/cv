@@ -9,11 +9,11 @@ coverImage: "/assets/blog/claude-code-skills-cover.png"
 featured: false
 ---
 
-i built a custom claude code skill that turns writing blog posts from a 30-minute chore into a 30-second command
+I built a custom claude code skill that turns writing blog posts from a 30-minute chore into a 30-second command
 
-## the problem
+## The Problem
 
-every time i wanted to write about a project, i'd go through the same tedious steps:
+Every time i wanted to write about a project, i'd go through the same tedious steps:
 - find screenshots in the project folder
 - copy them to the blog assets directory
 - create a new mdx file with the right frontmatter
@@ -22,11 +22,11 @@ every time i wanted to write about a project, i'd go through the same tedious st
 - commit everything
 - start the dev server to preview
 
-it's not hard. but it's friction. and friction kills momentum
+It's not hard. but it's friction. and friction kills momentum
 
-## claude code skills 101
+## Claude Code Skills 101
 
-skills live in `~/.claude/skills/` as markdown files. each file defines a slash command that claude code can execute. the structure is simple:
+Skills live in `~/.claude/skills/` as markdown files. each file defines a slash command that claude code can execute. the structure is simple:
 
 ```
 ~/.claude/
@@ -38,11 +38,11 @@ skills live in `~/.claude/skills/` as markdown files. each file defines a slash 
     └── commit.md      # /commit command
 ```
 
-when you type `/blog` in claude code, it loads the corresponding skill file and follows the instructions
+When you type `/blog` in claude code, it loads the corresponding skill file and follows the instructions
 
-## anatomy of a skill
+## Anatomy of a Skill
 
-here's the structure of my blog skill:
+Here's the structure of my blog skill:
 
 ```markdown
 # Blog Post Skill
@@ -83,11 +83,11 @@ Create a new blog post for jovweb.dev about a project or topic.
 - Include frontmatter with title, description, date, category, tags
 ```
 
-the key thing here is `$ARGUMENTS`. this is how you pass input to a skill. whatever comes after `/blog` gets injected there
+The key thing here is `$ARGUMENTS`. this is how you pass input to a skill. whatever comes after `/blog` gets injected there
 
-## chaining skills together
+## Chaining Skills Together
 
-the blog skill calls another skill: `/rewrite`. this converts my drafts into my writing style
+The blog skill calls another skill: `/rewrite`. this converts my drafts into my writing style
 
 ```markdown
 # Rewrite Skill
@@ -105,11 +105,11 @@ the blog skill calls another skill: `/rewrite`. this converts my drafts into my 
 - stream of consciousness flow
 ```
 
-skills calling skills. it's composable automation
+Skills calling skills. it's composable automation
 
-## the execution flow
+## The Execution Flow
 
-when i run `/blog ~/Sites/hyperscalper`:
+When i run `/blog ~/Sites/hyperscalper`:
 
 ```
 1. claude code loads ~/.claude/skills/blog.md
@@ -128,11 +128,11 @@ when i run `/blog ~/Sites/hyperscalper`:
 11. opens http://localhost:3000/blog/building-hyperscalper
 ```
 
-all from one command
+All from one command
 
-## the mdx output
+## The MDX Output
 
-the skill knows exactly what frontmatter my blog needs:
+The skill knows exactly what frontmatter my blog needs:
 
 ```yaml
 ---
@@ -147,15 +147,15 @@ featured: false
 ---
 ```
 
-categories, tags, image paths. all defined in the skill so i don't have to remember
+Categories, tags, image paths. all defined in the skill so i don't have to remember
 
-## the meta part
+## The Meta Part
 
-this post was written using the skill i'm writing about. /blog about the blog skill :D
+This post was written using the skill i'm writing about. /blog about the blog skill :D
 
-## building your own
+## Building Your Own
 
-start simple. create `~/.claude/skills/your-skill.md` with:
+Start simple. create `~/.claude/skills/your-skill.md` with:
 
 ```markdown
 # Your Skill Name
@@ -171,15 +171,15 @@ Description of what it does.
 3. ...
 ```
 
-think about what you do repeatedly:
+Think about what you do repeatedly:
 - reviewing prs → `/review` skill with your checklist
 - setting up projects → `/init` skill with your preferred stack
 - writing docs → `/docs` skill with your format
 - posting updates → `/tweet` skill with your voice
 
-## the stack
+## The Stack
 
-my blog runs on next.js 14 with mdx. posts are just files:
+My blog runs on next.js 14 with mdx. posts are just files:
 
 ```
 content/blog/
@@ -188,13 +188,13 @@ content/blog/
 └── ...
 ```
 
-no database. no cms. just markdown and git. the skill writes directly to the repo
+No database. no cms. just markdown and git. the skill writes directly to the repo
 
-## what's next
+## What's Next
 
-i'm thinking about adding:
+I'm thinking about adding:
 - `/imagen` integration for auto-generating cover images
 - pulling in relevant code snippets automatically
 - cross-posting to dev.to with `/crosspost`
 
-but for now, it's already saving me time and—more importantly—removing the friction that stopped me from writing in the first place
+But for now, it's already saving me time and—more importantly—removing the friction that stopped me from writing in the first place

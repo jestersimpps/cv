@@ -1,5 +1,5 @@
 ---
-title: "i built a tool to generate video ads with ai"
+title: "I Built a Tool to Generate Video Ads with AI"
 description: "ad forge collapses the entire video ad creation workflow into one ai-powered pipeline. describe your concept, get a finished video"
 publishedAt: "2026-01-13"
 author: "Jo Vinkenroye"
@@ -9,11 +9,11 @@ coverImage: "/assets/blog/ad-forge-cover.jpg"
 featured: false
 ---
 
-so i run globalpetsitter.com. connecting pet owners with sitters around the world. like any startup i need promo content, specifically video ads for social media. the problem is making even a simple 30 second ad takes forever
+So i run globalpetsitter.com. connecting pet owners with sitters around the world. like any startup i need promo content, specifically video ads for social media. the problem is making even a simple 30 second ad takes forever
 
-## the problem
+## The Problem
 
-every time i wanted to make a video ad the process was something like:
+Every time i wanted to make a video ad the process was something like:
 
 1. write a script or storyboard
 2. find or create images for each scene
@@ -22,13 +22,13 @@ every time i wanted to make a video ad the process was something like:
 5. sync audio with video
 6. edit everything together in capcut
 
-each step needs different tools, different logins, tons of context switching. for a 6 scene ad we're talking hours. and if i didn't like the result? start over
+Each step needs different tools, different logins, tons of context switching. for a 6 scene ad we're talking hours. and if i didn't like the result? start over
 
-## ad forge
+## Ad Forge
 
-i built ad forge to collapse all of this into one pipeline. describe your ad in plain text, let ai do the heavy lifting
+I built ad forge to collapse all of this into one pipeline. describe your ad in plain text, let ai do the heavy lifting
 
-here's what the output looks like:
+Here's what the output looks like:
 
 <video
   src="/assets/blog/ad-forge-demo.mp4"
@@ -38,7 +38,7 @@ here's what the output looks like:
   poster="/assets/blog/ad-forge-cover.jpg"
 />
 
-### how it works
+### How It Works
 
 7 stages:
 
@@ -56,7 +56,7 @@ here's what the output looks like:
 
 **7. merge** - combines video and audio, optional lip-sync for talking characters. ffmpeg handles this
 
-### tech stack
+### Tech Stack
 
 - next.js 16 with react 19 for the ui
 - google gemini for script generation and scene breakdown
@@ -64,25 +64,25 @@ here's what the output looks like:
 - openai for some text generation
 - ffmpeg webassembly for video processing in browser
 
-### some design decisions
+### Some Design Decisions
 
-**campaign persistence** - everything saves to localstorage automatically. you can close the browser and pick up later
+**Campaign persistence** - everything saves to localstorage automatically. you can close the browser and pick up later
 
-**reference images** - this was crucial. when generating scene 3 you can reference the location image, character portraits, previous scenes. the ai uses these as style anchors
+**Reference images** - this was crucial. when generating scene 3 you can reference the location image, character portraits, previous scenes. the ai uses these as style anchors
 
-**stage based workflow** - each stage produces output you can review. don't like the scenes? regenerate before moving on. gives you control without overwhelming options
+**Stage based workflow** - each stage produces output you can review. don't like the scenes? regenerate before moving on. gives you control without overwhelming options
 
-## results
+## Results
 
-the globalpetsitter ad that would've taken me a full day now takes about 30 minutes of active work (plus generation time). more importantly i can iterate fast. try different tones, swap scenes, regenerate individual images without starting over
+The globalpetsitter ad that would've taken me a full day now takes about 30 minutes of active work (plus generation time). more importantly i can iterate fast. try different tones, swap scenes, regenerate individual images without starting over
 
-## what's next
+## What's Next
 
-ad forge is still rough. i want to add:
+Ad forge is still rough. i want to add:
 
 - background music selection
 - more camera movement options
 - direct export to social formats (9:16 for tiktok/reels, 16:9 for youtube)
 - templates for common ad formats
 
-for now it's solving my problem: making video ads for globalpetsitter without the time sink. sometimes that's enough :)
+For now it's solving my problem: making video ads for globalpetsitter without the time sink. sometimes that's enough :)
