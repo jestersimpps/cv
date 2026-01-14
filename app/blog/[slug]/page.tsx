@@ -13,6 +13,7 @@ import {
   BlogHeader,
   TableOfContents,
   RelatedPosts,
+  Comments,
 } from '@/components/blog';
 import GradientOrbs from '@/components/ui/GradientOrbs';
 import GridLines from '@/components/ui/GridLines';
@@ -111,6 +112,8 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                   },
                 }}
               />
+
+              <Comments />
             </article>
 
             <aside className="hidden lg:block">

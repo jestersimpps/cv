@@ -7,3 +7,4 @@ export { default as RelatedPosts } from './RelatedPosts';
 export { default as TagFilter } from './TagFilter';
 export { default as CategoryFilter } from './CategoryFilter';
 export { MDXComponents } from './MDXComponents';
+export { default as Comments } from './Comments';
