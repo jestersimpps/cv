@@ -1,0 +1,454 @@
+---
+title: "Claude Code Mastery: Skills"
+description: "Skills are specialized knowledge modules Claude automatically loads when relevant. Learn the difference between Skills and Commands, create your own, and discover powerful skill collections."
+publishedAt: "2026-01-15"
+author: "Jo Vinkenroye"
+category: "Tutorials"
+tags: ["Claude Code", "AI", "Skills", "Developer Tools", "Automation"]
+coverImage: "/assets/blog/claude-cowork-og.jpg"
+series:
+  id: "claude-code-mastery"
+  title: "Claude Code Mastery"
+  part: 5
+  total: 10
+---
+
+You've built custom commands. They're great for workflows you trigger explicitly—`/review`, `/commit`, `/deploy`. But what about knowledge Claude should apply automatically without you having to remember to invoke it?
+
+That's what Skills do. They're specialized knowledge modules that Claude discovers and loads *when relevant*, not when you explicitly call them. Think of Commands as tools you pick up; Skills are expertise Claude develops.
+
+## Commands vs Skills: What's the Difference?
+
+The distinction matters because it changes how you structure your automation.
+
+**Slash Commands** (from [Part 4](/blog/claude-code-mastery-04-custom-commands)):
+- You invoke them explicitly: `/review`, `/commit`
+- Loaded immediately when you call them
+- Great for workflows you want to trigger intentionally
+- Simple markdown files with optional frontmatter
+
+**Skills**:
+- Claude invokes them automatically when your request matches
+- Lazy-loaded—only the description is read at startup, full content loads on use
+- Great for standards, patterns, and specialized knowledge Claude should always apply
+- Can bundle supporting files, examples, and executable scripts
+
+Here's the mental model: **Commands are verbs** (things you do), **Skills are expertise** (things Claude knows).
+
+When you say "review this PR," you might want Claude to:
+1. Run your `/review` command (explicit action)
+2. Apply your team's code review standards from a Skill (automatic knowledge)
+
+Both have their place.
+
+## How Skills Actually Work
+
+The magic of Skills is progressive disclosure. Here's the flow:
+
+**At startup**: Claude reads only the `name` and `description` from each Skill's SKILL.md file. Minimal overhead.
+
+**When you make a request**: Claude matches your request against Skill descriptions. If there's a match, it asks: "I found a Skill that might help. Want me to use it?"
+
+**On confirmation**: The full SKILL.md content loads into context. Supporting files load only if Claude needs them during execution.
+
+This means you can have dozens of Skills without performance penalty. They're loaded on-demand, not upfront.
+
+> **Tip:** Write Skill descriptions with keywords users would naturally say. "Helps with documents" won't trigger. "Review pull requests using OWASP security guidelines and team formatting standards" will.
+
+## Skill File Structure
+
+Skills live in directories with a required `SKILL.md` file:
+
+```
+.claude/skills/
+└── code-review/
+    ├── SKILL.md           # Required - instructions and frontmatter
+    ├── examples/          # Optional - example outputs
+    │   ├── good-review.md
+    │   └── bad-review.md
+    ├── templates/         # Optional - output templates
+    │   └── review-template.md
+    └── scripts/           # Optional - executable helpers
+        └── lint-check.sh
+```
+
+**Key constraints:**
+
+- `SKILL.md` is required (case-sensitive filename)
+- Keep SKILL.md under 500 lines for optimal performance
+- Supporting files are discovered via links in SKILL.md
+- Scripts execute without loading their source into context—only output consumes tokens
+
+## Where Skills Live
+
+Skills follow a hierarchy—higher levels override lower:
+
+**Enterprise** — Managed settings for all users in organization (highest priority)
+
+**Personal** — `~/.claude/skills/` — Your Skills, available across all projects
+
+**Project** — `.claude/skills/` — Team Skills, checked into git
+
+**Plugin** — `skills/` inside plugin directory — Available to anyone with the plugin installed
+
+The split is similar to Commands: personal Skills follow you everywhere, project Skills are shared with your team.
+
+## The SKILL.md Template
+
+Here's the anatomy of a well-structured Skill:
+
+```yaml
+---
+name: code-review
+description: "Review pull requests using OWASP security guidelines, performance best practices, and team formatting standards"
+allowed-tools: Read, Grep, Glob
+model: claude-sonnet-4-20250514
+---
+# Code Review Standards
+
+## Purpose
+Apply consistent code review standards across all PRs.
+
+## When to Use
+- Reviewing pull requests
+- Checking code for security issues
+- Validating against team conventions
+
+## Instructions
+
+### Security Checks
+1. SQL injection vulnerabilities
+2. XSS attack vectors
+3. Authentication bypasses
+4. Sensitive data exposure
+
+### Performance Checks
+1. N+1 query patterns
+2. Unnecessary re-renders
+3. Memory leaks
+4. Blocking operations
+
+### Style Checks
+1. Naming conventions per team standards
+2. Function length (max 50 lines)
+3. Cyclomatic complexity
+
+## Output Format
+Organize findings by severity:
+- 🚨 Critical (blocks merge)
+- ⚠️ Warnings (should fix)
+- 💡 Suggestions (nice to have)
+
+## Examples
+See ./examples/good-review.md for proper format.
+```
+
+## Frontmatter Options
+
+Skills support powerful configuration through YAML frontmatter:
+
+**`name`** (required) — Skill identifier. Lowercase, numbers, hyphens only. Max 64 characters.
+
+**`description`** (required) — What it does and when to use it. Max 1024 characters. This is how Claude matches requests to Skills—make it descriptive.
+
+**`allowed-tools`** — Tools Claude can use without permission prompts when this Skill is active. Comma-separated or YAML list.
+
+**`model`** — Override the model when this Skill runs. Useful for complex reasoning tasks.
+
+**`context`** — Set to `fork` to run in an isolated sub-agent context with separate conversation history.
+
+**`agent`** — Agent type when `context: fork` is set. Options: Explore, Plan, general-purpose, or custom.
+
+**`hooks`** — Define Skill-scoped hooks: PreToolUse, PostToolUse, Stop.
+
+**`user-invocable`** — Set to `false` to hide from the `/` menu while still allowing auto-discovery.
+
+**`disable-model-invocation`** — Set to `true` to prevent Claude from programmatically invoking (but still visible in menu).
+
+## Creating Your First Skill
+
+Let's build a practical Skill: a TDD (Test-Driven Development) guide that Claude applies automatically when you're writing tests.
+
+### Step 1: Create the Directory
+
+```bash
+mkdir -p .claude/skills/tdd
+```
+
+### Step 2: Create SKILL.md
+
+```bash
+cat > .claude/skills/tdd/SKILL.md << 'EOF'
+---
+name: tdd
+description: "Apply test-driven development workflow when writing tests, implementing features with tests, or following red-green-refactor cycle"
+allowed-tools: Read, Write, Edit, Bash(npm test:*), Bash(bun test:*)
+---
+# Test-Driven Development
+
+## Purpose
+Guide development through proper TDD: Red → Green → Refactor.
+
+## When to Use
+- When user asks to "add a feature with tests"
+- When user mentions "TDD" or "test-driven"
+- When creating new functionality that requires tests
+- When user asks to implement something "the right way"
+
+## The TDD Cycle
+
+### Phase 1: Red (Write Failing Test)
+1. Understand the requirement fully
+2. Write the simplest test that fails
+3. Verify the test fails for the RIGHT reason
+4. DO NOT write implementation yet
+
+### Phase 2: Green (Make It Pass)
+1. Write minimal code to pass the test
+2. No extra features, no edge cases yet
+3. Ugly code is acceptable—just make it green
+
+### Phase 3: Refactor (Clean Up)
+1. Improve code quality
+2. Remove duplication
+3. Better naming
+4. Tests MUST stay green
+
+### Repeat
+For each new behavior, start the cycle again.
+
+## Anti-Patterns to Avoid
+- Writing implementation before tests
+- Writing multiple tests at once
+- Refactoring while tests are red
+- Skipping the refactor phase
+
+## Example Session
+See ./examples/tdd-session.md for a complete walkthrough.
+EOF
+```
+
+### Step 3: Add an Example
+
+```bash
+mkdir -p .claude/skills/tdd/examples
+cat > .claude/skills/tdd/examples/tdd-session.md << 'EOF'
+# TDD Session: Adding Email Validation
+
+## Requirement
+Validate email format in user registration.
+
+## Cycle 1: Basic Validation
+
+### Red
+```typescript
+// user.test.ts
+it('should reject invalid email format', () => {
+  expect(() => new User('notanemail')).toThrow('Invalid email');
+});
+```
+Run: `npm test` → FAILS (User doesn't validate emails yet)
+
+### Green
+```typescript
+// user.ts
+constructor(email: string) {
+  if (!email.includes('@')) {
+    throw new Error('Invalid email');
+  }
+  this.email = email;
+}
+```
+Run: `npm test` → PASSES
+
+### Refactor
+Extract validation:
+```typescript
+private validateEmail(email: string): void {
+  if (!email.includes('@')) {
+    throw new Error('Invalid email');
+  }
+}
+```
+
+## Cycle 2: Domain Validation
+
+### Red
+```typescript
+it('should reject email without domain', () => {
+  expect(() => new User('test@')).toThrow('Invalid email');
+});
+```
+...continue cycle...
+EOF
+```
+
+### Step 4: Use It
+
+Now when you say "let's add email validation with proper testing," Claude will:
+1. Recognize this matches the TDD Skill description
+2. Ask if you want to use the TDD Skill
+3. Follow the Red → Green → Refactor cycle automatically
+
+## The Superpowers Collection
+
+The most popular Skills library is [obra/superpowers](https://github.com/obra/superpowers) with 16.5k+ stars. It's battle-tested and covers common development workflows.
+
+### Installation
+
+```bash
+/plugin marketplace add obra/superpowers-marketplace
+/plugin install superpowers@superpowers-marketplace
+```
+
+Or clone directly:
+
+```bash
+git clone https://github.com/obra/superpowers.git ~/.claude/skills/superpowers
+```
+
+### Key Skills Included
+
+**`/superpowers:brainstorm`** — Structured ideation before starting complex features. Use this before jumping into code.
+
+**`/superpowers:write-plan`** — Create implementation plans for migrations or multi-file refactors.
+
+**`/superpowers:execute-plan`** — Run plans in controlled batches with checkpoints.
+
+**`/superpowers:tdd`** — Test-driven development with the full Red/Green/Refactor cycle.
+
+**`/superpowers:debug`** — Systematic debugging with root cause tracing.
+
+### Why It Works
+
+Superpowers isn't just prompts—it's production-proven patterns. The TDD Skill, for example, includes:
+
+- Anti-pattern detection (writing tests after code)
+- Async testing patterns
+- Proper assertion structure
+- Refactoring triggers
+
+These patterns come from real-world usage across thousands of developers.
+
+## Practical Skill Ideas
+
+Here are Skills worth building for your team:
+
+**API Documentation** — Automatically apply your API documentation standards when Claude writes or updates endpoints.
+
+**Error Handling** — Enforce consistent error handling patterns (your ApiError class, logging format, user-facing messages).
+
+**Database Patterns** — Apply your team's conventions for queries, transactions, migrations.
+
+**Security Review** — Automatically check for OWASP Top 10 issues when reviewing code.
+
+**Component Patterns** — Enforce your React/Vue/Svelte component structure and naming.
+
+**Commit Messages** — Apply conventional commit format automatically.
+
+## Skills + Scripts: The Power Combo
+
+Here's something underutilized: Skills can bundle executable scripts that run without loading their source into context.
+
+```
+.claude/skills/security-audit/
+├── SKILL.md
+└── scripts/
+    ├── check-dependencies.sh
+    ├── scan-secrets.py
+    └── validate-permissions.js
+```
+
+In your SKILL.md:
+
+```markdown
+## Available Scripts
+
+Run these for automated checks:
+- `./scripts/check-dependencies.sh` - Scan for vulnerable packages
+- `./scripts/scan-secrets.py` - Find hardcoded secrets
+- `./scripts/validate-permissions.js` - Check file permissions
+```
+
+Claude can execute these scripts, but only the *output* consumes context—not the script source. This is perfect for complex validation logic that's more reliable as tested code than LLM-generated commands.
+
+## Skills vs Commands: When to Use Each
+
+**Use Commands when:**
+- You want explicit control over when something runs
+- The workflow is user-initiated (deploy, commit, generate)
+- You need argument passing (`$ARGUMENTS`, `$1`, `$2`)
+- The action is discrete and standalone
+
+**Use Skills when:**
+- Knowledge should apply automatically based on context
+- You want consistent standards without remembering to invoke them
+- The expertise spans multiple types of requests
+- You're encoding team knowledge Claude should always have
+
+**Use both together:**
+- `/review` command triggers the review
+- `code-review` Skill provides the standards to apply
+
+## Skill Availability
+
+Skills require a paid plan:
+
+- **Pro, Max, Team, Enterprise** — Full Skills support
+- **Free tier** — No Skills
+
+If you're on a free plan and want to encode team knowledge, use the `.claude/rules/` directory from [Part 3](/blog/claude-code-mastery-03-project-configuration) instead. Rules are always loaded; Skills are lazy-loaded.
+
+## Discovering Skills
+
+**GitHub Topics:**
+```
+https://github.com/topics/claude-skills
+```
+
+**Community Collections:**
+- [obra/superpowers](https://github.com/obra/superpowers) — Core development patterns
+- [obra/superpowers-skills](https://github.com/obra/superpowers-skills) — Community-contributed Skills
+- [SkillsMP](https://skillsmp.com) — Marketplace for Claude/ChatGPT Skills
+
+**The Agent Skills Specification** — Released December 2025 as an open standard. OpenAI adopted the same format for Codex CLI and ChatGPT, so Skills you build for Claude work across tools.
+
+## Quick Reference
+
+**File locations:**
+- `~/.claude/skills/name/SKILL.md` — Personal (all projects)
+- `.claude/skills/name/SKILL.md` — Project (team)
+
+**Required structure:**
+```
+skill-name/
+├── SKILL.md              # Required
+├── examples/             # Optional
+├── templates/            # Optional
+└── scripts/              # Optional
+```
+
+**Frontmatter:**
+```yaml
+---
+name: skill-name
+description: "When to use this skill - be specific"
+allowed-tools: Read, Write, Bash(npm *)
+model: claude-sonnet-4-20250514
+---
+```
+
+**Install superpowers:**
+```bash
+git clone https://github.com/obra/superpowers.git ~/.claude/skills/superpowers
+```
+
+## What's Next
+
+Skills give Claude specialized knowledge that activates automatically. But what if you need Claude to do multiple things simultaneously? What if one task could benefit from parallel execution?
+
+That's where Subagents come in. In [Part 6: Subagents](/blog/claude-code-mastery-06-subagents), we'll explore how to spawn specialized agents that work in parallel—running tests while generating documentation while checking for security issues, all at once.
+
+---
+
+*Previous: [Part 4: Custom Commands](/blog/claude-code-mastery-04-custom-commands)*
