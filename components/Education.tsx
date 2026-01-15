@@ -12,6 +12,15 @@ interface EducationItem {
 
 const education: EducationItem[] = [
   {
+    degree: "Blockchain Developer - Foundry Full Course",
+    institution: "Cyfrin Updraft",
+    period: "2025",
+    link: "https://www.cyfrin.io/",
+    achievements: [
+      "Comprehensive blockchain development course covering Solidity, Foundry, smart contract security, and DeFi protocols"
+    ]
+  },
+  {
     degree: "Web3 Solidity Bootcamp",
     institution: "Metana",
     period: "May 2024 - October 2024",
@@ -19,6 +28,16 @@ const education: EducationItem[] = [
     achievements: [
       "4-month program for transition from Web2 to Web3",
       "Project-based curriculum covering Ethereum Blockchain, DeFi, and smart contracts"
+    ]
+  },
+  {
+    degree: "Self-Taught Web Developer",
+    institution: "TheNewBoston",
+    period: "2011",
+    link: "https://www.youtube.com/@thenewboston/playlists",
+    achievements: [
+      "Self-taught Angular, HTML, CSS fundamentals",
+      "Foundation for 13+ years of web development career"
     ]
   },
   {

@@ -15,6 +15,16 @@ interface Education {
 
 const education: Education[] = [
   {
+    degree: 'Blockchain Developer - Foundry Full Course',
+    institution: 'Cyfrin Updraft',
+    period: '2025',
+    achievements: [
+      'Comprehensive blockchain development course',
+      'Solidity, Foundry, smart contract security, and DeFi protocols',
+    ],
+    link: 'https://www.cyfrin.io/',
+  },
+  {
     degree: 'Web3 Solidity Bootcamp',
     institution: 'Metana',
     period: '2024',
@@ -23,6 +33,16 @@ const education: Education[] = [
       'Ethereum Blockchain, DeFi, and smart contracts',
     ],
     link: 'https://metana.io/web3-solidity-bootcamp-ethereum-blockchain/',
+  },
+  {
+    degree: 'Self-Taught Web Developer',
+    institution: 'TheNewBoston',
+    period: '2011',
+    achievements: [
+      'Self-taught Angular, HTML, CSS fundamentals',
+      'Foundation for 13+ years of web development career',
+    ],
+    link: 'https://www.youtube.com/@thenewboston/playlists',
   },
   {
     degree: 'Master of Science in Business Engineering',

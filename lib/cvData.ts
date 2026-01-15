@@ -447,10 +447,24 @@ export const cvData = {
   ],
   education: [
     {
+      degree: "Blockchain Developer - Foundry Full Course",
+      institution: "Cyfrin Updraft",
+      period: "2025",
+      description: "Comprehensive blockchain development course covering Solidity, Foundry, smart contract security, and DeFi protocols",
+      url: "https://www.cyfrin.io/"
+    },
+    {
       degree: "Web3 Solidity Bootcamp",
       institution: "Metana",
       period: "May 2024 - October 2024",
       description: "4-month program for transition from Web2 to Web3. Project-based curriculum covering Ethereum Blockchain, DeFi, and smart contracts"
+    },
+    {
+      degree: "Self-Taught Web Developer",
+      institution: "TheNewBoston",
+      period: "2011",
+      description: "Self-taught Angular, HTML, CSS fundamentals. Foundation for 13+ years of web development career",
+      url: "https://www.youtube.com/@thenewboston/playlists"
     },
     {
       degree: "Master of Science (MSc) in Business Engineering",

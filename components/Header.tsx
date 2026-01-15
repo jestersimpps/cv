@@ -1,6 +1,12 @@
 import Image from "next/image";
 import { Github, Linkedin, Globe } from "lucide-react";
 
+const XIcon = ({ className }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="currentColor">
+    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+  </svg>
+);
+
 export default function Header() {
   return (
     <header id="header" className="relative bg-white/5 dark:bg-neutral-900/5 backdrop-blur-sm rounded-2xl shadow-2xl p-8 mb-6 overflow-hidden border border-white/20 dark:border-white/10">
@@ -45,6 +51,15 @@ export default function Header() {
               title="LinkedIn"
             >
               <Linkedin className="w-5 h-5 text-neutral-700 dark:text-neutral-300" />
+            </a>
+            <a
+              href="https://x.com/jestersimpps"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="p-2 bg-white/20 hover:bg-white/30 dark:bg-white/10 dark:hover:bg-white/20 rounded-lg transition-all hover:scale-110"
+              title="X"
+            >
+              <XIcon className="w-5 h-5 text-neutral-700 dark:text-neutral-300" />
             </a>
             <a
               href="https://bicraw.ai"
