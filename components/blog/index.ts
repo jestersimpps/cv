@@ -11,3 +11,4 @@ export { MDXComponents } from './MDXComponents';
 export { default as Comments } from './Comments';
 export { default as SeriesNav } from './SeriesNav';
 export { default as SeriesCardStack } from './SeriesCardStack';
+export { default as NewsletterSignup } from './NewsletterSignup';

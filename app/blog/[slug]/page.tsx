@@ -16,6 +16,7 @@ import {
   RelatedPosts,
   Comments,
   SeriesNav,
+  NewsletterSignup,
 } from '@/components/blog';
 import GradientOrbs from '@/components/ui/GradientOrbs';
 import GridLines from '@/components/ui/GridLines';
@@ -125,6 +126,8 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                   },
                 }}
               />
+
+              <NewsletterSignup />
 
               <Comments />
             </article>
