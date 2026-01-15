@@ -521,14 +521,14 @@ This is one of my favorites. Google's Imagen API lets you generate images direct
 ```yaml
 ---
 description: Generate an image using Google Imagen
-argument-hint: "prompt" [output-path] [reference-image]
+argument-hint: "prompt" [output-path]
 allowed-tools: Bash(node *)
 ---
 Generate an image using Google Imagen.
 
 ## Instructions
 1. Parse the prompt from: $ARGUMENTS
-2. Run: node ~/.claude/scripts/generate-image.js "prompt" "./output.png" [reference.png]
+2. Run: node ~/.claude/scripts/generate-image.js "prompt" "./output.png"
 3. Report the saved file path
 ```
 
@@ -543,7 +543,7 @@ const path = require('path');
 const API_KEY = process.env.GOOGLE_AI_API_KEY || 'your-api-key-here';
 const MODEL = 'imagen-4.0-generate-001';
 
-async function generateImage(prompt, outputPath, referenceImagePath) {
+async function generateImage(prompt, outputPath) {
   const requestBody = {
     instances: [{ prompt }],
     parameters: {
@@ -552,20 +552,6 @@ async function generateImage(prompt, outputPath, referenceImagePath) {
       personGeneration: 'dont_allow'
     }
   };
-
-  // Add reference image for style/content guidance
-  if (referenceImagePath && fs.existsSync(referenceImagePath)) {
-    const imageBuffer = fs.readFileSync(referenceImagePath);
-    const base64Image = imageBuffer.toString('base64');
-    const mimeType = referenceImagePath.endsWith('.png') ? 'image/png' : 'image/jpeg';
-
-    requestBody.instances[0].referenceImages = [{
-      referenceImage: {
-        bytesBase64Encoded: base64Image
-      },
-      referenceType: 'REFERENCE_TYPE_STYLE'  // or REFERENCE_TYPE_SUBJECT
-    }];
-  }
 
   const body = JSON.stringify(requestBody);
   const options = {
@@ -606,8 +592,8 @@ async function generateImage(prompt, outputPath, referenceImagePath) {
   });
 }
 
-const [prompt, outputPath = `./generated-${Date.now()}.png`, refImage] = process.argv.slice(2);
-generateImage(prompt, outputPath, refImage).then(p => console.log(`Saved: ${p}`));
+const [prompt, outputPath = `./generated-${Date.now()}.png`] = process.argv.slice(2);
+generateImage(prompt, outputPath).then(p => console.log(`Saved: ${p}`));
 ```
 
 **Getting an API Key:**
@@ -617,23 +603,26 @@ generateImage(prompt, outputPath, refImage).then(p => console.log(`Saved: ${p}`)
 
 **Usage examples:**
 ```bash
-# Basic text-to-image
 /imagen "a minimalist logo for a coding blog, orange and white"
 /imagen "abstract geometric pattern" ./public/hero.png
-
-# With reference image (style transfer)
-/imagen "same style but with a rocket ship" ./output.png ./existing-logo.png
+/imagen "futuristic terminal interface, dark theme, neon accents"
 ```
 
-**Reference image types:**
-- `REFERENCE_TYPE_STYLE` — Match the visual style of the reference
-- `REFERENCE_TYPE_SUBJECT` — Include the subject from the reference
+**API Parameters:**
+
+- `sampleCount` — Number of images to generate (`1`-`4`, default: `4`)
+- `aspectRatio` — Output dimensions: `1:1`, `3:4`, `4:3`, `9:16`, `16:9` (default: `1:1`)
+- `personGeneration` — Controls people in images:
+  - `dont_allow` — Block people entirely
+  - `allow_adult` — Adults only (default)
+  - `allow_all` — Adults and children
+- `imageSize` — Resolution: `1K` or `2K` (Standard/Ultra models only)
 
 **Available models:**
-- `imagen-4.0-generate-001` — Latest, best quality
+- `imagen-4.0-generate-001` — Standard, best quality
+- `imagen-4.0-ultra-generate-001` — Ultra, highest quality
+- `imagen-4.0-fast-generate-001` — Fast, lower latency
 - `imagen-3.0-generate-001` — Previous generation
-
-**Aspect ratios:** `1:1`, `16:9`, `9:16`, `4:3`, `3:4`
 
 Some cover images and illustrations throughout this series? Generated with `/imagen`. The memes you see here? Created with `/meme`.
 
