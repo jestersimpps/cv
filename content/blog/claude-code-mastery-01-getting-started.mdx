@@ -151,6 +151,19 @@ Runs a single command and exits. No interactive session, just question → answe
 - Automated scripts: `claude -p "list all TODO comments" >> todos.txt`
 - CI/CD pipelines: `claude -p "generate changelog from recent commits"`
 
+### Plan Mode (Think Before Acting)
+
+Press `Shift+Tab` twice before sending your message to enter Plan Mode. In this read-only state, Claude can explore your codebase, research approaches, and propose solutions—but can't modify any files.
+
+**Use this for:**
+
+- Architectural decisions before implementation
+- Understanding unfamiliar code
+- Evaluating different approaches to a problem
+- Complex refactoring where you want to see the plan first
+
+Plan Mode is covered in depth in [Part 2: The Mental Model](/blog/claude-code-mastery-02-mental-model#plan-mode-think-before-acting).
+
 ## Essential Commands
 
 Once you're inside an interactive session, these slash commands control Claude's behavior:
@@ -272,9 +285,9 @@ If you're rusty on Git, the [official GitHub docs](https://docs.github.com/en/ge
 
 Write out what you're building *before* you start prompting. A simple markdown doc with your goals, architecture decisions, and constraints works wonders. Keep it in your repo so Claude can reference it.
 
-And seriously—**use Plan Mode**. It's literally in the name. When you ask Claude to plan something, it asks you clarifying questions, then proposes a plan and gives you the option to accept it. If you're not satisfied for *any* reason, say no and tell Claude what you'd like changed. Iterate as much as you need.
+And seriously—**use [Plan Mode](/blog/claude-code-mastery-02-mental-model#plan-mode-think-before-acting)**. It's literally in the name. When you ask Claude to plan something, it asks you clarifying questions, then proposes a plan and gives you the option to accept it. If you're not satisfied for *any* reason, say no and tell Claude what you'd like changed. Iterate as much as you need.
 
-This forces *you* to think, and gives the LLM crucial context. "Hey Claude, let's use plan mode to design a login form" is infinitely better than "build me a login form."
+This forces *you* to think, and gives the LLM crucial context. `Shift+Tab` twice, then "design a login form" is infinitely better than "build me a login form."
 
 ### Break Big Tasks Into Issues
 
@@ -330,9 +343,9 @@ Always let Claude analyze first. "Read the auth module and explain how sessions 
 
 If you're wondering why you're getting billed when you have a subscription, check which authentication method is active.
 
-**7. Skipping Plan Mode**
+**7. Skipping [Plan Mode](/blog/claude-code-mastery-02-mental-model#plan-mode-think-before-acting)**
 
-"Just build it" feels faster. It's not. Taking five minutes to plan with Claude saves hours of undoing work that went in the wrong direction.
+"Just build it" feels faster. It's not. `Shift+Tab` twice and take five minutes to plan—it saves hours of undoing work that went in the wrong direction.
 
 **8. No safety net**
 
