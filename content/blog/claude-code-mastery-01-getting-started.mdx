@@ -1,0 +1,357 @@
+---
+title: "Claude Code Mastery: Getting Started"
+description: "Get Claude Code installed and running your first commands in under 15 minutes. Learn installation, authentication, essential commands, and the mindset shift that makes AI-assisted coding actually work."
+publishedAt: "2026-01-15"
+author: "Jo Vinkenroye"
+category: "Tutorials"
+tags: ["Claude Code", "AI", "Developer Tools", "CLI", "Productivity"]
+coverImage: "/assets/blog/claude-cowork-og.jpg"
+series:
+  id: "claude-code-mastery"
+  title: "Claude Code Mastery"
+  part: 1
+  total: 10
+---
+
+Picture this: you're staring at a massive legacy codebase, hundreds of files deep, and someone asks you to "just add a small feature." You could spend hours tracing imports, understanding patterns, and figuring out where everything connects. Or you could type `claude` in your terminal and ask it to explain the architecture in plain English.
+
+That's the promise of Claude Code—an AI pair programmer that doesn't just autocomplete your code, but actually *understands* your entire project and can execute tasks autonomously. Let's get you set up.
+
+## What Exactly is Claude Code?
+
+Claude Code is Anthropic's agentic coding assistant that lives in your terminal. Unlike traditional code completion tools that suggest the next few characters, Claude Code can:
+
+- **Navigate your entire codebase** - It reads, understands, and connects the dots across hundreds of files
+- **Execute multi-step tasks** - "Refactor this module to use TypeScript" isn't just a suggestion; Claude actually does it
+- **Handle git workflows** - Commits, branches, PR descriptions—all through natural language
+- **Run anywhere** - Terminal, VS Code, JetBrains, or even directly on GitHub via @claude mentions
+
+Think of it less like an autocomplete and more like a very eager junior developer who types 1000x faster than you, can read your entire codebase in seconds, and has infinite patience for explaining things.
+
+Here's the catch: LLMs will happily barrel forward without any guardrails if you let them. The developers who get the most out of Claude Code aren't just good at prompting—they're good at setting up structure that channels all that speed into something useful instead of chaotic.
+
+## Before You Install
+
+You'll need one of these two things:
+
+**Option A: Claude Pro or Max Subscription**
+
+If you're already paying for Claude Pro ($20/month) or Max ($100/month), you're covered. Claude Code usage is included, and you authenticate by simply logging into your Claude account.
+
+**Option B: Anthropic API Key**
+
+Prefer pay-as-you-go? Create an account at [console.anthropic.com](https://console.anthropic.com), add billing, and generate an API key. You pay only for what you use.
+
+> **Pro tip:** If you have *both* an API key set as an environment variable AND a Claude subscription, the API key takes priority—meaning you'll be charged per-token instead of using your subscription. Run `/status` inside Claude Code to verify which authentication method is active.
+
+**System Requirements:**
+
+- Node.js 18 or higher (check with `node --version`)
+- macOS, Linux, or Windows
+
+## Installation
+
+The npm installation method is deprecated. Here are the official ways to install Claude Code:
+
+**macOS or Linux (Recommended):**
+
+```bash
+curl -fsSL https://claude.ai/install.sh | bash
+```
+
+**Homebrew (macOS/Linux):**
+
+```bash
+brew install --cask claude-code
+```
+
+**Windows (PowerShell):**
+
+```powershell
+irm https://claude.ai/install.ps1 | iex
+```
+
+**Windows (WinGet):**
+
+```bash
+winget install Anthropic.ClaudeCode
+```
+
+After installation, Claude Code auto-updates in the background. Homebrew and WinGet users need to update manually with `brew upgrade claude-code` or `winget upgrade Anthropic.ClaudeCode`.
+
+## First Launch
+
+Navigate to any project directory and run:
+
+```bash
+claude
+```
+
+What happens next depends on your setup:
+
+1. **Browser opens** for authentication
+2. **Log in** with your Claude account or Anthropic console credentials
+3. **Authorize** Claude Code to access your account
+4. A dedicated **"Claude Code" workspace** gets created automatically for usage tracking
+
+That's it. You're in.
+
+## The First Thing You Should Do
+
+Run this command immediately:
+
+```
+/terminal-setup
+```
+
+This installs terminal shortcuts that let you use `Shift + Enter` for multi-line input. Without it, you're stuck typing everything on a single line—which gets painful fast when you're writing detailed prompts.
+
+> **Why this matters:** Imagine trying to explain a complex bug in one line versus being able to structure your thoughts across multiple paragraphs. Multi-line input transforms how effectively you can communicate with Claude.
+
+## Two Ways to Work
+
+### Interactive Mode (Your Daily Driver)
+
+```bash
+claude
+```
+
+Opens a REPL session where you have a back-and-forth conversation. Claude maintains context throughout, remembers what you discussed, and can handle complex multi-step tasks.
+
+**Use this for:**
+
+- Building new features
+- Debugging tricky issues
+- Code reviews and refactoring
+- Exploring unfamiliar codebases
+
+### One-Shot Mode (Quick Questions)
+
+```bash
+claude -p "your question here"
+```
+
+Runs a single command and exits. No interactive session, just question → answer → done.
+
+**Use this for:**
+
+- Quick lookups: `claude -p "what does the auth middleware do?"`
+- Automated scripts: `claude -p "list all TODO comments" >> todos.txt`
+- CI/CD pipelines: `claude -p "generate changelog from recent commits"`
+
+## Essential Commands
+
+Once you're inside an interactive session, these slash commands control Claude's behavior:
+
+**`/help`** — Shows all available commands including custom ones. Use when you forget a command or want to discover new features.
+
+**`/clear`** — Wipes conversation history. **Use often!** Start fresh between unrelated tasks to save tokens.
+
+**`/compact`** — Compresses conversation context. Use when context is getting long but you want to keep some history.
+
+**`/model`** — Switch between Opus, Sonnet, or Haiku. Opus for complex reasoning, Haiku for quick tasks, Sonnet for balance.
+
+**`/config`** — Opens settings configuration. Use for adjusting permissions, defaults, and preferences.
+
+**`/status`** — Shows current status and auth method. Use to verify which account/API key is being used.
+
+**`/cost`** — Displays token usage. Keep an eye on consumption.
+
+**`/context`** — View what's in Claude's current context. Helps you understand what Claude "knows" right now.
+
+**`/vim`** — Enable vim-style editing. If you're a vim user, you'll feel right at home.
+
+**`/init`** — Initialize or update CLAUDE.md. Run after major features or refactors to keep project context current.
+
+### Session Management Commands
+
+**`/terminal-setup`** — Install Shift+Enter shortcut for multi-line input.
+
+**`/allowed-tools`** — Configure which tools Claude can use (file access, bash, etc.).
+
+**`/hooks`** — Set up automation hooks for certain events.
+
+**`/mcp`** — Manage Model Context Protocol servers.
+
+**`/agents`** — Create and manage subagents for parallel tasks.
+
+**`/install-github-app`** — Set up GitHub Actions integration for @claude mentions.
+
+## Session Management from the Terminal
+
+Sometimes you need to continue where you left off:
+
+```bash
+# Continue your last session exactly where you stopped
+claude -c
+
+# Browse and select from recent sessions
+claude -r
+```
+
+The `-r` flag is particularly useful when you realize "wait, I was working on that auth bug two days ago and Claude had figured something out." You can jump back into that exact conversation.
+
+## Your First Real Task
+
+Here's a great way to test your setup. Navigate to any project and run:
+
+```bash
+claude
+```
+
+Then type:
+
+```
+Explain the architecture of this project. What are the main components
+and how do they connect? Where would I look if I wanted to add a new
+API endpoint?
+```
+
+Claude will scan your codebase, identify patterns, and give you a structured overview. This is genuinely one of the best ways to onboard to any unfamiliar project—whether it's a new job, an open-source contribution, or your own code from six months ago.
+
+## The Permission System
+
+Claude doesn't just silently modify your files. Before making changes, you'll see prompts like:
+
+```
+Claude wants to edit src/auth.ts
+Allow? [y]es / [n]o / [a]lways allow for this file
+```
+
+Your options:
+
+- **`y`** - Allow this specific action
+- **`n`** - Block it
+- **`a`** - Always allow this type of action (no more prompts for similar operations)
+
+**My recommendation:** Start with `y` for everything until you understand Claude's behavior patterns. Once you trust it for certain operations (like editing test files), switch to `a` to speed up your workflow.
+
+## IDE Integration
+
+Claude Code works natively with several IDEs:
+
+**VS Code** — Search "Claude Code" in Extensions (Cmd/Ctrl+Shift+X). Full integration with inline diffs and multi-tab conversations.
+
+**Cursor** — Manual VSIX installation may be required. Based on VS Code, works great once installed.
+
+**Windsurf** — Similar to Cursor setup. VS Code fork that supports VSIX extensions.
+
+**JetBrains** — Plugin available. Works with IntelliJ, WebStorm, PyCharm, and other JetBrains IDEs.
+
+> **Important:** The VS Code extension isn't a replacement for the CLI—it's a launcher that provides a nicer interface. The actual Claude Code still runs as the same engine under the hood. You can have multiple instances running in parallel across different parts of your codebase.
+
+## The Mindset Shift: Structure Enables Speed
+
+Here's what separates developers who love Claude Code from those who find it frustrating: **the ones who succeed treat it like collaborating with a very capable but very eager junior developer**.
+
+That junior dev types incredibly fast, never gets tired, and can absorb your entire codebase in seconds. But they'll also happily charge forward without guardrails if you let them. The practices that make AI-assisted coding work aren't new—they're the same things experienced developers have done for years. They just become *critical* now.
+
+### Git Is Your Safety Net
+
+Commit frequently, in small chunks. If Claude goes off the rails, you can just `git checkout .` or revert to a known good state. Think of commits like save points in a video game.
+
+This sounds basic, but it changes everything. When you know you can always roll back, you're free to let Claude experiment. When you're not sure, you hesitate, micromanage, and lose most of the speed advantage.
+
+If you're rusty on Git, the [official GitHub docs](https://docs.github.com/en/get-started) are genuinely excellent for getting started.
+
+### Plan Before You Prompt
+
+Write out what you're building *before* you start prompting. A simple markdown doc with your goals, architecture decisions, and constraints works wonders. Keep it in your repo so Claude can reference it.
+
+And seriously—**use Plan Mode**. It's literally in the name. When you ask Claude to plan something, it asks you clarifying questions, then proposes a plan and gives you the option to accept it. If you're not satisfied for *any* reason, say no and tell Claude what you'd like changed. Iterate as much as you need.
+
+This forces *you* to think, and gives the LLM crucial context. "Hey Claude, let's use plan mode to design a login form" is infinitely better than "build me a login form."
+
+### Break Big Tasks Into Issues
+
+Instead of "hey Claude, build me a user auth system," break it into discrete pieces: "Create User model," "Add session handling," "Build login form." One PR per issue.
+
+Create GitHub issue templates (feature request, bug report—these two cover 90% of cases) and check them into source control. GitHub automatically uses them when anyone creates an issue through the UI.
+
+Once you have a solid plan and understand it, ask Claude to create a GitHub issue using your template. Or if you've got a big plan, ask Claude to break it into smaller, manageable chunks, then turn the pieces you're comfortable with into issues.
+
+### Tests First (Yes, Really)
+
+Ask Claude to write tests before implementation. Sounds counterintuitive, but it forces the LLM to think clearly about what "done" looks like—and gives you a safety net. If tests don't pass, something's off with the implementation.
+
+This is called TDD (test-driven development), or "going from red to green" based on the typical CLI colors for failing vs. passing tests. It's not just good practice—it's how you keep Claude honest.
+
+### Linters Catch "Creative" Choices
+
+ESLint, Prettier, Rubocop, markdownlint, yamllint—whatever fits your stack. Set them up with Git pre-commit hooks. This catches a lot of the stylistic choices LLMs make that don't match your codebase.
+
+Example: Claude *loves* to skip the empty line between a header and a bulleted list in markdown files. No idea why. But standard practice is to include it. So you install markdownlint, set your rule preferences in a config file, run it on any markdown files Claude touches, and problem solved.
+
+### CLAUDE.md: Your Project's Instruction Manual
+
+Create a `CLAUDE.md` file in your project root with your coding standards, preferences, and project context. Claude reads it automatically at the start of every session.
+
+Don't make it too big though. LLMs have surprisingly poor short-term memory compared to the random stuff they can seemingly pull out of thin air about events from 300 years ago (thanks, training data). Keep it focused on your preferences and key project details.
+
+Run `/init` after any large feature implementation or refactor to keep CLAUDE.md current. Claude will tell you if there's anything to add or update, or just say "looks good, no changes necessary."
+
+## Common Beginner Mistakes (And How to Avoid Them)
+
+**1. Skipping `/terminal-setup`**
+
+You'll wonder why your detailed prompts feel cramped. Just run it.
+
+**2. Never using `/clear`**
+
+Every message you send includes all previous context. After finishing a task, clear the slate. Your token bill will thank you.
+
+**3. Being too vague**
+
+"Fix the bug" vs "Fix the null pointer exception in `auth.ts` at line 42 where `user.id` is accessed before the null check"—one of these gets you better results.
+
+**4. Asking Claude to change code it hasn't read**
+
+Always let Claude analyze first. "Read the auth module and explain how sessions work" before "rewrite the session handling."
+
+**5. Dumping massive tasks in one prompt**
+
+"Rewrite the entire application in TypeScript" is overwhelming. Break it down: "Convert the user module to TypeScript, then we'll do auth next."
+
+**6. Not checking `/status`**
+
+If you're wondering why you're getting billed when you have a subscription, check which authentication method is active.
+
+**7. Skipping Plan Mode**
+
+"Just build it" feels faster. It's not. Taking five minutes to plan with Claude saves hours of undoing work that went in the wrong direction.
+
+**8. No safety net**
+
+If you're not committing frequently, you're one bad generation away from a frustrating afternoon. Commit before big changes. Commit after successful changes. Commits are free.
+
+## Quick Reference Card
+
+```bash
+# Installation (pick one)
+curl -fsSL https://claude.ai/install.sh | bash    # macOS/Linux
+brew install --cask claude-code                    # Homebrew
+winget install Anthropic.ClaudeCode               # Windows
+
+# Starting Claude
+claude                    # Interactive mode
+claude -p "query"         # One-shot mode
+claude -c                 # Continue last session
+claude -r                 # Resume with session picker
+
+# First commands to run
+/terminal-setup           # Enable multi-line input
+/status                   # Verify authentication method
+/help                     # See all available commands
+
+# Commands you'll use constantly
+/clear                    # Fresh start (save tokens!)
+/model                    # Switch models
+/compact                  # Compress context
+/init                     # Update CLAUDE.md after major changes
+```
+
+## What's Next
+
+You now have Claude Code installed and understand not just the commands, but the *mindset* that makes AI-assisted coding work. Structure and guardrails aren't constraints—they're what make the speed actually useful instead of chaotic.
+
+In [Part 2: The Mental Model](/blog/claude-code-mastery-02-mental-model), we'll dive into how Claude Code actually "thinks"—understanding context windows, tool usage, and how to structure your prompts to get consistently better results. This knowledge transforms Claude from a sometimes-helpful assistant into a reliable engineering partner.

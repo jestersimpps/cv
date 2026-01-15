@@ -1,0 +1,415 @@
+---
+title: "Claude Code Mastery: The Mental Model"
+description: "Understanding how Claude Code thinks will transform your results. Learn the agentic loop architecture, context management, and effective prompting patterns for AI pair programming."
+publishedAt: "2026-01-15"
+author: "Jo Vinkenroye"
+category: "Tutorials"
+tags: ["Claude Code", "AI", "Developer Tools", "Productivity", "Best Practices"]
+coverImage: "/assets/blog/claude-cowork-og.jpg"
+series:
+  id: "claude-code-mastery"
+  title: "Claude Code Mastery"
+  part: 2
+  total: 10
+---
+
+Here's a truth that separates developers who love Claude Code from those who find it frustrating: **understanding how it thinks changes everything**.
+
+Most people approach Claude Code like a search engine—type a question, get an answer. But Claude Code isn't a search engine. It's an autonomous agent running in a loop, making decisions, using tools, and adjusting based on results. Once you understand this architecture, you'll know exactly why certain prompts work brilliantly while others fall flat.
+
+## The Agentic Loop: How Claude Code Actually Works
+
+Under the hood, Claude Code runs a deceptively simple pattern:
+
+```
+Think → Act → Observe → Correct → Repeat
+```
+
+Here's what that looks like in practice:
+
+1. **Think** — Claude analyzes your request and decides what to do
+2. **Act** — It uses a tool (read a file, run a command, edit code)
+3. **Observe** — It sees the result of that action
+4. **Correct** — It adjusts its approach based on what happened
+5. **Repeat** — The loop continues until Claude decides the task is complete
+
+This isn't a linear conversation. It's a recursive loop that keeps running until Claude explicitly decides it's done. The default behavior is *continue until resolved*, not *respond once and stop*.
+
+**Why this matters:** When you ask Claude to "add authentication to this app," it doesn't just generate code and hand it to you. It reads your existing code, understands your patterns, writes the implementation, runs tests to verify it works, fixes any issues it finds, and only then reports back. That's the loop in action.
+
+## The Context Window: Claude's Working Memory
+
+Claude has a "context window"—think of it as working memory. Everything Claude needs to know about your conversation, your codebase, and the current task has to fit in this window.
+
+**Standard context:** 200,000 tokens (roughly 500 pages of text)
+
+**Extended context:** Claude Sonnet 4 now supports up to 1 million tokens on the API—enough for entire codebases with 75,000+ lines of code. This requires tier 4 API access and costs 2x for input tokens beyond 200K.
+
+Here's the critical insight: **every message you send includes the entire conversation history**. That's how Claude "remembers" what you discussed earlier. But it also means long conversations consume exponentially more tokens.
+
+### What Fills Up Your Context
+
+Context comes from multiple sources, and they all add up:
+
+**Your prompts** — Every message you've sent in this session
+
+**Claude's responses** — Everything Claude has said back
+
+**Tool results** — File contents Claude has read, command outputs, search results
+
+**System context** — CLAUDE.md contents, git status, project structure
+
+**Session history** — The full back-and-forth since your last `/clear`
+
+When you ask Claude to "read this file," the entire file contents get added to context. Ask it to read ten files, and you've potentially consumed thousands of tokens before Claude even starts working on your actual request.
+
+### A Note on Subscription Plans
+
+How much you need to worry about context depends on your plan:
+
+**Max 5x / Max 20x plans** — You have ample token limits. Context management is still good practice for output quality, but you're not watching every token.
+
+**Pro plan / Pay-as-you-go API** — Every tool call, every file read, every verbose response costs you. Aggressive context management directly impacts your bill.
+
+The strategies below matter most for cost-conscious users, but even on unlimited plans, cleaner context produces better outputs.
+
+## Managing Context: The Commands That Matter
+
+### `/clear` — The Recommended Default
+
+```
+/clear
+```
+
+Wipes everything. Fresh start. Zero context.
+
+Here's a perspective shift: **`/clear` should be your default, not your last resort**. Experienced Claude Code users clear aggressively—not because something went wrong, but as standard practice between tasks.
+
+**When to use it:**
+
+- Starting a new feature (always)
+- Between unrelated tasks (finished auth, now working on UI)
+- When less than 50% of your current context is relevant
+- When Claude seems confused or stuck in loops
+- After completing a feature
+- When you notice repetitive or off-track responses
+
+**The `/clear` + `/catchup` pattern:**
+
+Some developers create a custom `/catchup` command that makes Claude read all changed files in their git branch. After `/clear`, run `/catchup` to re-establish relevant context without the cruft.
+
+```
+/clear
+/catchup
+"Continue implementing the payment flow"
+```
+
+This gives you fresh context with exactly what's relevant.
+
+### `/compact` — Use With Caution
+
+```
+/compact
+```
+
+Instead of wiping everything, `/compact` creates an intelligent summary of your conversation and starts fresh with that summary as context.
+
+**The honest truth:** Many experienced users avoid `/compact` when possible. The automatic summarization is opaque—you don't know exactly what gets preserved or lost. It can be error-prone and slow.
+
+**When `/compact` makes sense:**
+
+- You're mid-task and need to preserve specific decisions
+- You have complex context that would be painful to rebuild
+- You want to continue but context is at 70%+
+
+**When to prefer `/clear` instead:**
+
+- Starting something new
+- Less than half your context is relevant
+- You can easily re-establish what matters
+
+**If you do use `/compact`, guide it:**
+
+```
+/compact Focus on preserving our authentication implementation
+and the database schema decisions we've made
+```
+
+This tells Claude what matters most in the summary.
+
+### The "Document & Clear" Strategy
+
+For complex, multi-session tasks, there's a better pattern than trusting compaction:
+
+1. **Document:** Have Claude dump its plan and progress into a markdown file
+2. **Clear:** `/clear` the session completely
+3. **Continue:** Start fresh by telling Claude to read the markdown and continue
+
+```
+"Save our current progress and the remaining TODOs to docs/auth-migration-plan.md"
+/clear
+"Read docs/auth-migration-plan.md and continue from where we left off"
+```
+
+This creates **durable external memory** that survives sessions perfectly—no lossy summarization.
+
+### Auto-Compact: The Safety Net You Shouldn't Rely On
+
+Claude Code automatically compacts when your context hits approximately 92-95% capacity. This prevents running out of space mid-task.
+
+**But don't trust it.** Auto-compaction is emergency behavior, not a strategy. By the time it triggers, you've likely already experienced degraded output quality. The compaction itself is the same opaque summarization that makes manual `/compact` unreliable.
+
+Better approach: **clear proactively at natural breakpoints** rather than letting context bloat until the system intervenes.
+
+### Extended Thinking: When Claude Needs to Think Harder
+
+Claude Code supports thinking mode triggers that allocate more reasoning budget:
+
+**`"think"`** — ~4,000 tokens thinking budget
+
+**`"think hard"`** — ~10,000 tokens thinking budget
+
+**`"ultrathink"`** — ~31,999 tokens thinking budget (maximum)
+
+Just include these words in your prompt:
+
+```
+"ultrathink about how to architect this payment system"
+"think hard about the edge cases in this validation logic"
+```
+
+**When to use them:**
+
+- Architecture decisions → `ultrathink` + plan mode
+- Stuck in loops → `ultrathink` to break through
+- Complex debugging → `think hard`
+- Routine tasks → no keyword needed
+
+> **Note:** These keywords only work in Claude Code's terminal interface, not in the web chat or API.
+
+## Plan Mode: Think Before Acting
+
+Here's where most people go wrong: they ask Claude to *do* things without first asking it to *plan* things.
+
+Plan mode is a read-only state where Claude researches, analyzes, and proposes approaches without touching any files. It's invaluable for complex tasks.
+
+### How to Enter Plan Mode
+
+Press `Shift+Tab` to cycle through modes:
+
+1. **First press:** Auto-accept mode (Claude doesn't ask permission for each action)
+2. **Second press:** Plan mode (Claude can only read, not write)
+3. **Third press:** Back to normal edit mode
+
+Look at the prompt at the bottom of your terminal to see which mode you're in.
+
+### What Claude Can Do in Plan Mode
+
+Plan mode restricts Claude to research tools only:
+
+- **Read** — View files and content
+- **LS/Glob** — List directories and search file patterns
+- **Grep** — Search content across files
+- **WebSearch/WebFetch** — Research online
+- **Task** — Spawn research sub-agents
+- **TodoRead/TodoWrite** — Manage task lists
+
+**What it cannot do:** Edit files, run commands, make any changes.
+
+### When to Use Plan Mode
+
+**Exploring unfamiliar code:**
+```
+[Enter plan mode with Shift+Tab twice]
+"Explain how authentication works in this codebase.
+Which files handle sessions? Where are tokens validated?"
+```
+
+Claude digs through your code and explains it without risk of breaking anything.
+
+**Planning a refactor:**
+```
+"I want to migrate from REST to GraphQL.
+What would need to change? What's the order of operations?"
+```
+
+Claude analyzes dependencies and proposes a migration path.
+
+**Understanding architecture:**
+```
+"How would you approach adding real-time notifications to this app?
+What are the trade-offs between WebSockets and SSE here?"
+```
+
+Claude considers your existing code and proposes options.
+
+The key insight: **planning is cheap, undoing is expensive**. Five minutes in plan mode often saves hours of reverting bad implementations.
+
+## The Junior Developer Analogy (Refined)
+
+In [Part 1](/blog/claude-code-mastery-01-getting-started), we introduced the "eager junior dev" mental model. Let's refine it now that you understand the architecture:
+
+Claude Code is like a highly skilled junior developer who:
+
+**Needs clear instructions** — Vague requests produce vague results because the agentic loop has no clear stopping condition
+
+**Benefits from context** — More relevant information means better tool selection and fewer wasted iterations
+
+**Works best with specific tasks** — "Add error handling to the login function" gives a clear completion state; "improve the code" doesn't
+
+**Learns from your project's patterns** — Claude observes conventions in files it reads and applies them to files it writes
+
+**Asks before making big changes** — The permission system exists because the loop would otherwise execute indefinitely
+
+**Can get stuck in loops** — If a task isn't well-defined, Claude might repeat similar actions without progress
+
+## Effective Prompting Patterns
+
+Now that you understand the loop, here's how to write prompts that work with it:
+
+### Be Specific About Completion
+
+The loop needs to know when to stop.
+
+```
+❌ "Fix the bugs"
+   (Which bugs? How will Claude know it's done?)
+
+✅ "Fix the null pointer exception in src/auth.ts line 42
+   where user.email is accessed before the null check"
+   (Specific location, specific issue, clear completion)
+```
+
+### Provide Context Upfront
+
+Every tool call consumes tokens and time. Help Claude find what it needs faster.
+
+```
+❌ "Add a login page"
+   (Claude has to explore your entire codebase to understand patterns)
+
+✅ "Add a login page using the same styling as src/pages/signup.tsx
+   and our auth service in src/services/auth.ts"
+   (Claude knows exactly where to look)
+```
+
+> **Note:** On Max 5x/20x plans with generous token limits, you can afford to let Claude explore more freely. But even then, specific references produce faster, more consistent results.
+
+### Break Down Large Tasks
+
+One long loop is worse than multiple short loops.
+
+```
+❌ "Build a complete user dashboard with settings,
+    notifications, and profile management"
+   (Massive scope, unclear order, easy to get lost)
+
+✅ Step 1: "Create the dashboard layout component"
+   Step 2: "Add the settings panel"
+   Step 3: "Implement notifications"
+   Step 4: "Build profile management"
+   (Clear completion points, easier to course-correct)
+```
+
+### Reference Files by Path
+
+Don't make Claude search for patterns it could find directly.
+
+```
+❌ "Use the same pattern as the other components"
+   (Claude has to read every component to find the pattern)
+
+✅ "Follow the pattern in src/components/Button.tsx"
+   (One file read, minimal context consumption)
+```
+
+## When Claude Gets Stuck
+
+Signs the agentic loop is spinning without progress:
+
+- Repetitive responses (same suggestions over and over)
+- Circular logic (trying the same fix repeatedly)
+- Asking questions it already asked
+- Producing similar incorrect code in cycles
+
+**Solutions, in order:**
+
+1. **`/clear` and start fresh** — Most effective. A clean context often unsticks immediately.
+
+2. **Use `ultrathink`** — "ultrathink about this problem" allocates maximum reasoning budget and often breaks through where normal prompts fail.
+
+3. **Provide more specific context** — The loop might be searching broadly because it doesn't know where to look.
+
+4. **Break the task smaller** — The completion condition might be too vague.
+
+5. **Try a different framing** — "Instead of fixing this function, let's rewrite it from scratch."
+
+6. **Switch to Opus** — If you're on Sonnet (Pro plan default), switching to Opus via `/model` can help with genuinely complex reasoning. Max plan users already have Opus as default.
+
+## The Feedback Loop
+
+Effective Claude Code usage is iterative. Don't expect perfection on the first try.
+
+```
+You: Initial request
+Claude: First attempt
+You: "Good start, but the error handling doesn't cover network failures"
+Claude: Refined attempt
+You: "Better. Can you also add logging?"
+Claude: Final version
+You: Accept
+```
+
+This isn't Claude failing—it's the agentic loop working as designed. Each iteration adds information that guides the next cycle.
+
+## Trust Calibration Over Time
+
+Your relationship with Claude Code should evolve:
+
+**Week 1:** Review every change carefully. Understand what Claude does and why.
+
+**Week 2:** Allow auto-accept mode for safe operations (reading, test files, documentation).
+
+**Month 1:** Trust routine tasks. Verify complex refactors and anything touching critical paths.
+
+**Ongoing:** Always verify security-critical code, database operations, and anything with external effects.
+
+The goal isn't blind trust—it's informed trust. You're training your intuition for when Claude needs supervision.
+
+## Anti-Patterns to Avoid
+
+**Dumping entire files in your prompt** — Let Claude read them itself. "Read src/auth.ts and explain the session handling" is better than pasting 500 lines.
+
+**Ignoring Claude's questions** — When Claude asks for clarification, it's because the loop doesn't have enough information to proceed confidently. Answer fully.
+
+**Rushing permission prompts** — Read what you're approving. "Always allow" is convenient but removes a safety check.
+
+**Keeping stale context** — `/clear` costs nothing. Stale context costs tokens and accuracy.
+
+**Using Claude for trivial tasks** — Sometimes typing `git status` is faster than explaining what you want to see.
+
+## Key Takeaways
+
+1. **Claude Code runs an agentic loop** — Think → Act → Observe → Correct → Repeat until done
+
+2. **`/clear` is your friend** — Use it aggressively between tasks. For complex work, use "Document & Clear" instead of trusting compaction.
+
+3. **`/compact` is unreliable** — The summarization is opaque and lossy. Prefer `/clear` when you can rebuild context easily.
+
+4. **Plan mode prevents mistakes** — `Shift+Tab` twice to research without risk. Planning is cheap, undoing is expensive.
+
+5. **`ultrathink` for hard problems** — Include thinking keywords to allocate more reasoning budget when Claude is stuck or facing complex architecture decisions.
+
+6. **Specific prompts produce better loops** — Clear completion conditions, file paths, and broken-down tasks help the loop converge.
+
+7. **Iteration is expected** — Guide Claude like a colleague. First attempts rarely need to be final attempts.
+
+8. **Context economics vary by plan** — Max plans have generous limits; Pro/API users should manage context aggressively.
+
+## What's Next
+
+You now understand how Claude Code thinks. In [Part 3: Project Configuration](/blog/claude-code-mastery-03-project-configuration), we'll dive into CLAUDE.md—the file that shapes Claude's behavior for your specific project. A well-crafted CLAUDE.md is the difference between Claude that understands your codebase and Claude that fights against your patterns.
+
+---
+
+*Previous: [Part 1: Getting Started](/blog/claude-code-mastery-01-getting-started)*
