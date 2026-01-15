@@ -395,25 +395,26 @@ If Claude misses something important, your CLAUDE.md needs work.
 
 ## Quick Reference
 
-```
-# File locations
-CLAUDE.md                    # Project root (recommended)
-.claude/CLAUDE.md            # Alternative location
-~/.claude/CLAUDE.md          # Global (all projects)
-CLAUDE.local.md              # Local (gitignored)
-.claude/rules/*.md           # Additional rule files
+**File locations:**
 
-# Settings files
-.claude/settings.json        # Project settings
-.claude/settings.local.json  # Local overrides
-~/.claude/settings.json      # Global settings
+- `CLAUDE.md` — Project root (recommended)
+- `.claude/CLAUDE.md` — Alternative location
+- `~/.claude/CLAUDE.md` — Global (all projects)
+- `CLAUDE.local.md` — Local (gitignored)
+- `.claude/rules/` — Additional rule files (all .md files auto-loaded)
 
-# Key features
-@path/to/file                # Import syntax in CLAUDE.md
-# key                        # Add instructions during session
-/init                        # Generate/update CLAUDE.md
-/hooks                       # Configure hooks interactively
-```
+**Settings files:**
+
+- `.claude/settings.json` — Project settings
+- `.claude/settings.local.json` — Local overrides
+- `~/.claude/settings.json` — Global settings
+
+**Key features:**
+
+- `@path/to/file` — Import syntax in CLAUDE.md
+- `#` key — Add instructions during session
+- `/init` — Generate/update CLAUDE.md
+- `/hooks` — Configure hooks interactively
 
 ## What's Next
 

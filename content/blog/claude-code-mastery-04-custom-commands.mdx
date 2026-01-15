@@ -1,0 +1,547 @@
+---
+title: "Claude Code Mastery: Custom Commands"
+description: "Build your personal command library. Turn complex workflows into single keystrokes with custom slash commands, arguments, frontmatter, and hooks."
+publishedAt: "2026-01-15"
+author: "Jo Vinkenroye"
+category: "Tutorials"
+tags: ["Claude Code", "AI", "Automation", "Developer Tools", "Productivity"]
+coverImage: "/assets/blog/claude-cowork-og.jpg"
+series:
+  id: "claude-code-mastery"
+  title: "Claude Code Mastery"
+  part: 4
+  total: 10
+---
+
+Here's something I noticed after a few weeks of using Claude Code: I kept typing the same prompts over and over. "Review this code for security issues." "Generate tests following our project patterns." "Create a commit with a good message."
+
+Every repeated prompt is wasted keystrokes. Custom slash commands fix that.
+
+## What Are Custom Commands?
+
+Custom commands are markdown files that become slash commands. Put a file called `review.md` in the right folder, and suddenly `/review` is a command you can run anytime.
+
+```
+.claude/commands/
+├── review.md          → /review
+├── test.md            → /test
+└── git/
+    ├── commit.md      → /git:commit
+    └── pr.md          → /git:pr
+```
+
+The magic: these commands can accept arguments, specify which tools Claude can use, define hooks that run automatically, and even force a specific model. They're not just saved prompts—they're programmable workflows.
+
+## Your First Command in 60 Seconds
+
+### Step 1: Create the Directory
+
+```bash
+mkdir -p .claude/commands
+```
+
+### Step 2: Create a Command File
+
+```bash
+cat > .claude/commands/review.md << 'EOF'
+Review the staged changes for:
+- Security vulnerabilities
+- Performance issues
+- Missing error handling
+- Type safety problems
+
+Format as: Critical (must fix) → Warnings → Suggestions
+EOF
+```
+
+### Step 3: Use It
+
+```
+/review
+```
+
+That's it. Claude executes your instructions as if you'd typed them out.
+
+## Arguments: Making Commands Dynamic
+
+Static commands are useful, but dynamic commands are powerful. The `$ARGUMENTS` placeholder captures everything after the command name.
+
+### Basic Arguments
+
+```markdown
+# .claude/commands/explain.md
+
+Explain how $ARGUMENTS works in this codebase.
+Show me the key files, the data flow, and any gotchas.
+```
+
+Usage:
+```
+/explain the authentication system
+/explain the payment processing flow
+/explain how websockets connect to the backend
+```
+
+Whatever you type after `/explain` becomes `$ARGUMENTS`.
+
+### Positional Arguments
+
+Need more control? Use `$1`, `$2`, `$3` for specific positions:
+
+```markdown
+# .claude/commands/fix-issue.md
+
+Fix GitHub issue #$1.
+
+Priority: $2
+Additional context: $3
+
+1. Read the issue description
+2. Find the relevant code
+3. Implement the fix
+4. Write tests
+5. Create a commit referencing the issue
+```
+
+Usage:
+```
+/fix-issue 1234 high "user reported login failures on mobile"
+```
+
+Here `$1` = "1234", `$2` = "high", `$3` = "user reported login failures on mobile".
+
+## Frontmatter: Command Superpowers
+
+The real power comes from YAML frontmatter at the top of your command file. This lets you configure permissions, hints, models, and more.
+
+### The Basics
+
+```yaml
+---
+description: Review code for security issues
+argument-hint: [file-or-directory]
+---
+Review $ARGUMENTS for security vulnerabilities including:
+- SQL injection
+- XSS
+- Authentication bypasses
+```
+
+The `description` shows up when you run `/help`. The `argument-hint` tells users what to pass.
+
+### Pre-Approving Tool Permissions
+
+Tired of approving the same git commands every time? Use `allowed-tools`:
+
+```yaml
+---
+description: Smart git commit
+allowed-tools: Bash(git add:*), Bash(git status:*), Bash(git commit:*), Bash(git diff:*)
+argument-hint: [optional message]
+---
+Analyze the staged changes and create a commit.
+
+If a message is provided, use it: $ARGUMENTS
+Otherwise, generate a descriptive message following conventional commits.
+
+Requirements:
+- Use format: type(scope): description
+- Keep summary under 72 characters
+- Body explains WHY, not WHAT
+```
+
+Now `/git:commit` runs without permission prompts for those specific git commands.
+
+### Forcing a Specific Model
+
+Some commands work better with specific models:
+
+```yaml
+---
+description: Deep architecture analysis
+model: claude-sonnet-4-5-20250929
+---
+Analyze the architecture of $ARGUMENTS.
+
+Consider:
+- Design patterns in use
+- Coupling between modules
+- Scalability implications
+- Technical debt indicators
+```
+
+Use Haiku for quick tasks, Sonnet for balanced work, Opus for complex reasoning:
+
+```yaml
+---
+description: Quick code explanation
+model: claude-3-5-haiku-20241022
+---
+Briefly explain what $ARGUMENTS does in 2-3 sentences.
+```
+
+### Hooks in Commands
+
+Commands can define their own hooks that run during execution:
+
+```yaml
+---
+description: Format and commit
+hooks:
+  PostToolUse:
+    - matcher: "Edit|Write"
+      hooks:
+        - type: command
+          command: "npx prettier --write $FILE_PATH"
+---
+Make the requested changes to $ARGUMENTS.
+After each edit, files will be auto-formatted.
+```
+
+This runs Prettier after every file edit—but only while this command is active.
+
+## Namespacing with Directories
+
+Organize related commands in subdirectories. The folder name becomes a namespace:
+
+```
+.claude/commands/
+├── git/
+│   ├── commit.md      → /git:commit
+│   ├── pr.md          → /git:pr
+│   ├── branch.md      → /git:branch
+│   └── squash.md      → /git:squash
+├── test/
+│   ├── unit.md        → /test:unit
+│   ├── e2e.md         → /test:e2e
+│   └── coverage.md    → /test:coverage
+└── docs/
+    ├── readme.md      → /docs:readme
+    └── api.md         → /docs:api
+```
+
+This keeps your `/help` output organized and commands easy to discover.
+
+## Global vs Project Commands
+
+### Project Commands (Team)
+
+```
+your-project/.claude/commands/
+```
+
+- Available only in this project
+- Commit to git—everyone on the team gets them
+- Great for project-specific workflows
+
+### Personal Commands (You)
+
+```
+~/.claude/commands/
+```
+
+- Available in every project
+- Personal productivity boosters
+- Not shared with team
+
+### Recommended Split
+
+**Keep global (personal):**
+
+- `/explain` — Universal code explanation
+- `/debug` — Systematic debugging process
+- `/review` — General code review checklist
+
+**Keep project-specific (team):**
+
+- `/deploy` — Your deployment steps
+- `/test:e2e` — Your test setup
+- `/git:commit` — Your team's commit conventions
+- `/onboard` — Project-specific context for new devs
+
+## 10 Commands Worth Stealing
+
+Here are battle-tested commands. Copy them, modify them, make them yours.
+
+### 1. /review — Code Review
+
+```yaml
+---
+description: Comprehensive code review
+argument-hint: [file or leave empty for staged changes]
+---
+Review $ARGUMENTS (or staged changes if not specified).
+
+## Check For
+- Security: OWASP Top 10, auth issues, data exposure
+- Performance: N+1 queries, memory leaks, blocking calls
+- Correctness: Edge cases, error handling, type safety
+- Maintainability: Complexity, naming, duplication
+
+## Output Format
+### 🚨 Critical (blocks merge)
+### ⚠️ Warnings (should fix)
+### 💡 Suggestions (nice to have)
+```
+
+### 2. /git:commit — Smart Commits
+
+```yaml
+---
+description: Analyze changes and create commit
+allowed-tools: Bash(git *)
+---
+1. Run `git diff --staged` to see changes
+2. Analyze what was changed and why
+3. Create a commit message:
+   - Format: type(scope): description
+   - Types: feat, fix, refactor, docs, test, chore
+   - Under 72 chars
+   - Body explains WHY if non-obvious
+4. Execute the commit
+```
+
+### 3. /test:generate — Test Creation
+
+```yaml
+---
+description: Generate comprehensive tests
+argument-hint: [file-to-test]
+---
+Generate tests for $ARGUMENTS.
+
+## Include
+- Happy path (expected usage)
+- Edge cases (empty, null, boundaries)
+- Error scenarios (invalid input, failures)
+- Integration points (mocks for external deps)
+
+## Requirements
+- Match existing test patterns in this project
+- Use the testing framework already in use
+- Clear test names: "should [expected] when [condition]"
+```
+
+### 4. /debug — Systematic Debugging
+
+```yaml
+---
+description: Debug an issue systematically
+argument-hint: [description of the problem]
+---
+Debug: $ARGUMENTS
+
+## Process
+1. Clarify: What's expected vs actual behavior?
+2. Reproduce: What triggers the issue?
+3. Isolate: Which component/function is responsible?
+4. Trace: Follow the data flow
+5. Fix: Implement and verify the solution
+
+## Output
+- Root cause
+- Affected code paths
+- Fix with explanation
+- Prevention strategy
+```
+
+### 5. /security — Security Audit
+
+```yaml
+---
+description: Security vulnerability scan
+argument-hint: [file, directory, or leave empty for full scan]
+allowed-tools: Read, Grep, Glob
+---
+Audit $ARGUMENTS for security vulnerabilities.
+
+## Check For
+- Injection: SQL, command, XSS, template
+- Auth: Weak passwords, session issues, CSRF
+- Data: Exposure, logging secrets, insecure storage
+- Config: Debug mode, default creds, missing headers
+- Dependencies: Known CVEs
+
+## Output
+Severity-ranked findings with:
+- Location (file:line)
+- Risk explanation
+- Remediation steps
+```
+
+### 6. /refactor — Code Improvement
+
+```yaml
+---
+description: Refactor while maintaining behavior
+argument-hint: [file-or-function]
+---
+Refactor $ARGUMENTS.
+
+## Goals
+- Reduce complexity
+- Improve readability
+- Apply DRY
+- Better naming
+- Smaller functions (single responsibility)
+
+## Constraints
+- NO behavior changes
+- Keep public API intact
+- Existing tests must pass
+
+Explain each change.
+```
+
+### 7. /explain — Code Explanation
+
+```yaml
+---
+description: Explain code for someone new
+argument-hint: [file, function, or concept]
+model: claude-3-5-haiku-20241022
+---
+Explain $ARGUMENTS.
+
+## Cover
+- What it does (purpose)
+- How it works (step by step)
+- Why it's designed this way
+- Dependencies and side effects
+- Potential gotchas
+
+Assume reader knows the language but not this codebase.
+```
+
+### 8. /optimize — Performance Analysis
+
+```yaml
+---
+description: Analyze and optimize performance
+argument-hint: [file-or-function]
+---
+Analyze $ARGUMENTS for performance.
+
+## Examine
+- Time complexity (Big O)
+- Space complexity
+- I/O operations
+- Database queries (N+1?)
+- Unnecessary allocations
+
+## Output
+- Current bottlenecks
+- Specific optimizations
+- Expected improvement
+- Trade-offs involved
+```
+
+### 9. /ship — Pre-Deploy Checklist
+
+```yaml
+---
+description: Pre-deployment verification
+allowed-tools: Bash(npm *), Bash(git *)
+---
+Pre-deploy checklist:
+
+- [ ] Tests pass (`npm test`)
+- [ ] Lint clean (`npm run lint`)
+- [ ] Build succeeds (`npm run build`)
+- [ ] No console.log/debugger statements
+- [ ] Env vars documented
+- [ ] No hardcoded secrets
+- [ ] Error handling complete
+- [ ] Migrations ready
+
+Run checks and report: Ready 🚀 or Blocked 🛑 with issues.
+```
+
+### 10. /catchup — Context Restoration
+
+```yaml
+---
+description: Rebuild context after /clear
+allowed-tools: Bash(git *)
+---
+I just cleared context. Help me catch up.
+
+1. Run `git diff main...HEAD --stat` to see what's changed
+2. Summarize the changes on this branch
+3. Read the key modified files
+4. Tell me where we likely are in this feature
+
+$ARGUMENTS (if any additional context)
+```
+
+This pairs perfectly with the `/clear` + `/catchup` pattern from [Part 2](/blog/claude-code-mastery-02-mental-model).
+
+## Command Design Principles
+
+**Single purpose** — One command does one thing well. `/review` reviews, `/test` tests. Don't make Swiss Army knives.
+
+**Clear output format** — Tell Claude exactly how to present results. Bullet points? Categories? Severity levels? Be explicit.
+
+**Include constraints** — What should Claude NOT do? "No behavior changes" or "Don't modify tests" prevents overreach.
+
+**Use appropriate model** — Haiku for quick lookups, Sonnet for most tasks, Opus for complex reasoning. Match the model to the job.
+
+**Pre-approve safe tools** — If a command always needs git or npm, use `allowed-tools` to skip permission prompts.
+
+## Debugging Commands
+
+If a command isn't working:
+
+1. **Check the path** — Is it in `.claude/commands/` or `~/.claude/commands/`?
+2. **Check the extension** — Must be `.md`
+3. **Run `/help`** — Your command should appear in the list
+4. **Check frontmatter** — YAML must be valid (proper indentation, quotes around strings with special chars)
+
+## Quick Reference
+
+```bash
+# Create command directory
+mkdir -p .claude/commands
+
+# Basic command
+echo "Do something" > .claude/commands/name.md
+
+# Command with namespace
+mkdir -p .claude/commands/git
+echo "Commit stuff" > .claude/commands/git/commit.md
+
+# View available commands
+/help
+```
+
+**Frontmatter fields:**
+
+```yaml
+---
+description: Shows in /help
+argument-hint: [what-to-pass]
+allowed-tools: Bash(git *), Read, Write
+model: claude-3-5-haiku-20241022
+hooks:
+  PostToolUse:
+    - matcher: "Edit"
+      hooks:
+        - type: command
+          command: "npm run lint"
+---
+```
+
+**Argument placeholders:**
+
+- `$ARGUMENTS` — Everything after the command
+- `$1`, `$2`, `$3` — Positional arguments
+
+## What's Next
+
+Custom commands encode your workflows into reusable actions. But what if you want to share commands beyond your team? What if you want commands that work across different projects without copying files everywhere?
+
+That's where Skills come in. In [Part 5: Skills](/blog/claude-code-mastery-05-skills), we'll explore how to package commands for broader distribution and create more sophisticated automation.
+
+---
+
+*Previous: [Part 3: Project Configuration](/blog/claude-code-mastery-03-project-configuration)*
