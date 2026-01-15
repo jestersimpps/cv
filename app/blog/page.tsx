@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import { getAllPosts, getAllTags } from '@/lib/blog';
+import { getAllPosts, getAllTags, getAllSeries } from '@/lib/blog';
 import BlogPageClient from '@/components/blog/BlogPageClient';
 
 const siteUrl = 'https://cv-nine-bay.vercel.app';
@@ -41,6 +41,7 @@ export const metadata: Metadata = {
 export default function BlogPage() {
   const posts = getAllPosts();
   const tags = getAllTags();
+  const series = getAllSeries();
 
-  return <BlogPageClient posts={posts} tags={tags} />;
+  return <BlogPageClient posts={posts} tags={tags} series={series} />;
 }

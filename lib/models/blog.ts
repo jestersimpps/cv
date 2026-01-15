@@ -1,3 +1,10 @@
+export interface BlogSeries {
+  id: string;
+  title: string;
+  part: number;
+  total: number;
+}
+
 export interface BlogPostFrontmatter {
   title: string;
   description: string;
@@ -9,6 +16,7 @@ export interface BlogPostFrontmatter {
   coverImage?: string;
   featured?: boolean;
   draft?: boolean;
+  series?: BlogSeries;
 }
 
 export interface BlogPost extends BlogPostFrontmatter {

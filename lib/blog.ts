@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
 import readingTime from 'reading-time';
-import { BlogPost, BlogPostFrontmatter, TableOfContentsItem } from '@/lib/models/blog';
+import { BlogPost, BlogPostFrontmatter, BlogSeries, TableOfContentsItem } from '@/lib/models/blog';
 
 const BLOG_DIR = path.join(process.cwd(), 'content/blog');
 
@@ -108,4 +108,58 @@ export function formatDate(dateString: string): string {
     month: 'long',
     day: 'numeric',
   });
+}
+
+export interface SeriesInfo {
+  id: string;
+  title: string;
+  postCount: number;
+}
+
+export function getPostsBySeries(seriesId: string): BlogPost[] {
+  return getAllPosts()
+    .filter((post) => post.series?.id === seriesId)
+    .sort((a, b) => (a.series?.part || 0) - (b.series?.part || 0));
+}
+
+export function getAllSeries(): SeriesInfo[] {
+  const seriesMap = new Map<string, SeriesInfo>();
+
+  getAllPosts().forEach((post) => {
+    if (post.series) {
+      const existing = seriesMap.get(post.series.id);
+      if (existing) {
+        existing.postCount++;
+      } else {
+        seriesMap.set(post.series.id, {
+          id: post.series.id,
+          title: post.series.title,
+          postCount: 1,
+        });
+      }
+    }
+  });
+
+  return Array.from(seriesMap.values()).sort((a, b) => a.title.localeCompare(b.title));
+}
+
+export function getSeriesNavigation(currentPost: BlogPost): {
+  series: BlogSeries;
+  posts: BlogPost[];
+  currentIndex: number;
+  prevPost: BlogPost | null;
+  nextPost: BlogPost | null;
+} | null {
+  if (!currentPost.series) return null;
+
+  const posts = getPostsBySeries(currentPost.series.id);
+  const currentIndex = posts.findIndex((p) => p.slug === currentPost.slug);
+
+  return {
+    series: currentPost.series,
+    posts,
+    currentIndex,
+    prevPost: currentIndex > 0 ? posts[currentIndex - 1] : null,
+    nextPost: currentIndex < posts.length - 1 ? posts[currentIndex + 1] : null,
+  };
 }

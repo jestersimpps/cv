@@ -1,5 +1,5 @@
 ---
-title: "Claude Code Mastery: Skills"
+title: "Claude Code Mastery Part 5: Skills"
 description: "Skills are specialized knowledge modules Claude automatically loads when relevant. Learn the difference between Skills and Commands, create your own, and discover powerful skill collections."
 publishedAt: "2026-01-15"
 author: "Jo Vinkenroye"
@@ -230,7 +230,7 @@ EOF
 
 ### Step 3: Add an Example
 
-```bash
+````bash
 mkdir -p .claude/skills/tdd/examples
 cat > .claude/skills/tdd/examples/tdd-session.md << 'EOF'
 # TDD Session: Adding Email Validation
@@ -281,7 +281,7 @@ it('should reject email without domain', () => {
 ```
 ...continue cycle...
 EOF
-```
+````
 
 ### Step 4: Use It
 
@@ -289,6 +289,8 @@ Now when you say "let's add email validation with proper testing," Claude will:
 1. Recognize this matches the TDD Skill description
 2. Ask if you want to use the TDD Skill
 3. Follow the Red → Green → Refactor cycle automatically
+
+![Distracted boyfriend meme - developer looking at "just ship it, add tests later" while "write tests first" looks on disapprovingly](/assets/blog/tdd-distracted-boyfriend.jpg)
 
 ## The Superpowers Collection
 

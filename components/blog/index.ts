@@ -9,3 +9,5 @@ export { default as CategoryFilter } from './CategoryFilter';
 export { default as TimelineNav } from './TimelineNav';
 export { MDXComponents } from './MDXComponents';
 export { default as Comments } from './Comments';
+export { default as SeriesNav } from './SeriesNav';
+export { default as SeriesCardStack } from './SeriesCardStack';

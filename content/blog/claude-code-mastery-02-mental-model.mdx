@@ -1,5 +1,5 @@
 ---
-title: "Claude Code Mastery: The Mental Model"
+title: "Claude Code Mastery Part 2: The Mental Model"
 description: "Understanding how Claude Code thinks will transform your results. Learn the agentic loop architecture, context management, and effective prompting patterns for AI pair programming."
 publishedAt: "2026-01-15"
 author: "Jo Vinkenroye"
@@ -115,6 +115,8 @@ This gives you fresh context with exactly what's relevant.
 Instead of wiping everything, `/compact` creates an intelligent summary of your conversation and starts fresh with that summary as context.
 
 **The honest truth:** Many experienced users avoid `/compact` when possible. The automatic summarization is opaque—you don't know exactly what gets preserved or lost. It can be error-prone and slow.
+
+![/compact - We don't do that here](/assets/blog/we-dont-do-that-here-meme.jpg)
 
 **When `/compact` makes sense:**
 
@@ -331,6 +333,8 @@ Signs the agentic loop is spinning without progress:
 - Circular logic (trying the same fix repeatedly)
 - Asking questions it already asked
 - Producing similar incorrect code in cycles
+
+![When Claude keeps suggesting the same fix for the 5th time in a row](/assets/blog/confused-math-lady-meme.jpg)
 
 **Solutions, in order:**
 

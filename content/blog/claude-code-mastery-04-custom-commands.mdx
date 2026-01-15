@@ -1,5 +1,5 @@
 ---
-title: "Claude Code Mastery: Custom Commands"
+title: "Claude Code Mastery Part 4: Custom Commands"
 description: "Build your personal command library. Turn complex workflows into single keystrokes with custom slash commands, arguments, frontmatter, and hooks."
 publishedAt: "2026-01-15"
 author: "Jo Vinkenroye"
@@ -14,6 +14,8 @@ series:
 ---
 
 Here's something I noticed after a few weeks of using Claude Code: I kept typing the same prompts over and over. "Review this code for security issues." "Generate tests following our project patterns." "Create a commit with a good message."
+
+![Me typing 'review this code for security issues' for the 47th time - Again](/assets/blog/groundhog-day-meme.jpg)
 
 Every repeated prompt is wasted keystrokes. Custom slash commands fix that.
 
@@ -477,6 +479,60 @@ $ARGUMENTS (if any additional context)
 ```
 
 This pairs perfectly with the `/clear` + `/catchup` pattern from [Part 2](/blog/claude-code-mastery-02-mental-model).
+
+## Beyond Code: Creative Commands
+
+Commands aren't limited to code workflows. You can integrate any API or service Claude can call. Here are two I used while writing this very blog series:
+
+### /meme — Generate Memes
+
+```yaml
+---
+description: Generate a meme using Imgflip API
+argument-hint: "top text" "bottom text" [template]
+---
+Generate a meme using the Imgflip API.
+
+## API Details
+- Endpoint: https://api.imgflip.com/caption_image
+- Username: $IMGFLIP_USER
+- Password: $IMGFLIP_PASS
+
+## Popular Templates
+- drake (181913649) - Drake Hotline Bling
+- distracted (112126428) - Distracted Boyfriend
+- changemymind (129242436) - Change My Mind
+- twobuttons (87743020) - Two Buttons
+- pikachu (155067746) - Surprised Pikachu
+
+## Instructions
+1. Parse the arguments: $ARGUMENTS
+2. Use curl to POST to the API with template_id, text0, text1
+3. Return the generated meme URL
+4. Download to ./public/assets/blog/ if requested
+```
+
+I used this to generate the "distracted boyfriend" meme in [Part 5](/blog/claude-code-mastery-05-skills) — developer distracted by "just ship it" while "write tests first" looks on.
+
+### /imagen — AI Image Generation
+
+```yaml
+---
+description: Generate an image using Google Imagen 3
+argument-hint: [description of image to generate]
+---
+Generate an image using Google Imagen 3.
+
+## Instructions
+1. Take the description: $ARGUMENTS
+2. Call the Imagen API to generate the image
+3. Save to ./public/assets/blog/
+4. Return the local path for use in markdown
+```
+
+Some cover images and illustrations throughout this series? Generated with `/imagen`. The memes you see here? Created with `/meme`.
+
+The point: if there's an API, you can wrap it in a command. Social media posting, translation, image generation, data lookups—anything becomes a slash command.
 
 ## Command Design Principles
 

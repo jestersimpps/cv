@@ -3,8 +3,9 @@
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { BookOpen, Home, X } from 'lucide-react';
+import { BookOpen, Home, X, Library } from 'lucide-react';
 import { BlogPost, BlogCategory, BLOG_CATEGORIES } from '@/lib/models/blog';
+import { SeriesInfo } from '@/lib/blog';
 import { BlogList } from '@/components/blog';
 import GradientOrbs from '@/components/ui/GradientOrbs';
 import GridLines from '@/components/ui/GridLines';
@@ -14,12 +15,14 @@ import SectionDivider from '@/components/ui/SectionDivider';
 interface BlogPageClientProps {
   posts: BlogPost[];
   tags: string[];
+  series: SeriesInfo[];
 }
 
-export default function BlogPageClient({ posts, tags }: BlogPageClientProps) {
+export default function BlogPageClient({ posts, tags, series }: BlogPageClientProps) {
   const [selectedCategory, setSelectedCategory] = useState<BlogCategory | null>(null);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [selectedYear, setSelectedYear] = useState<number | null>(null);
+  const [selectedSeries, setSelectedSeries] = useState<string | null>(null);
 
   const { years, postCountByYear } = useMemo(() => {
     const countByYear: Record<number, number> = {};
@@ -34,7 +37,7 @@ export default function BlogPageClient({ posts, tags }: BlogPageClientProps) {
   }, [posts]);
 
   const filteredPosts = useMemo(() => {
-    return posts.filter((post) => {
+    let filtered = posts.filter((post) => {
       const categoryMatch =
         !selectedCategory || post.category === selectedCategory;
       const tagsMatch =
@@ -43,9 +46,17 @@ export default function BlogPageClient({ posts, tags }: BlogPageClientProps) {
       const yearMatch =
         !selectedYear ||
         new Date(post.publishedAt).getFullYear() === selectedYear;
-      return categoryMatch && tagsMatch && yearMatch;
+      const seriesMatch =
+        !selectedSeries || post.series?.id === selectedSeries;
+      return categoryMatch && tagsMatch && yearMatch && seriesMatch;
     });
-  }, [posts, selectedCategory, selectedTags, selectedYear]);
+
+    if (selectedSeries) {
+      filtered = filtered.sort((a, b) => (a.series?.part || 0) - (b.series?.part || 0));
+    }
+
+    return filtered;
+  }, [posts, selectedCategory, selectedTags, selectedYear, selectedSeries]);
 
   const toggleTag = (tag: string) => {
     setSelectedTags((prev) =>
@@ -56,12 +67,14 @@ export default function BlogPageClient({ posts, tags }: BlogPageClientProps) {
   const hasActiveFilters =
     selectedCategory !== null ||
     selectedTags.length > 0 ||
-    selectedYear !== null;
+    selectedYear !== null ||
+    selectedSeries !== null;
 
   const clearAllFilters = () => {
     setSelectedCategory(null);
     setSelectedTags([]);
     setSelectedYear(null);
+    setSelectedSeries(null);
   };
 
   return (
@@ -155,6 +168,41 @@ export default function BlogPageClient({ posts, tags }: BlogPageClientProps) {
                 ))}
               </div>
             </div>
+
+            {series.length > 0 && (
+              <div className="grid grid-cols-1 md:grid-cols-[auto_1fr] gap-4 items-start">
+                <span className="text-xs uppercase tracking-wider text-neutral-500 pt-2.5">
+                  Series
+                </span>
+                <div className="flex flex-wrap gap-2">
+                  <button
+                    onClick={() => setSelectedSeries(null)}
+                    className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${
+                      selectedSeries === null
+                        ? 'bg-white text-black'
+                        : 'bg-white/5 text-neutral-400 hover:text-white hover:bg-white/10 border border-white/10'
+                    }`}
+                  >
+                    All
+                  </button>
+                  {series.map((s) => (
+                    <button
+                      key={s.id}
+                      onClick={() => setSelectedSeries(s.id)}
+                      className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all flex items-center gap-1.5 ${
+                        selectedSeries === s.id
+                          ? 'bg-cyan-500 text-black'
+                          : 'bg-white/5 text-neutral-400 hover:text-white hover:bg-white/10 border border-white/10'
+                      }`}
+                    >
+                      <Library className="w-3.5 h-3.5" />
+                      {s.title}
+                      <span className="text-xs opacity-60">({s.postCount})</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
 
             <div className="grid grid-cols-1 md:grid-cols-[auto_1fr] gap-4 items-start">
               <span className="text-xs uppercase tracking-wider text-neutral-500 pt-2.5">

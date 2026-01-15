@@ -1,0 +1,566 @@
+---
+title: "Claude Code Mastery Part 7: MCP Servers"
+description: "Connect Claude to databases, APIs, and external services with Model Context Protocol. Learn to configure MCP servers, manage them with CLI commands, and extend Claude's capabilities beyond your filesystem."
+publishedAt: "2026-01-15"
+author: "Jo Vinkenroye"
+category: "Tutorials"
+tags: ["Claude Code", "AI", "MCP", "Integration", "Developer Tools"]
+coverImage: "/assets/blog/claude-cowork-og.jpg"
+series:
+  id: "claude-code-mastery"
+  title: "Claude Code Mastery"
+  part: 7
+  total: 10
+---
+
+You're debugging an issue and need to check the database. So you open a terminal, connect to PostgreSQL, write a query, copy the results, paste them into Claude, explain the schema... wouldn't it be easier if Claude could just query the database directly?
+
+![Left exit 12 off ramp meme - choosing MCP over copy-paste workflow](/assets/blog/mcp-exit-ramp.jpg)
+
+That's what MCP servers enable. They're bridges that connect Claude to external services—databases, GitHub, cloud platforms, documentation sources—so Claude can work with your entire development ecosystem, not just your local files.
+
+## What is MCP?
+
+Model Context Protocol (MCP) is an open standard for AI-tool integrations. Think of it as a universal adapter that lets Claude connect to any service that speaks the protocol.
+
+```
+Claude Code ←→ MCP Server ←→ External Service
+                   │
+            (Handles auth,
+             data formatting,
+             rate limiting)
+```
+
+The MCP server handles all the complexity—authentication, API protocols, data transformation—so Claude can interact naturally. You ask "show me users who signed up last week," and Claude queries your database directly.
+
+**Why it matters:**
+
+- **No copy-paste workflows** — Claude accesses data at the source
+- **Real-time information** — Always current, not stale context
+- **Secure by design** — Servers handle credentials, not Claude
+- **Open standard** — Works across tools, not just Claude
+
+## Security First
+
+**MCP servers execute code on your system.** Before using any server:
+
+1. **Review the source** — Check what permissions it needs
+2. **Use read-only when possible** — Prevent accidental modifications
+3. **Scope access narrowly** — Grant access to specific paths/tables
+4. **Trust your sources** — Only use well-maintained servers
+5. **Protect credentials** — Use environment variables, never hardcode
+
+Third-party MCP servers aren't verified by Anthropic. Servers that fetch external content can expose you to prompt injection. Be careful.
+
+## Configuration Locations
+
+MCP servers can be configured at different scopes:
+
+**Project-scoped (recommended for teams):**
+```
+.mcp.json                    # Version-controlled, shared with team
+.claude/settings.local.json  # Local overrides, gitignored
+```
+
+**User-scoped (personal tools):**
+```
+~/.claude/settings.json      # All your projects
+~/.claude/settings.local.json # Personal overrides
+```
+
+Project-scoped configuration (`.mcp.json`) is the cleanest option—check it into git and everyone on your team gets the same setup.
+
+## Configuration Structure
+
+```json
+{
+  "mcpServers": {
+    "server-name": {
+      "command": "npx",
+      "args": ["-y", "@package/mcp-server"],
+      "env": {
+        "API_KEY": "${MY_API_KEY}"
+      }
+    }
+  }
+}
+```
+
+**`command`** — The executable to run (usually `npx` for Node-based servers)
+
+**`args`** — Command arguments, typically the package name
+
+**`env`** — Environment variables, using `${VAR}` syntax for secrets
+
+## The /mcp Command
+
+Manage MCP servers from within Claude Code:
+
+```bash
+# Check server status
+/mcp
+
+# Output:
+# MCP Server Status
+# • github: connected
+# • postgres: connected
+# • context7: failed (connection timeout)
+```
+
+From the terminal, use CLI commands:
+
+```bash
+# Add a server
+claude mcp add github --scope user
+
+# List configured servers
+claude mcp list
+
+# Inspect a server's config
+claude mcp get github
+
+# Remove a server
+claude mcp remove github
+```
+
+**Scope options:**
+
+- `--scope local` — Session only, temporary
+- `--scope user` — Persistent across all projects
+- `--scope project` — Saved to `.mcp.json` for team sharing
+
+## Essential MCP Servers
+
+### GitHub
+
+Full repository integration—PRs, issues, code review, releases.
+
+```json
+{
+  "mcpServers": {
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_TOKEN}"
+      }
+    }
+  }
+}
+```
+
+**What Claude can do:**
+- Create and review pull requests
+- Manage issues and labels
+- Search code across repositories
+- Trigger workflows
+
+**Example:**
+```
+"Review the open PRs in our repo and summarize which ones are ready for merge"
+```
+
+### PostgreSQL
+
+Direct database access with schema awareness.
+
+```json
+{
+  "mcpServers": {
+    "postgres": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-postgres"],
+      "env": {
+        "DATABASE_URL": "${DATABASE_URL}",
+        "READ_ONLY": "true"
+      }
+    }
+  }
+}
+```
+
+**What Claude can do:**
+- Query tables with natural language
+- Understand schema relationships
+- Generate migrations
+- Debug data issues
+
+**Example:**
+```
+"Find all users who signed up in January but haven't made a purchase"
+```
+
+### Context7
+
+Real-time, version-specific library documentation.
+
+```json
+{
+  "mcpServers": {
+    "context7": {
+      "command": "npx",
+      "args": ["-y", "@context7/mcp-server"]
+    }
+  }
+}
+```
+
+**What Claude can do:**
+- Fetch current docs for any npm package
+- Get version-specific API details
+- Avoid hallucinated APIs
+- Stay current with library changes
+
+**Example:**
+```
+"use context7 to look up the correct API for React Query's useInfiniteQuery hook"
+```
+
+This is particularly valuable because Claude's training data has a cutoff—Context7 gives it access to documentation released after training.
+
+![Surprised Pikachu meme - Claude confidently using deprecated API from 2023](/assets/blog/mcp-pikachu-api.jpg)
+
+### Filesystem
+
+Access files beyond your current project.
+
+```json
+{
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "/Users/me/projects"]
+    }
+  }
+}
+```
+
+**What Claude can do:**
+- Read files from other directories
+- Access shared configuration
+- Work across multiple projects
+
+**Example:**
+```
+"Check my dotfiles repo for how I configured ESLint"
+```
+
+### Supabase
+
+Full Supabase platform integration.
+
+```json
+{
+  "mcpServers": {
+    "supabase": {
+      "command": "npx",
+      "args": ["-y", "@supabase/mcp-server"],
+      "env": {
+        "SUPABASE_URL": "${SUPABASE_URL}",
+        "SUPABASE_SERVICE_KEY": "${SUPABASE_SERVICE_KEY}"
+      }
+    }
+  }
+}
+```
+
+**What Claude can do:**
+- Query Supabase tables
+- Manage auth users
+- Work with storage buckets
+- Generate RLS policies
+
+### Web Fetch
+
+Fetch and process web content.
+
+```json
+{
+  "mcpServers": {
+    "fetch": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-fetch"]
+    }
+  }
+}
+```
+
+**What Claude can do:**
+- Fetch web pages and APIs
+- Process documentation sites
+- Check service status
+- Research current information
+
+### Playwright
+
+Browser automation for testing and web interaction.
+
+```json
+{
+  "mcpServers": {
+    "playwright": {
+      "command": "npx",
+      "args": ["-y", "@anthropic/mcp-server-playwright"]
+    }
+  }
+}
+```
+
+**What Claude can do:**
+- Navigate web pages and interact with elements
+- Take screenshots and capture page state
+- Fill forms and click buttons
+- Run end-to-end test scenarios
+- Debug UI issues by seeing what's on screen
+
+**Example:**
+```
+"Use Playwright to navigate to our staging site and check if the login form works"
+```
+
+## Server Categories
+
+### Databases
+
+**PostgreSQL** — `@modelcontextprotocol/server-postgres` — Full SQL access
+
+**MySQL** — `@modelcontextprotocol/server-mysql` — MySQL integration
+
+**SQLite** — `@modelcontextprotocol/server-sqlite` — Local databases
+
+**MongoDB** — Community servers available — Document databases
+
+### Cloud & DevOps
+
+**GitHub** — `@modelcontextprotocol/server-github` — Full GitHub API
+
+**GitLab** — Community servers — GitLab integration
+
+**Cloudflare** — `@cloudflare/mcp-server-cloudflare` — Workers, KV, D1, R2
+
+**AWS** — Community servers — S3, Lambda, etc.
+
+### Testing & Automation
+
+**Playwright** — `@anthropic/mcp-server-playwright` — Browser automation and E2E testing
+
+### Documentation & Research
+
+**Context7** — `@context7/mcp-server` — Real-time library docs
+
+**Perplexity** — Community servers — AI-powered search
+
+**Fetch** — `@modelcontextprotocol/server-fetch` — Web content
+
+## Multiple Servers Together
+
+Most projects benefit from several MCP servers working together:
+
+```json
+{
+  "mcpServers": {
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_TOKEN}"
+      }
+    },
+    "postgres": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-postgres"],
+      "env": {
+        "DATABASE_URL": "${DATABASE_URL}",
+        "READ_ONLY": "true"
+      }
+    },
+    "context7": {
+      "command": "npx",
+      "args": ["-y", "@context7/mcp-server"]
+    }
+  }
+}
+```
+
+Claude automatically uses the right server based on your request. Ask about database schema, it uses PostgreSQL. Ask about a PR, it uses GitHub.
+
+## Practical Workflows
+
+### Database-Driven Development
+
+```
+You: "Show me the schema for the orders table"
+
+Claude: [Queries via postgres MCP]
+The orders table has:
+- id (uuid, primary key)
+- user_id (uuid, foreign key → users)
+- total_amount (decimal)
+- status (enum: pending, paid, shipped, delivered)
+- created_at (timestamp)
+
+You: "Find orders over $500 that are still pending"
+
+Claude: [Runs query]
+Found 23 orders matching criteria. The oldest is from 3 days ago...
+```
+
+### Cross-Service Automation
+
+```
+You: "Create a GitHub issue for the bug we discussed, assign it to me"
+
+Claude: [Uses github MCP]
+Created issue #234: "Fix race condition in order processing"
+- Added label: bug, priority-high
+- Assigned to: @yourusername
+- Linked to recent commits mentioning the orders table
+```
+
+### Documentation-Aware Coding
+
+```
+You: "Use context7 to check the correct way to handle optimistic updates in TanStack Query v5"
+
+Claude: [Fetches current docs via context7]
+In TanStack Query v5, optimistic updates use the onMutate callback...
+[Provides accurate, version-specific guidance]
+```
+
+## Troubleshooting
+
+### Server Won't Connect
+
+1. **Check status:** Run `/mcp` to see connection state
+2. **Enable debug mode:** `claude --mcp-debug` for detailed logs
+3. **Verify credentials:** Ensure environment variables are set
+4. **Test manually:** Run the server command directly in terminal
+
+### Windows-Specific Issues
+
+On native Windows (not WSL), npx requires a wrapper:
+
+```json
+{
+  "command": "cmd",
+  "args": ["/c", "npx", "-y", "@modelcontextprotocol/server-github"]
+}
+```
+
+Without `cmd /c`, you'll get "Connection closed" errors.
+
+### Token Limits
+
+MCP outputs have limits to prevent context overflow:
+
+- **Warning threshold:** 10,000 tokens
+- **Default max:** 25,000 tokens
+
+Adjust with `MAX_MCP_OUTPUT_TOKENS` environment variable if needed.
+
+### Server Not Responding
+
+Some servers need time to initialize. If a server shows "failed" immediately after startup, wait a moment and run `/mcp` again.
+
+## Best Practices
+
+### 1. Principle of Least Privilege
+
+Request only necessary permissions:
+
+```json
+{
+  "env": {
+    "READ_ONLY": "true",
+    "ALLOWED_PATHS": "/specific/directory"
+  }
+}
+```
+
+### 2. Environment Variables for Secrets
+
+Never hardcode tokens:
+
+```json
+{
+  "env": {
+    "GITHUB_TOKEN": "${GITHUB_TOKEN}"
+  }
+}
+```
+
+Set variables in your shell profile or `.env` file.
+
+### 3. Project vs User Scope
+
+- **Project scope** (`.mcp.json`): Database connections, project-specific tools
+- **User scope** (`~/.claude/settings.json`): GitHub, personal utilities
+
+### 4. Review Server Code
+
+Before installing any MCP server, check:
+- What commands it can execute
+- What network access it needs
+- Who maintains it
+- Recent activity and issues
+
+## Finding MCP Servers
+
+**Official servers:**
+- [modelcontextprotocol.io/examples](https://modelcontextprotocol.io/examples)
+
+**Community directories:**
+- [mcpservers.org](https://mcpservers.org)
+- [mcpcat.io](https://mcpcat.io)
+- [awesome-mcp-servers](https://github.com/punkpeye/awesome-mcp-servers)
+
+**Search GitHub:**
+- Topic: `mcp-server`
+- Search: `"@modelcontextprotocol"` in package.json
+
+## Quick Reference
+
+```bash
+# CLI commands
+claude mcp add [name] --scope [user|project|local]
+claude mcp list
+claude mcp get [name]
+claude mcp remove [name]
+
+# In-session command
+/mcp                          # Check server status
+
+# Debug mode
+claude --mcp-debug            # Detailed connection logs
+```
+
+**Configuration file (`.mcp.json`):**
+
+```json
+{
+  "mcpServers": {
+    "name": {
+      "command": "npx",
+      "args": ["-y", "@package/server"],
+      "env": {
+        "API_KEY": "${ENV_VAR}"
+      }
+    }
+  }
+}
+```
+
+**File locations:**
+- `.mcp.json` — Project, version-controlled
+- `.claude/settings.local.json` — Project, gitignored
+- `~/.claude/settings.json` — User, all projects
+
+## What's Next
+
+MCP servers extend Claude's reach to external services. Combined with everything we've covered—commands, skills, and subagents—you now have a powerful toolkit for AI-assisted development.
+
+In [Part 8: Production Workflows](/blog/claude-code-mastery-08-production-workflows), we'll put it all together with real-world patterns: CI/CD integration, team collaboration, and workflows that scale from side project to production system.
+
+---
+
+*Previous: [Part 6: Subagents](/blog/claude-code-mastery-06-subagents)*

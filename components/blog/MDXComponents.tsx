@@ -115,8 +115,15 @@ export const MDXComponents = {
   ),
   img: ({ src, alt }: { src?: string; alt?: string }) => (
     <figure className="my-8">
-      <div className="relative aspect-video rounded-xl overflow-hidden border border-white/10">
-        <Image src={src || ''} alt={alt || ''} fill className="object-cover" />
+      <div className="flex justify-center">
+        <Image
+          src={src || ''}
+          alt={alt || ''}
+          width={800}
+          height={600}
+          className="rounded-xl border border-white/10 w-auto h-auto max-w-full"
+          style={{ maxHeight: '500px' }}
+        />
       </div>
       {alt && (
         <figcaption className="text-center text-sm text-neutral-500 mt-3">
