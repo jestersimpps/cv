@@ -22,15 +22,15 @@ const stats = [
 const personalSkills = {
   strengths: {
     label: 'Strengths',
-    skills: ['Analytical mindset', 'Can work autonomously', 'Stubborn problem solver', 'Pro-active'],
+    skills: ['Customer friendly', 'Fast learner', 'Ship fast', 'Can work autonomously', 'Pro-active'],
   },
-  growing: {
-    label: 'Growing',
-    skills: ['Team player', 'Flexible'],
+  workingStyle: {
+    label: 'Working Style',
+    skills: ['Break things', 'Refactor a lot', 'Iterative', 'Fast shipper'],
   },
-  workingOn: {
-    label: 'Working on',
-    skills: ['Customer friendly', 'Public speaking'],
+  weaknesses: {
+    label: 'Honest Weaknesses',
+    skills: ['Loses interest fast', 'Not a good planner', 'Hates repetitive work'],
   },
 };
 
