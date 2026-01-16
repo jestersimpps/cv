@@ -44,8 +44,20 @@ OpenLayers, ag-grid, RxJS, NgRx, Redux, Elasticsearch, Shopify
 fp-ts (functional programming), Monorepo Architecture, Microservices
 
 ## Personal Skills
-Team player, Customer friendly, Analytical mindset, Can work autonomously
-Flexible, No false promises, Pro-active, Stubborn problem solver
+**Strengths:**
+- Customer friendly (excellent communication)
+- Fast learner and fast shipper
+- Can work autonomously
+- Pro-active and stubborn problem solver
+- Analytical mindset
+- Flexible
+
+**Working Style & Honest Weaknesses:**
+- Ships fast, breaks things, refactors often ("move fast and break things" mentality)
+- Loses interest quickly in repetitive/maintenance work
+- Not a good planner (prefers iterative development over detailed upfront planning)
+- Thrives in fast-paced, innovative environments
+- Better at 0-to-1 building than maintaining legacy systems
 
 ## Languages
 - Dutch: Native

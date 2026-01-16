@@ -50,16 +50,45 @@ export default function PersonalInfo() {
         </p>
       </div>
       <div className="mt-6">
-        <h3 className="text-lg font-bold text-neutral-900 dark:text-white mb-2">
+        <h3 className="text-lg font-bold text-neutral-900 dark:text-white mb-4">
           Personal Skills
         </h3>
-        <div className="flex flex-wrap gap-2">
-          {["Team player", "Customer friendly", "Analytical mindset", "Can work autonomously", 
-            "Flexible", "No false promises", "Pro-active", "Stubborn problem solver"].map((skill) => (
-            <span key={skill} className="px-3 py-1.5 bg-white/20 dark:bg-white/10 backdrop-blur-sm text-neutral-700 dark:text-neutral-200 rounded-full text-sm font-semibold border border-white/30 dark:border-white/20 hover:bg-white/30 dark:hover:bg-white/15 hover:shadow-lg hover:scale-105 transition-all">
-              {skill}
-            </span>
-          ))}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {/* Strengths */}
+          <div>
+            <h4 className="text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-2">Strengths</h4>
+            <div className="flex flex-wrap gap-2">
+              {["Customer friendly", "Fast learner", "Fast shipper", "Can work autonomously", "Pro-active"].map((skill) => (
+                <span key={skill} className="px-3 py-1.5 bg-emerald-500/20 dark:bg-emerald-500/10 backdrop-blur-sm text-neutral-700 dark:text-neutral-200 rounded-full text-sm font-semibold border border-emerald-500/30 dark:border-emerald-500/20 hover:bg-emerald-500/30 dark:hover:bg-emerald-500/15 hover:shadow-lg hover:scale-105 transition-all">
+                  {skill}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {/* Working Style */}
+          <div>
+            <h4 className="text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-2">Working Style</h4>
+            <div className="flex flex-wrap gap-2">
+              {["Ship fast", "Break things", "Refactor often", "Iterative development"].map((skill) => (
+                <span key={skill} className="px-3 py-1.5 bg-blue-500/20 dark:bg-blue-500/10 backdrop-blur-sm text-neutral-700 dark:text-neutral-200 rounded-full text-sm font-semibold border border-blue-500/30 dark:border-blue-500/20 hover:bg-blue-500/30 dark:hover:bg-blue-500/15 hover:shadow-lg hover:scale-105 transition-all">
+                  {skill}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {/* Honest Weaknesses */}
+          <div>
+            <h4 className="text-sm font-semibold text-neutral-700 dark:text-neutral-300 mb-2">Honest Weaknesses</h4>
+            <div className="flex flex-wrap gap-2">
+              {["Loses interest fast", "Not a good planner", "Hates repetitive work"].map((skill) => (
+                <span key={skill} className="px-3 py-1.5 bg-orange-500/20 dark:bg-orange-500/10 backdrop-blur-sm text-neutral-700 dark:text-neutral-200 rounded-full text-sm font-semibold border border-orange-500/30 dark:border-orange-500/20 hover:bg-orange-500/30 dark:hover:bg-orange-500/15 hover:shadow-lg hover:scale-105 transition-all">
+                  {skill}
+                </span>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
       <div className="mt-6">
