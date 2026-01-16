@@ -183,7 +183,7 @@ export default function RecruitersPage() {
             {/* Languages */}
             <div className="p-6 bg-white/5 border border-white/10 rounded-2xl">
               <h3 className="text-lg font-semibold text-white mb-4">Languages</h3>
-              <div className="grid grid-cols-2 gap-2">
+              <div className="space-y-2">
                 {[
                   { language: 'Dutch', flag: '🇳🇱', bars: 5 },
                   { language: 'English', flag: '🇬🇧', bars: 5 },
