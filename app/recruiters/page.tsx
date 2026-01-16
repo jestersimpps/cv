@@ -2,7 +2,9 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { CheckCircle2, XCircle, Loader2, Sparkles, ArrowRight } from 'lucide-react';
+import { CheckCircle2, XCircle, Loader2, Sparkles, ArrowRight, Briefcase } from 'lucide-react';
+import GradientOrbs from '@/components/ui/GradientOrbs';
+import DotGrid from '@/components/ui/DotGrid';
 
 interface AssessmentResult {
   isGoodFit: boolean;
@@ -73,20 +75,24 @@ export default function RecruitersPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-black via-neutral-950 to-neutral-900">
-      <div className="max-w-4xl mx-auto px-4 py-20">
+    <div className="min-h-screen bg-gradient-to-b from-black via-neutral-950 to-neutral-900 relative overflow-hidden">
+      <GradientOrbs variant="purple" />
+      <DotGrid dotColor="rgba(255, 255, 255, 0.07)" spacing={32} />
+
+      <div className="max-w-4xl mx-auto px-4 py-20 relative z-10">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="text-center mb-12"
         >
-          <div className="flex items-center justify-center gap-2 mb-4">
-            <Sparkles className="w-6 h-6 text-purple-400" />
-            <h1 className="text-4xl md:text-5xl font-bold text-white">For Recruiters</h1>
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-full mb-6">
+            <Briefcase className="w-4 h-4 text-white" />
+            <span className="text-sm text-neutral-400">AI-Powered Job Assessment</span>
           </div>
-          <p className="text-xl text-neutral-400 max-w-2xl mx-auto">
-            Paste your job description below and our AI will provide an honest assessment of the role fit
+          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">For Recruiters</h1>
+          <p className="text-lg text-neutral-400 max-w-2xl mx-auto">
+            Paste your job description below and my pet AI will provide an honest assessment of the role fit with my profile
           </p>
         </motion.div>
 
@@ -95,22 +101,22 @@ export default function RecruitersPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="mb-8"
+          className="mb-8 p-8 bg-white/5 border border-white/10 rounded-2xl"
         >
-          <label className="block text-sm font-medium text-neutral-300 mb-3">
+          <label className="block text-sm font-medium text-neutral-400 mb-3">
             Job Description
           </label>
           <textarea
             value={jobDescription}
             onChange={(e) => setJobDescription(e.target.value)}
             placeholder="Paste the full job description here, including responsibilities, requirements, and any other relevant details..."
-            className="w-full h-64 px-4 py-3 bg-neutral-900/50 border border-neutral-800 rounded-lg text-white placeholder-neutral-500 focus:outline-none focus:border-purple-500 transition-colors resize-none"
+            className="w-full h-64 px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-neutral-500 focus:outline-none focus:border-white/30 transition-colors resize-none"
             disabled={isAnalyzing}
           />
           <button
             onClick={analyzeJob}
             disabled={!jobDescription.trim() || isAnalyzing}
-            className="mt-4 w-full px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg font-medium hover:from-purple-700 hover:to-blue-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            className="mt-4 w-full px-6 py-3 bg-white text-black rounded-xl font-medium hover:bg-neutral-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
             {isAnalyzing ? (
               <>
@@ -119,8 +125,8 @@ export default function RecruitersPage() {
               </>
             ) : (
               <>
+                <Sparkles className="w-5 h-5" />
                 Analyze Job Fit
-                <ArrowRight className="w-5 h-5" />
               </>
             )}
           </button>
@@ -136,36 +142,40 @@ export default function RecruitersPage() {
               className="mb-8"
             >
               {/* Overall Score */}
-              <div className={`p-6 rounded-lg border-2 mb-6 ${
+              <div className={`p-8 rounded-2xl border-2 mb-6 ${
                 assessment.isGoodFit
-                  ? 'bg-green-950/20 border-green-500/50'
-                  : 'bg-red-950/20 border-red-500/50'
+                  ? 'bg-emerald-950/20 border-emerald-500/30'
+                  : 'bg-orange-950/20 border-orange-500/30'
               }`}>
-                <div className="flex items-center gap-3 mb-4">
+                <div className="flex items-start gap-4 mb-4">
                   {assessment.isGoodFit ? (
-                    <CheckCircle2 className="w-8 h-8 text-green-400" />
+                    <div className="p-3 bg-emerald-500/20 border border-emerald-500/30 rounded-xl">
+                      <CheckCircle2 className="w-6 h-6 text-emerald-400" />
+                    </div>
                   ) : (
-                    <XCircle className="w-8 h-8 text-red-400" />
+                    <div className="p-3 bg-orange-500/20 border border-orange-500/30 rounded-xl">
+                      <XCircle className="w-6 h-6 text-orange-400" />
+                    </div>
                   )}
-                  <div>
-                    <h2 className="text-2xl font-bold text-white">
+                  <div className="flex-1">
+                    <h2 className="text-2xl font-bold text-white mb-1">
                       {assessment.isGoodFit ? 'Great Fit!' : 'Not a Great Fit'}
                     </h2>
-                    <p className="text-sm text-neutral-400">
+                    <p className="text-sm text-neutral-400 mb-3">
                       Match Score: {assessment.score}%
                     </p>
+                    <p className="text-neutral-300 leading-relaxed">{assessment.reasoning}</p>
                   </div>
                 </div>
-                <p className="text-neutral-300">{assessment.reasoning}</p>
               </div>
 
               <div className="grid md:grid-cols-2 gap-6">
                 {/* Strengths */}
-                <div className="bg-neutral-900/50 border border-neutral-800 rounded-lg p-6">
-                  <h3 className="text-lg font-semibold text-green-400 mb-4 flex items-center gap-2">
-                    <CheckCircle2 className="w-5 h-5" />
-                    Strong Alignment
-                  </h3>
+                <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
+                  <div className="flex items-center gap-2 mb-4">
+                    <CheckCircle2 className="w-5 h-5 text-emerald-400" />
+                    <h3 className="text-lg font-semibold text-white">Strong Alignment</h3>
+                  </div>
                   <ul className="space-y-3">
                     {assessment.strengths.map((strength, i) => (
                       <motion.li
@@ -173,10 +183,10 @@ export default function RecruitersPage() {
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: i * 0.1 }}
-                        className="flex items-start gap-2 text-neutral-300"
+                        className="flex items-start gap-3 text-neutral-300"
                       >
-                        <CheckCircle2 className="w-4 h-4 text-green-500 mt-0.5 flex-shrink-0" />
-                        <span>{strength}</span>
+                        <CheckCircle2 className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
+                        <span className="text-sm">{strength}</span>
                       </motion.li>
                     ))}
                   </ul>
@@ -184,11 +194,11 @@ export default function RecruitersPage() {
 
                 {/* Concerns */}
                 {assessment.concerns.length > 0 && (
-                  <div className="bg-neutral-900/50 border border-neutral-800 rounded-lg p-6">
-                    <h3 className="text-lg font-semibold text-orange-400 mb-4 flex items-center gap-2">
-                      <XCircle className="w-5 h-5" />
-                      Potential Concerns
-                    </h3>
+                  <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
+                    <div className="flex items-center gap-2 mb-4">
+                      <XCircle className="w-5 h-5 text-orange-400" />
+                      <h3 className="text-lg font-semibold text-white">Potential Concerns</h3>
+                    </div>
                     <ul className="space-y-3">
                       {assessment.concerns.map((concern, i) => (
                         <motion.li
@@ -196,10 +206,10 @@ export default function RecruitersPage() {
                           initial={{ opacity: 0, x: -20 }}
                           animate={{ opacity: 1, x: 0 }}
                           transition={{ delay: i * 0.1 }}
-                          className="flex items-start gap-2 text-neutral-300"
+                          className="flex items-start gap-3 text-neutral-300"
                         >
                           <XCircle className="w-4 h-4 text-orange-500 mt-0.5 flex-shrink-0" />
-                          <span>{concern}</span>
+                          <span className="text-sm">{concern}</span>
                         </motion.li>
                       ))}
                     </ul>
@@ -217,16 +227,19 @@ export default function RecruitersPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
-              className="bg-gradient-to-br from-purple-950/20 to-blue-950/20 border border-purple-500/30 rounded-lg p-8"
+              className="p-8 bg-white/5 border border-white/10 rounded-2xl"
             >
-              <h2 className="text-2xl font-bold text-white mb-2">Let's Connect!</h2>
+              <div className="flex items-center gap-2 mb-2">
+                <Sparkles className="w-5 h-5 text-white" />
+                <h2 className="text-2xl font-bold text-white">Let&apos;s Connect!</h2>
+              </div>
               <p className="text-neutral-400 mb-6">
-                This looks like a great opportunity. Fill in your details and I'll get back to you soon.
+                This looks like a great opportunity. Fill in your details and I&apos;ll get back to you soon.
               </p>
 
               <form onSubmit={handleContactSubmit} className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-neutral-300 mb-2">
+                  <label className="block text-sm text-neutral-400 mb-2">
                     Your Name
                   </label>
                   <input
@@ -234,13 +247,13 @@ export default function RecruitersPage() {
                     required
                     value={contactData.name}
                     onChange={(e) => setContactData({ ...contactData, name: e.target.value })}
-                    className="w-full px-4 py-2 bg-neutral-900/50 border border-neutral-800 rounded-lg text-white focus:outline-none focus:border-purple-500 transition-colors"
+                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-neutral-500 focus:outline-none focus:border-white/30 transition-colors"
                     placeholder="John Doe"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-neutral-300 mb-2">
+                  <label className="block text-sm text-neutral-400 mb-2">
                     Email
                   </label>
                   <input
@@ -248,13 +261,13 @@ export default function RecruitersPage() {
                     required
                     value={contactData.email}
                     onChange={(e) => setContactData({ ...contactData, email: e.target.value })}
-                    className="w-full px-4 py-2 bg-neutral-900/50 border border-neutral-800 rounded-lg text-white focus:outline-none focus:border-purple-500 transition-colors"
+                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-neutral-500 focus:outline-none focus:border-white/30 transition-colors"
                     placeholder="john@company.com"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-neutral-300 mb-2">
+                  <label className="block text-sm text-neutral-400 mb-2">
                     Company
                   </label>
                   <input
@@ -262,7 +275,7 @@ export default function RecruitersPage() {
                     required
                     value={contactData.company}
                     onChange={(e) => setContactData({ ...contactData, company: e.target.value })}
-                    className="w-full px-4 py-2 bg-neutral-900/50 border border-neutral-800 rounded-lg text-white focus:outline-none focus:border-purple-500 transition-colors"
+                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-neutral-500 focus:outline-none focus:border-white/30 transition-colors"
                     placeholder="Acme Inc."
                   />
                 </div>
@@ -270,7 +283,7 @@ export default function RecruitersPage() {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg font-medium hover:from-purple-700 hover:to-blue-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                  className="w-full px-6 py-3 bg-white text-black rounded-xl font-medium hover:bg-neutral-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 >
                   {isSubmitting ? (
                     <>
@@ -278,7 +291,10 @@ export default function RecruitersPage() {
                       Sending...
                     </>
                   ) : (
-                    'Send Message'
+                    <>
+                      Send Message
+                      <ArrowRight className="w-4 h-4" />
+                    </>
                   )}
                 </button>
               </form>
@@ -292,12 +308,14 @@ export default function RecruitersPage() {
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="bg-green-950/20 border border-green-500/50 rounded-lg p-8 text-center"
+              className="p-8 bg-emerald-950/20 border border-emerald-500/30 rounded-2xl text-center"
             >
-              <CheckCircle2 className="w-16 h-16 text-green-400 mx-auto mb-4" />
+              <div className="p-4 bg-emerald-500/20 border border-emerald-500/30 rounded-xl w-fit mx-auto mb-4">
+                <CheckCircle2 className="w-12 h-12 text-emerald-400" />
+              </div>
               <h2 className="text-2xl font-bold text-white mb-2">Message Sent!</h2>
               <p className="text-neutral-300">
-                Thanks for reaching out. I'll review the opportunity and get back to you within 24-48 hours.
+                Thanks for reaching out. I&apos;ll review the opportunity and get back to you within 24-48 hours.
               </p>
             </motion.div>
           )}
