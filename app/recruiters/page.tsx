@@ -38,14 +38,35 @@ export default function RecruitersPage() {
         body: JSON.stringify({ jobDescription }),
       });
 
-      const data = await response.json();
-      setAssessment(data);
+      if (!response.ok) {
+        throw new Error('Failed to analyze job');
+      }
 
-      if (data.isGoodFit) {
+      const data = await response.json();
+
+      // Ensure data has the required structure
+      const assessment: AssessmentResult = {
+        isGoodFit: data.isGoodFit ?? false,
+        score: data.score ?? 0,
+        strengths: Array.isArray(data.strengths) ? data.strengths : [],
+        concerns: Array.isArray(data.concerns) ? data.concerns : [],
+        reasoning: data.reasoning ?? 'Unable to assess the job fit.',
+      };
+
+      setAssessment(assessment);
+
+      if (assessment.isGoodFit) {
         setTimeout(() => setShowContactForm(true), 1500);
       }
     } catch (error) {
       console.error('Error analyzing job:', error);
+      setAssessment({
+        isGoodFit: false,
+        score: 0,
+        strengths: [],
+        concerns: ['Unable to analyze the job description. Please try again.'],
+        reasoning: 'An error occurred while analyzing the job description.',
+      });
     } finally {
       setIsAnalyzing(false);
     }
@@ -187,29 +208,31 @@ export default function RecruitersPage() {
 
               <div className="grid md:grid-cols-2 gap-6">
                 {/* Strengths */}
-                <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
-                  <div className="flex items-center gap-2 mb-4">
-                    <CheckCircle2 className="w-5 h-5 text-emerald-400" />
-                    <h3 className="text-lg font-semibold text-white">Strong Alignment</h3>
+                {assessment.strengths && assessment.strengths.length > 0 && (
+                  <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
+                    <div className="flex items-center gap-2 mb-4">
+                      <CheckCircle2 className="w-5 h-5 text-emerald-400" />
+                      <h3 className="text-lg font-semibold text-white">Strong Alignment</h3>
+                    </div>
+                    <ul className="space-y-3">
+                      {assessment.strengths.map((strength, i) => (
+                        <motion.li
+                          key={i}
+                          initial={{ opacity: 0, x: -20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: i * 0.1 }}
+                          className="flex items-start gap-3 text-neutral-300"
+                        >
+                          <CheckCircle2 className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
+                          <span className="text-sm">{strength}</span>
+                        </motion.li>
+                      ))}
+                    </ul>
                   </div>
-                  <ul className="space-y-3">
-                    {assessment.strengths.map((strength, i) => (
-                      <motion.li
-                        key={i}
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: i * 0.1 }}
-                        className="flex items-start gap-3 text-neutral-300"
-                      >
-                        <CheckCircle2 className="w-4 h-4 text-emerald-500 mt-0.5 flex-shrink-0" />
-                        <span className="text-sm">{strength}</span>
-                      </motion.li>
-                    ))}
-                  </ul>
-                </div>
+                )}
 
                 {/* Concerns */}
-                {assessment.concerns.length > 0 && (
+                {assessment.concerns && assessment.concerns.length > 0 && (
                   <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
                     <div className="flex items-center gap-2 mb-4">
                       <XCircle className="w-5 h-5 text-orange-400" />
