@@ -296,15 +296,23 @@ your-project/
 
 **Key differences between modes:**
 
-| Aspect | Planning Mode | Building Mode |
-|--------|--------------|---------------|
-| Prompt file | `PROMPT_plan.md` | `PROMPT_build.md` |
-| Goal | Analyze & plan | Implement & test |
-| Makes commits? | ❌ No | ✅ Yes |
-| Writes code? | ❌ No | ✅ Yes |
-| Runs tests? | ❌ No | ✅ Yes |
-| Updates plan? | ✅ Creates/overwrites | ✅ Marks tasks complete |
-| Typical iterations | 1-5 | 20-100+ |
+**Planning Mode:**
+- Prompt file: `PROMPT_plan.md`
+- Goal: Analyze & plan
+- Makes commits? No
+- Writes code? No
+- Runs tests? No
+- Updates plan? Yes (creates/overwrites)
+- Typical iterations: 1-5
+
+**Building Mode:**
+- Prompt file: `PROMPT_build.md`
+- Goal: Implement & test
+- Makes commits? Yes
+- Writes code? Yes
+- Runs tests? Yes
+- Updates plan? Yes (marks tasks complete)
+- Typical iterations: 20-100+
 
 ## Setting Up PRDs for Ralph
 
