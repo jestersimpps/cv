@@ -82,13 +82,6 @@ export const projects: Project[] = [
     description: "Language learning iOS app built with Swift and SwiftUI"
   },
   {
-    title: "Senior Frontend Developer",
-    company: "AWV",
-    thumbnail: "/assets/projects/awv.png",
-    link: "https://wegenenverkeer.be",
-    description: "Migrated Angular applications into monorepo architecture"
-  },
-  {
     title: "NFT Creator",
     company: "Amphibiminions",
     thumbnail: "/assets/projects/amphibiminions.jpg",
@@ -114,13 +107,6 @@ export const projects: Project[] = [
     thumbnail: "/assets/projects/forex-utils-1.jpg",
     link: "https://crypto-forex-utils.com",
     description: "Forex/crypto insights platform for trading groups"
-  },
-  {
-    title: "Frontend Architect",
-    company: "Fednot",
-    thumbnail: "/assets/projects/fednot.png",
-    link: "https://www.fednot.be",
-    description: "Managing architecture for 8 apps using monorepo approach"
   },
   {
     title: "Founder",
@@ -161,5 +147,19 @@ export const projects: Project[] = [
     company: "Altcoinsniper",
     thumbnail: "/assets/projects/altcoinsniper-1.jpg",
     description: "Trading platform for altcoins with automatic tradebots"
+  },
+  {
+    title: "Senior Frontend Developer",
+    company: "AWV",
+    thumbnail: "/assets/projects/awv.png",
+    link: "https://wegenenverkeer.be",
+    description: "Migrated Angular applications into monorepo architecture"
+  },
+  {
+    title: "Frontend Architect",
+    company: "Fednot",
+    thumbnail: "/assets/projects/fednot.png",
+    link: "https://www.fednot.be",
+    description: "Managing architecture for 8 apps using monorepo approach"
   }
 ];
