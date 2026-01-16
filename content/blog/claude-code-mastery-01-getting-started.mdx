@@ -137,6 +137,19 @@ Opens a REPL session where you have a back-and-forth conversation. Claude mainta
 - Code reviews and refactoring
 - Exploring unfamiliar codebases
 
+#### Plan Mode (Think Before Acting)
+
+Press `Shift+Tab` twice before sending your message to enter Plan Mode. In this read-only state, Claude can explore your codebase, research approaches, and propose solutions—but can't modify any files.
+
+**Use this for:**
+
+- Architectural decisions before implementation
+- Understanding unfamiliar code
+- Evaluating different approaches to a problem
+- Complex refactoring where you want to see the plan first
+
+Plan Mode is covered in depth in [Part 2: The Mental Model](/blog/claude-code-mastery-02-mental-model#plan-mode-think-before-acting).
+
 ### One-Shot Mode (Quick Questions)
 
 ```bash
@@ -150,19 +163,6 @@ Runs a single command and exits. No interactive session, just question → answe
 - Quick lookups: `claude -p "what does the auth middleware do?"`
 - Automated scripts: `claude -p "list all TODO comments" >> todos.txt`
 - CI/CD pipelines: `claude -p "generate changelog from recent commits"`
-
-### Plan Mode (Think Before Acting)
-
-Press `Shift+Tab` twice before sending your message to enter Plan Mode. In this read-only state, Claude can explore your codebase, research approaches, and propose solutions—but can't modify any files.
-
-**Use this for:**
-
-- Architectural decisions before implementation
-- Understanding unfamiliar code
-- Evaluating different approaches to a problem
-- Complex refactoring where you want to see the plan first
-
-Plan Mode is covered in depth in [Part 2: The Mental Model](/blog/claude-code-mastery-02-mental-model#plan-mode-think-before-acting).
 
 ## Essential Commands
 
@@ -250,6 +250,8 @@ Your options:
 - **`a`** - Always allow this type of action (no more prompts for similar operations)
 
 **My recommendation:** Start with `y` for everything until you understand Claude's behavior patterns. Once you trust it for certain operations (like editing test files), switch to `a` to speed up your workflow.
+
+> **Advanced permissions:** For fine-grained control with allow/deny lists, automated hooks, and team-wide permission policies, see [Settings Configuration in Part 3](/blog/claude-code-mastery-03-project-configuration#settingsjson-permissions-and-automation).
 
 ## IDE Integration
 
