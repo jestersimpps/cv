@@ -94,7 +94,7 @@ const Header = ({
           href="/recruiters"
           className="px-8 py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-full font-medium hover:from-purple-700 hover:to-blue-700 transition-all shadow-lg hover:shadow-purple-500/50"
         >
-          For Recruiters
+          Recruiters click here
         </Link>
         <Link
           href="/blog"

@@ -19,15 +19,20 @@ const stats = [
   { value: '10+', label: 'Technologies' },
 ];
 
-const personalSkills = [
-  'Team player',
-  'Customer friendly',
-  'Analytical mindset',
-  'Can work autonomously',
-  'Flexible',
-  'Pro-active',
-  'Stubborn problem solver',
-];
+const personalSkills = {
+  strengths: {
+    label: 'Strengths',
+    skills: ['Analytical mindset', 'Can work autonomously', 'Stubborn problem solver', 'Pro-active'],
+  },
+  growing: {
+    label: 'Growing',
+    skills: ['Team player', 'Flexible'],
+  },
+  workingOn: {
+    label: 'Working on',
+    skills: ['Customer friendly', 'Public speaking'],
+  },
+};
 
 const languages = [
   { language: 'Dutch', flag: '🇳🇱', level: 'Native', bars: 5 },
@@ -81,14 +86,23 @@ export default function AboutSection() {
                 Web3/blockchain technologies and AI integrations.
               </p>
 
-              <div className="flex flex-wrap gap-2">
-                {personalSkills.map((skill) => (
-                  <span
-                    key={skill}
-                    className="px-3 py-1.5 bg-white/5 border border-white/10 rounded-full text-sm text-neutral-300 hover:bg-white/10 transition-colors"
-                  >
-                    {skill}
-                  </span>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {Object.entries(personalSkills).map(([key, category]) => (
+                  <div key={key} className="space-y-2">
+                    <h4 className="text-xs font-semibold text-neutral-500 uppercase tracking-wider">
+                      {category.label}
+                    </h4>
+                    <div className="flex flex-wrap gap-2">
+                      {category.skills.map((skill) => (
+                        <span
+                          key={skill}
+                          className="px-3 py-1.5 bg-white/5 border border-white/10 rounded-full text-sm text-neutral-300 hover:bg-white/10 transition-colors"
+                        >
+                          {skill}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
                 ))}
               </div>
 
