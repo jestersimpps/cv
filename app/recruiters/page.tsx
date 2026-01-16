@@ -2,10 +2,10 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { CheckCircle2, XCircle, Loader2, Sparkles, ArrowRight, Briefcase, Home, Download } from 'lucide-react';
+import { CheckCircle2, XCircle, Loader2, Sparkles, ArrowRight, Briefcase, Home, Download, ChevronDown } from 'lucide-react';
 import Link from 'next/link';
 import GradientOrbs from '@/components/ui/GradientOrbs';
-import DotGrid from '@/components/ui/DotGrid';
+import GridLines from '@/components/ui/GridLines';
 import { exportToMarkdown } from '@/lib/cvData';
 import AIChatBubble from '@/components/AIChatBubble';
 
@@ -15,6 +15,7 @@ interface AssessmentResult {
   strengths: string[];
   concerns: string[];
   reasoning: string;
+  connectionTitle?: string;
 }
 
 export default function RecruitersPage() {
@@ -22,9 +23,11 @@ export default function RecruitersPage() {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [assessment, setAssessment] = useState<AssessmentResult | null>(null);
   const [showContactForm, setShowContactForm] = useState(false);
-  const [contactData, setContactData] = useState({ name: '', email: '', company: '' });
+  const [contactData, setContactData] = useState({ name: '', email: '', companyWebsite: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [showSkills, setShowSkills] = useState(false);
+  const [showEducation, setShowEducation] = useState(false);
 
   const handleDownload = () => {
     const markdown = exportToMarkdown();
@@ -66,6 +69,7 @@ export default function RecruitersPage() {
         strengths: Array.isArray(data.strengths) ? data.strengths : [],
         concerns: Array.isArray(data.concerns) ? data.concerns : [],
         reasoning: data.reasoning ?? 'Unable to assess the job fit.',
+        connectionTitle: data.connectionTitle ?? "Let's Connect!",
       };
 
       setAssessment(assessment);
@@ -96,10 +100,11 @@ export default function RecruitersPage() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
+          source: 'jovinkenroye-recruiters',
           name: contactData.name,
           email: contactData.email,
-          message: `Company: ${contactData.company}\n\nJob Description:\n${jobDescription}`,
-          subject: `Recruiter Contact from ${contactData.company}`,
+          message: `Company Website: ${contactData.companyWebsite}\n\nJob Description:\n${jobDescription}`,
+          subject: `Recruiter Contact from ${contactData.companyWebsite}`,
         }),
       });
 
@@ -114,7 +119,7 @@ export default function RecruitersPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-black via-neutral-950 to-neutral-900 relative overflow-hidden">
       <GradientOrbs variant="purple" />
-      <DotGrid dotColor="rgba(255, 255, 255, 0.07)" spacing={32} />
+      <GridLines />
 
       <div className="max-w-4xl mx-auto px-4 py-20 relative z-10">
         {/* Back Button */}
@@ -138,7 +143,7 @@ export default function RecruitersPage() {
           </div>
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">For Recruiters</h1>
           <p className="text-lg text-neutral-400 max-w-2xl mx-auto mb-6">
-            Paste your job description below and my pet AI will provide an honest assessment of the role fit with my profile
+            Paste your job description below and receive an instant AI-powered assessment of how well the role aligns with my profile and experience
           </p>
           <button
             onClick={handleDownload}
@@ -149,132 +154,63 @@ export default function RecruitersPage() {
           </button>
         </motion.div>
 
-        {/* About Me - Personal Skills */}
+        {/* Quick Stats + Languages Combined */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="mb-12 p-8 bg-white/5 border border-white/10 rounded-2xl"
-        >
-          <h2 className="text-2xl font-bold text-white mb-6">About Me</h2>
-          <p className="text-neutral-300 mb-6">
-            Over 13 years of experience building ERP, SaaS applications and web platforms.
-            Specializing in TypeScript-first architectures with Angular/Next.js/NestJS and exploring Web3/blockchain technologies and AI integrations.
-          </p>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {/* Strengths */}
-            <div>
-              <h3 className="text-sm font-semibold text-emerald-400 mb-3">Strengths</h3>
-              <div className="flex flex-wrap gap-2">
-                {['Customer friendly', 'Fast learner', 'Ship fast', 'Can work autonomously', 'Pro-active', 'Love to automate my work', 'Thinks out of the box'].map((skill) => (
-                  <span
-                    key={skill}
-                    className="px-3 py-1.5 bg-emerald-500/10 border border-emerald-500/20 rounded-full text-sm text-neutral-300"
-                  >
-                    {skill}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            {/* Working Style */}
-            <div>
-              <h3 className="text-sm font-semibold text-blue-400 mb-3">Working Style</h3>
-              <div className="flex flex-wrap gap-2">
-                {['Break things', 'Continuously improves code', 'Iterative', 'Fast shipper'].map((skill) => (
-                  <span
-                    key={skill}
-                    className="px-3 py-1.5 bg-blue-500/10 border border-blue-500/20 rounded-full text-sm text-neutral-300"
-                  >
-                    {skill}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            {/* Honest Weaknesses */}
-            <div>
-              <h3 className="text-sm font-semibold text-orange-400 mb-3">Honest Weaknesses</h3>
-              <div className="flex flex-wrap gap-2">
-                {['Loses interest fast', 'Not a good planner', 'Hates repetitive work'].map((skill) => (
-                  <span
-                    key={skill}
-                    className="px-3 py-1.5 bg-orange-500/10 border border-orange-500/20 rounded-full text-sm text-neutral-300"
-                  >
-                    {skill}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Quick Stats */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
           className="mb-12"
         >
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {[
-              { value: '13+', label: 'Years Experience' },
-              { value: '45+', label: 'Projects Completed' },
-              { value: '6', label: 'Languages Spoken' },
-              { value: '10+', label: 'Technologies' },
-            ].map((stat, index) => (
-              <motion.div
-                key={stat.label}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.3 + index * 0.1 }}
-                className="p-5 bg-white/5 border border-white/10 rounded-2xl text-center hover:bg-white/[0.07] transition-colors"
-              >
-                <div className="text-3xl font-bold text-white mb-1">{stat.value}</div>
-                <div className="text-neutral-500 text-xs">{stat.label}</div>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
-
-        {/* Languages */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.35 }}
-          className="mb-12 p-8 bg-white/5 border border-white/10 rounded-2xl"
-        >
-          <h2 className="text-2xl font-bold text-white mb-6">Languages</h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-            {[
-              { language: 'Dutch', flag: '🇳🇱', level: 'Native', bars: 5 },
-              { language: 'English', flag: '🇬🇧', level: 'Fluent', bars: 5 },
-              { language: 'French', flag: '🇫🇷', level: 'Good', bars: 4 },
-              { language: 'Spanish', flag: '🇪🇸', level: 'Conversational', bars: 3 },
-              { language: 'German', flag: '🇩🇪', level: 'Basic', bars: 2 },
-              { language: 'Chinese', flag: '🇨🇳', level: 'Basic', bars: 1 },
-            ].map((lang) => (
-              <div key={lang.language} className="flex items-center justify-between p-3 bg-white/5 border border-white/10 rounded-xl">
-                <div className="flex items-center gap-2">
-                  <span className="text-xl">{lang.flag}</span>
-                  <div>
-                    <span className="text-neutral-300 text-sm block">{lang.language}</span>
-                    <span className="text-neutral-500 text-xs">{lang.level}</span>
+          <div className="grid lg:grid-cols-2 gap-6">
+            {/* Quick Stats */}
+            <div className="p-6 bg-white/5 border border-white/10 rounded-2xl">
+              <h3 className="text-lg font-semibold text-white mb-4">Quick Stats</h3>
+              <div className="grid grid-cols-2 gap-3">
+                {[
+                  { value: '13+', label: 'Years' },
+                  { value: '45+', label: 'Projects' },
+                  { value: '6', label: 'Languages' },
+                  { value: '10+', label: 'Tech' },
+                ].map((stat) => (
+                  <div key={stat.label} className="p-4 bg-white/5 border border-white/10 rounded-xl text-center">
+                    <div className="text-2xl font-bold text-white mb-1">{stat.value}</div>
+                    <div className="text-neutral-500 text-xs">{stat.label}</div>
                   </div>
-                </div>
-                <div className="flex gap-1">
-                  {[...Array(5)].map((_, i) => (
-                    <div
-                      key={i}
-                      className={`w-1.5 h-1.5 rounded-full ${
-                        i < lang.bars ? 'bg-emerald-500' : 'bg-white/20'
-                      }`}
-                    />
-                  ))}
-                </div>
+                ))}
               </div>
-            ))}
+            </div>
+
+            {/* Languages */}
+            <div className="p-6 bg-white/5 border border-white/10 rounded-2xl">
+              <h3 className="text-lg font-semibold text-white mb-4">Languages</h3>
+              <div className="grid grid-cols-2 gap-2">
+                {[
+                  { language: 'Dutch', flag: '🇳🇱', bars: 5 },
+                  { language: 'English', flag: '🇬🇧', bars: 5 },
+                  { language: 'French', flag: '🇫🇷', bars: 4 },
+                  { language: 'Spanish', flag: '🇪🇸', bars: 3 },
+                  { language: 'German', flag: '🇩🇪', bars: 2 },
+                  { language: 'Chinese', flag: '🇨🇳', bars: 1 },
+                ].map((lang) => (
+                  <div key={lang.language} className="flex items-center justify-between">
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-base">{lang.flag}</span>
+                      <span className="text-neutral-300 text-xs">{lang.language}</span>
+                    </div>
+                    <div className="flex gap-0.5">
+                      {[...Array(5)].map((_, i) => (
+                        <div
+                          key={i}
+                          className={`w-1 h-1 rounded-full ${
+                            i < lang.bars ? 'bg-emerald-500' : 'bg-white/20'
+                          }`}
+                        />
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </motion.div>
 
@@ -339,154 +275,52 @@ export default function RecruitersPage() {
           </div>
         </motion.div>
 
-        {/* Skills & Technologies */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5 }}
-          className="mb-12 p-8 bg-white/5 border border-white/10 rounded-2xl"
-        >
-          <h2 className="text-2xl font-bold text-white mb-6">Skills & Technologies</h2>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              { category: 'Frontend', skills: ['React', 'Next.js', 'Angular', 'Vue.js', 'TypeScript', 'Tailwind CSS'] },
-              { category: 'Backend', skills: ['Node.js', 'NestJS', 'Express', 'Python', 'Django', 'GraphQL'] },
-              { category: 'Database', skills: ['PostgreSQL', 'MongoDB', 'Redis', 'Supabase', 'Firebase', 'Convex'] },
-              { category: 'AI & ML', skills: ['OpenAI', 'Claude', 'Gemini', 'LangChain', 'Groq', 'DeepL'] },
-              { category: 'Web3 & Blockchain', skills: ['Solidity', 'Ethereum', 'Hyperledger', 'IPFS', 'Smart Contracts', 'NFTs'] },
-              { category: 'DevOps', skills: ['Docker', 'AWS', 'Vercel', 'DigitalOcean', 'CI/CD', 'Nginx'] },
-              { category: 'Mobile', skills: ['Swift', 'SwiftUI', 'Ionic', 'React Native'] },
-              { category: 'AI-Assisted Development', skills: ['Claude Code', 'AI Agents', 'MCPs', 'Multi-Agent Architecture'] },
-            ].map((category) => (
-              <div key={category.category} className="p-4 bg-white/5 border border-white/10 rounded-xl">
-                <h3 className="text-sm font-semibold text-white mb-3">{category.category}</h3>
-                <div className="flex flex-wrap gap-2">
-                  {category.skills.map((skill) => (
-                    <span
-                      key={skill}
-                      className="px-2 py-1 bg-white/5 border border-white/10 rounded-full text-xs text-neutral-300"
-                    >
-                      {skill}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </motion.div>
-
-        {/* Education & Certifications */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6 }}
-          className="mb-12 p-8 bg-white/5 border border-white/10 rounded-2xl"
-        >
-          <h2 className="text-2xl font-bold text-white mb-6">Education & Certifications</h2>
-
-          <div className="grid md:grid-cols-2 gap-6">
-            {[
-              {
-                degree: 'Blockchain Developer - Foundry Full Course',
-                institution: 'Cyfrin Updraft',
-                period: '2025',
-                achievements: ['Comprehensive blockchain development course', 'Solidity, Foundry, smart contract security, and DeFi protocols'],
-                link: 'https://www.cyfrin.io/',
-              },
-              {
-                degree: 'Web3 Solidity Bootcamp',
-                institution: 'Metana',
-                period: '2024',
-                achievements: ['4-month program for transition from Web2 to Web3', 'Ethereum Blockchain, DeFi, and smart contracts'],
-                link: 'https://metana.io/web3-solidity-bootcamp-ethereum-blockchain/',
-              },
-              {
-                degree: 'Self-Taught Web Developer',
-                institution: 'TheNewBoston',
-                period: '2011',
-                achievements: ['Self-taught Angular, HTML, CSS fundamentals', 'Foundation for 13+ years of web development career'],
-                link: 'https://www.youtube.com/@thenewboston/playlists',
-              },
-              {
-                degree: 'Master of Science in Business Engineering',
-                institution: 'Hogeschool-Universiteit Brussel',
-                period: '2008 - 2013',
-                achievements: ["Two year Master's programme taught in English", '120 ECTS spread over two years'],
-              },
-            ].map((edu) => (
-              <div key={edu.degree} className="p-5 bg-white/5 border border-white/10 rounded-xl">
-                <div className="flex items-start justify-between mb-3">
-                  <h3 className="text-base font-semibold text-white pr-2">{edu.degree}</h3>
-                  {edu.link && (
-                    <a
-                      href={edu.link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="p-1 hover:bg-white/10 rounded-lg transition-colors flex-shrink-0"
-                    >
-                      <ArrowRight className="w-4 h-4 text-neutral-400 rotate-[-45deg]" />
-                    </a>
-                  )}
-                </div>
-                <p className="text-sm text-neutral-400 mb-1">{edu.institution}</p>
-                <p className="text-xs text-neutral-500 mb-3">{edu.period}</p>
-                <ul className="space-y-1">
-                  {edu.achievements.map((achievement, i) => (
-                    <li key={i} className="flex items-start gap-2 text-neutral-300 text-xs">
-                      <span className="w-1 h-1 bg-white/50 rounded-full mt-1.5 flex-shrink-0" />
-                      {achievement}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-
-          <div className="mt-6 p-5 bg-white/5 border border-white/10 rounded-xl text-center">
-            <h3 className="text-sm font-semibold text-white mb-3">Certifications</h3>
-            <div className="text-neutral-300 text-sm">
-              ITIL v3 Foundation
-              <span className="text-neutral-500 text-xs block">AXELOS</span>
-            </div>
-          </div>
-        </motion.div>
+        {/* Section Separator */}
+        <div className="my-12 border-t border-white/10"></div>
 
         {/* Job Description Input */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.7 }}
-          className="mb-8 p-8 bg-white/5 border border-white/10 rounded-2xl"
-        >
-          <label className="block text-sm font-medium text-neutral-400 mb-3">
-            Job Description
-          </label>
-          <textarea
-            value={jobDescription}
-            onChange={(e) => setJobDescription(e.target.value)}
-            placeholder="Paste the full job description here, including responsibilities, requirements, and any other relevant details..."
-            className="w-full h-64 px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-neutral-500 focus:outline-none focus:border-white/30 transition-colors resize-none"
-            disabled={isAnalyzing}
-          />
-          <button
-            onClick={analyzeJob}
-            disabled={!jobDescription.trim() || isAnalyzing}
-            className="mt-4 w-full px-6 py-3 bg-white text-black rounded-xl font-medium hover:bg-neutral-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+        {!assessment && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            className="mb-8"
           >
-            {isAnalyzing ? (
-              <>
-                <Loader2 className="w-5 h-5 animate-spin" />
-                Analyzing with AI...
-              </>
-            ) : (
-              <>
-                <Sparkles className="w-5 h-5" />
-                Analyze Job Fit
-              </>
-            )}
-          </button>
-        </motion.div>
+            <h2 className="text-2xl font-bold text-white mb-4">Ready to Assess Job Fit?</h2>
+            <p className="text-neutral-400 mb-6">
+              Paste your job description below and get an instant AI-powered assessment of how well it aligns with my profile.
+            </p>
+            <div className="p-8 bg-white/5 border border-white/10 rounded-2xl">
+              <label className="block text-sm font-medium text-neutral-400 mb-3">
+                Job Description
+              </label>
+              <textarea
+                value={jobDescription}
+                onChange={(e) => setJobDescription(e.target.value)}
+                placeholder="Paste the full job description here, including responsibilities, requirements, and any other relevant details..."
+                className="w-full h-64 px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-neutral-500 focus:outline-none focus:border-white/30 transition-colors resize-none"
+                disabled={isAnalyzing}
+              />
+              <button
+                onClick={analyzeJob}
+                disabled={!jobDescription.trim() || isAnalyzing}
+                className="mt-4 w-full px-6 py-3 bg-white text-black rounded-xl font-medium hover:bg-neutral-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              >
+                {isAnalyzing ? (
+                  <>
+                    <Loader2 className="w-5 h-5 animate-spin" />
+                    Analyzing with AI...
+                  </>
+                ) : (
+                  <>
+                    <Sparkles className="w-5 h-5" />
+                    Analyze Job Fit
+                  </>
+                )}
+              </button>
+            </div>
+          </motion.div>
+        )}
 
         {/* Assessment Results */}
         <AnimatePresence>
@@ -574,6 +408,19 @@ export default function RecruitersPage() {
                   </div>
                 )}
               </div>
+
+              {/* Reset Button */}
+              <button
+                onClick={() => {
+                  setAssessment(null);
+                  setJobDescription('');
+                  setShowContactForm(false);
+                }}
+                className="mt-6 px-6 py-3 bg-white/5 border border-white/10 text-white rounded-xl font-medium hover:bg-white/10 transition-colors flex items-center justify-center gap-2 mx-auto"
+              >
+                <Sparkles className="w-4 h-4" />
+                Try Another Job
+              </button>
             </motion.div>
           )}
         </AnimatePresence>
@@ -585,11 +432,11 @@ export default function RecruitersPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
-              className="p-8 bg-white/5 border border-white/10 rounded-2xl"
+              className="mb-8 p-8 bg-white/5 border border-white/10 rounded-2xl"
             >
               <div className="flex items-center gap-2 mb-2">
                 <Sparkles className="w-5 h-5 text-white" />
-                <h2 className="text-2xl font-bold text-white">Let&apos;s Connect!</h2>
+                <h2 className="text-2xl font-bold text-white">{assessment?.connectionTitle || "Let's Connect!"}</h2>
               </div>
               <p className="text-neutral-400 mb-6">
                 This looks like a great opportunity. Fill in your details and I&apos;ll get back to you soon.
@@ -626,15 +473,15 @@ export default function RecruitersPage() {
 
                 <div>
                   <label className="block text-sm text-neutral-400 mb-2">
-                    Company
+                    Company Website
                   </label>
                   <input
-                    type="text"
+                    type="url"
                     required
-                    value={contactData.company}
-                    onChange={(e) => setContactData({ ...contactData, company: e.target.value })}
+                    value={contactData.companyWebsite}
+                    onChange={(e) => setContactData({ ...contactData, companyWebsite: e.target.value })}
                     className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-neutral-500 focus:outline-none focus:border-white/30 transition-colors"
-                    placeholder="Acme Inc."
+                    placeholder="https://company.com"
                   />
                 </div>
 
@@ -666,7 +513,7 @@ export default function RecruitersPage() {
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
-              className="p-8 bg-emerald-950/20 border border-emerald-500/30 rounded-2xl text-center"
+              className="mb-8 p-8 bg-emerald-950/20 border border-emerald-500/30 rounded-2xl text-center"
             >
               <div className="p-4 bg-emerald-500/20 border border-emerald-500/30 rounded-xl w-fit mx-auto mb-4">
                 <CheckCircle2 className="w-12 h-12 text-emerald-400" />
@@ -678,6 +525,159 @@ export default function RecruitersPage() {
             </motion.div>
           )}
         </AnimatePresence>
+
+        {/* Skills & Technologies */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.5 }}
+          className="mb-12"
+        >
+          <button
+            onClick={() => setShowSkills(!showSkills)}
+            className="w-full p-6 bg-white/5 border border-white/10 rounded-2xl hover:bg-white/10 transition-colors flex items-center justify-between"
+          >
+            <h2 className="text-xl font-bold text-white">Skills & Technologies</h2>
+            <ChevronDown className={`w-5 h-5 text-white transition-transform ${showSkills ? 'rotate-180' : ''}`} />
+          </button>
+
+          <AnimatePresence>
+            {showSkills && (
+              <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: 'auto', opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ duration: 0.3 }}
+                className="overflow-hidden"
+              >
+                <div className="mt-4 p-8 bg-white/5 border border-white/10 rounded-2xl">
+                  <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[
+              { category: 'Frontend', skills: ['React', 'Next.js', 'Angular', 'Vue.js', 'TypeScript', 'Tailwind CSS'] },
+              { category: 'Backend', skills: ['Node.js', 'NestJS', 'Express', 'Python', 'Django', 'GraphQL'] },
+              { category: 'Database', skills: ['PostgreSQL', 'MongoDB', 'Redis', 'Supabase', 'Firebase', 'Convex'] },
+              { category: 'AI & ML', skills: ['OpenAI', 'Claude', 'Gemini', 'LangChain', 'Groq', 'DeepL'] },
+              { category: 'Web3 & Blockchain', skills: ['Solidity', 'Ethereum', 'Hyperledger', 'IPFS', 'Smart Contracts', 'NFTs'] },
+              { category: 'DevOps', skills: ['Docker', 'AWS', 'Vercel', 'DigitalOcean', 'CI/CD', 'Nginx'] },
+              { category: 'Mobile', skills: ['Swift', 'SwiftUI', 'Ionic', 'React Native'] },
+              { category: 'AI-Assisted Development', skills: ['Claude Code', 'AI Agents', 'MCPs', 'Multi-Agent Architecture'] },
+            ].map((category) => (
+              <div key={category.category} className="p-4 bg-white/5 border border-white/10 rounded-xl">
+                <h3 className="text-sm font-semibold text-white mb-3">{category.category}</h3>
+                <div className="flex flex-wrap gap-2">
+                  {category.skills.map((skill) => (
+                    <span
+                      key={skill}
+                      className="px-2 py-1 bg-white/5 border border-white/10 rounded-full text-xs text-neutral-300"
+                    >
+                      {skill}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            ))}
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </motion.div>
+
+        {/* Education & Certifications */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6 }}
+          className="mb-12"
+        >
+          <button
+            onClick={() => setShowEducation(!showEducation)}
+            className="w-full p-6 bg-white/5 border border-white/10 rounded-2xl hover:bg-white/10 transition-colors flex items-center justify-between"
+          >
+            <h2 className="text-xl font-bold text-white">Education & Certifications</h2>
+            <ChevronDown className={`w-5 h-5 text-white transition-transform ${showEducation ? 'rotate-180' : ''}`} />
+          </button>
+
+          <AnimatePresence>
+            {showEducation && (
+              <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: 'auto', opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                transition={{ duration: 0.3 }}
+                className="overflow-hidden"
+              >
+                <div className="mt-4 p-8 bg-white/5 border border-white/10 rounded-2xl">
+                  <div className="grid md:grid-cols-2 gap-6">
+            {[
+              {
+                degree: 'Blockchain Developer - Foundry Full Course',
+                institution: 'Cyfrin Updraft',
+                period: '2025',
+                achievements: ['Comprehensive blockchain development course', 'Solidity, Foundry, smart contract security, and DeFi protocols'],
+                link: 'https://www.cyfrin.io/',
+              },
+              {
+                degree: 'Web3 Solidity Bootcamp',
+                institution: 'Metana',
+                period: '2024',
+                achievements: ['4-month program for transition from Web2 to Web3', 'Ethereum Blockchain, DeFi, and smart contracts'],
+                link: 'https://metana.io/web3-solidity-bootcamp-ethereum-blockchain/',
+              },
+              {
+                degree: 'Self-Taught Web Developer',
+                institution: 'TheNewBoston',
+                period: '2011',
+                achievements: ['Self-taught Angular, HTML, CSS fundamentals', 'Foundation for 13+ years of web development career'],
+                link: 'https://www.youtube.com/@thenewboston/playlists',
+              },
+              {
+                degree: 'Master of Science in Business Engineering',
+                institution: 'Hogeschool-Universiteit Brussel',
+                period: '2008 - 2013',
+                achievements: ["Two year Master's programme taught in English", '120 ECTS spread over two years'],
+              },
+            ].map((edu) => (
+              <div key={edu.degree} className="p-5 bg-white/5 border border-white/10 rounded-xl">
+                <div className="flex items-start justify-between mb-3">
+                  <h3 className="text-base font-semibold text-white pr-2">{edu.degree}</h3>
+                  {edu.link && (
+                    <a
+                      href={edu.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="p-1 hover:bg-white/10 rounded-lg transition-colors flex-shrink-0"
+                    >
+                      <ArrowRight className="w-4 h-4 text-neutral-400 rotate-[-45deg]" />
+                    </a>
+                  )}
+                </div>
+                <p className="text-sm text-neutral-400 mb-1">{edu.institution}</p>
+                <p className="text-xs text-neutral-500 mb-3">{edu.period}</p>
+                <ul className="space-y-1">
+                  {edu.achievements.map((achievement, i) => (
+                    <li key={i} className="flex items-start gap-2 text-neutral-300 text-xs">
+                      <span className="w-1 h-1 bg-white/50 rounded-full mt-1.5 flex-shrink-0" />
+                      {achievement}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+
+                  <div className="mt-6 p-5 bg-white/5 border border-white/10 rounded-xl text-center">
+                    <h3 className="text-sm font-semibold text-white mb-3">Certifications</h3>
+                    <div className="text-neutral-300 text-sm">
+                      ITIL v3 Foundation
+                      <span className="text-neutral-500 text-xs block">AXELOS</span>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </motion.div>
       </div>
       <AIChatBubble />
     </div>

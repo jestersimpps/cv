@@ -7,73 +7,91 @@ const PROFILE_SUMMARY = `
 - 13+ years building ERP systems, SaaS platforms, and modern web applications
 - Full-stack developer with strong TypeScript expertise
 - Currently specializing in AI integration, blockchain development, and scalable architectures
-- Remote worker based in Belgium
+- Remote worker based in Belgium, CET timezone
+- Currently running multiple projects: Bicraw.ai (AI web crawler), Kaimeleon.ai (AI agent platform), Smallshop (e-commerce), Hyperscalper (trading bot)
 
 ## Core Technical Skills
 
-### Programming Languages
-TypeScript, JavaScript (ES2015/ES6), Python, Swift, PHP, C#, VB.NET, Solidity, Go
-
 ### Frontend
-Angular (2-16), React.js, Next.js, Vue.js, Ionic, StencilJS, D3.js
-HTML5, CSS/SASS, Bootstrap, Material UI, Tailwind CSS
+- React, Next.js, Angular, Vue.js, TypeScript, Tailwind CSS
+- Modern frameworks and component-driven development
 
 ### Backend
-Node.js, NestJS, Express, Laravel, Django, .NET
-GraphQL, Apollo, Socket.io, Temporal
+- Node.js, NestJS, Express, Python, Django, GraphQL
+- API design, microservices, scalable architectures
 
-### Databases
-PostgreSQL, MySQL, MongoDB, Redis, Firebase, Supabase, Convex
-
-### DevOps & Cloud
-Docker, AWS, DigitalOcean, Heroku, Vercel, Fly.io
-Jenkins, TeamCity, CircleCI, PM2, Nginx, Cloudflare
-
-### Testing
-Cypress, Jest, Jasmine, Karma, Mocha, TDD
-
-### Blockchain & Web3
-Hyperledger Fabric, Ethereum, Solidity, IPFS, EtherJS, Smart Contracts, NFTs
+### Database
+- PostgreSQL, MongoDB, Redis, Supabase, Firebase, Convex
+- Both SQL and NoSQL experience
 
 ### AI & ML
-Claude, Codex, Gemini, OpenAI, Anthropic, Groq
-Claude Code, AI Agents, Skills, MCPs, AI-powered Workflows
+- OpenAI, Claude, Gemini, LangChain, Groq, DeepL
+- Claude Code, AI Agents, MCPs, Multi-Agent Architecture
+- Building AI-powered applications and workflows
 
-### Specialized
-OpenLayers, ag-grid, RxJS, NgRx, Redux, Elasticsearch, Shopify
-fp-ts (functional programming), Monorepo Architecture, Microservices
+### Web3 & Blockchain
+- Solidity, Ethereum, Hyperledger, IPFS, Smart Contracts, NFTs
+- Completed Cyfrin Foundry Full Course (2025) and Metana Web3 Bootcamp (2024)
 
-## Personal Skills
-Team player, Customer friendly, Analytical mindset, Can work autonomously
-Flexible, No false promises, Pro-active, Stubborn problem solver
+### DevOps
+- Docker, AWS, Vercel, DigitalOcean, CI/CD, Nginx
+- Cloud infrastructure and deployment automation
+
+### Mobile
+- Swift, SwiftUI, Ionic, React Native
+- Cross-platform mobile development
+
+### AI-Assisted Development
+- Claude Code, AI Agents, MCPs, Multi-Agent Architecture
+- Heavily uses AI tools to accelerate development
+
+## Personal Strengths
+- Customer friendly
+- Fast learner
+- Ships fast
+- Can work autonomously
+- Pro-active
+- Loves to automate work
+- Thinks out of the box
+
+## Working Style
+- Breaks things (moves fast)
+- Continuously improves code
+- Iterative approach
+- Fast shipper
+
+## Honest Weaknesses
+- Loses interest fast (needs engaging challenges)
+- Not a good planner (prefers iterative approach)
+- Hates repetitive work (strong automation preference)
 
 ## Languages
 - Dutch: Native
-- English: Native/Very good
+- English: Fluent
 - French: Good
-- Spanish: Daily conversations
-- German: Daily conversations
+- Spanish: Conversational
+- German: Basic
 - Chinese: Basic
 
-## Work Preferences
-- Remote work (based in Belgium, CET timezone)
-- Full TypeScript stacks preferred
-- Modern web technologies (React/Next.js/Angular + NestJS)
-- AI integration projects
-- Web3/blockchain opportunities
-- Scalable architecture challenges
-- Preference for product companies over pure consulting
-- Values: Autonomy, innovation, continuous learning
+## Currently Looking For
+- Contract work
+- Startup & Scale-up environments
+- Fintech, AI, Web3 projects
+- Remote-first companies
+- Senior/Lead level roles
+- Projects with autonomy and innovation
 
-## NOT a Good Fit For
-- Junior/entry-level positions
-- Pure manual testing roles
-- Legacy technology maintenance without modernization path
-- On-site only positions (unless exceptional opportunity)
-- PHP-only projects (has moved to TypeScript-first approach)
-- Outdated tech stacks (jQuery, old PHP, legacy .NET)
-- Projects without clear architecture or technical leadership
+## Deal Breakers
+- On-site only positions
+- Outdated tech (.NET, ABAP, Java, PHP without modernization path)
+- No clear technical vision or modernization path
+- Junior/entry-level roles
+- Legacy technology maintenance without innovation
 - Roles requiring relocation
+- Pure consulting without product ownership
+
+## AI-First Approach
+Jo is deeply integrated with AI tools and believes in using AI to accelerate development, automate repetitive tasks, and ship faster. He's particularly interested in roles where AI integration and innovation are valued.
 `;
 
 export async function POST(request: NextRequest) {
@@ -117,7 +135,8 @@ Provide assessments in JSON format with:
   "score": number (0-100),
   "strengths": ["list of 3-5 strong alignment points"],
   "concerns": ["list of 0-4 potential concerns or mismatches"],
-  "reasoning": "2-3 sentence overall assessment"
+  "reasoning": "2-3 sentence overall assessment",
+  "connectionTitle": "A compelling, personalized title for why we should connect (e.g., 'Perfect Match for AI Integration Lead', 'Strong Fit for Blockchain Innovation', 'Let's Build Something Amazing Together')"
 }
 
 Be honest and direct. Consider:
