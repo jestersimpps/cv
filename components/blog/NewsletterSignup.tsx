@@ -49,7 +49,7 @@ export default function NewsletterSignup() {
       </div>
 
       <p className="text-neutral-400 mb-6">
-        Get notified about new tutorials on Claude Code, productivity tips, and automation guides.
+        Get notified about new posts on automation, productivity tips, indie hacking, and web3.
       </p>
 
       {status === 'success' ? (
