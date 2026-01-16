@@ -28,16 +28,16 @@ const highlights: Experience[] = [
     image: '/assets/projects/kaimeleon.png',
   },
   {
-    title: 'Senior Frontend Developer',
-    company: 'AWV',
-    period: '2022 - 2025',
-    image: '/assets/projects/awv.png',
+    title: 'Founder',
+    company: 'Smallshop',
+    period: '2024 - Present',
+    image: '/assets/projects/smallshop.png',
   },
   {
-    title: 'Frontend Architect',
-    company: 'Fednot',
-    period: '2018 - 2021',
-    image: '/assets/projects/fednot.png',
+    title: 'Founder',
+    company: 'Hyperscalper',
+    period: '2024 - Present',
+    image: '/assets/projects/hyperscalper.png',
   },
 ];
 

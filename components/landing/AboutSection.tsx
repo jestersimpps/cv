@@ -40,7 +40,7 @@ const languages = [
 
 const socialLinks = [
   { icon: Github, href: 'https://github.com/jestersimpps', label: 'GitHub' },
-  { icon: Linkedin, href: 'https://linkedin.com/in/jovinkenroye', label: 'LinkedIn' },
+  { icon: Linkedin, href: 'https://www.linkedin.com/in/jo-vinkenroye-459a7963/', label: 'LinkedIn' },
   { icon: XIcon, href: 'https://x.com/jestersimpps', label: 'X' },
   { icon: Send, href: 'https://t.me/jestersimpps', label: 'Telegram' },
   { icon: Globe, href: 'https://bicraw.ai', label: 'Website' },
@@ -77,7 +77,7 @@ export default function AboutSection() {
               <p className="text-neutral-300 text-lg leading-relaxed">
                 Over 13 years of experience building ERP, SaaS applications and web platforms.
                 Highly familiar with a wide variety of web development technologies, frameworks and build tools.
-                Currently specializing in TypeScript-first architectures with Angular/Next.js/NestJS and exploring
+                Currently specializing in TypeScript-first architectures with Angular/Next.js/NestJS/Convex and exploring
                 Web3/blockchain technologies and AI integrations.
               </p>
 
