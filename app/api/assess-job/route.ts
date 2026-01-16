@@ -1,9 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import Anthropic from '@anthropic-ai/sdk';
-
-const client = new Anthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY,
-});
 
 const PROFILE_SUMMARY = `
 # Jo Vinkenroye - Profile Summary
@@ -92,20 +87,31 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const message = await client.messages.create({
-      model: 'claude-sonnet-4-20250514',
-      max_tokens: 2000,
-      messages: [
-        {
-          role: 'user',
-          content: `You are an expert recruiter helping assess job fit. Based on Jo's profile below, analyze this job description and provide an honest assessment.
+    const apiKey = process.env.OPENAI_API_KEY;
+
+    if (!apiKey) {
+      return NextResponse.json(
+        { error: 'API key not configured' },
+        { status: 500 }
+      );
+    }
+
+    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify({
+        model: 'gpt-4o',
+        messages: [
+          {
+            role: 'system',
+            content: `You are an expert recruiter helping assess job fit. Based on Jo's profile, analyze job descriptions and provide honest assessments.
 
 ${PROFILE_SUMMARY}
 
-Job Description to Assess:
-${jobDescription}
-
-Provide your assessment in the following JSON format:
+Provide assessments in JSON format with:
 {
   "isGoodFit": boolean,
   "score": number (0-100),
@@ -129,17 +135,30 @@ A good fit (isGoodFit: true) means:
 - Modern tech stack
 - Clear growth opportunities
 
-Return ONLY the JSON, no other text.`,
-        },
-      ],
+Return ONLY valid JSON, no other text.`,
+          },
+          {
+            role: 'user',
+            content: `Assess this job description:\n\n${jobDescription}`,
+          },
+        ],
+        temperature: 0.7,
+        max_tokens: 1500,
+        response_format: { type: 'json_object' },
+      }),
     });
 
-    const content = message.content[0];
-    if (content.type !== 'text') {
-      throw new Error('Unexpected response format');
+    if (!response.ok) {
+      const error = await response.text();
+      console.error('OpenAI API error:', error);
+      return NextResponse.json(
+        { error: 'Failed to assess job description' },
+        { status: 500 }
+      );
     }
 
-    const assessment = JSON.parse(content.text);
+    const data = await response.json();
+    const assessment = JSON.parse(data.choices[0]?.message?.content || '{}');
 
     return NextResponse.json(assessment);
   } catch (error) {
