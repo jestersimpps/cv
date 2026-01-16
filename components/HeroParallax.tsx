@@ -90,12 +90,12 @@ const Header = ({
       </h1>
       <p className="max-w-2xl mt-8 text-base md:text-xl text-neutral-300">{subTitle}</p>
       <div className="flex flex-wrap gap-4 mt-8 relative z-50">
-        <a
-          href="#contact"
-          className="px-8 py-3 bg-white text-black rounded-full font-medium hover:bg-neutral-200 transition-colors"
+        <Link
+          href="/recruiters"
+          className="px-8 py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-full font-medium hover:from-purple-700 hover:to-blue-700 transition-all shadow-lg hover:shadow-purple-500/50"
         >
-          Get in Touch
-        </a>
+          For Recruiters
+        </Link>
         <Link
           href="/blog"
           className="flex items-center gap-2 px-8 py-3 border border-white/20 text-white rounded-full font-medium hover:bg-white/10 transition-colors"
