@@ -541,6 +541,7 @@ const fs = require('fs');
 const path = require('path');
 
 const API_KEY = process.env.GOOGLE_AI_API_KEY || 'your-api-key-here';
+// Note: Check https://ai.google.dev/gemini-api/docs/imagen for the latest model ID
 const MODEL = 'imagen-4.0-generate-001';
 
 async function generateImage(prompt, outputPath) {
