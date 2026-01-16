@@ -5,7 +5,6 @@ import ExperienceSection from "@/components/landing/ExperienceSection";
 // import EducationSection from "@/components/landing/EducationSection";
 import BlogSection from "@/components/landing/BlogSection";
 import ContactSection from "@/components/landing/ContactSection";
-import AIChatBubble from "@/components/AIChatBubble";
 import SectionDivider from "@/components/ui/SectionDivider";
 import { getAllPosts } from "@/lib/blog";
 
@@ -27,7 +26,6 @@ export default function Home() {
       <BlogSection posts={posts} />
       <SectionDivider />
       <ContactSection />
-      <AIChatBubble />
     </div>
   );
 }
