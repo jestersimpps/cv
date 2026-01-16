@@ -1,0 +1,568 @@
+---
+title: "Mastering Ralph Wiggum Part 2: The Three-Phase Methodology"
+description: "Master the advanced Ralph Wiggum methodology with separate Planning and Building prompts for autonomous, long-running AI coding projects."
+publishedAt: "2026-01-16"
+author: "Jo Vinkenroye"
+category: "Tutorials"
+tags: ["Claude Code", "AI", "Automation", "Developer Tools", "Productivity", "Ralph Wiggum"]
+coverImage: "/assets/blog/ralph-wiggum-coding.webp"
+featured: true
+series:
+  id: "mastering-ralph-wiggum"
+  title: "Mastering Ralph Wiggum for Autonomous AI Coding"
+  part: 2
+  total: 4
+---
+
+In Part 1, we covered the basics of Ralph Wiggum: installation, simple usage, and when to use it. But there's a more powerful approach for complex, multi-day projects: the **Three-Phase Methodology**.
+
+This advanced technique, originated by [Geoffrey Huntley](https://github.com/ghuntley/how-to-ralph-wiggum) and refined by [Clayton Farr](https://claytonfarr.github.io/ralph-playbook/), uses separate prompts for different phases of development. As Huntley describes it: **"A funnel with 3 Phases, 2 Prompts, and 1 Loop."**
+
+## How the Three Phases Work
+
+The methodology uses **separate prompts for different phases**, not a single continuous loop:
+
+**Phase 1: Requirements Definition (Specs)** - Human-led conversation
+**Phase 2: Planning** - AI analyzes and plans (no coding)
+**Phase 3: Building** - AI implements and loops (continuous coding)
+
+This separation is crucial. As [The Ralph Playbook](https://claytonfarr.github.io/ralph-playbook/) explains: *"PLANNING prompt does gap analysis (specs vs code) and outputs a prioritized TODO list—no implementation, no commits. BUILDING prompt assumes plan exists, picks tasks from it, implements, runs tests (backpressure), commits."*
+
+## Phase 1: Requirements Definition (Specs)
+
+This is a **conversational phase** where you work with Claude to define what needs to be built. Spend 30+ minutes talking through requirements before writing any specs.
+
+### Creating Specs Files
+
+Create `specs/*.md` files that serve as the source of truth. Don't follow a rigid template—let the LLM dictate the format that works best for your project.
+
+**Key principle:** Have a long conversation with Claude about your requirements before asking it to implement anything. Break down "Jobs to Be Done" into topics of concern, then document each topic.
+
+**Example topics:**
+- `specs/authentication.md` - User login, JWT tokens, session management
+- `specs/api-design.md` - REST endpoints, request/response formats, error handling
+- `specs/database.md` - Schema design, relationships, indexes
+- `specs/testing.md` - Coverage requirements, test types needed, CI/CD
+
+**Example conversation flow:**
+
+```
+You: "I want to build a REST API for managing todos"
+
+Claude: "Let's break this down. What operations do you need?"
+
+You: "CRUD operations - create, read, update, delete todos"
+
+Claude: "Got it. What about authentication? User accounts?"
+
+You: "Yes, users should only see their own todos"
+
+Claude: "Excellent. Let me create specs for this..."
+```
+
+After the conversation, Claude creates structured markdown files documenting everything discussed.
+
+## Phase 2: Planning
+
+**This is a separate mode** using `PROMPT_plan.md`. You run planning mode explicitly when you need to generate or regenerate your implementation plan.
+
+Planning mode does gap analysis between specs and code, creating a prioritized TODO list **without any implementation or commits**.
+
+### How to Run Planning Mode
+
+**Using the bash loop method:**
+```bash
+./loop.sh plan
+```
+
+**Using Claude Code plugin:**
+```bash
+/ralph-loop "$(cat PROMPT_plan.md)" --max-iterations 5 --completion-promise "PLAN COMPLETE"
+```
+
+### PROMPT_plan.md Template
+
+Here's the complete template for planning mode:
+
+```markdown
+# PLANNING MODE
+
+You are in PLANNING mode. Your job is analysis, not implementation.
+
+## Your Task
+1. Read all files in specs/
+2. Review the existing codebase in src/
+3. Perform gap analysis between requirements and current implementation
+4. Create/update IMPLEMENTATION_PLAN.md with prioritized tasks
+
+## Task Structure
+Each task in the plan should include:
+- Unique ID (e.g., TASK-001, TASK-002)
+- Priority level (high/medium/low)
+- Clear description (what needs to be built)
+- Acceptance criteria (how you'll know it's done)
+- Required tests (specific test files or patterns)
+- Dependencies (tasks that must complete first)
+
+## File Organization
+Organize tasks by priority:
+- High Priority: Critical path items
+- Medium Priority: Important but not blocking
+- Low Priority: Nice-to-haves
+
+## Critical Rules
+- DO NOT write any code
+- DO NOT make any commits
+- DO NOT implement features
+- DO NOT run tests or builds
+- ONLY analyze and plan
+
+When complete, output "PLAN COMPLETE"
+```
+
+### What Planning Produces
+
+Planning mode generates:
+
+**`IMPLEMENTATION_PLAN.md`** - Your living TODO list
+
+Example structure:
+```markdown
+# Implementation Plan
+
+## High Priority
+
+### TASK-001: User Authentication
+- **Status**: pending
+- **Description**: Implement JWT-based auth with login/logout
+- **Acceptance Criteria**:
+  - User can register with email/password
+  - User can login and receive JWT token
+  - Protected routes require valid JWT
+- **Tests**: `auth.test.ts`
+- **Dependencies**: none
+
+### TASK-002: Todo CRUD Endpoints
+- **Status**: pending
+- **Description**: Create POST, GET, PUT, DELETE endpoints for todos
+- **Acceptance Criteria**:
+  - POST /api/todos creates a todo
+  - GET /api/todos returns user's todos
+  - PUT /api/todos/:id updates a todo
+  - DELETE /api/todos/:id deletes a todo
+- **Tests**: `todos.test.ts`
+- **Dependencies**: TASK-001
+
+## Medium Priority
+
+### TASK-003: Input Validation
+- **Status**: pending
+- **Description**: Add Zod validation for all endpoints
+...
+```
+
+**Important:** As [The Ralph Playbook](https://claytonfarr.github.io/ralph-playbook/) notes, the plan is disposable. If it becomes stale or inaccurate, delete it and regenerate by running planning mode again.
+
+## Phase 3: Building
+
+**This is the continuous loop mode** using `PROMPT_build.md`. This is where Ralph shines—autonomously implementing tasks while you sleep.
+
+Building mode assumes the plan exists, picks one task at a time, implements it with tests, commits, then loops with fresh context.
+
+### How to Run Building Mode
+
+**Using the bash loop method:**
+```bash
+./loop.sh              # Default mode is building
+```
+
+**Using Claude Code plugin:**
+```bash
+/ralph-loop "$(cat PROMPT_build.md)" --max-iterations 50 --completion-promise "ALL TASKS COMPLETE"
+```
+
+### PROMPT_build.md Template
+
+Here's the complete template for building mode:
+
+```markdown
+# BUILDING MODE
+
+You are in BUILDING mode. Your job is implementation with quality gates.
+
+## Your Task Loop
+For each iteration:
+1. Read IMPLEMENTATION_PLAN.md and progress.txt
+2. Pick the SINGLE highest priority task with status: pending
+3. Study existing code before implementing
+4. Implement the feature completely
+5. Write comprehensive tests
+6. Run all tests and type checks: npm test && npm run type-check
+7. If tests fail, fix them immediately—DO NOT proceed
+8. When all tests pass:
+   - Commit with descriptive message format: "feat(area): description"
+   - Update task status to completed in IMPLEMENTATION_PLAN.md
+   - Append learnings to progress.txt with timestamp
+
+## Critical Rules
+- Work on ONE task at a time—no exceptions
+- NEVER commit failing tests
+- NEVER skip test execution
+- Tests are your backpressure—respect them
+- Each commit must be atomic and working
+- Don't add features not in the plan
+- Don't refactor unrelated code
+
+## Backpressure Enforcement
+Tests MUST pass before committing:
+```bash
+npm test && npm run type-check && npm run lint
+```
+
+If any check fails, fix it in the same iteration.
+
+## Progress Tracking
+After completing each task, append to progress.txt:
+```
+[YYYY-MM-DD HH:MM] Completed TASK-XXX: Task Title
+- What was implemented
+- Key decisions made
+- Challenges encountered
+- Learnings for next tasks
+```
+
+When all tasks show status: completed, output "ALL TASKS COMPLETE"
+```
+
+### The Building Loop Flow
+
+As [11 Tips for AI Coding with Ralph Wiggum](https://www.aihero.dev/tips-for-ai-coding-with-ralph-wiggum) documents:
+
+1. Pick highest priority task from `IMPLEMENTATION_PLAN.md`
+2. Implement the feature
+3. Run all tests and type checks (**backpressure!**)
+4. Commit only if everything passes
+5. Update `progress.txt` with learnings
+6. **Loop with fresh context** → repeat
+
+**Key insight:** Each iteration runs in a fresh context window (with the bash loop method). This prevents context degradation and keeps Claude focused.
+
+## Complete Three-Phase Workflow
+
+Here's how it all flows together:
+
+```bash
+# Phase 1: Define Requirements (conversational, not looped)
+# Talk with Claude to create specs/*.md files
+# Example: specs/authentication.md, specs/api-design.md, specs/database.md
+
+# Phase 2: Generate Plan (run once, or when plan needs refresh)
+./loop.sh plan
+# Creates IMPLEMENTATION_PLAN.md with prioritized tasks
+
+# Phase 3: Build Autonomously (continuous loop)
+./loop.sh
+# Implements tasks one by one, commits, loops
+# Run overnight, check progress in the morning
+
+# When plan becomes stale (features changed, new requirements):
+rm IMPLEMENTATION_PLAN.md
+./loop.sh plan          # Regenerate plan
+./loop.sh               # Resume building
+```
+
+### File Structure
+
+Your project should have this structure:
+
+```
+your-project/
+├── specs/
+│   ├── authentication.md
+│   ├── api-design.md
+│   ├── database.md
+│   └── testing.md
+├── PROMPT_plan.md          # Planning mode prompt
+├── PROMPT_build.md         # Building mode prompt
+├── IMPLEMENTATION_PLAN.md  # Generated by planning, updated by building
+├── progress.txt            # Append-only log of learnings
+├── loop.sh                 # Bash orchestrator script
+└── src/                    # Your actual code
+    ├── api/
+    ├── auth/
+    └── tests/
+```
+
+### Key Differences Between Modes
+
+| Aspect | Planning Mode | Building Mode |
+|--------|--------------|---------------|
+| Prompt file | `PROMPT_plan.md` | `PROMPT_build.md` |
+| Goal | Analyze & plan | Implement & test |
+| Makes commits? | ❌ No | ✅ Yes |
+| Writes code? | ❌ No | ✅ Yes |
+| Runs tests? | ❌ No | ✅ Yes |
+| Updates plan? | ✅ Creates/overwrites | ✅ Marks tasks complete |
+| Typical iterations | 1-5 | 20-100+ |
+| Run when? | Once, or when refreshing plan | Continuously until done |
+
+## Essential Files for Long-Running Ralph Loops
+
+### progress.txt
+
+Track what's been accomplished across iterations. As [The Ralph Playbook](https://claytonfarr.github.io/ralph-playbook/) explains: *"The progress.txt is a standard long-running agent practice. Feed it to the agent via the prompt, and use the verb 'append' to make sure it doesn't update previous entries."*
+
+Ralph reads this to understand context without re-exploring the codebase.
+
+**How to use it:**
+```
+In your prompt, instruct the agent to:
+"After each task, APPEND (don't overwrite) your learnings to progress.txt"
+```
+
+**Example progress.txt entry:**
+```
+[2026-01-16 14:30] Completed TASK-001: User Authentication
+- Implemented JWT signing/verification using jsonwebtoken
+- Added httpOnly cookie storage for tokens
+- All auth tests passing (12/12)
+- Learning: Cookie sameSite setting needed for cross-origin requests
+- Challenge: Had to debug token expiry edge case
+- Next: Tackle TASK-002 (Todo CRUD endpoints)
+```
+
+### IMPLEMENTATION_PLAN.md
+
+Your living TODO list that Ralph updates as it completes tasks. This file bridges Planning and Building modes.
+
+**Structure:**
+```markdown
+# Implementation Plan
+
+## High Priority
+
+- [ ] TASK-001: User Authentication (status: pending)
+  - Tests: auth.test.ts
+  - Dependencies: none
+
+## Medium Priority
+
+- [ ] TASK-002: Todo CRUD (status: pending)
+  - Tests: todos.test.ts
+  - Dependencies: TASK-001
+
+## Completed
+
+- [x] TASK-000: Project Setup (status: completed)
+  - Completed: 2026-01-15 22:00
+```
+
+## Writing Effective Ralph Prompts
+
+### Critical Prompt Elements
+
+As documented in [11 Tips for AI Coding with Ralph Wiggum](https://www.aihero.dev/tips-for-ai-coding-with-ralph-wiggum), every Ralph prompt should include these elements:
+
+**Progress Tracking:**
+```
+Read progress.txt to see what's been accomplished.
+After completing each task, APPEND (never overwrite) your progress.
+```
+
+**Backpressure Through Testing:**
+```
+Each commit MUST pass all tests and type checks.
+Run: npm test && npm run type-check && npm run lint
+If anything fails, fix it before moving on.
+NEVER commit broken code.
+```
+
+**Scope Control:**
+```
+Pick the SINGLE highest priority task from IMPLEMENTATION_PLAN.md.
+Work ONLY on that task—don't add features or refactor unrelated code.
+```
+
+**Exploration First:**
+```
+Study the codebase first.
+Don't assume something isn't implemented—verify by reading files.
+Use ultrathink before making changes.
+```
+
+### Language Patterns That Work
+
+Based on community learnings from [The Ralph Wiggum Playbook](https://claytonfarr.github.io/ralph-playbook/) and [11 Tips](https://www.aihero.dev/tips-for-ai-coding-with-ralph-wiggum), these phrases improve Claude's behavior:
+
+- **"Study the codebase first"** → Reduces assumptions about what exists
+- **"Don't assume not implemented"** → Encourages verification before writing
+- **"Ultrathink before acting"** → Promotes careful planning before changes
+- **"Capture the why in commits"** → Improves git history quality
+- **"MUST pass all tests"** → Enforces quality gates strictly
+
+## Setting Up PRDs for Ralph
+
+A well-structured PRD is critical for Ralph's success. This is an alternative to the `specs/*.md` + `IMPLEMENTATION_PLAN.md` approach—some teams prefer JSON for machine readability.
+
+### prd.json Template
+
+```json
+{
+  "project": "Todo API",
+  "schema_version": "2.0",
+  "final_tests": ["npm test", "npm run type-check", "npm run lint"],
+  "stories": [
+    {
+      "id": "S001",
+      "priority": 1,
+      "title": "User Authentication",
+      "category": "backend",
+      "description": "Implement JWT-based authentication with login/logout",
+      "acceptance": [
+        "User can register with email/password",
+        "User can login and receive JWT token",
+        "Protected routes require valid JWT",
+        "User can logout and invalidate token"
+      ],
+      "steps_to_verify": [
+        "Run: npm test -- auth.test.ts",
+        "Verify all 12 auth tests pass",
+        "Check JWT is stored in httpOnly cookie",
+        "Verify token expiry works correctly"
+      ],
+      "tests": ["npm test -- auth.test.ts"],
+      "estimated_complexity": "medium",
+      "depends_on": [],
+      "passes": false
+    },
+    {
+      "id": "S002",
+      "priority": 2,
+      "title": "Todo CRUD Endpoints",
+      "category": "backend",
+      "description": "Create POST, GET, PUT, DELETE endpoints for todos",
+      "acceptance": [
+        "POST /api/todos creates a todo",
+        "GET /api/todos returns user's todos only",
+        "PUT /api/todos/:id updates a todo",
+        "DELETE /api/todos/:id deletes a todo"
+      ],
+      "steps_to_verify": [
+        "Run: npm test -- todos.test.ts",
+        "Test with Postman or curl",
+        "Verify authorization works"
+      ],
+      "tests": ["npm test -- todos.test.ts"],
+      "estimated_complexity": "medium",
+      "depends_on": ["S001"],
+      "passes": false
+    }
+  ]
+}
+```
+
+### Key PRD Principles
+
+**Binary Pass/Fail Criteria**: Each task needs automated verification. As [The Ralph Playbook](https://claytonfarr.github.io/ralph-playbook/) emphasizes: "Make it better" isn't testable—"All tests pass with 80%+ coverage" is.
+
+**Atomic Tasks**: If a task requires 500+ lines of code, break it down. Each story should complete in 2-3 iterations.
+
+**The `passes` Field**: Ralph updates this to `true` when complete. The loop continues until all tasks pass.
+
+**Test Requirements**: Every story should specify how to verify completion automatically. No manual verification steps.
+
+## Common Pitfalls and How to Avoid Them
+
+### Starting Too Ambitious
+
+**Mistake:** Running 50 iterations on your first Ralph project.
+
+**Fix:** Start with 10-20 iterations to understand costs and behavior. As documented in [community tips](https://www.aihero.dev/tips-for-ai-coding-with-ralph-wiggum), a 50-iteration loop can cost $50-100+.
+
+### Vague Completion Criteria
+
+**Mistake:** "Make the app faster" or "Improve the UI"
+
+**Fix:** Use specific, testable criteria:
+- ✅ "Reduce API response time to under 200ms (verified by load tests)"
+- ✅ "All Lighthouse scores above 90"
+- ✅ "Test coverage above 80% on all modules"
+
+### No Automated Verification
+
+**Mistake:** Tasks that require human judgment like "make it look good"
+
+**Fix:** Ralph needs binary pass/fail conditions. If you can't write an automated test for it, Ralph can't verify it. As [The Ralph Playbook](https://claytonfarr.github.io/ralph-playbook/) states: *"Backpressure beats direction."*
+
+### Tasks Too Large
+
+**Mistake:** "Build entire authentication system" as one task
+
+**Fix:** Break into smaller stories:
+- S001: User registration endpoint
+- S002: Login endpoint with JWT
+- S003: Token refresh mechanism
+- S004: Password reset flow
+- S005: Email verification
+
+### Ignoring Context Limits
+
+**Mistake:** Letting Ralph run indefinitely without fresh context
+
+**Fix:** Use the Bash loop method instead of the plugin for long-running projects—each iteration gets a fresh context window. This is a key insight from [Geoffrey Huntley's guide](https://github.com/ghuntley/how-to-ralph-wiggum).
+
+### No Cost Monitoring
+
+**Mistake:** Not tracking API spending during development
+
+**Fix:** Set billing alerts and start with low iteration counts. Monitor costs per iteration. Track your spending at https://console.anthropic.com
+
+### Wrong Task Types
+
+**Good Ralph tasks:**
+- Migrating tests from Jest to Vitest
+- Adding CRUD endpoints with tests
+- Implementing well-specified features
+- Refactoring with existing test coverage
+
+**Bad Ralph tasks:**
+- "Figure out why the app is slow" (exploration)
+- "Make the UI prettier" (subjective)
+- "Fix this weird bug" (requires deep debugging context)
+- UX decisions requiring aesthetic judgment
+
+### The Thrashing Problem
+
+**Symptom:** Ralph gets stuck in a loop—same error, same fix attempt, same failure.
+
+**Solutions:**
+- Set `--max-iterations` to limit damage
+- Review your tests—are they too strict or unclear?
+- Break the task into smaller, more atomic pieces
+- Add explicit debugging steps to your prompt
+- Check if dependencies are properly installed
+
+## What's Next
+
+You now understand the advanced Three-Phase Methodology that separates planning from building. You know how to create specs files, run Planning mode to generate implementation plans, and use Building mode for autonomous execution. You understand the file structure, prompt templates, and common pitfalls.
+
+In Part 3: Complete Practical Tutorial *(coming soon)*, we'll put this all into practice with an end-to-end build of a Todo API from scratch. You'll see actual conversation logs, generated plans, real commit history, and how to troubleshoot when things go wrong. This is where theory meets reality.
+
+---
+
+## Key Takeaways
+
+✅ Three phases use separate prompts: specs/*.md, PROMPT_plan.md, PROMPT_build.md
+✅ Planning mode generates plans, Building mode implements them
+✅ Fresh context per iteration prevents degradation
+✅ Backpressure through tests is your quality gate
+✅ progress.txt tracks learnings across iterations
+✅ Plans are disposable—regenerate when stale
+✅ Atomic tasks (2-3 iterations each) work best
+
+## Resources Referenced
+
+- [The Ralph Playbook by Clayton Farr](https://claytonfarr.github.io/ralph-playbook/) - Complete methodology guide
+- [How to Ralph Wiggum by Geoffrey Huntley](https://github.com/ghuntley/how-to-ralph-wiggum) - Original technique documentation
+- [11 Tips for AI Coding with Ralph Wiggum](https://www.aihero.dev/tips-for-ai-coding-with-ralph-wiggum) - Community best practices
+- [Official Ralph Wiggum Plugin](https://github.com/anthropics/claude-code/tree/main/plugins/ralph-wiggum) - Plugin source and docs
