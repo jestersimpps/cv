@@ -2,7 +2,8 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { CheckCircle2, XCircle, Loader2, Sparkles, ArrowRight, Briefcase } from 'lucide-react';
+import { CheckCircle2, XCircle, Loader2, Sparkles, ArrowRight, Briefcase, ArrowLeft } from 'lucide-react';
+import Link from 'next/link';
 import GradientOrbs from '@/components/ui/GradientOrbs';
 import DotGrid from '@/components/ui/DotGrid';
 
@@ -80,6 +81,21 @@ export default function RecruitersPage() {
       <DotGrid dotColor="rgba(255, 255, 255, 0.07)" spacing={32} />
 
       <div className="max-w-4xl mx-auto px-4 py-20 relative z-10">
+        {/* Back Button */}
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          className="mb-8"
+        >
+          <Link
+            href="/"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-xl text-neutral-300 hover:bg-white/10 hover:text-white transition-colors"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            Back to Home
+          </Link>
+        </motion.div>
+
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
