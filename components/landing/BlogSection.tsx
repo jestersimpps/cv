@@ -18,35 +18,27 @@ export default function BlogSection({ posts }: BlogSectionProps) {
   if (latestPosts.length === 0) return null;
 
   return (
-    <section id="blog" className="py-24 bg-gradient-to-b from-neutral-950 via-black to-neutral-950 relative overflow-hidden">
-      <DotGrid dotColor="rgba(255, 255, 255, 0.06)" spacing={24} />
+    <section id="blog" className="py-24 bg-gradient-to-b from-black via-neutral-950 to-black relative overflow-hidden">
+      <DotGrid dotColor="rgba(255, 255, 255, 0.08)" spacing={24} />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="mb-12"
+          className="text-center mb-16"
         >
-          <div className="flex items-center justify-between flex-wrap gap-4">
-            <div>
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-full mb-4">
-                <BookOpen className="w-4 h-4 text-white" />
-                <span className="text-sm text-neutral-400">Latest Articles</span>
-              </div>
-              <h2 className="text-3xl md:text-4xl font-bold text-white">Blog</h2>
-            </div>
-            <Link
-              href="/blog"
-              className="flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-xl text-neutral-300 hover:bg-white/10 hover:text-white transition-colors group"
-            >
-              View all posts
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-            </Link>
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-full mb-4">
+            <BookOpen className="w-4 h-4 text-white" />
+            <span className="text-sm text-neutral-400">Latest Articles</span>
           </div>
+          <h2 className="text-4xl font-bold text-white mb-4">Blog</h2>
+          <p className="text-neutral-400 max-w-2xl mx-auto">
+            Thoughts on development, AI, Web3, and building products
+          </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-3 gap-6">
+        <div className="grid md:grid-cols-3 gap-6 mb-12">
           {latestPosts.map((post, index) => (
             <motion.article
               key={post.slug}
@@ -101,6 +93,22 @@ export default function BlogSection({ posts }: BlogSectionProps) {
             </motion.article>
           ))}
         </div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+          className="text-center"
+        >
+          <Link
+            href="/blog"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-white text-black rounded-full font-medium hover:bg-neutral-200 transition-colors"
+          >
+            View all posts
+            <ArrowRight className="w-4 h-4" />
+          </Link>
+        </motion.div>
       </div>
     </section>
   );

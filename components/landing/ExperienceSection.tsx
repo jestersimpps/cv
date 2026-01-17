@@ -1,11 +1,10 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Briefcase, ArrowRight, Download } from 'lucide-react';
+import { Briefcase, ArrowRight } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import GridLines from '@/components/ui/GridLines';
-import { exportToMarkdown } from '@/lib/cvData';
+import DotGrid from '@/components/ui/DotGrid';
 
 interface Experience {
   title: string;
@@ -42,35 +41,22 @@ const highlights: Experience[] = [
 ];
 
 export default function ExperienceSection() {
-  const handleDownload = () => {
-    const markdown = exportToMarkdown();
-    const blob = new Blob([markdown], { type: 'text/markdown' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = 'jo-vinkenroye-cv.md';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-  };
-
   return (
-    <section id="experience" className="py-24 bg-gradient-to-b from-neutral-900 via-neutral-950 to-black relative overflow-hidden">
-      <GridLines />
+    <section id="experience" className="py-24 bg-gradient-to-b from-black via-neutral-950 to-black relative overflow-hidden">
+      <DotGrid dotColor="rgba(255, 255, 255, 0.08)" spacing={24} />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="text-center mb-12"
+          className="text-center mb-16"
         >
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-full mb-4">
             <Briefcase className="w-4 h-4 text-white" />
             <span className="text-sm text-neutral-400">Career Highlights</span>
           </div>
-          <h2 className="text-4xl font-bold text-white mb-4">Work Experience</h2>
+          <h2 className="text-4xl font-bold text-white mb-4">Work Experience & Projects</h2>
           <p className="text-neutral-400 max-w-2xl mx-auto">
             13+ years of professional experience across diverse industries
           </p>
@@ -111,7 +97,7 @@ export default function ExperienceSection() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="flex flex-wrap justify-center gap-4"
+          className="text-center"
         >
           <Link
             href="/experience"
@@ -120,13 +106,6 @@ export default function ExperienceSection() {
             View Full Experience
             <ArrowRight className="w-4 h-4" />
           </Link>
-          <button
-            onClick={handleDownload}
-            className="inline-flex items-center gap-2 px-6 py-3 bg-white/10 border border-white/20 text-white rounded-full font-medium hover:bg-white/20 transition-colors"
-          >
-            <Download className="w-4 h-4" />
-            Download CV
-          </button>
         </motion.div>
       </div>
     </section>

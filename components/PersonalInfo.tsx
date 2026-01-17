@@ -54,7 +54,7 @@ export default function PersonalInfo() {
           Personal Skills
         </h3>
         <div className="flex flex-wrap gap-2">
-          {["Team player", "Customer friendly", "Analytical mindset", "Can work autonomously", 
+          {["Team player", "Customer friendly", "Analytical mindset", "Can work autonomously",
             "Flexible", "No false promises", "Pro-active", "Stubborn problem solver"].map((skill) => (
             <span key={skill} className="px-3 py-1.5 bg-white/20 dark:bg-white/10 backdrop-blur-sm text-neutral-700 dark:text-neutral-200 rounded-full text-sm font-semibold border border-white/30 dark:border-white/20 hover:bg-white/30 dark:hover:bg-white/15 hover:shadow-lg hover:scale-105 transition-all">
               {skill}
