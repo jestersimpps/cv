@@ -65,14 +65,31 @@ export const MDXComponents = {
 
     return <p className="text-neutral-300 leading-relaxed mb-4 break-words">{children}</p>;
   },
-  a: ({ href, children }: { href?: string; children: ReactNode }) => (
-    <Link
-      href={href || '#'}
-      className="text-blue-400 hover:text-blue-300 underline underline-offset-4 transition-colors"
-    >
-      {children}
-    </Link>
-  ),
+  a: ({ href, children }: { href?: string; children: ReactNode }) => {
+    const isExternal = href?.startsWith('http://') || href?.startsWith('https://');
+
+    if (isExternal) {
+      return (
+        <a
+          href={href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-blue-400 hover:text-blue-300 underline underline-offset-4 transition-colors"
+        >
+          {children}
+        </a>
+      );
+    }
+
+    return (
+      <Link
+        href={href || '#'}
+        className="text-blue-400 hover:text-blue-300 underline underline-offset-4 transition-colors"
+      >
+        {children}
+      </Link>
+    );
+  },
   ul: ({ children }: { children: ReactNode }) => (
     <ul className="list-disc list-outside ml-6 space-y-2 mb-4 text-neutral-300">
       {children}
