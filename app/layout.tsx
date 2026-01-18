@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import { Suspense } from "react";
 import { PostHogPageview } from "@/components/PostHogProvider";
+import CookieConsent from "@/components/CookieConsent";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -145,6 +146,7 @@ export default function RootLayout({
           <PostHogPageview />
         </Suspense>
         {children}
+        <CookieConsent />
         <Analytics />
       </body>
     </html>

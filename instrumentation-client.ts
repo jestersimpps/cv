@@ -1,8 +1,2 @@
-import posthog from 'posthog-js'
-
-posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY!, {
-  api_host: process.env.NEXT_PUBLIC_POSTHOG_HOST,
-  defaults: '2025-11-30',
-  capture_pageview: true,
-  capture_pageleave: true,
-})
+// PostHog initialization is handled in CookieConsent component
+// based on user consent preferences (GDPR compliance)
