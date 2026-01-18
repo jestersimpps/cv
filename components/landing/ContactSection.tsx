@@ -2,7 +2,8 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Mail, Phone, MapPin, Github, Linkedin, Globe, MessageCircle, Send, Loader2, CheckCircle } from 'lucide-react';
+import Link from 'next/link';
+import { Mail, Phone, MapPin, Github, Linkedin, Globe, MessageCircle, Send, Loader2, CheckCircle, Briefcase, ArrowRight } from 'lucide-react';
 
 const XIcon = ({ className }: { className?: string }) => (
   <svg className={className} viewBox="0 0 24 24" fill="currentColor">
@@ -175,6 +176,18 @@ export default function ContactSection() {
                   </a>
                 ))}
               </div>
+            </div>
+
+            {/* Recruiters link */}
+            <div className="pt-6 border-t border-white/10">
+              <Link
+                href="/recruiters"
+                className="inline-flex items-center gap-2 text-neutral-300 hover:text-white transition-colors text-sm group"
+              >
+                <Briefcase className="w-4 h-4" />
+                <span>Hiring? Try my AI-powered job assessment tool</span>
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </Link>
             </div>
           </motion.div>
 
