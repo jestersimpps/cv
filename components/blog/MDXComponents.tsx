@@ -2,6 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { ReactNode } from 'react';
 import CodeBlock from './CodeBlock';
+import Mermaid from './Mermaid';
 
 function extractTextFromChildren(children: ReactNode): string {
   if (typeof children === 'string') return children;
@@ -95,6 +96,11 @@ export const MDXComponents = {
     const code = extractTextFromChildren(codeElement?.props?.children);
     const className = codeElement?.props?.className || '';
     const language = className.replace('language-', '') || 'typescript';
+
+    if (language === 'mermaid') {
+      return <Mermaid chart={code} />;
+    }
+
     return <CodeBlock code={code} language={language} />;
   },
   code: ({ children, className }: { children: ReactNode; className?: string }) => {
