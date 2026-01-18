@@ -54,24 +54,38 @@ export default function BlogHeader({ post }: BlogHeaderProps) {
 
         <p className="text-xl text-neutral-400 mb-6">{post.description}</p>
 
-        <div className="flex flex-wrap items-center gap-4 text-sm text-neutral-500">
-          <div className="flex items-center gap-2">
-            <User className="w-4 h-4" />
-            {post.author}
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+          <div className="flex flex-wrap items-center gap-4 text-sm text-neutral-500">
+            <div className="flex items-center gap-2">
+              <User className="w-4 h-4" />
+              {post.author}
+            </div>
+            <div className="flex items-center gap-2">
+              <Calendar className="w-4 h-4" />
+              {formatDate(post.publishedAt)}
+            </div>
+            {post.updatedAt && (
+              <span className="text-neutral-600">
+                (Updated: {formatDate(post.updatedAt)})
+              </span>
+            )}
           </div>
-          <div className="flex items-center gap-2">
-            <Calendar className="w-4 h-4" />
-            {formatDate(post.publishedAt)}
-          </div>
-          {post.updatedAt && (
-            <span className="text-neutral-600">
-              (Updated: {formatDate(post.updatedAt)})
-            </span>
-          )}
+
+          {/* Share Buttons - Right side on desktop */}
+          <motion.div
+            initial={{ opacity: 0, x: 10 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+          >
+            <ShareButtons
+              post={{ title: post.title, description: post.description, slug: post.slug }}
+              variant="horizontal"
+            />
+          </motion.div>
         </div>
 
         {post.tags.length > 0 && (
-          <div className="flex flex-wrap gap-2 mt-6">
+          <div className="flex flex-wrap gap-2">
             {post.tags.map((tag) => (
               <Link
                 key={tag}
@@ -101,19 +115,6 @@ export default function BlogHeader({ post }: BlogHeaderProps) {
           />
         </motion.div>
       )}
-
-      {/* Share Buttons */}
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.3 }}
-        className="mt-6"
-      >
-        <ShareButtons
-          post={{ title: post.title, description: post.description, slug: post.slug }}
-          variant="horizontal"
-        />
-      </motion.div>
     </header>
   );
 }
