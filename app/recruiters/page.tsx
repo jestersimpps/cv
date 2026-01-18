@@ -172,11 +172,8 @@ export default function RecruitersPage() {
             <span className="text-sm text-neutral-400">AI-Powered Job Assessment</span>
           </div>
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">For Recruiters</h1>
-          <p className="text-lg text-neutral-400 max-w-2xl mx-auto mb-4">
-            Paste your job description below and receive an instant AI-powered assessment of how well the role aligns with my profile and experience
-          </p>
-          <p className="text-base text-white font-medium max-w-2xl mx-auto mb-6">
-            AI transformational hire: I go across your org, ship stuff, and kill stupid manual processes.
+          <p className="text-lg text-neutral-400 max-w-2xl mx-auto mb-6">
+            Submit your role for an AI-powered compatibility assessment with my profile and expertise
           </p>
           <button
             onClick={handleDownload}
@@ -371,9 +368,9 @@ export default function RecruitersPage() {
             transition={{ delay: 0.4 }}
             className="mb-8"
           >
-            <h2 className="text-2xl font-bold text-white mb-4">Ready to Assess Job Fit?</h2>
+            <h2 className="text-2xl font-bold text-white mb-4">Ready to Assess Compatibility?</h2>
             <p className="text-neutral-400 mb-6">
-              Paste your job description below and get an instant AI-powered assessment of how well it aligns with my profile.
+              Submit your role requirements below for an intelligent compatibility analysis.
             </p>
             <div className="p-8 bg-white/5 border border-white/10 rounded-2xl">
               <label className="block text-sm font-medium text-neutral-400 mb-3">

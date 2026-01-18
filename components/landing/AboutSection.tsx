@@ -94,8 +94,6 @@ export default function AboutSection() {
                 Highly familiar with a wide variety of web development technologies, frameworks and build tools.
                 Currently specializing in TypeScript-first architectures with Angular/Next.js/NestJS/Convex and exploring
                 Web3/blockchain technologies and AI integrations.
-                <br /><br />
-                <strong className="text-white">AI transformational hire:</strong> I go across your org, ship stuff, and kill stupid manual processes.
                 </p>
               </div>
             </div>
