@@ -86,15 +86,23 @@ export function getRelatedPosts(currentPost: BlogPost, limit = 3): BlogPost[] {
 export function generateTableOfContents(content: string): TableOfContentsItem[] {
   const headingRegex = /^(#{2,4})\s+(.+)$/gm;
   const toc: TableOfContentsItem[] = [];
+  const idCounts = new Map<string, number>();
   let match;
 
   while ((match = headingRegex.exec(content)) !== null) {
     const level = match[1].length;
     const text = match[2];
-    const id = text
+    let id = text
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, '-')
       .replace(/(^-|-$)/g, '');
+
+    // Handle duplicate IDs by appending a counter
+    const count = idCounts.get(id) || 0;
+    if (count > 0) {
+      id = `${id}-${count}`;
+    }
+    idCounts.set(id.replace(/-\d+$/, ''), count + 1);
 
     toc.push({ id, text, level });
   }
