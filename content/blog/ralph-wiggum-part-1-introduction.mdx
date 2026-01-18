@@ -11,7 +11,7 @@ series:
   id: "mastering-ralph-wiggum"
   title: "Mastering Ralph Wiggum for Autonomous AI Coding"
   part: 1
-  total: 5
+  total: 6
 ---
 
 If you've been following the AI development space in early 2026, you've probably heard the name "Ralph Wiggum" more times than you'd expect for a character from The Simpsons. This isn't about yellow animated characters—it's about a technique that's fundamentally changing how developers work with AI coding assistants.
@@ -138,27 +138,9 @@ The `--completion-promise` flag can be unreliable. Your real safety net is `--ma
 - Production debugging requiring deep context
 - UX decisions requiring user feedback
 
-## Ralph-TUI: Visual Control for Autonomous Loops
+## Monitoring Long-Running Builds
 
-While Ralph Wiggum runs autonomously in the CLI, there's a complementary tool that solves the "blind spot" problem: [**Ralph-TUI**](https://github.com/subsy/ralph-tui) (Terminal User Interface).
-
-Ralph-TUI provides:
-
-- **Real-time visibility**: Watch agent output with keyboard controls
-- **Task orchestration**: Automatically selects and executes highest-priority tasks
-- **Session persistence**: Pause and resume anytime
-- **Subagent tracing**: Monitor nested agent calls
-- **Cross-iteration context**: Automatic progress tracking between tasks
-
-### Setting Up Ralph-TUI
-
-After running `ralph-tui setup`, skills install to `~/.claude/skills/` as slash commands:
-
-- `/ralph-tui-prd` — Create PRDs interactively
-- `/ralph-tui-create-json` — Convert PRD to prd.json format
-- `/ralph-tui-create-beads` — Convert PRD to Beads issues
-
-This enables you to create PRDs with full conversation context, then use `ralph-tui run` for autonomous execution while maintaining visibility into what's happening.
+For long-running autonomous builds, **Ralph TUI** provides real-time visibility into the loop execution with keyboard controls, task orchestration, and session persistence. We'll cover Ralph TUI monitoring in detail in [Part 3: Ralph TUI Monitoring & Visibility](/blog/ralph-wiggum-part-3-ralph-tui-monitoring).
 
 ## The Ralph Philosophy
 

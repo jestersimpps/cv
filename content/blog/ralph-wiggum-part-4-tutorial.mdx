@@ -1,5 +1,5 @@
 ---
-title: "Mastering Ralph Wiggum Part 3: Complete Practical Tutorial"
+title: "Mastering Ralph Wiggum Part 4: Complete Practical Tutorial"
 description: "Build a production-ready Todo API from scratch using Ralph Wiggum's Three-Phase Methodology. See real conversations, plans, commits, and troubleshooting in action."
 publishedAt: "2026-01-16"
 author: "Jo Vinkenroye"
@@ -10,11 +10,11 @@ featured: true
 series:
   id: "mastering-ralph-wiggum"
   title: "Mastering Ralph Wiggum for Autonomous AI Coding"
-  part: 3
-  total: 5
+  part: 4
+  total: 6
 ---
 
-In Parts 1 and 2, you learned the theory: installation, basic usage, and the Three-Phase Methodology. Now it's time to see Ralph Wiggum in action with a complete, real-world project.
+In Parts 1 and 2, you learned the theory: installation, basic usage, and the Three-Phase Methodology. Part 3 covered Ralph TUI for real-time monitoring. Now it's time to see Ralph Wiggum in action with a complete, real-world project.
 
 We're building a production-ready Todo API from scratch—authentication, CRUD operations, validation, tests, and deployment documentation. You'll see actual conversations, generated plans, commit history, cost tracking, and how to handle errors when they occur.
 
@@ -29,6 +29,7 @@ We're building a production-ready Todo API from scratch—authentication, CRUD o
 
 **Prerequisites:**
 - Completed [Part 1](/blog/ralph-wiggum-part-1-introduction) and [Part 2](/blog/ralph-wiggum-part-2-methodology)
+- Optional: [Part 3](/blog/ralph-wiggum-part-3-ralph-tui-monitoring) for monitoring setup
 - Claude Pro or Max subscription
 - Node.js 18+ installed
 - Basic understanding of REST APIs
@@ -568,35 +569,9 @@ Output "ALL TASKS COMPLETE" when all tasks have status: completed.
 /ralph-loop "$(cat PROMPT_build.md)" --max-iterations 50 --completion-promise "ALL TASKS COMPLETE"
 ```
 
-### Monitoring with Ralph-TUI
+### Monitoring the Build
 
-While Ralph runs, monitor with Ralph-TUI:
-
-```bash
-ralph-tui run
-```
-
-Ralph-TUI shows real-time output:
-
-```
-╭──────────────────────────────────────────────────────╮
-│ Ralph Wiggum - Building Mode                         │
-│ Project: todo-api-ralph                              │
-│ Iteration: 8 / 50                                   │
-│ Current Task: TASK-004 (User Authentication - Login)│
-╰──────────────────────────────────────────────────────╯
-
-[14:23:15] Reading IMPLEMENTATION_PLAN.md...
-[14:23:18] Task TASK-003 completed, moving to TASK-004
-[14:23:20] Implementing login endpoint...
-[14:23:45] Writing auth.test.ts...
-[14:24:10] Running tests...
-[14:24:15] ✓ All tests passing (15/15)
-[14:24:18] Committing changes...
-[14:24:20] Updated progress.txt
-
-Tasks: 3 completed | 1 in progress | 8 pending
-```
+If you're following along with Ralph TUI (covered in [Part 3: Ralph TUI Monitoring](/blog/ralph-wiggum-part-3-ralph-tui-monitoring)), you'll see real-time progress as Claude works through each task. For this tutorial, we'll focus on the file changes and final results.
 
 ### Progress Over Time
 

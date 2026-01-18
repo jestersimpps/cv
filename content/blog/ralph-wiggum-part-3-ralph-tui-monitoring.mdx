@@ -1,0 +1,707 @@
+---
+title: "Mastering Ralph Wiggum Part 3: Ralph TUI Monitoring & Visibility"
+description: "Master Ralph TUI for real-time autonomous loop monitoring. Learn keyboard controls, task orchestration, session management, and debugging techniques for long-running AI builds."
+publishedAt: "2026-01-16"
+author: "Jo Vinkenroye"
+category: "Tutorials"
+tags: ["Claude Code", "AI", "Automation", "Developer Tools", "Productivity", "Ralph Wiggum", "Ralph TUI"]
+coverImage: "/assets/blog/ralph-wiggum-coding.webp"
+featured: true
+series:
+  id: "mastering-ralph-wiggum"
+  title: "Mastering Ralph Wiggum for Autonomous AI Coding"
+  part: 3
+  total: 6
+---
+
+Running Ralph Wiggum autonomously is powerful—but monitoring blind loops can feel like trusting a pilot you can't see. Ralph-TUI solves the visibility problem by giving you a real-time dashboard into every iteration, task, and decision your AI agent makes.
+
+## The Visibility Problem
+
+When Ralph Wiggum runs in autonomous mode, it operates independently—reading specs, creating plans, building features, running tests, and iterating for hours or even days. This autonomy is its strength, but it creates a critical challenge: **you can't see what's happening without constantly checking files**.
+
+The loop could be:
+- Stuck on a failing test for 30 minutes
+- Iterating on the wrong task due to plan interpretation
+- Generating thousands of log lines you'll never review
+- Making architectural decisions you'd want to catch early
+
+**Enter Ralph-TUI**: A terminal interface that provides real-time visibility into the autonomous loop without interrupting execution. It's like adding a flight deck to your autopilot.
+
+## Why Ralph-TUI Exists
+
+Ralph-TUI was created to bridge the gap between "fully autonomous" and "completely opaque." While Ralph Wiggum excels at working independently, long-running builds (3+ hours, multi-day projects) need observability for three reasons:
+
+1. **Debugging efficiency**: Catch issues in real-time instead of discovering them after 100 iterations
+2. **Progress tracking**: Know which tasks are complete, in progress, or pending
+3. **Confidence building**: See the agent's reasoning and decision-making as it happens
+
+Ralph-TUI runs **alongside** Ralph Wiggum—it doesn't control or interrupt the loop. Think of it as a monitoring dashboard, not a steering wheel.
+
+## When to Use Ralph-TUI vs. When Not To
+
+**Use Ralph-TUI for:**
+- Long-running builds (3+ hours)
+- Multi-day projects with 20+ tasks
+- Debugging problematic loops (when Ralph gets stuck)
+- Team collaboration (multiple people monitoring progress)
+- Learning how Ralph approaches complex problems
+
+**Skip Ralph-TUI for:**
+- Quick 1-2 task builds (< 30 minutes)
+- Trusted workflows you've run dozens of times
+- Resource-constrained environments (Ralph-TUI adds minimal overhead, but some)
+- CI/CD pipelines (use file-based logging instead)
+
+---
+
+## Installation & Setup
+
+Install Ralph-TUI globally via npm:
+
+```bash
+npm install -g ralph-tui
+```
+
+After installation, run the setup command to install skills:
+
+```bash
+ralph-tui setup
+```
+
+This installs three skills to `~/.claude/skills/` as slash commands:
+
+- `/ralph-tui-prd` — Create product requirement documents interactively
+- `/ralph-tui-create-json` — Convert PRD to `prd.json` format
+- `/ralph-tui-create-beads` — Convert PRD to Beads issue tracking format
+
+**First launch verification:**
+
+```bash
+ralph-tui --version
+```
+
+You should see version information (1.0.0 or higher). If you encounter permissions errors, run with sudo or adjust npm global permissions.
+
+---
+
+## Core Features Deep Dive
+
+Ralph-TUI provides five core capabilities that transform how you interact with autonomous loops:
+
+### 1. Real-Time Visibility with Keyboard Controls
+
+Watch agent output live as Ralph executes. Navigate through logs, scroll back to see previous iterations, and jump to specific tasks—all without interrupting the autonomous loop.
+
+**Why it matters:** Long builds generate thousands of log lines. Ralph-TUI filters noise and highlights critical events (test failures, commits, task transitions) so you can focus on what matters.
+
+### 2. Task Orchestration
+
+Ralph-TUI automatically displays:
+- Which task is currently executing
+- Task priority (based on `IMPLEMENTATION_PLAN.md`)
+- Tasks completed vs. pending
+- Estimated progress percentage
+
+This answers the question: "Where are we in the build?"
+
+### 3. Session Persistence (Pause/Resume)
+
+Need to stop monitoring but keep Ralph running? Ralph-TUI sessions persist. Close the terminal, grab lunch, resume later—progress tracking continues.
+
+**Use case:** Start a 6-hour build at 5 PM, monitor for 30 minutes, close Ralph-TUI, check back at 9 AM. The session shows everything that happened overnight.
+
+### 4. Subagent Tracing
+
+When Ralph spawns subagents (for testing, linting, or subtasks), Ralph-TUI traces the call stack. See which subagent is active, what it's working on, and when it returns to the main loop.
+
+**Why it matters:** Complex builds use 5-10 subagents. Without tracing, you lose visibility into nested execution.
+
+### 5. Cross-Iteration Context Tracking
+
+Ralph-TUI maintains context between iterations. See:
+- What changed between iteration 10 and iteration 11
+- Which files were modified in each iteration
+- Test results across iterations (did the same test fail 3 times?)
+
+This turns a stream of events into a coherent narrative.
+
+---
+
+## Interface Walkthrough
+
+When you run `ralph-tui run`, you'll see a terminal interface divided into sections:
+
+### Header Bar
+```
+╭──────────────────────────────────────────────────────╮
+│ Ralph Wiggum - Building Mode                         │
+│ Project: todo-api-ralph                              │
+│ Iteration: 8 / 50                                    │
+│ Current Task: TASK-004 (User Authentication - Login) │
+╰──────────────────────────────────────────────────────╯
+```
+
+- **Mode**: Building, Testing, Planning, or Idle
+- **Project name**: From your project directory
+- **Iteration counter**: Shows current/max iterations (max from `loop.sh` or default 50)
+- **Current task**: Task ID and description from `IMPLEMENTATION_PLAN.md`
+
+### Main Log Stream
+
+```
+[14:23:15] Reading IMPLEMENTATION_PLAN.md...
+[14:23:18] Task TASK-003 completed, moving to TASK-004
+[14:23:20] Implementing login endpoint...
+[14:23:45] Writing auth.test.ts...
+[14:24:10] Running tests...
+[14:24:15] ✓ All tests passing (15/15)
+[14:24:18] Committing changes...
+[14:24:20] Updated progress.txt
+```
+
+Timestamps show real-time progress. Color coding:
+- **Green checkmarks** (✓): Successful operations
+- **Red X**: Failures or errors
+- **Yellow arrows** (→): State transitions
+
+### Footer Status
+
+```
+Tasks: 3 completed | 1 in progress | 8 pending
+```
+
+Quick glance at overall progress. Updates after each task transition.
+
+---
+
+## Keyboard Shortcuts & Controls
+
+Ralph-TUI is designed for hands-off monitoring, but keyboard controls let you navigate and inspect:
+
+### Navigation
+- **↑ / ↓** — Scroll through log output
+- **Page Up / Page Down** — Jump by screens
+- **Home / End** — Jump to start/end of logs
+- **g + g** — Go to top (Vim-style)
+- **Shift + G** — Go to bottom (Vim-style)
+
+### View Switching
+- **1** — Main log view (default)
+- **2** — Task list view (see all tasks from `IMPLEMENTATION_PLAN.md`)
+- **3** — File changes view (modified files per iteration)
+- **4** — Test results view (test summary across iterations)
+
+### Actions
+- **Space** — Pause log auto-scroll (resume with Space again)
+- **r** — Refresh current view
+- **/** — Search logs (type keyword, press Enter)
+- **n / N** — Next/previous search result
+- **c** — Copy current view to clipboard
+- **e** — Export logs to file (`ralph-tui-logs-[timestamp].txt`)
+
+### Session Control
+- **q** — Quit Ralph-TUI (Ralph loop continues running)
+- **Ctrl+C** — Emergency stop (kills both Ralph-TUI and Ralph loop)
+
+**Pro tip:** Use `Space` to pause auto-scroll when you see an error, then use `/` to search for related log lines.
+
+---
+
+## Running Your First Monitoring Session
+
+Let's walk through a real monitoring session from start to finish.
+
+### Step 1: Start Ralph Loop
+
+In your project directory, start Ralph Wiggum:
+
+```bash
+ralph loop PROMPT_plan.md --max-iterations 30
+```
+
+Ralph begins planning, reading specs, and building.
+
+### Step 2: Launch Ralph-TUI
+
+In a **separate terminal window** (or tmux pane), launch Ralph-TUI:
+
+```bash
+ralph-tui run
+```
+
+Ralph-TUI connects to the running Ralph loop and displays the header:
+
+```
+╭──────────────────────────────────────────────────────╮
+│ Ralph Wiggum - Planning Mode                         │
+│ Project: my-saas-app                                 │
+│ Iteration: 1 / 30                                    │
+│ Current Task: Initializing                           │
+╰──────────────────────────────────────────────────────╯
+```
+
+### Step 3: Watch the Planning Phase
+
+The log stream shows Ralph reading specs and creating `IMPLEMENTATION_PLAN.md`:
+
+```
+[10:05:12] Reading specs/authentication.md...
+[10:05:15] Reading specs/api-design.md...
+[10:05:18] Analyzing requirements...
+[10:05:42] Generated IMPLEMENTATION_PLAN.md with 12 tasks
+[10:05:45] Transitioning to Building Mode
+```
+
+Notice the mode changes from "Planning" to "Building" in the header.
+
+### Step 4: Monitor Task Execution
+
+Ralph picks the first task:
+
+```
+[10:06:00] Starting TASK-001: Database schema setup
+[10:06:15] Creating migrations/001_create_users_table.sql...
+[10:06:30] Running migration tests...
+[10:06:45] ✓ Migration successful
+[10:06:50] Committing changes: "Add users table migration"
+[10:06:55] Task TASK-001 completed
+```
+
+### Step 5: Interpret Iteration Counters
+
+The header updates:
+
+```
+│ Iteration: 3 / 30                                    │
+│ Current Task: TASK-002 (User model implementation)   │
+```
+
+**Iteration 3** doesn't mean "task 3"—it means Ralph has completed 3 full think-act-observe-correct cycles. A single task might take 5-10 iterations if tests fail or requirements are complex.
+
+### Step 6: Use Search During Errors
+
+If you see a test failure:
+
+```
+[10:15:32] Running tests...
+[10:15:40] ✗ 2 tests failed
+```
+
+Press `/` and search for "failed" to see which tests:
+
+```
+[10:15:40]   - test/auth.test.ts: "should hash passwords"
+[10:15:40]   - test/auth.test.ts: "should validate email format"
+```
+
+### Step 7: Pause to Analyze
+
+Press `Space` to pause auto-scroll, then scroll back through logs to see what Ralph tried. You might discover Ralph used an outdated library version or misunderstood a spec.
+
+Resume auto-scroll with `Space` when ready.
+
+### Step 8: Export Logs for Debugging
+
+If you need to share logs with the team or file an issue:
+
+Press `e` to export. Ralph-TUI saves to:
+
+```
+ralph-tui-logs-2026-01-16-10-30-45.txt
+```
+
+This file includes **all** log output from session start, not just what's visible on screen.
+
+### Step 9: Quit When Done
+
+Press `q` to exit Ralph-TUI. Ralph Wiggum continues running in the background.
+
+To stop both Ralph and Ralph-TUI: `Ctrl+C` (or kill the Ralph process separately).
+
+---
+
+## Common Use Cases
+
+### Use Case 1: Long-Running Builds (3+ Hours)
+
+**Scenario:** Building a full CRUD API with authentication, 15 tasks, estimated 4-5 hours.
+
+**Ralph-TUI workflow:**
+1. Start Ralph loop at 2 PM
+2. Launch Ralph-TUI in a separate tmux pane
+3. Monitor for 30 minutes to ensure Ralph understands specs correctly
+4. Detach from tmux (`Ctrl+B, d`)
+5. Check back at 6 PM via `tmux attach`
+6. Review footer status: "12 completed | 1 in progress | 2 pending"
+7. Export logs and verify test results
+
+**Why Ralph-TUI helps:** Without it, you'd have no idea if Ralph got stuck at task 3 or completed all tasks successfully until you manually inspect files.
+
+### Use Case 2: Multi-Day Projects
+
+**Scenario:** Building a complex microservices architecture over 2 days, 50+ tasks.
+
+**Ralph-TUI workflow:**
+1. Day 1, 9 AM: Start Ralph, monitor with Ralph-TUI
+2. Day 1, 6 PM: Ralph is at task 23/50. Export logs, close Ralph-TUI, leave Ralph running overnight
+3. Day 2, 9 AM: Launch Ralph-TUI again—session shows overnight progress (tasks 24-38 completed)
+4. Day 2, 12 PM: Ralph finishes. Review complete log export
+
+**Why Ralph-TUI helps:** Session persistence means you don't lose visibility into what happened overnight. Logs show every decision Ralph made while you were offline.
+
+### Use Case 3: Team Collaboration
+
+**Scenario:** Two developers pair-programming with Ralph. One writes specs, the other monitors execution.
+
+**Ralph-TUI workflow:**
+1. Developer A writes specs in `specs/` directory
+2. Developer A starts Ralph loop
+3. Developer B launches Ralph-TUI on their machine (connecting to the same Ralph instance)
+4. Developer B calls out issues: "Ralph is stuck on test failures for 15 minutes"
+5. Developer A updates specs or fixes test data
+6. Ralph self-corrects on next iteration
+
+**Why Ralph-TUI helps:** Real-time collaboration. Developer B can spot issues immediately instead of waiting for Developer A to check files manually.
+
+### Use Case 4: CI/CD Integration
+
+**Scenario:** Running Ralph in a GitHub Actions workflow for automated feature builds.
+
+**Ralph-TUI workflow:**
+- Don't use Ralph-TUI in CI/CD—use file-based logging instead
+- Ralph-TUI is designed for interactive terminal monitoring
+- In CI, redirect Ralph logs to a file: `ralph loop PROMPT_plan.md > build.log 2>&1`
+- Parse `build.log` in CI for test results and task completion
+
+**Exception:** Use Ralph-TUI in CI if you're triggering builds manually and want to monitor via SSH connection to the runner.
+
+---
+
+## Advanced Configuration
+
+Ralph-TUI supports customization via a config file at `~/.ralph-tui/config.json`.
+
+### Custom Task Priorities
+
+Override default priority sorting:
+
+```json
+{
+  "taskPriority": {
+    "TASK-001": 10,
+    "TASK-005": 9,
+    "TASK-002": 8
+  }
+}
+```
+
+Ralph-TUI displays tasks in this order, even if `IMPLEMENTATION_PLAN.md` lists them differently.
+
+### Output Filtering
+
+Filter log lines by keyword or regex:
+
+```json
+{
+  "logFilters": {
+    "exclude": ["Reading", "Skipping"],
+    "include": ["✓", "✗", "completed", "failed"]
+  }
+}
+```
+
+This hides noisy lines (file reads) and highlights important events (test results, task completion).
+
+### Export Formats
+
+Choose log export format:
+
+```json
+{
+  "exportFormat": "markdown"
+}
+```
+
+Options: `txt`, `markdown`, `json`, `html`
+
+**Markdown export** generates:
+
+```markdown
+# Ralph-TUI Log Export
+**Project:** my-saas-app
+**Duration:** 2h 15m
+**Tasks Completed:** 12 / 15
+
+## Iteration 1
+[10:05:12] Reading specs...
+...
+```
+
+### Integration with Other Tools
+
+Send Ralph-TUI events to external systems:
+
+```json
+{
+  "webhooks": {
+    "taskComplete": "https://myapp.com/api/ralph-task-complete",
+    "testFailure": "https://myapp.com/api/ralph-test-failed"
+  }
+}
+```
+
+When Ralph completes a task, Ralph-TUI POSTs to your webhook:
+
+```json
+{
+  "event": "taskComplete",
+  "taskId": "TASK-003",
+  "timestamp": "2026-01-16T10:30:45Z",
+  "iteration": 12
+}
+```
+
+**Use cases:**
+- Update project management tools (Linear, Jira)
+- Send Slack notifications
+- Trigger CI/CD pipelines on task completion
+
+---
+
+## Troubleshooting
+
+### Ralph-TUI Not Detecting Ralph Loop
+
+**Symptom:** `ralph-tui run` shows "Waiting for Ralph loop..." indefinitely.
+
+**Cause:** Ralph-TUI looks for a running `ralph` process in the current directory. If you started Ralph in a different directory, Ralph-TUI won't find it.
+
+**Solution:**
+1. Run `ps aux | grep ralph` to find the Ralph process
+2. Note the working directory from `lsof -p <pid>`
+3. `cd` to that directory and run `ralph-tui run` again
+
+**Alternative:** Explicitly specify the Ralph process ID:
+
+```bash
+ralph-tui run --pid 12345
+```
+
+### Session Lost/Corrupted
+
+**Symptom:** Ralph-TUI shows "Session data corrupted" on startup.
+
+**Cause:** Ralph-TUI stores session state in `~/.ralph-tui/sessions/<project-name>.json`. If Ralph crashes mid-iteration, the session file may be incomplete.
+
+**Solution:**
+1. Delete the corrupted session: `rm ~/.ralph-tui/sessions/my-project.json`
+2. Restart Ralph-TUI: `ralph-tui run`
+
+Ralph-TUI creates a fresh session, but you lose historical context (previous iterations won't show in logs).
+
+**Prevention:** Enable session backups in config:
+
+```json
+{
+  "sessionBackups": {
+    "enabled": true,
+    "interval": 300
+  }
+}
+```
+
+This creates backups every 5 minutes in `~/.ralph-tui/sessions/backups/`.
+
+### Performance Issues with Large Logs
+
+**Symptom:** Ralph-TUI becomes slow or unresponsive after several hours of monitoring.
+
+**Cause:** Log buffer grows to 100,000+ lines, slowing down rendering.
+
+**Solution:**
+1. Export logs periodically: press `e` every hour
+2. Enable log rotation in config:
+
+```json
+{
+  "logRotation": {
+    "maxLines": 10000,
+    "archiveOld": true
+  }
+}
+```
+
+When logs hit 10,000 lines, Ralph-TUI archives old logs to `~/.ralph-tui/archives/` and clears the buffer.
+
+**Alternative:** Increase terminal buffer size if your terminal supports it (e.g., iTerm2 → Preferences → Profiles → Terminal → Scrollback lines).
+
+### Port Conflicts
+
+**Symptom:** `ralph-tui run` fails with "Port 9876 already in use".
+
+**Cause:** Ralph-TUI uses port 9876 for internal communication. Another process is using it.
+
+**Solution:**
+1. Find the conflicting process: `lsof -i :9876`
+2. Kill it or use a different port:
+
+```bash
+ralph-tui run --port 9999
+```
+
+**Permanent fix:** Set default port in config:
+
+```json
+{
+  "port": 9999
+}
+```
+
+---
+
+## Best Practices
+
+### When to Pause/Resume
+
+**Pause** (press `Space`) when:
+- You see an error and want to read logs carefully
+- You're searching for a specific event with `/`
+- You want to copy-paste log output
+
+**Resume** (press `Space` again) when:
+- You've finished analyzing
+- You want to see real-time updates again
+
+**Don't pause indefinitely**—the log buffer still grows in the background. If you pause for > 30 minutes, consider exporting logs and restarting Ralph-TUI.
+
+### Log Management
+
+**Export logs regularly** (every 1-2 hours for long builds):
+- Press `e` to export
+- Name the file descriptively: `ralph-build-iteration-1-to-25.txt`
+
+**Why:** If Ralph crashes after 6 hours, you'll have logs up to your last export. Without exports, you might lose everything.
+
+**Automation:** Use cron to auto-export every hour:
+
+```bash
+0 * * * * cd /path/to/project && ralph-tui export --output logs/ralph-$(date +\%Y-\%m-\%d-\%H-\%M).txt
+```
+
+### Multi-Session Handling
+
+Ralph-TUI supports one session per project. If you start multiple Ralph loops in different directories:
+
+```bash
+# Terminal 1
+cd /projects/api-v1 && ralph loop PROMPT_plan.md
+
+# Terminal 2
+cd /projects/api-v2 && ralph loop PROMPT_plan.md
+```
+
+You can monitor both with separate Ralph-TUI instances:
+
+```bash
+# Ralph-TUI 1
+cd /projects/api-v1 && ralph-tui run
+
+# Ralph-TUI 2
+cd /projects/api-v2 && ralph-tui run
+```
+
+Each Ralph-TUI connects to its respective Ralph loop via directory context.
+
+**Tmux workflow for multi-session:**
+
+```bash
+# Create tmux session
+tmux new -s ralph-monitoring
+
+# Split into 4 panes
+Ctrl+B, % (vertical split)
+Ctrl+B, " (horizontal split in left pane)
+Ctrl+B, " (horizontal split in right pane)
+
+# Pane 1: Ralph loop 1
+cd /projects/api-v1 && ralph loop PROMPT_plan.md
+
+# Pane 2: Ralph-TUI 1
+cd /projects/api-v1 && ralph-tui run
+
+# Pane 3: Ralph loop 2
+cd /projects/api-v2 && ralph loop PROMPT_plan.md
+
+# Pane 4: Ralph-TUI 2
+cd /projects/api-v2 && ralph-tui run
+```
+
+Now you can monitor two autonomous builds side-by-side.
+
+### Resource Monitoring
+
+Ralph-TUI itself is lightweight (~20 MB memory, <1% CPU), but long-running sessions can accumulate logs that consume disk space.
+
+**Check disk usage:**
+
+```bash
+du -sh ~/.ralph-tui/sessions ~/.ralph-tui/archives
+```
+
+If you see > 1 GB, clean up old sessions:
+
+```bash
+rm ~/.ralph-tui/sessions/*.json
+rm -rf ~/.ralph-tui/archives/2025-*  # Delete archives from 2025
+```
+
+**Automated cleanup:** Add to `~/.ralph-tui/config.json`:
+
+```json
+{
+  "cleanup": {
+    "enabled": true,
+    "maxAge": 7
+  }
+}
+```
+
+This deletes sessions and archives older than 7 days.
+
+---
+
+## What's Next
+
+You now have full visibility into Ralph's autonomous loops. In [Part 4](/blog/ralph-wiggum-part-4-tutorial), we'll put everything together—building a complete production-grade API from scratch using the three-phase methodology with Ralph-TUI monitoring.
+
+You'll learn:
+- How to structure specs for complex projects
+- Writing effective PROMPTs for multi-day builds
+- Using Ralph-TUI to catch and fix issues mid-build
+- Debugging common failure modes in autonomous loops
+
+This is where Ralph Wiggum's power becomes real: watching an AI agent build a feature-complete application over 6+ hours while you monitor progress with Ralph-TUI.
+
+---
+
+## Key Takeaways
+
+✅ **Ralph-TUI provides essential visibility for autonomous loops** without interrupting execution
+
+✅ **Keyboard controls enable hands-off monitoring** with search, export, and session persistence
+
+✅ **Session persistence supports multi-day projects** by maintaining context across terminal sessions
+
+✅ **Task orchestration shows real-time priority** and progress through `IMPLEMENTATION_PLAN.md`
+
+✅ **Perfect companion for the tutorial in Part 4** where we'll use Ralph-TUI to monitor a full project build
+
+## Resources Referenced
+
+- [Ralph-TUI GitHub Repository](https://github.com/subsy/ralph-tui)
+- [Ralph-TUI npm Package](https://www.npmjs.com/package/ralph-tui)
+- [Ralph-TUI Documentation](https://ralph-tui.dev)
+- [Part 1: Introduction and Fundamentals](/blog/ralph-wiggum-part-1-introduction)
+- [Part 2: The Three-Phase Methodology](/blog/ralph-wiggum-part-2-methodology)
+- [Part 4: Complete Practical Tutorial](/blog/ralph-wiggum-part-4-tutorial)
