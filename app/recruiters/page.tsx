@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CheckCircle2, XCircle, Loader2, Sparkles, ArrowRight, Briefcase, Home, Download, ChevronDown } from 'lucide-react';
 import Link from 'next/link';
+import posthog from 'posthog-js';
 import GradientOrbs from '@/components/ui/GradientOrbs';
 import GridLines from '@/components/ui/GridLines';
 import { exportToMarkdown } from '@/lib/cvData';
@@ -30,6 +31,10 @@ export default function RecruitersPage() {
   const [showEducation, setShowEducation] = useState(false);
 
   const handleDownload = () => {
+    posthog.capture('cv_downloaded', {
+      source: 'recruiters_page',
+    });
+
     const markdown = exportToMarkdown();
     const blob = new Blob([markdown], { type: 'text/markdown' });
     const url = URL.createObjectURL(blob);
@@ -44,6 +49,10 @@ export default function RecruitersPage() {
 
   const analyzeJob = async () => {
     if (!jobDescription.trim()) return;
+
+    posthog.capture('job_analysis_started', {
+      job_description_length: jobDescription.length,
+    });
 
     setIsAnalyzing(true);
     setAssessment(null);
@@ -74,11 +83,21 @@ export default function RecruitersPage() {
 
       setAssessment(assessment);
 
+      posthog.capture('job_analysis_completed', {
+        is_good_fit: assessment.isGoodFit,
+        score: assessment.score,
+        strengths_count: assessment.strengths.length,
+        concerns_count: assessment.concerns.length,
+      });
+
       if (assessment.isGoodFit) {
         setTimeout(() => setShowContactForm(true), 1500);
       }
     } catch (error) {
       console.error('Error analyzing job:', error);
+      posthog.capture('job_analysis_failed', {
+        error: error instanceof Error ? error.message : 'Unknown error',
+      });
       setAssessment({
         isGoodFit: false,
         score: 0,
@@ -95,6 +114,11 @@ export default function RecruitersPage() {
     e.preventDefault();
     setIsSubmitting(true);
 
+    posthog.capture('recruiter_contact_submitted', {
+      company_website: contactData.companyWebsite,
+      has_job_description: jobDescription.length > 0,
+    });
+
     try {
       await fetch('https://api.indiehack.io/v1/contact', {
         method: 'POST',
@@ -109,8 +133,14 @@ export default function RecruitersPage() {
       });
 
       setSubmitSuccess(true);
+      posthog.capture('recruiter_contact_success', {
+        company_website: contactData.companyWebsite,
+      });
     } catch (error) {
       console.error('Error submitting contact:', error);
+      posthog.capture('recruiter_contact_failed', {
+        error: error instanceof Error ? error.message : 'Unknown error',
+      });
     } finally {
       setIsSubmitting(false);
     }
@@ -142,8 +172,11 @@ export default function RecruitersPage() {
             <span className="text-sm text-neutral-400">AI-Powered Job Assessment</span>
           </div>
           <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">For Recruiters</h1>
-          <p className="text-lg text-neutral-400 max-w-2xl mx-auto mb-6">
+          <p className="text-lg text-neutral-400 max-w-2xl mx-auto mb-4">
             Paste your job description below and receive an instant AI-powered assessment of how well the role aligns with my profile and experience
+          </p>
+          <p className="text-base text-white font-medium max-w-2xl mx-auto mb-6">
+            AI transformational hire: I go across your org, ship stuff, and kill stupid manual processes.
           </p>
           <button
             onClick={handleDownload}
@@ -214,6 +247,58 @@ export default function RecruitersPage() {
           </div>
         </motion.div>
 
+        {/* Personal Skills */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="mb-12"
+        >
+          <div className="p-6 bg-white/5 border border-white/10 rounded-2xl">
+            <h3 className="text-lg font-semibold text-white mb-6 text-center">What I Bring to the Table</h3>
+            <div className="grid md:grid-cols-3 gap-6">
+              {/* Strengths */}
+              <div>
+                <h4 className="text-sm font-semibold text-emerald-400 mb-3">Strengths</h4>
+                <div className="space-y-2">
+                  {['Customer friendly', 'Fast learner', 'Ship fast', 'Can work autonomously', 'Pro-active', 'Love to automate my work', 'Thinks out of the box'].map((skill) => (
+                    <div key={skill} className="flex items-center gap-2">
+                      <CheckCircle2 className="w-3 h-3 text-emerald-500 flex-shrink-0" />
+                      <span className="text-neutral-300 text-sm">{skill}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Working Style */}
+              <div>
+                <h4 className="text-sm font-semibold text-blue-400 mb-3">Working Style</h4>
+                <div className="space-y-2">
+                  {['Move Fast and Break Things', 'Refactor when things work', 'Iterative', 'Fast shipper'].map((skill) => (
+                    <div key={skill} className="flex items-center gap-2">
+                      <CheckCircle2 className="w-3 h-3 text-blue-500 flex-shrink-0" />
+                      <span className="text-neutral-300 text-sm">{skill}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Honest Weaknesses */}
+              <div>
+                <h4 className="text-sm font-semibold text-orange-400 mb-3">Honest Weaknesses</h4>
+                <div className="space-y-2">
+                  {['Loses interest fast', 'Not a good planner', 'Hates repetitive work'].map((skill) => (
+                    <div key={skill} className="flex items-center gap-2">
+                      <XCircle className="w-3 h-3 text-orange-500 flex-shrink-0" />
+                      <span className="text-neutral-300 text-sm">{skill}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+
         {/* Availability & Work Preferences */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -237,7 +322,7 @@ export default function RecruitersPage() {
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-emerald-500" />
-                  <span>Startup & Scale-up environments</span>
+                  <span>Fast-paced, high-ownership environments</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-emerald-500" />
@@ -250,9 +335,9 @@ export default function RecruitersPage() {
               </div>
             </div>
 
-            {/* Deal Breakers */}
+            {/* Not a Good Fit */}
             <div>
-              <h3 className="text-sm font-semibold text-orange-400 mb-3">Deal Breakers</h3>
+              <h3 className="text-sm font-semibold text-orange-400 mb-3">Not a Good Fit</h3>
               <div className="space-y-2 text-neutral-300 text-sm">
                 <div className="flex items-center gap-2">
                   <XCircle className="w-4 h-4 text-orange-500" />

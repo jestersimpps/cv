@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Mail, Loader2, CheckCircle, AlertCircle } from 'lucide-react';
+import posthog from 'posthog-js';
 import { subscribeToNewsletter } from '@/app/actions/newsletter';
 
 type FormStatus = 'idle' | 'loading' | 'success' | 'error';
@@ -16,15 +17,25 @@ export default function NewsletterSignup() {
     e.preventDefault();
     setStatus('loading');
 
+    posthog.capture('newsletter_subscribe_attempt', {
+      email_domain: email.split('@')[1],
+    });
+
     const result = await subscribeToNewsletter(email);
 
     if (result.success) {
       setStatus('success');
       setMessage(result.message);
       setEmail('');
+      posthog.capture('newsletter_subscribe_success', {
+        email_domain: email.split('@')[1],
+      });
     } else {
       setStatus('error');
       setMessage(result.message);
+      posthog.capture('newsletter_subscribe_failed', {
+        error: result.message,
+      });
     }
 
     setTimeout(() => {
