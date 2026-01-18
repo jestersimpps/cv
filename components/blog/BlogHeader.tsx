@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { ArrowLeft, Clock, Calendar, User, Home } from 'lucide-react';
 import { BlogPost } from '@/lib/models/blog';
 import { formatDate } from '@/lib/utils/date';
+import ShareButtons from './ShareButtons';
 
 interface BlogHeaderProps {
   post: BlogPost;
@@ -100,6 +101,19 @@ export default function BlogHeader({ post }: BlogHeaderProps) {
           />
         </motion.div>
       )}
+
+      {/* Share Buttons */}
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.3 }}
+        className="mt-6"
+      >
+        <ShareButtons
+          post={{ title: post.title, description: post.description, slug: post.slug }}
+          variant="horizontal"
+        />
+      </motion.div>
     </header>
   );
 }
