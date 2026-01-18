@@ -171,7 +171,7 @@ export default function RecruitersPage() {
             <Briefcase className="w-4 h-4 text-white" />
             <span className="text-sm text-neutral-400">AI-Powered Job Assessment</span>
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">For Recruiters</h1>
+          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">Let's Work Together</h1>
           <p className="text-lg text-neutral-400 max-w-2xl mx-auto mb-6">
             Submit your role for an AI-powered compatibility assessment with my profile and expertise
           </p>
