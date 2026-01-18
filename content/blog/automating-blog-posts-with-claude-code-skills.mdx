@@ -13,7 +13,7 @@ I built a custom claude code skill that turns writing blog posts from a 30-minut
 
 ## The Problem
 
-Every time i wanted to write about a project, i'd go through the same tedious steps:
+Every time I wanted to write about a project, I'd go through the same tedious steps:
 - find screenshots in the project folder
 - copy them to the blog assets directory
 - create a new mdx file with the right frontmatter
@@ -22,11 +22,11 @@ Every time i wanted to write about a project, i'd go through the same tedious st
 - commit everything
 - start the dev server to preview
 
-It's not hard. but it's friction. and friction kills momentum
+It's not hard. But it's friction. And friction kills momentum
 
 ## Claude Code Skills 101
 
-Skills live in `~/.claude/skills/` as markdown files. each file defines a slash command that claude code can execute. the structure is simple:
+Skills live in `~/.claude/skills/` as markdown files. Each file defines a slash command that claude code can execute. The structure is simple:
 
 ```
 ~/.claude/
@@ -83,11 +83,11 @@ Create a new blog post for jovweb.dev about a project or topic.
 - Include frontmatter with title, description, date, category, tags
 ```
 
-The key thing here is `$ARGUMENTS`. this is how you pass input to a skill. whatever comes after `/blog` gets injected there
+The key thing here is `$ARGUMENTS`. This is how you pass input to a skill. Whatever comes after `/blog` gets injected there
 
 ## Chaining Skills Together
 
-The blog skill calls another skill: `/rewrite`. this converts my drafts into my writing style
+The blog skill calls another skill: `/rewrite`. This converts my drafts into my writing style
 
 ```markdown
 # Rewrite Skill
@@ -99,33 +99,33 @@ The blog skill calls another skill: `/rewrite`. this converts my drafts into my 
 
 ## Style Guide
 - start with lowercase
-- use "i" not "I"
+- use "I" not "I"
 - no ending punctuation
 - short, direct sentences
 - stream of consciousness flow
 ```
 
-Skills calling skills. it's composable automation
+Skills calling skills. It's composable automation
 
 ## The Execution Flow
 
-When i run `/blog ~/Sites/hyperscalper`:
+When I run `/blog ~/Sites/hyperscalper`:
 
 ```
-1. claude code loads ~/.claude/skills/blog.md
+1. Claude code loads ~/.claude/skills/blog.md
 2. $ARGUMENTS = "~/Sites/hyperscalper"
-3. claude explores the folder:
+3. Claude explores the folder:
    - reads README.md
    - checks package.json for dependencies
    - scans src/ for main functionality
-4. finds images in ~/Sites/hyperscalper/public/
-5. copies best image to blog assets
-6. drafts the post content
-7. calls /rewrite to apply my style
-8. creates content/blog/building-hyperscalper.mdx
-9. runs: git add . && git commit -m "add hyperscalper blog post"
-10. runs: npm run dev (if not running)
-11. opens http://localhost:3000/blog/building-hyperscalper
+4. Finds images in ~/Sites/hyperscalper/public/
+5. Copies best image to blog assets
+6. Drafts the post content
+7. Calls /rewrite to apply my style
+8. Creates content/blog/building-hyperscalper.mdx
+9. Runs: git add . && git commit -m "add hyperscalper blog post"
+10. Runs: npm run dev (if not running)
+11. Opens http://localhost:3000/blog/building-hyperscalper
 ```
 
 All from one command
@@ -136,26 +136,26 @@ The skill knows exactly what frontmatter my blog needs:
 
 ```yaml
 ---
-title: "Building Hyperscalper"
-description: "a real-time trading dashboard for crypto markets"
-publishedAt: "2026-01-13"
-author: "Jo Vinkenroye"
-category: "Development"
-tags: ["Trading", "Crypto", "Real-time", "Next.js"]
-coverImage: "/assets/blog/hyperscalper-cover.png"
-featured: false
+Title: "Building Hyperscalper"
+Description: "a real-time trading dashboard for crypto markets"
+PublishedAt: "2026-01-13"
+Author: "Jo Vinkenroye"
+Category: "Development"
+Tags: ["Trading", "Crypto", "Real-time", "Next.js"]
+CoverImage: "/assets/blog/hyperscalper-cover.png"
+Featured: false
 ---
 ```
 
-Categories, tags, image paths. all defined in the skill so i don't have to remember
+Categories, tags, image paths. All defined in the skill so I don't have to remember
 
 ## The Meta Part
 
-This post was written using the skill i'm writing about. /blog about the blog skill :D
+This post was written using the skill I'm writing about. /blog about the blog skill :D
 
 ## Building Your Own
 
-Start simple. create `~/.claude/skills/your-skill.md` with:
+Start simple. Create `~/.claude/skills/your-skill.md` with:
 
 ```markdown
 # Your Skill Name
@@ -179,16 +179,16 @@ Think about what you do repeatedly:
 
 ## The Stack
 
-My blog runs on next.js 14 with mdx. posts are just files:
+My blog runs on next.js 14 with mdx. Posts are just files:
 
 ```
-content/blog/
+Content/blog/
 ├── automating-blog-posts.mdx
 ├── building-hyperscalper.mdx
 └── ...
 ```
 
-No database. no cms. just markdown and git. the skill writes directly to the repo
+No database. No cms. Just markdown and git. The skill writes directly to the repo
 
 ## What's Next
 

@@ -102,10 +102,10 @@ For specialized, repeatable tasks, create your own subagents. They live in `.cla
 
 ```yaml
 ---
-name: security-auditor
-description: "Audit code for security vulnerabilities including OWASP Top 10, authentication issues, data exposure, and injection attacks"
-tools: Read, Grep, Glob
-model: sonnet
+Name: security-auditor
+Description: "Audit code for security vulnerabilities including OWASP Top 10, authentication issues, data exposure, and injection attacks"
+Tools: Read, Grep, Glob
+Model: sonnet
 ---
 
 # Security Auditor
@@ -182,7 +182,7 @@ Analyze the same code from different angles simultaneously:
 
 ```
 "Review this PR with security-auditor, performance-analyzer,
-and test-coverage agents in parallel"
+And test-coverage agents in parallel"
 ```
 
 ```
@@ -232,13 +232,13 @@ Let's create a multi-agent code review system.
 ### Agent 1: Security Auditor
 
 ```bash
-mkdir -p .claude/agents/security-auditor
-cat > .claude/agents/security-auditor/AGENT.md << 'EOF'
+Mkdir -p .claude/agents/security-auditor
+Cat > .claude/agents/security-auditor/AGENT.md << 'EOF'
 ---
-name: security-auditor
-description: "Review code for security vulnerabilities, OWASP issues, auth problems"
-tools: Read, Grep, Glob
-model: sonnet
+Name: security-auditor
+Description: "Review code for security vulnerabilities, OWASP issues, auth problems"
+Tools: Read, Grep, Glob
+Model: sonnet
 ---
 
 # Security Auditor
@@ -262,13 +262,13 @@ EOF
 ### Agent 2: Performance Analyzer
 
 ```bash
-mkdir -p .claude/agents/performance-analyzer
-cat > .claude/agents/performance-analyzer/AGENT.md << 'EOF'
+Mkdir -p .claude/agents/performance-analyzer
+Cat > .claude/agents/performance-analyzer/AGENT.md << 'EOF'
 ---
-name: performance-analyzer
-description: "Analyze code for performance issues, N+1 queries, memory leaks, bottlenecks"
-tools: Read, Grep, Glob
-model: sonnet
+Name: performance-analyzer
+Description: "Analyze code for performance issues, N+1 queries, memory leaks, bottlenecks"
+Tools: Read, Grep, Glob
+Model: sonnet
 ---
 
 # Performance Analyzer
@@ -292,13 +292,13 @@ EOF
 ### Agent 3: Test Coverage
 
 ```bash
-mkdir -p .claude/agents/test-coverage
-cat > .claude/agents/test-coverage/AGENT.md << 'EOF'
+Mkdir -p .claude/agents/test-coverage
+Cat > .claude/agents/test-coverage/AGENT.md << 'EOF'
 ---
-name: test-coverage
-description: "Analyze test coverage, identify untested code paths, suggest missing tests"
-tools: Read, Grep, Glob, Bash
-model: sonnet
+Name: test-coverage
+Description: "Analyze test coverage, identify untested code paths, suggest missing tests"
+Tools: Read, Grep, Glob, Bash
+Model: sonnet
 ---
 
 # Test Coverage Analyzer
@@ -322,7 +322,7 @@ EOF
 
 ```
 "Run a full review on the auth module using security-auditor,
-performance-analyzer, and test-coverage agents in parallel"
+Performance-analyzer, and test-coverage agents in parallel"
 ```
 
 Claude spawns all three, they work simultaneously, and you get a comprehensive report.
@@ -339,10 +339,10 @@ The description field determines when Claude auto-invokes your agent. Be specifi
 
 ```yaml
 # Bad - too vague
-description: "Helps with code"
+Description: "Helps with code"
 
 # Good - specific triggers
-description: "Review code for SQL injection, XSS, CSRF, and authentication vulnerabilities using OWASP guidelines"
+Description: "Review code for SQL injection, XSS, CSRF, and authentication vulnerabilities using OWASP guidelines"
 ```
 
 ### 3. Minimal Permissions
@@ -351,13 +351,13 @@ Only grant tools the agent needs:
 
 ```yaml
 # Analyzer agents: read-only
-tools: Read, Grep, Glob
+Tools: Read, Grep, Glob
 
 # Writer agents: can modify
-tools: Read, Write, Edit
+Tools: Read, Write, Edit
 
 # Runner agents: can execute
-tools: Read, Bash
+Tools: Read, Bash
 ```
 
 ### 4. Clear Output Format
@@ -381,7 +381,7 @@ Don't build everything from scratch. These collections are battle-tested:
 Install by cloning into your `.claude/agents/` directory:
 
 ```bash
-git clone https://github.com/VoltAgent/awesome-claude-code-subagents.git .claude/agents/voltagent
+Git clone https://github.com/VoltAgent/awesome-claude-code-subagents.git .claude/agents/voltagent
 ```
 
 ## Commands vs Skills vs Subagents
@@ -407,9 +407,9 @@ git clone https://github.com/VoltAgent/awesome-claude-code-subagents.git .claude
 
 # Minimal AGENT.md
 ---
-name: my-agent
-description: "When to use this agent"
-tools: Read, Grep, Glob
+Name: my-agent
+Description: "When to use this agent"
+Tools: Read, Grep, Glob
 ---
 Instructions here...
 

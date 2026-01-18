@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { ReactNode } from 'react';
 import CodeBlock from './CodeBlock';
 import Mermaid from './Mermaid';
+import LinkPreview from './LinkPreview';
 
 function extractTextFromChildren(children: ReactNode): string {
   if (typeof children === 'string') return children;
@@ -27,7 +28,7 @@ export const MDXComponents = {
   h2: ({ children, id, ...props }: { children: ReactNode; id?: string }) => (
     <h2
       id={id}
-      className="text-2xl font-bold text-white mt-12 mb-4 scroll-mt-24"
+      className="text-2xl font-bold text-white mt-12 mb-4 scroll-mt-24 [&_a]:border-none [&_a]:text-white [&_a:hover]:text-white"
       {...props}
     >
       {children}
@@ -36,7 +37,7 @@ export const MDXComponents = {
   h3: ({ children, id, ...props }: { children: ReactNode; id?: string }) => (
     <h3
       id={id}
-      className="text-xl font-semibold text-white mt-8 mb-3 scroll-mt-24"
+      className="text-xl font-semibold text-white mt-8 mb-3 scroll-mt-24 [&_a]:border-none [&_a]:text-white [&_a:hover]:text-white"
       {...props}
     >
       {children}
@@ -45,7 +46,7 @@ export const MDXComponents = {
   h4: ({ children, id, ...props }: { children: ReactNode; id?: string }) => (
     <h4
       id={id}
-      className="text-lg font-medium text-white mt-6 mb-2 scroll-mt-24"
+      className="text-lg font-medium text-white mt-6 mb-2 scroll-mt-24 [&_a]:border-none [&_a]:text-white [&_a:hover]:text-white"
       {...props}
     >
       {children}
@@ -68,26 +69,10 @@ export const MDXComponents = {
   a: ({ href, children }: { href?: string; children: ReactNode }) => {
     const isExternal = href?.startsWith('http://') || href?.startsWith('https://');
 
-    if (isExternal) {
-      return (
-        <a
-          href={href}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-blue-400 hover:text-blue-300 underline underline-offset-4 transition-colors"
-        >
-          {children}
-        </a>
-      );
-    }
-
     return (
-      <Link
-        href={href || '#'}
-        className="text-blue-400 hover:text-blue-300 underline underline-offset-4 transition-colors"
-      >
+      <LinkPreview href={href || '#'} isExternal={isExternal}>
         {children}
-      </Link>
+      </LinkPreview>
     );
   },
   ul: ({ children }: { children: ReactNode }) => (

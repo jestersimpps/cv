@@ -8,21 +8,21 @@ tags: ["AI", "LLM", "SEO", "Web Development", "Standards"]
 coverImage: "/assets/blog/llms-txt-guide.png"
 ---
 
-So you've probably heard about `llms.txt` if you've been following the AI space lately. think of it like `robots.txt` but for LLMs
+So you've probably heard about `llms.txt` if you've been following the AI space lately. Think of it like `robots.txt` but for LLMs
 
 ## The Problem It Solves
 
-LLMs have this fundamental issue: context windows. they can only process so much text at once. when an AI tries to understand your website it runs into a few problems:
+LLMs have this fundamental issue: context windows. They can only process so much text at once. When an AI tries to understand your website it runs into a few problems:
 
 - **HTML is messy** - nav, ads, scripts, and actual content all mixed together
 - **websites are huge** - most sites have hundreds of pages
 - **structure is all over the place** - every site does things differently
 
-Converting a complex website into something an LLM can actually use is hard. that's where `llms.txt` comes in
+Converting a complex website into something an LLM can actually use is hard. That's where `llms.txt` comes in
 
 ## What is llms.txt?
 
-Jeremy Howard (co-founder of Answer.AI) proposed this back in September 2024. it's basically a markdown file at your website root that gives:
+Jeremy Howard (co-founder of Answer.AI) proposed this back in September 2024. It's basically a markdown file at your website root that gives:
 
 - a quick overview of your site
 - what each section is about
@@ -33,7 +33,7 @@ It's a curated index built specifically for machines
 
 ## The Format
 
-It's just plain markdown. here's the basic structure:
+It's just plain markdown. Here's the basic structure:
 
 ```markdown
 # Site Name
@@ -59,7 +59,7 @@ A paragraph explaining what this site is and who it's for.
 
 ## Real-World Example
 
-Here's what i use for this site:
+Here's what I use for this site:
 
 ```markdown
 # Jo Vinkenroye - Web Application Developer
@@ -82,7 +82,7 @@ React, Next.js, blockchain development, and AI integration.
 
 ## Should You Add One?
 
-Ok here's the honest truth: no major AI company has officially said they use `llms.txt` when crawling. it's a proposed standard, not an adopted one
+Ok here's the honest truth: no major AI company has officially said they use `llms.txt` when crawling. It's a proposed standard, not an adopted one
 
 But adoption is growing. Anthropic, Cloudflare, Vercel, Cursor - they've all implemented it. Mintlify rolled it out across all their hosted docs in late 2024
 
@@ -102,7 +102,7 @@ If you're on Next.js with the App Router you can create a dynamic route:
 
 ```typescript
 // app/llms.txt/route.ts
-export async function GET() {
+Export async function GET() {
   const content = `# Your Site Name
 
 > Your tagline here
@@ -127,9 +127,9 @@ For dynamic content like blog posts you can generate it programmatically:
 
 ```typescript
 // app/llms.txt/route.ts
-import { getAllPosts } from '@/lib/blog';
+Import { getAllPosts } from '@/lib/blog';
 
-export async function GET() {
+Export async function GET() {
   const posts = getAllPosts();
 
   const blogSection = posts
@@ -162,14 +162,14 @@ A few tools can help you set this up:
 Whether or not `llms.txt` becomes a universal standard, the problem it solves isn't going away. AI models will keep needing structured access to web content
 
 By implementing it now you're:
-1. making your content more accessible to current AI tools
-2. prepping for potential future adoption
-3. thinking about content from an AI-first perspective
+1. Making your content more accessible to current AI tools
+2. Prepping for potential future adoption
+3. Thinking about content from an AI-first perspective
 
-That last one might be the most valuable. as AI becomes a primary way people discover content, machine readability becomes just as important as human readability
+That last one might be the most valuable. As AI becomes a primary way people discover content, machine readability becomes just as important as human readability
 
 ## Conclusion
 
-`llms.txt` is simple and low-effort but could pay off as AI-native discovery grows. takes minutes to implement and signals your site is ready for the AI-first web
+`llms.txt` is simple and low-effort but could pay off as AI-native discovery grows. Takes minutes to implement and signals your site is ready for the AI-first web
 
 Check out the [official spec](https://llmstxt.org/) for more details, or look at how [Anthropic](https://docs.anthropic.com/llms.txt) and [Vercel](https://vercel.com/llms.txt) have done theirs

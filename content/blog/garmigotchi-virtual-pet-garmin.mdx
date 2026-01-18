@@ -8,23 +8,23 @@ tags: ["Garmin", "Wearables", "Gamification", "MonkeyC", "Side Project"]
 coverImage: "/assets/blog/garmigotchi-cover.png"
 ---
 
-What if your smartwatch had a tiny creature living inside it. one that thrives when you're healthy and dies when you neglect yourself
+What if your smartwatch had a tiny creature living inside it. One that thrives when you're healthy and dies when you neglect yourself
 
-That's garmigotchi. a tamagotchi-style virtual pet for garmin watches that feeds on your real health data
+That's garmigotchi. A tamagotchi-style virtual pet for garmin watches that feeds on your real health data
 
 ## The Concept
 
-Your garmin already tracks everything. body battery, stress levels, sleep quality, steps, heart rate. but most people ignore these metrics until something goes wrong
+Your garmin already tracks everything. Body battery, stress levels, sleep quality, steps, heart rate. But most people ignore these metrics until something goes wrong
 
-Garmigotchi turns that data into something you actually care about. a small creature that visibly reacts to how you're treating your body
+Garmigotchi turns that data into something you actually care about. A small creature that visibly reacts to how you're treating your body
 
-High stress for too long? your pet gets anxious. didn't sleep well? it looks exhausted. hit your step goal with energy to spare? it's ecstatic
+High stress for too long? Your pet gets anxious. Didn't sleep well? It looks exhausted. Hit your step goal with energy to spare? It's ecstatic
 
-And if you consistently neglect your health? it dies. you'll have to wait until next month for a new one
+And if you consistently neglect your health? It dies. You'll have to wait until next month for a new one
 
 ## How It Works
 
-The creature lives in a small circular area on your instinct 3 watchface. every minute it checks your health metrics and updates its mood
+The creature lives in a small circular area on your instinct 3 watchface. Every minute it checks your health metrics and updates its mood
 
 ### The Mood System
 
@@ -32,20 +32,20 @@ I mapped garmin's metrics to a mood grid based on body battery and stress:
 
 ![Garmigotchi mood system](/assets/blog/garmigotchi-moods.png)
 
-Each mood has its own sprite animation and personality. an ecstatic creature bounces around energetically. a sleepy one barely moves
+Each mood has its own sprite animation and personality. An ecstatic creature bounces around energetically. A sleepy one barely moves
 
 ### Neglect Points
 
-Here's where it gets interesting. the creature tracks "neglect points" that accumulate when you're not taking care of yourself:
+Here's where it gets interesting. The creature tracks "neglect points" that accumulate when you're not taking care of yourself:
 
 - body battery drops to critical? +1 point per hour
 - terrible sleep score? +2 points
 - high stress for 30+ minutes? +1 point
 - didn't hit your step goal? +0.5 to +1 point
 
-Good days heal your creature. a solid night's sleep combined with hitting your step goal removes 2 neglect points
+Good days heal your creature. A solid night's sleep combined with hitting your step goal removes 2 neglect points
 
-But let it accumulate to 16 points and your creature dies. becomes a ghost until the next month when a new egg hatches
+But let it accumulate to 16 points and your creature dies. Becomes a ghost until the next month when a new egg hatches
 
 ### Evolution
 
@@ -57,13 +57,13 @@ The creature evolves through 5 stages each month:
 4. **Mutt** (days 21-31)
 5. **Elder** (day 31+)
 
-Keep it alive long enough and you'll see the full evolution. kill it early and you're stuck with a ghost
+Keep it alive long enough and you'll see the full evolution. Kill it early and you're stuck with a ghost
 
 ## The Tech
 
-Building for garmin watches is... different. they use monkeyc, a proprietary language that compiles to run on extremely resource-constrained hardware
+Building for garmin watches is... Different. They use monkeyc, a proprietary language that compiles to run on extremely resource-constrained hardware
 
-Every sprite, every animation frame, every string. it all counts against tight memory limits. i ended up with 110+ pre-rendered sprites covering all mood and evolution combinations
+Every sprite, every animation frame, every string. It all counts against tight memory limits. I ended up with 110+ pre-rendered sprites covering all mood and evolution combinations
 
 The mood calculation runs every minute, pulling data from:
 - body battery sensor
@@ -72,18 +72,18 @@ The mood calculation runs every minute, pulling data from:
 - step count vs goal
 - previous night's sleep score
 
-State persists locally on the watch. your creature's neglect points, evolution stage, and death status survive restarts
+State persists locally on the watch. Your creature's neglect points, evolution stage, and death status survive restarts
 
 ## Why I Built This
 
-I've had a garmin for years. the health data is genuinely useful but i'd only check it reactively. after feeling tired or stressed
+I've had a garmin for years. The health data is genuinely useful but I'd only check it reactively. After feeling tired or stressed
 
-Garmigotchi flips that. now i glance at my watch and immediately see how i'm doing. the little creature provides instant feedback without needing to dig through menus
+Garmigotchi flips that. Now I glance at my watch and immediately see how I'm doing. The little creature provides instant feedback without needing to dig through menus
 
-It's also surprisingly motivating. seeing my pet look sick because i've been stressed all day actually makes me want to take a break. hitting my step goal feels more rewarding when my creature celebrates with me :)
+It's also surprisingly motivating. Seeing my pet look sick because I've been stressed all day actually makes me want to take a break. Hitting my step goal feels more rewarding when my creature celebrates with me :)
 
 ## What's Next
 
-The watchface is built for all instinct watches. i'm working on adding more creature variants
+The watchface is built for all instinct watches. I'm working on adding more creature variants
 
-It's currently in beta. if you want to keep a virtual pet alive with your health data, check it out at [garmigotchi.vercel.app](https://garmigotchi.vercel.app)
+It's currently in beta. If you want to keep a virtual pet alive with your health data, check it out at [garmigotchi.vercel.app](https://garmigotchi.vercel.app)

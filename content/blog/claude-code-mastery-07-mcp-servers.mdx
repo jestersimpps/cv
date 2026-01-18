@@ -13,7 +13,7 @@ series:
   total: 10
 ---
 
-You're debugging an issue and need to check the database. So you open a terminal, connect to PostgreSQL, write a query, copy the results, paste them into Claude, explain the schema... wouldn't it be easier if Claude could just query the database directly?
+You're debugging an issue and need to check the database. So you open a terminal, connect to PostgreSQL, write a query, copy the results, paste them into Claude, explain the schema... Wouldn't it be easier if Claude could just query the database directly?
 
 ![Left exit 12 off ramp meme - choosing MCP over copy-paste workflow](/assets/blog/mcp-exit-ramp.jpg)
 
@@ -113,16 +113,16 @@ From the terminal, use CLI commands:
 
 ```bash
 # Add a server
-claude mcp add github --scope user
+Claude mcp add github --scope user
 
 # List configured servers
-claude mcp list
+Claude mcp list
 
 # Inspect a server's config
-claude mcp get github
+Claude mcp get github
 
 # Remove a server
-claude mcp remove github
+Claude mcp remove github
 ```
 
 **Scope options:**
@@ -524,16 +524,16 @@ Before installing any MCP server, check:
 
 ```bash
 # CLI commands
-claude mcp add [name] --scope [user|project|local]
-claude mcp list
-claude mcp get [name]
-claude mcp remove [name]
+Claude mcp add [name] --scope [user|project|local]
+Claude mcp list
+Claude mcp get [name]
+Claude mcp remove [name]
 
 # In-session command
 /mcp                          # Check server status
 
 # Debug mode
-claude --mcp-debug            # Detailed connection logs
+Claude --mcp-debug            # Detailed connection logs
 ```
 
 **Configuration file (`.mcp.json`):**

@@ -99,10 +99,10 @@ Here's the anatomy of a well-structured Skill:
 
 ```yaml
 ---
-name: code-review
-description: "Review pull requests using OWASP security guidelines, performance best practices, and team formatting standards"
-allowed-tools: Read, Grep, Glob
-model: claude-sonnet-4-5-20250929
+Name: code-review
+Description: "Review pull requests using OWASP security guidelines, performance best practices, and team formatting standards"
+Allowed-tools: Read, Grep, Glob
+Model: claude-sonnet-4-5-20250929
 ---
 # Code Review Standards
 
@@ -172,17 +172,17 @@ Let's build a practical Skill: a TDD (Test-Driven Development) guide that Claude
 ### Step 1: Create the Directory
 
 ```bash
-mkdir -p .claude/skills/tdd
+Mkdir -p .claude/skills/tdd
 ```
 
 ### Step 2: Create SKILL.md
 
 ```bash
-cat > .claude/skills/tdd/SKILL.md << 'EOF'
+Cat > .claude/skills/tdd/SKILL.md << 'EOF'
 ---
-name: tdd
-description: "Apply test-driven development workflow when writing tests, implementing features with tests, or following red-green-refactor cycle"
-allowed-tools: Read, Write, Edit, Bash(npm test:*), Bash(bun test:*)
+Name: tdd
+Description: "Apply test-driven development workflow when writing tests, implementing features with tests, or following red-green-refactor cycle"
+Allowed-tools: Read, Write, Edit, Bash(npm test:*), Bash(bun test:*)
 ---
 # Test-Driven Development
 
@@ -231,8 +231,8 @@ EOF
 ### Step 3: Add an Example
 
 ````bash
-mkdir -p .claude/skills/tdd/examples
-cat > .claude/skills/tdd/examples/tdd-session.md << 'EOF'
+Mkdir -p .claude/skills/tdd/examples
+Cat > .claude/skills/tdd/examples/tdd-session.md << 'EOF'
 # TDD Session: Adding Email Validation
 
 ## Requirement
@@ -243,7 +243,7 @@ Validate email format in user registration.
 ### Red
 ```typescript
 // user.test.ts
-it('should reject invalid email format', () => {
+It('should reject invalid email format', () => {
   expect(() => new User('notanemail')).toThrow('Invalid email');
 });
 ```
@@ -252,7 +252,7 @@ Run: `npm test` → FAILS (User doesn't validate emails yet)
 ### Green
 ```typescript
 // user.ts
-constructor(email: string) {
+Constructor(email: string) {
   if (!email.includes('@')) {
     throw new Error('Invalid email');
   }
@@ -264,7 +264,7 @@ Run: `npm test` → PASSES
 ### Refactor
 Extract validation:
 ```typescript
-private validateEmail(email: string): void {
+Private validateEmail(email: string): void {
   if (!email.includes('@')) {
     throw new Error('Invalid email');
   }
@@ -275,7 +275,7 @@ private validateEmail(email: string): void {
 
 ### Red
 ```typescript
-it('should reject email without domain', () => {
+It('should reject email without domain', () => {
   expect(() => new User('test@')).toThrow('Invalid email');
 });
 ```
@@ -306,7 +306,7 @@ The most popular Skills library is [obra/superpowers](https://github.com/obra/su
 Or clone directly:
 
 ```bash
-git clone https://github.com/obra/superpowers.git ~/.claude/skills/superpowers
+Git clone https://github.com/obra/superpowers.git ~/.claude/skills/superpowers
 ```
 
 > **Note:** Skills use directory namespacing similar to how [commands are organized in Part 4](/blog/claude-code-mastery-04-custom-commands#namespacing-with-directories). The same organizational patterns apply—subdirectories create namespaces for better organization.
@@ -407,7 +407,7 @@ If you're on a free plan and want to encode team knowledge, use the `.claude/rul
 
 **GitHub Topics:**
 ```
-https://github.com/topics/claude-skills
+Https://github.com/topics/claude-skills
 ```
 
 **Community Collections:**
@@ -425,7 +425,7 @@ https://github.com/topics/claude-skills
 
 **Required structure:**
 ```
-skill-name/
+Skill-name/
 ├── SKILL.md              # Required
 ├── examples/             # Optional
 ├── templates/            # Optional
@@ -435,16 +435,16 @@ skill-name/
 **Frontmatter:**
 ```yaml
 ---
-name: skill-name
-description: "When to use this skill - be specific"
-allowed-tools: Read, Write, Bash(npm *)
-model: claude-sonnet-4-20250514
+Name: skill-name
+Description: "When to use this skill - be specific"
+Allowed-tools: Read, Write, Bash(npm *)
+Model: claude-sonnet-4-20250514
 ---
 ```
 
 **Install superpowers:**
 ```bash
-git clone https://github.com/obra/superpowers.git ~/.claude/skills/superpowers
+Git clone https://github.com/obra/superpowers.git ~/.claude/skills/superpowers
 ```
 
 ## What's Next

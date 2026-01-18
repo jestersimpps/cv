@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Twitter, Linkedin, Facebook, Share2, Link2, Check } from 'lucide-react';
 import { usePostHog } from 'posthog-js/react';
@@ -27,6 +27,7 @@ export default function ShareButtons({
   className = '',
 }: ShareButtonsProps) {
   const [copied, setCopied] = useState(false);
+  const [canUseWebShare, setCanUseWebShare] = useState(false);
   const posthog = usePostHog();
 
   const shareUrl = `https://jovweb.dev/blog/${post.slug}`;
@@ -36,7 +37,9 @@ export default function ShareButtons({
     description: post.description,
   };
 
-  const canUseWebShare = typeof navigator !== 'undefined' && navigator.share !== undefined;
+  useEffect(() => {
+    setCanUseWebShare(typeof navigator !== 'undefined' && navigator.share !== undefined);
+  }, []);
 
   const handleShare = (platform: 'twitter' | 'linkedin' | 'facebook' | 'native' | 'copy') => {
     posthog.capture('blog_post_share_click', {

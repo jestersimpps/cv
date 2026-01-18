@@ -9,24 +9,24 @@ coverImage: "/assets/blog/ad-forge-cover.jpg"
 featured: false
 ---
 
-So i run globalpetsitter.com. connecting pet owners with sitters around the world. like any startup i need promo content, specifically video ads for social media. the problem is making even a simple 30 second ad takes forever
+So I run globalpetsitter.com. Connecting pet owners with sitters around the world. Like any startup I need promo content, specifically video ads for social media. The problem is making even a simple 30 second ad takes forever
 
 ## The Problem
 
-Every time i wanted to make a video ad the process was something like:
+Every time I wanted to make a video ad the process was something like:
 
-1. write a script or storyboard
-2. find or create images for each scene
-3. generate or record voiceover
-4. convert images to video clips with motion
-5. sync audio with video
-6. edit everything together in capcut
+1. Write a script or storyboard
+2. Find or create images for each scene
+3. Generate or record voiceover
+4. Convert images to video clips with motion
+5. Sync audio with video
+6. Edit everything together in capcut
 
-Each step needs different tools, different logins, tons of context switching. for a 6 scene ad we're talking hours. and if i didn't like the result? start over
+Each step needs different tools, different logins, tons of context switching. For a 6 scene ad we're talking hours. And if I didn't like the result? Start over
 
 ## Ad Forge
 
-I built ad forge to collapse all of this into one pipeline. describe your ad in plain text, let ai do the heavy lifting
+I built ad forge to collapse all of this into one pipeline. Describe your ad in plain text, let ai do the heavy lifting
 
 Here's what the output looks like:
 
@@ -42,19 +42,19 @@ Here's what the output looks like:
 
 7 stages:
 
-**1. sketch** - describe your ad concept, target audience, tone, duration. for the globalpetsitter ad i wrote something like "woman leaving for travel, worried about her pet, then feeling relieved knowing they're cared for"
+**1. Sketch** - describe your ad concept, target audience, tone, duration. For the globalpetsitter ad I wrote something like "woman leaving for travel, worried about her pet, then feeling relieved knowing they're cared for"
 
-**2. scenes** - gemini breaks your sketch into individual scenes with descriptions, settings, mood, suggested durations. it structures the narrative arc automatically
+**2. Scenes** - gemini breaks your sketch into individual scenes with descriptions, settings, mood, suggested durations. It structures the narrative arc automatically
 
-**3. style** - ai generates a style guide. color palette, lighting, visual mood, character descriptions, location details. keeps everything visually consistent
+**3. Style** - ai generates a style guide. Color palette, lighting, visual mood, character descriptions, location details. Keeps everything visually consistent
 
-**4. images** - fal.ai generates an image for each scene. the system uses reference images from previous scenes and character portraits to maintain consistency. this was the hardest part to get right
+**4. Images** - fal.ai generates an image for each scene. The system uses reference images from previous scenes and character portraits to maintain consistency. This was the hardest part to get right
 
-**5. videos** - each image becomes a video clip with camera movement (pan, zoom, dolly, etc). fal.ai's image-to-video is pretty good at this
+**5. Videos** - each image becomes a video clip with camera movement (pan, zoom, dolly, etc). Fal.ai's image-to-video is pretty good at this
 
-**6. audio** - for scenes with dialogue it generates voiceover with tts. you can assign different voices to different characters
+**6. Audio** - for scenes with dialogue it generates voiceover with tts. You can assign different voices to different characters
 
-**7. merge** - combines video and audio, optional lip-sync for talking characters. ffmpeg handles this
+**7. Merge** - combines video and audio, optional lip-sync for talking characters. Ffmpeg handles this
 
 ### Tech Stack
 
@@ -66,23 +66,23 @@ Here's what the output looks like:
 
 ### Some Design Decisions
 
-**Campaign persistence** - everything saves to localstorage automatically. you can close the browser and pick up later
+**Campaign persistence** - everything saves to localstorage automatically. You can close the browser and pick up later
 
-**Reference images** - this was crucial. when generating scene 3 you can reference the location image, character portraits, previous scenes. the ai uses these as style anchors
+**Reference images** - this was crucial. When generating scene 3 you can reference the location image, character portraits, previous scenes. The ai uses these as style anchors
 
-**Stage based workflow** - each stage produces output you can review. don't like the scenes? regenerate before moving on. gives you control without overwhelming options
+**Stage based workflow** - each stage produces output you can review. Don't like the scenes? Regenerate before moving on. Gives you control without overwhelming options
 
 ## Results
 
-The globalpetsitter ad that would've taken me a full day now takes about 30 minutes of active work (plus generation time). more importantly i can iterate fast. try different tones, swap scenes, regenerate individual images without starting over
+The globalpetsitter ad that would've taken me a full day now takes about 30 minutes of active work (plus generation time). More importantly I can iterate fast. Try different tones, swap scenes, regenerate individual images without starting over
 
 ## What's Next
 
-Ad forge is still rough. i want to add:
+Ad forge is still rough. I want to add:
 
 - background music selection
 - more camera movement options
 - direct export to social formats (9:16 for tiktok/reels, 16:9 for youtube)
 - templates for common ad formats
 
-For now it's solving my problem: making video ads for globalpetsitter without the time sink. sometimes that's enough :)
+For now it's solving my problem: making video ads for globalpetsitter without the time sink. Sometimes that's enough :)

@@ -29,13 +29,13 @@ Claude Code uses a hierarchical system for loading CLAUDE.md files:
 
 **Project root (most common):**
 ```
-your-project/CLAUDE.md
+Your-project/CLAUDE.md
 ```
 Check it into git. Share it with your team. This is what you want 90% of the time.
 
 **Alternative location:**
 ```
-your-project/.claude/CLAUDE.md
+Your-project/.claude/CLAUDE.md
 ```
 Same effect, but keeps your project root cleaner.
 
@@ -47,7 +47,7 @@ Personal preferences that follow you everywhere. Good for things like "I prefer 
 
 **Local variant (gitignored):**
 ```
-your-project/CLAUDE.local.md
+Your-project/CLAUDE.local.md
 ```
 Personal tweaks you don't want to commit. API keys, experimental settings, or that controversial coding style your team doesn't share.
 
@@ -56,7 +56,7 @@ Personal tweaks you don't want to commit. API keys, experimental settings, or th
 Here's where it gets clever. In a monorepo, you might have:
 
 ```
-monorepo/
+Monorepo/
 ├── CLAUDE.md              # Loaded for everything
 ├── apps/
 │   ├── web/
@@ -97,7 +97,7 @@ One sentence: what this is and what it does.
 
 ## Directory Structure
 
-src/
+Src/
 ├── app/           # Next.js routes
 ├── components/    # Reusable UI components
 ├── lib/           # Utilities and helpers
@@ -314,7 +314,7 @@ Example: Prevent modifications to production configs:
 
 ## Team Configuration
 
-For teams, here's what to commit vs. gitignore:
+For teams, here's what to commit vs. Gitignore:
 
 **Commit these (shared with team):**
 
@@ -384,7 +384,7 @@ Run `/init` again after major features or refactors to pick up new patterns.
 After setting up your CLAUDE.md, verify it worked:
 
 ```bash
-claude
+Claude
 ```
 
 Then ask:
