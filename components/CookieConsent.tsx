@@ -59,10 +59,10 @@ export default function CookieConsent() {
                 </div>
 
                 <div className="flex-1 min-w-0">
-                  <h3 className="text-base font-semibold text-white mb-2">Cookie Preferences</h3>
+                  <h3 className="text-base font-semibold text-white mb-2">Cookies (the boring digital kind)</h3>
                   <p className="text-sm text-neutral-400 mb-4">
-                    We use cookies and analytics to improve your experience and understand how you interact with our site.
-                    Your privacy matters—you can decline if you prefer.
+                    I use analytics to see if anyone actually reads my blog posts or if they just bounce after seeing my face.
+                    No selling data to sketchy third parties, promise. You can decline and I&apos;ll cry quietly.
                   </p>
 
                   <div className="flex flex-wrap gap-3">
