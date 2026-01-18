@@ -39,7 +39,7 @@ export default function TableOfContents({ items }: TableOfContentsProps) {
       initial={{ opacity: 0, x: 20 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.5, delay: 0.2 }}
-      className="p-5 bg-white/5 border border-white/10 rounded-2xl"
+      className="sticky top-24 p-5 bg-white/5 border border-white/10 rounded-2xl z-10"
     >
       <h3 className="flex items-center gap-2 text-sm font-semibold text-white mb-4">
         <List className="w-4 h-4" />
