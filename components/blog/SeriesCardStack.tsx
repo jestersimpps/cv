@@ -90,32 +90,17 @@ export default function SeriesCardStack({
               fill
               className="object-cover group-hover:scale-105 transition-transform duration-300"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
-            <div className="absolute bottom-0 left-0 right-0 p-4">
-              <div className="flex items-center gap-2 mb-2">
-                <span className="inline-flex items-center gap-1.5 px-2 py-0.5 bg-cyan-500/20 backdrop-blur-sm border border-cyan-500/30 rounded-full text-[10px] text-cyan-400 font-medium">
-                  <Library className="w-2.5 h-2.5" />
-                  {posts.length}-Part Series
-                </span>
-              </div>
-              <h3 className="text-base font-bold text-white line-clamp-2">{seriesTitle}</h3>
-            </div>
           </div>
         )}
 
-        {!firstPost.coverImage && (
-          <div className="p-4 pb-2">
-            <div className="flex items-center gap-2 mb-2">
-              <span className="inline-flex items-center gap-1.5 px-2 py-0.5 bg-cyan-500/20 border border-cyan-500/30 rounded-full text-[10px] text-cyan-400 font-medium">
-                <Library className="w-2.5 h-2.5" />
-                {posts.length}-Part Series
-              </span>
-            </div>
-            <h3 className="text-base font-bold text-white line-clamp-2">{seriesTitle}</h3>
+        <div className="p-4 flex flex-col flex-1">
+          <div className="flex items-center gap-2 mb-2">
+            <span className="inline-flex items-center gap-1.5 px-2 py-0.5 bg-cyan-500/20 border border-cyan-500/30 rounded-full text-[10px] text-cyan-400 font-medium">
+              <Library className="w-2.5 h-2.5" />
+              {posts.length}-Part Series
+            </span>
           </div>
-        )}
-
-        <div className="p-4 pt-2 flex flex-col flex-1">
+          <h3 className="text-base font-bold text-white mb-2 line-clamp-2">{seriesTitle}</h3>
           <p className="text-neutral-400 text-sm line-clamp-2 mb-3">
             {firstPost.description}
           </p>
