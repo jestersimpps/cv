@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import { getAllPosts, getAllTags, getAllSeries } from '@/lib/blog';
 import BlogPageClient from '@/components/blog/BlogPageClient';
 
-const siteUrl = 'https://cv-nine-bay.vercel.app';
+const siteUrl = 'https://www.jovweb.dev';
 
 export const metadata: Metadata = {
   title: 'Blog',
