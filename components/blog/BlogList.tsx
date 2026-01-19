@@ -128,19 +128,16 @@ export default function BlogList({
     return (
       <div className="space-y-8">
         {featuredPost && (
-          <div className="grid grid-cols-1">
-            <BlogCard
-              post={featuredPost}
-              index={0}
-              featured
-              viewCount={viewCounts[featuredPost.slug]}
-            />
-          </div>
+          <BlogCard
+            post={featuredPost}
+            index={0}
+            featured
+            viewCount={viewCounts[featuredPost.slug]}
+          />
         )}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {displayItems.map((item, index) => {
             if (item.type === 'series' && item.series) {
-              // Calculate total view count for series
               const totalViewCount = item.series.posts.reduce((sum, post) => {
                 return sum + (viewCounts[post.slug] || 0);
               }, 0);

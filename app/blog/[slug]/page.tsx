@@ -69,7 +69,9 @@ export async function generateMetadata({ params }: BlogPostPageProps) {
       creator: '@jestersimpps',
       title: post.title,
       description: post.description,
-      images: coverImageUrl ? [coverImageUrl] : [],
+      images: coverImageUrl
+        ? [{ url: coverImageUrl, alt: post.title }]
+        : [],
     },
     alternates: {
       canonical: postUrl,
@@ -87,8 +89,43 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const relatedPosts = getRelatedPosts(post);
   const seriesNav = getSeriesNavigation(post);
 
+  const siteUrl = 'https://www.jovweb.dev';
+  const postUrl = `${siteUrl}/blog/${slug}`;
+  const coverImageUrl = post.coverImage ? `${siteUrl}${post.coverImage}` : null;
+
+  const articleJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: post.title,
+    description: post.description,
+    image: coverImageUrl,
+    datePublished: post.publishedAt,
+    dateModified: post.updatedAt || post.publishedAt,
+    author: {
+      '@type': 'Person',
+      name: post.author,
+      url: siteUrl,
+    },
+    publisher: {
+      '@type': 'Person',
+      name: 'Jo Vinkenroye',
+      url: siteUrl,
+    },
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': postUrl,
+    },
+    keywords: post.tags.join(', '),
+    articleSection: post.category,
+    wordCount: post.content.split(/\s+/).length,
+  };
+
   return (
     <div className="min-h-screen bg-black text-white">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd) }}
+      />
       <section className="relative pt-24 pb-12 bg-gradient-to-b from-neutral-900 via-neutral-950 to-black overflow-hidden">
         <GradientOrbs variant="cyan" />
         <GridLines />

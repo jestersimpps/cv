@@ -4,9 +4,10 @@ import { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Clock, Library, ChevronRight, Eye } from 'lucide-react';
+import { Clock, Library, ChevronRight, Eye, Calendar } from 'lucide-react';
 import { BlogPost } from '@/lib/models/blog';
 import { formatViewCount } from '@/lib/utils/formatNumber';
+import { formatDate } from '@/lib/utils/date';
 
 interface SeriesCardStackProps {
   seriesId: string;
@@ -53,7 +54,7 @@ export default function SeriesCardStack({
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: index * 0.1 }}
       viewport={{ once: true }}
-      className="relative group pt-2 pb-3 px-2"
+      className="relative group pt-2 pb-3 px-2 h-full"
     >
       {posts.length > 2 && (
         <div
@@ -74,50 +75,39 @@ export default function SeriesCardStack({
 
       <Link
         href={`/blog/${firstPost.slug}`}
-        className="relative block bg-gradient-to-br from-white/[0.08] to-white/[0.03] border border-white/10 rounded-2xl overflow-hidden hover:border-cyan-500/30 hover:from-white/[0.1] hover:to-white/[0.05] transition-all duration-300 group-hover:rotate-0 group-hover:translate-x-0 group-hover:translate-y-0"
+        className="relative flex flex-col h-full bg-gradient-to-br from-white/[0.08] to-white/[0.03] border border-white/10 rounded-2xl overflow-hidden hover:border-white/20 hover:from-white/[0.1] hover:to-white/[0.05] transition-all duration-300 group-hover:rotate-0 group-hover:translate-x-0 group-hover:translate-y-0"
         style={{
           transform: `rotate(${cardOffsets[2].rotate}deg) translateX(${cardOffsets[2].x}px) translateY(${cardOffsets[2].y}px)`,
         }}
       >
         {firstPost.coverImage && (
-          <div className="relative aspect-[16/9] overflow-hidden">
+          <div className="relative aspect-[2/1] overflow-hidden flex-shrink-0">
             <Image
               src={firstPost.coverImage}
               alt={seriesTitle}
               fill
               className="object-cover group-hover:scale-105 transition-transform duration-300"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent" />
-            <div className="absolute bottom-4 left-4 right-4">
-              <div className="flex items-center gap-2 mb-2">
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-cyan-500/20 backdrop-blur-sm border border-cyan-500/30 rounded-full text-xs text-cyan-400 font-medium">
-                  <Library className="w-3 h-3" />
-                  {posts.length}-Part Series
-                </span>
-              </div>
-              <h3 className="text-lg font-bold text-white">{seriesTitle}</h3>
-            </div>
           </div>
         )}
 
-        {!firstPost.coverImage && (
-          <div className="p-5 pb-3">
-            <div className="flex items-center gap-2 mb-3">
-              <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-cyan-500/20 border border-cyan-500/30 rounded-full text-xs text-cyan-400 font-medium">
-                <Library className="w-3 h-3" />
-                {posts.length}-Part Series
-              </span>
+        <div className="p-4 flex flex-col flex-1">
+          <div className="flex items-center gap-3 mb-2 flex-wrap">
+            <span className="inline-flex items-center gap-1.5 px-2 py-0.5 bg-cyan-500/20 border border-cyan-500/30 rounded-full text-[10px] text-cyan-400 font-medium">
+              <Library className="w-2.5 h-2.5" />
+              {posts.length}-Part Series
+            </span>
+            <div className="flex items-center gap-1 text-neutral-500 text-[11px]">
+              <Clock className="w-3 h-3" />
+              ~{totalReadingTime} min
             </div>
-            <h3 className="text-lg font-bold text-white mb-2">{seriesTitle}</h3>
           </div>
-        )}
-
-        <div className="p-5 pt-3 flex flex-col">
-          <p className="text-neutral-400 text-sm line-clamp-2 mb-4 h-10">
+          <h3 className="text-xl font-bold text-white mb-2 line-clamp-2">{seriesTitle}</h3>
+          <p className="text-neutral-400 text-sm line-clamp-2 mb-3">
             {firstPost.description}
           </p>
 
-          <div className="space-y-2 mb-4 h-[104px]">
+          <div className="space-y-2 mb-4">
             {posts.slice(0, 3).map((post, i) => (
               <div
                 key={post.slug}
@@ -139,11 +129,11 @@ export default function SeriesCardStack({
             )}
           </div>
 
-          <div className="flex items-center justify-between pt-3 border-t border-white/5 mt-auto">
-            <div className="flex items-center gap-3 text-neutral-500 text-xs">
+          <div className="flex items-center justify-between mt-auto">
+            <div className="flex items-center gap-3 text-neutral-500 text-[11px]">
               <div className="flex items-center gap-1">
-                <Clock className="w-3 h-3" />
-                ~{totalReadingTime} min
+                <Calendar className="w-3 h-3" />
+                {formatDate(firstPost.publishedAt)}
               </div>
               {totalViewCount !== undefined && totalViewCount > 0 && (
                 <div className="flex items-center gap-1">
@@ -152,7 +142,7 @@ export default function SeriesCardStack({
                 </div>
               )}
             </div>
-            <span className="flex items-center gap-1 text-xs text-cyan-400 group-hover:text-cyan-300 transition-colors">
+            <span className="flex items-center gap-1 text-xs text-white/70 group-hover:text-white transition-colors">
               Start series
               <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
             </span>
