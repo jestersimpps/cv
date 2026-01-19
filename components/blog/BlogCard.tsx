@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Clock, Calendar, ArrowRight, Eye } from 'lucide-react';
 import { BlogPost } from '@/lib/models/blog';
+import { BentoSize } from '@/lib/models/bento';
 import { formatDate } from '@/lib/utils/date';
 import { formatViewCount } from '@/lib/utils/formatNumber';
 
@@ -12,65 +13,131 @@ interface BlogCardProps {
   post: BlogPost;
   index: number;
   featured?: boolean;
+  size?: BentoSize;
   viewCount?: number;
 }
 
-export default function BlogCard({ post, index, featured = false, viewCount }: BlogCardProps) {
-  if (featured) {
+export default function BlogCard({ post, index, featured = false, size, viewCount }: BlogCardProps) {
+  const hasImage = !!post.coverImage;
+
+  if (featured && hasImage) {
     return (
       <motion.article
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: index * 0.1 }}
+        transition={{ duration: 0.5, delay: index * 0.05 }}
         viewport={{ once: true }}
-        className="md:col-span-2"
       >
         <Link
           href={`/blog/${post.slug}`}
-          className="group flex flex-col md:flex-row gap-6 bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:bg-white/10 hover:border-white/20 transition-all"
+          className="group flex flex-col md:flex-row bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:bg-white/10 hover:border-white/20 transition-all"
         >
-          {post.coverImage && (
-            <div className="relative w-full md:w-1/2 aspect-video md:aspect-[4/3] overflow-hidden flex-shrink-0">
-              <Image
-                src={post.coverImage}
-                alt={post.title}
-                fill
-                className="object-cover group-hover:scale-105 transition-transform duration-300"
-              />
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent to-black/60 hidden md:block" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent md:hidden" />
-            </div>
-          )}
-          <div className="flex flex-col justify-center p-6 md:py-8 md:pr-8 md:pl-0">
-            <div className="flex items-center gap-3 mb-3">
-              <span className="px-3 py-1 bg-cyan-500/20 text-cyan-400 rounded-full text-xs font-medium">
+          <div className="relative w-full md:w-1/2 aspect-video md:aspect-auto md:min-h-[300px] overflow-hidden flex-shrink-0">
+            <Image
+              src={post.coverImage!}
+              alt={post.title}
+              fill
+              className="object-cover group-hover:scale-105 transition-transform duration-300"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-r from-black/60 to-transparent" />
+          </div>
+          <div className="flex flex-col justify-center p-6">
+            <div className="flex items-center gap-2 mb-3 flex-wrap">
+              <span className="px-2 py-0.5 bg-cyan-500/20 text-cyan-400 rounded-full text-[10px] font-medium">
                 Featured
               </span>
-              <span className="px-3 py-1 bg-white/10 rounded-full text-xs text-neutral-300 font-medium">
+              <span className="px-2 py-0.5 bg-white/10 rounded-full text-[10px] text-neutral-300 font-medium">
                 {post.category}
               </span>
+              <div className="flex items-center gap-1 text-neutral-400 text-[10px]">
+                <Clock className="w-2.5 h-2.5" />
+                {post.readingTime}
+              </div>
+              {viewCount !== undefined && viewCount > 0 && (
+                <div className="flex items-center gap-1 text-neutral-400 text-[10px]">
+                  <Eye className="w-2.5 h-2.5" />
+                  {formatViewCount(viewCount)}
+                </div>
+              )}
             </div>
             <h2 className="text-xl md:text-2xl font-bold text-white mb-2 group-hover:text-white/90">
               {post.title}
             </h2>
-            <p className="text-neutral-400 text-sm line-clamp-2 mb-4">
+            <p className="text-neutral-400 text-sm line-clamp-3 mb-4">
               {post.description}
             </p>
-            <div className="flex items-center gap-4 text-xs text-neutral-500">
-              <div className="flex items-center gap-1">
-                <Calendar className="w-3 h-3" />
-                {formatDate(post.publishedAt)}
+            <div className="flex items-center gap-1 text-neutral-500 text-[10px]">
+              <Calendar className="w-2.5 h-2.5" />
+              {formatDate(post.publishedAt)}
+            </div>
+          </div>
+        </Link>
+      </motion.article>
+    );
+  }
+
+  if (hasImage) {
+    return (
+      <motion.article
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: index * 0.05 }}
+        viewport={{ once: true }}
+        className="h-full"
+      >
+        <Link
+          href={`/blog/${post.slug}`}
+          className="group flex flex-col h-full bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:bg-white/10 hover:border-white/20 transition-all"
+        >
+          <div className="relative aspect-[2/1] overflow-hidden flex-shrink-0">
+            <Image
+              src={post.coverImage!}
+              alt={post.title}
+              fill
+              className="object-cover group-hover:scale-105 transition-transform duration-300"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
+            <div className="absolute bottom-0 left-0 right-0 p-4">
+              <div className="flex items-center gap-2 mb-2 flex-wrap">
+                {post.featured && (
+                  <span className="px-2 py-0.5 bg-cyan-500/20 text-cyan-400 rounded-full text-[10px] font-medium">
+                    Featured
+                  </span>
+                )}
+                <span className="px-2 py-0.5 bg-white/10 backdrop-blur-sm rounded-full text-[10px] text-neutral-300 font-medium">
+                  {post.category}
+                </span>
               </div>
-              <div className="flex items-center gap-1">
-                <Clock className="w-3 h-3" />
-                {post.readingTime}
-              </div>
-              {viewCount !== undefined && viewCount > 0 && (
+              <h2 className="text-base font-bold text-white group-hover:text-white/90 line-clamp-2">
+                {post.title}
+              </h2>
+            </div>
+          </div>
+          <div className="p-4 pt-3 flex flex-col flex-1">
+            <p className="text-neutral-400 text-sm line-clamp-2 flex-1">
+              {post.description}
+            </p>
+            <div className="flex items-center justify-between mt-3">
+              <div className="flex items-center gap-3 text-neutral-500 text-[10px]">
                 <div className="flex items-center gap-1">
-                  <Eye className="w-3 h-3" />
-                  {formatViewCount(viewCount)}
+                  <Calendar className="w-2.5 h-2.5" />
+                  {formatDate(post.publishedAt)}
                 </div>
-              )}
+                <div className="flex items-center gap-1">
+                  <Clock className="w-2.5 h-2.5" />
+                  {post.readingTime}
+                </div>
+                {viewCount !== undefined && viewCount > 0 && (
+                  <div className="flex items-center gap-1">
+                    <Eye className="w-2.5 h-2.5" />
+                    {formatViewCount(viewCount)}
+                  </div>
+                )}
+              </div>
+              <span className="flex items-center gap-1 text-xs text-white/70 group-hover:text-white transition-colors">
+                Read
+                <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
+              </span>
             </div>
           </div>
         </Link>
@@ -82,56 +149,44 @@ export default function BlogCard({ post, index, featured = false, viewCount }: B
     <motion.article
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
+      transition={{ duration: 0.5, delay: index * 0.05 }}
       viewport={{ once: true }}
+      className="h-full"
     >
       <Link
         href={`/blog/${post.slug}`}
-        className="group block bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:bg-white/10 hover:border-white/20 transition-all h-full"
+        className="group flex flex-col h-full bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:bg-white/10 hover:border-white/20 transition-all p-4"
       >
-        {post.coverImage && (
-          <div className="relative aspect-[16/9] overflow-hidden">
-            <Image
-              src={post.coverImage}
-              alt={post.title}
-              fill
-              className="object-cover group-hover:scale-105 transition-transform duration-300"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+        <div className="flex items-center gap-2 mb-2 flex-wrap">
+          <span className="px-2 py-0.5 bg-white/10 rounded-full text-[10px] text-neutral-300 font-medium">
+            {post.category}
+          </span>
+          <div className="flex items-center gap-1 text-neutral-500 text-[10px]">
+            <Clock className="w-2.5 h-2.5" />
+            {post.readingTime}
           </div>
-        )}
-        <div className="p-5">
-          <div className="flex items-center gap-3 mb-2 flex-wrap">
-            <span className="px-2.5 py-0.5 bg-white/10 rounded-full text-[11px] text-neutral-300 font-medium">
-              {post.category}
-            </span>
-            <div className="flex items-center gap-1 text-neutral-500 text-[11px]">
-              <Clock className="w-3 h-3" />
-              {post.readingTime}
+          {viewCount !== undefined && viewCount > 0 && (
+            <div className="flex items-center gap-1 text-neutral-500 text-[10px]">
+              <Eye className="w-2.5 h-2.5" />
+              {formatViewCount(viewCount)}
             </div>
-            {viewCount !== undefined && viewCount > 0 && (
-              <div className="flex items-center gap-1 text-neutral-500 text-[11px]">
-                <Eye className="w-3 h-3" />
-                {formatViewCount(viewCount)}
-              </div>
-            )}
+          )}
+        </div>
+        <h2 className="text-base font-semibold text-white mb-2 group-hover:text-white/90 line-clamp-2">
+          {post.title}
+        </h2>
+        <p className="text-neutral-400 text-sm line-clamp-2 mb-3 flex-1">
+          {post.description}
+        </p>
+        <div className="flex items-center justify-between pt-3 border-t border-white/5">
+          <div className="flex items-center gap-1 text-neutral-500 text-[10px]">
+            <Calendar className="w-2.5 h-2.5" />
+            {formatDate(post.publishedAt)}
           </div>
-          <h2 className="text-base font-semibold text-white mb-1.5 group-hover:text-white/90 line-clamp-2">
-            {post.title}
-          </h2>
-          <p className="text-neutral-400 text-sm line-clamp-2 mb-3">
-            {post.description}
-          </p>
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-1 text-neutral-500 text-[11px]">
-              <Calendar className="w-3 h-3" />
-              {formatDate(post.publishedAt)}
-            </div>
-            <span className="flex items-center gap-1 text-xs text-white/70 group-hover:text-white transition-colors">
-              Read
-              <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-            </span>
-          </div>
+          <span className="flex items-center gap-1 text-xs text-white/70 group-hover:text-white transition-colors">
+            Read
+            <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
+          </span>
         </div>
       </Link>
     </motion.article>

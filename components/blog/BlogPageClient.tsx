@@ -9,7 +9,6 @@ import { SeriesInfo } from '@/lib/blog';
 import { BlogList } from '@/components/blog';
 import GradientOrbs from '@/components/ui/GradientOrbs';
 import GridLines from '@/components/ui/GridLines';
-import DotGrid from '@/components/ui/DotGrid';
 import SectionDivider from '@/components/ui/SectionDivider';
 
 interface BlogPageClientProps {
@@ -292,7 +291,6 @@ export default function BlogPageClient({ posts, tags, series }: BlogPageClientPr
       <SectionDivider />
 
       <section className="py-16 bg-gradient-to-b from-black via-neutral-950 to-black relative overflow-hidden">
-        <DotGrid dotColor="rgba(255, 255, 255, 0.07)" spacing={28} />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           {filteredPosts.length === 0 ? (
             <div className="text-center py-12 text-neutral-500">
