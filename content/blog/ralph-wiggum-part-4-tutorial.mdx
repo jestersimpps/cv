@@ -1,6 +1,6 @@
 ---
 title: "Mastering Ralph Wiggum Part 4: Complete Practical Tutorial"
-description: "Build a production-ready Todo API from scratch using Ralph Wiggum's Three-Phase Methodology. See real conversations, plans, commits, and troubleshooting in action."
+description: "Watch Ralph build a complete BuzzFeed-style quiz in 3 hours. Real conversations, real commits, real troubleshooting. This is where theory meets code."
 publishedAt: "2026-01-18"
 author: "Jo Vinkenroye"
 category: "Tutorials"
@@ -14,289 +14,249 @@ series:
   total: 6
 ---
 
-In Parts 1 and 2, you learned the theory: installation, basic usage, and the Three-Phase Methodology. Part 3 covered Ralph TUI for real-time monitoring. Now it's time to see Ralph Wiggum in action with a complete, real-world project.
+Enough theory. Let's build something real.
 
-We're building a production-ready Todo API from scratch—authentication, CRUD operations, validation, tests, and deployment documentation. You'll see actual conversations, generated plans, commit history, cost tracking, and how to handle errors when they occur.
+In the next 3 hours (of which you'll work for about 25 minutes), Ralph will build a complete BuzzFeed-style personality quiz—the kind that captures leads, goes viral, and actually makes money. Not a toy example. A production feature for a real pet sitting platform.
 
-**What you'll build:**
-- REST API with JWT authentication
-- Full CRUD operations for todos
-- Input validation with Zod
-- PostgreSQL database with Prisma
-- Comprehensive test suite with Vitest
-- API documentation
-- Complete in ~4 hours of autonomous Ralph time
+You'll see every step: the requirements conversation, the generated plan, the autonomous build, and—critically—how Ralph handles the inevitable snags that come up along the way.
+
+{/* IMAGE: Terminal showing Ralph's progress bar with "8 tasks completed" and a clean git log */}
+
+**What Ralph will build for you:**
+
+- Interactive quiz: "What Type of Pet Sitter Are You?"
+- 6 questions with weighted scoring and beautiful UI
+- 5 personality types with full content and shareable results
+- Lead capture with email collection (skip option included)
+- Social sharing via Web Share API with clipboard fallback
+- Convex backend for storing leads
+
+**Time breakdown:** ~25 minutes of your attention + ~3 hours of autonomous Ralph time = a complete marketing feature.
 
 **Prerequisites:**
 - Completed [Part 1](/blog/ralph-wiggum-part-1-introduction) and [Part 2](/blog/ralph-wiggum-part-2-methodology)
 - Optional: [Part 3](/blog/ralph-wiggum-part-3-ralph-tui-monitoring) for monitoring setup
 - Claude Pro or Max subscription
 - Node.js 18+ installed
-- Basic understanding of REST APIs
+- Familiarity with Next.js and React
+
+## Why a BuzzFeed Quiz?
+
+Before we dive in, let's talk about why this is a perfect Ralph project.
+
+BuzzFeed-style quizzes are proven lead generation machines. They're engaging, shareable, and provide genuine value to users. For a pet sitting platform, a "What Type of Pet Sitter Are You?" quiz:
+
+1. **Qualifies leads** — People who complete the quiz are genuinely interested in pet sitting
+2. **Provides value** — Users learn about their personality type and get actionable tips
+3. **Encourages sharing** — "I got Animal Whisperer! 🐾" is naturally shareable
+4. **Captures emails** — Users want their results, creating a natural exchange
+
+This is also a great Ralph project because it has clear completion criteria, well-defined components, and testable outcomes—exactly what Ralph excels at.
+
+## Project Context
+
+We're adding this quiz to an existing Next.js project (a pet sitting platform) that uses:
+- **Next.js 16** with App Router
+- **Convex** for the backend
+- **Clerk** for authentication
+- **Tailwind CSS** with shadcn/ui components
+
+If you're following along with a fresh project, the patterns still apply—just adapt the tech stack.
 
 ## Project Setup
 
-Let's start fresh:
+Create a new branch for this feature:
 
 ```bash
-mkdir todo-api-ralph
-cd todo-api-ralph
-git init
-npm init -y
+cd ~/Sites/petsitters  # or your project directory
+git checkout main
+git pull origin main
+git checkout -b feature/buzzfeed-quiz
 ```
 
 Install Ralph plugin if you haven't:
 
 ```bash
-/plugin install ralph-wiggum@claude-plugins-official
+/plugin install ralph-loop@claude-plugins-official
 ```
 
-Create the initial project structure:
-
-```bash
-mkdir -p src/{routes,controllers,middleware,services,models} tests
-touch src/index.ts
-echo "node_modules/" > .gitignore
-```
-
-Initial commit:
-
-```bash
-git add .
-git commit -m "Initial project setup"
-```
-
-## Phase 1: Requirements Definition (30 minutes)
+## Phase 1: Requirements Definition (25 minutes)
 
 This is the conversational phase where we work with Claude to define exactly what needs to be built. According to [The Ralph Playbook](https://claytonfarr.github.io/ralph-playbook/), you should spend 30+ minutes in this phase.
 
 ### The Conversation
 
 **You:**
-> "I want to build a REST API for managing todos with user authentication. Let's define the requirements together."
+> "I want to build a BuzzFeed-style personality quiz called 'What Type of Pet Sitter Are You?' for lead generation. Let's define the requirements together."
 
 **Claude:**
-> "Great! Let's break this down systematically. First, what core functionality do you need?
+> "Great idea! BuzzFeed quizzes are excellent for engagement and lead capture. Let's break this down:
 >
-> 1. User management (registration, login)?
-> 2. Todo CRUD operations?
-> 3. Any filtering or pagination?
-> 4. What about sharing or collaboration features?"
+> 1. How many questions should the quiz have?
+> 2. How many result types?
+> 3. Do we need email capture? Before or after showing results?
+> 4. Should results be shareable?"
 
 **You:**
-> "Let's keep it focused:
-> - User registration and login with JWT
-> - Each user can only see their own todos
-> - Full CRUD for todos (create, read, update, delete)
-> - Todos have: title, description, completed status, due date
-> - No collaboration features yet"
+> "Let's do 6 questions with 4 options each. 5 personality types for results. Yes to email capture—show it after the last question but before results, with a 'skip' option. Results should be shareable on social media."
 
 **Claude:**
-> "Perfect. Let me create a specs file for this. What about the tech stack?"
+> "Perfect. For the personality types, what archetypes make sense for pet sitters?"
 
 **You:**
-> "TypeScript, Express, PostgreSQL with Prisma, Vitest for tests, Zod for validation."
+> "Something like: Adventure Seeker (loves travel), Home Guardian (reliable local), Professional Carer (career-focused), Animal Whisperer (deep connection), and Social Butterfly (community-focused)."
 
 **Claude:**
-> "Excellent choices. A few more questions:
+> "Love these! A few more questions:
 >
-> 1. Password requirements? (min length, complexity?)
-> 2. JWT expiry time?
-> 3. API versioning? (/v1/...)?
-> 4. Error response format?"
+> 1. Should we store quiz results in the database for analytics?
+> 2. Track UTM parameters for marketing campaigns?
+> 3. What's the CTA after seeing results?"
 
 **You:**
-> "Passwords: min 8 chars, at least one number. JWT: 7 days. Yes to versioning with /api/v1. Standard REST error format with status codes."
+> "Yes to database storage—we want lead analytics. Track UTM params. CTA should be 'Create Your Profile' linking to our onboarding flow, plus a 'Share Result' button."
 
 **Claude:**
-> "Got it. Let me create comprehensive specs..."
+> "Got it. Let me create comprehensive specs for this quiz..."
 
 ### Generated Specs Files
 
-Claude creates `specs/authentication.md`:
+Claude creates `specs/quiz-requirements.md`:
 
 ```markdown
-# Authentication Specification
+# Pet Sitter Personality Quiz Specification
 
 ## Overview
-JWT-based authentication with httpOnly cookies for security.
+BuzzFeed-style personality quiz for lead generation and user engagement.
+Quiz: "What Type of Pet Sitter Are You?"
 
-## User Registration
+## Quiz Structure
 
-**Endpoint:** POST /api/v1/auth/register
+### Questions (6 total)
+Each question has 4 options. Each option contributes weighted scores to all 5 personality types.
 
-**Request Body:**
-```json
-{
-  "email": "user@example.com",
-  "password": "password123",
-  "name": "John Doe"
-}
+**Q1: Ideal Scenario**
+"What's your ideal pet sitting scenario?"
+- Traveling to exotic locations and caring for unique pets
+- Staying local and building relationships with regular clients
+- Taking on challenging cases that require expertise
+- Spending quality one-on-one time with animals
+
+**Q2: Communication Style**
+"How do you prefer to communicate with pet owners?"
+- Daily photo updates and detailed reports
+- Only when necessary - I prefer focusing on the pets
+- Regular video calls and building a personal connection
+- Scheduled check-ins with organized documentation
+
+**Q3: Emergency Handling**
+"How do you handle unexpected situations with pets?"
+- Stay calm - I've dealt with many emergencies before
+- Research thoroughly and consult experts immediately
+- Trust my intuition - I can sense when something is wrong
+- Call my network - I know lots of pet professionals
+
+**Q4: Overnight Preference**
+"How do you feel about overnight pet sitting?"
+- Love it! Especially in new and interesting places
+- Prefer it - pets need consistent overnight care
+- Depends on the pet's needs and requirements
+- Prefer day visits so I can meet more pets and owners
+
+**Q5: Pet Preferences**
+"What types of pets are you most excited to care for?"
+- Exotic pets - reptiles, birds, unusual animals
+- Dogs and cats - the classics never get old
+- Special needs pets who require extra attention
+- Any pets - I love meeting all kinds of animals!
+
+**Q6: Motivation**
+"What motivates you to pet sit?"
+- Free accommodation while traveling the world
+- Pure love for animals and wanting to help them
+- Building a professional career in animal care
+- Being part of a community of pet lovers
+
+### Personality Types (5)
+
+**Adventure Seeker 🌍**
+- Thrives on new experiences
+- Loves travel + pet care combo
+- Adaptable, independent, brings fresh energy
+
+**Home Guardian 🏠**
+- Reliable, consistent carer
+- Values routine and stability
+- Builds long-term relationships
+
+**Professional Carer ⭐**
+- Treats pet sitting as serious profession
+- Organized, experienced, high standards
+- Expert in emergencies, special needs
+
+**Animal Whisperer 🐾**
+- Extraordinary connection with animals
+- Intuitive understanding of behavior
+- Calms anxious pets, creates deep bonds
+
+**Social Butterfly 🦋**
+- Loves community aspect
+- Excellent people skills
+- Great networker and relationship builder
+
+### Scoring System
+- Each option adds 0-3 points to each personality type
+- Highest total score determines result
+- Tie-breaker: first in priority order
+
+## User Flow
+
+1. User lands on /quiz
+2. Progress bar shows question X of 6
+3. User selects answer, clicks "Next"
+4. After Q6, show email capture screen
+5. User enters email (or clicks "Skip")
+6. Show personality result with:
+   - Emoji + Title
+   - Description paragraph
+   - 4 strengths
+   - 4 tips for success
+7. CTA: "Create Your Profile" + "Share Result"
+8. Share copies text + URL to clipboard (or native share)
+
+## Data Storage
+
+### quizLeads table
+- email: string
+- firstName: string (optional)
+- resultType: string
+- answers: JSON string
+- source: string (always "quiz")
+- utmSource: string (optional)
+- utmMedium: string (optional)
+- utmCampaign: string (optional)
+- convertedToUser: boolean
+- userId: reference (optional)
+- createdAt: timestamp
+
+## Technical Requirements
+- Next.js App Router page at /quiz
+- Client components for interactivity
+- Convex mutation for saving leads
+- Responsive design (mobile-first)
+- Shareable via Web Share API with clipboard fallback
 ```
 
-**Validation Rules:**
-- Email: valid email format, unique
-- Password: min 8 characters, at least 1 number
-- Name: 2-50 characters
-
-**Success Response:** 201 Created
-```json
-{
-  "user": {
-    "id": "uuid",
-    "email": "user@example.com",
-    "name": "John Doe"
-  },
-  "token": "jwt-token"
-}
-```
-
-## User Login
-
-**Endpoint:** POST /api/v1/auth/login
-
-**Request Body:**
-```json
-{
-  "email": "user@example.com",
-  "password": "password123"
-}
-```
-
-**Success Response:** 200 OK
-- Sets httpOnly cookie with JWT
-- Returns user object
-
-**Error Responses:**
-- 401: Invalid credentials
-- 400: Validation errors
-
-## Authentication Flow
-
-1. User registers or logs in
-2. Server generates JWT (expires in 7 days)
-3. JWT stored in httpOnly cookie (secure, sameSite: strict)
-4. Protected routes verify JWT via middleware
-5. User ID extracted from JWT for authorization
-```
-
-And `specs/todos.md`:
-
-```markdown
-# Todo API Specification
-
-## Data Model
-
-```typescript
-interface Todo {
-  id: string;
-  title: string;
-  description: string | null;
-  completed: boolean;
-  dueDate: Date | null;
-  userId: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
-```
-
-## Endpoints
-
-### Create Todo
-POST /api/v1/todos
-
-**Authentication:** Required
-
-**Request:**
-```json
-{
-  "title": "Buy groceries",
-  "description": "Milk, eggs, bread",
-  "dueDate": "2026-01-20T10:00:00Z"
-}
-```
-
-**Validation:**
-- title: required, 1-200 characters
-- description: optional, max 1000 characters
-- dueDate: optional, must be future date
-- completed: defaults to false
-
-### List User's Todos
-GET /api/v1/todos
-
-**Query Parameters:**
-- completed: boolean (filter)
-- sortBy: createdAt | dueDate | title
-- order: asc | desc
-
-### Get Single Todo
-GET /api/v1/todos/:id
-
-**Authorization:** User must own the todo
-
-### Update Todo
-PUT /api/v1/todos/:id
-
-**Authorization:** User must own the todo
-
-### Delete Todo
-DELETE /api/v1/todos/:id
-
-**Authorization:** User must own the todo
-
-## Business Rules
-
-1. Users can only access their own todos
-2. Cannot modify another user's todos
-3. Deleting a user cascades to their todos
-4. All dates stored in UTC
-```
-
-And `specs/testing.md`:
-
-```markdown
-# Testing Specification
-
-## Coverage Requirements
-- Minimum 80% code coverage
-- 100% coverage on authentication logic
-- 100% coverage on authorization checks
-
-## Test Types
-
-### Unit Tests
-- Validation schemas
-- Utility functions
-- Middleware logic
-
-### Integration Tests
-- Auth flow (register, login, protected routes)
-- Todo CRUD operations
-- Authorization (accessing others' todos should fail)
-- Error handling
-
-### Test Data
-- Use test database (separate from dev)
-- Seed data before each test suite
-- Clean up after tests
-
-## Test Framework
-- Vitest for all tests
-- Supertest for HTTP testing
-- Mock database with test containers or in-memory SQLite
-```
-
-**Time spent:** 28 minutes of back-and-forth conversation
-**Files created:** 3 comprehensive spec files
+**Time spent:** 25 minutes of back-and-forth conversation
+**Files created:** 1 comprehensive spec file
 
 **Commit:**
 ```bash
 git add specs/
-git commit -m "Add complete API specifications"
+git commit -m "Add quiz requirements specification"
 ```
 
-## Phase 2: Planning Mode (5 iterations, ~10 minutes)
+## Phase 2: Planning Mode (3 iterations, ~8 minutes)
 
 Now we run Planning mode to generate our implementation plan.
 
@@ -308,8 +268,8 @@ Now we run Planning mode to generate our implementation plan.
 You are in PLANNING mode. Analyze specs and create implementation plan.
 
 ## Your Task
-1. Read all files in specs/
-2. Review the current project structure
+1. Read specs/quiz-requirements.md
+2. Review existing project structure (components/, convex/, lib/)
 3. Create IMPLEMENTATION_PLAN.md with prioritized tasks
 
 ## Task Structure
@@ -318,13 +278,14 @@ Each task must include:
 - Priority (high/medium/low)
 - Description
 - Acceptance criteria
-- Test requirements
 - Dependencies
+- Files to create/modify
 
 ## Critical Rules
 - DO NOT write any code
 - DO NOT make commits
 - ONLY analyze and plan
+- Consider existing patterns in the codebase
 
 Output "PLAN COMPLETE" when done.
 ```
@@ -340,196 +301,128 @@ Output "PLAN COMPLETE" when done.
 After 3 iterations, Ralph generates:
 
 ```markdown
-# Implementation Plan - Todo API
-
-## High Priority (Critical Path)
-
-### TASK-001: Project Foundation
-**Status:** pending
-**Description:** Set up TypeScript, Express, and essential dependencies
-**Acceptance Criteria:**
-- TypeScript configured with strict mode
-- Express server starts on port 3000
-- Development scripts in package.json
-- Environment variables support
-**Tests:** Basic server health check
-**Dependencies:** none
-**Estimated Complexity:** low
-
-### TASK-002: Database Setup
-**Status:** pending
-**Description:** Configure Prisma with PostgreSQL schema
-**Acceptance Criteria:**
-- Prisma schema defines User and Todo models
-- Migration created and applied
-- Database connection working
-**Tests:** Database connection test
-**Dependencies:** TASK-001
-**Estimated Complexity:** medium
-
-### TASK-003: User Authentication - Registration
-**Status:** pending
-**Description:** Implement user registration endpoint
-**Acceptance Criteria:**
-- POST /api/v1/auth/register works
-- Password hashing with bcrypt
-- Email uniqueness enforced
-- Zod validation for input
-**Tests:**
-- Valid registration succeeds
-- Duplicate email fails
-- Invalid input fails
-**Dependencies:** TASK-002
-**Estimated Complexity:** medium
-
-### TASK-004: User Authentication - Login
-**Status:** pending
-**Description:** Implement login with JWT
-**Acceptance Criteria:**
-- POST /api/v1/auth/login works
-- JWT generated on successful login
-- httpOnly cookie set correctly
-- Invalid credentials handled
-**Tests:**
-- Valid login succeeds
-- Invalid credentials fail
-- JWT is valid and contains user ID
-**Dependencies:** TASK-003
-**Estimated Complexity:** medium
-
-### TASK-005: Auth Middleware
-**Status:** pending
-**Description:** JWT verification middleware for protected routes
-**Acceptance Criteria:**
-- Middleware extracts and verifies JWT
-- User ID added to request object
-- Unauthorized requests rejected
-**Tests:**
-- Valid JWT allows access
-- Invalid/missing JWT blocks access
-- Expired JWT blocks access
-**Dependencies:** TASK-004
-**Estimated Complexity:** medium
+# Implementation Plan - Pet Sitter Personality Quiz
 
 ## High Priority (Core Features)
 
-### TASK-006: Create Todo Endpoint
+### TASK-001: Quiz Data Models
 **Status:** pending
-**Description:** POST /api/v1/todos
+**Description:** Create TypeScript models for quiz questions, options, and results
 **Acceptance Criteria:**
-- Authenticated users can create todos
-- Input validation with Zod
-- Todo associated with current user
-**Tests:**
-- Valid todo creation succeeds
-- Unauthenticated request fails
-- Invalid input fails
-**Dependencies:** TASK-005
-**Estimated Complexity:** low
+- QuizQuestion interface with id, question, options[]
+- QuizOption interface with id, text, scores mapping
+- QuizResult interface with type, title, emoji, description, strengths[], tips[]
+- All 6 questions defined with weighted scoring
+- All 5 result types with full content
+- calculateResult() function to determine personality type
+**Dependencies:** none
+**Files:** lib/models/quiz.ts
 
-### TASK-007: List Todos Endpoint
+### TASK-002: Convex Schema and Mutation
 **Status:** pending
-**Description:** GET /api/v1/todos with filtering
+**Description:** Add quizLeads table and saveQuizLead mutation
 **Acceptance Criteria:**
-- Returns only current user's todos
-- Supports completed filter
-- Supports sorting (createdAt, dueDate, title)
-**Tests:**
-- Returns user's todos only
-- Filtering works correctly
-- Sorting works correctly
+- quizLeads table in schema with all required fields
+- Indexes on email, resultType, createdAt
+- saveQuizLead mutation that handles duplicates (update vs insert)
+- getQuizStats query for admin analytics
+**Dependencies:** TASK-001
+**Files:** convex/schema.ts, convex/quizLeads.ts
+
+### TASK-003: QuizQuestion Component
+**Status:** pending
+**Description:** Reusable component for displaying a single question
+**Acceptance Criteria:**
+- Renders question text and 4 option buttons
+- Visual feedback on selected option
+- Hover states for options
+- Fully accessible (keyboard navigation)
+**Dependencies:** TASK-001
+**Files:** components/quiz/QuizQuestion.tsx
+
+### TASK-004: QuizLeadCapture Component
+**Status:** pending
+**Description:** Email capture form shown before results
+**Acceptance Criteria:**
+- Email input with validation
+- Optional first name field
+- "See My Results" submit button
+- "Skip for now" link
+- Loading state during submission
+- Privacy note about email usage
+**Dependencies:** TASK-002
+**Files:** components/quiz/QuizLeadCapture.tsx
+
+### TASK-005: QuizResult Component
+**Status:** pending
+**Description:** Display personality result with CTA
+**Acceptance Criteria:**
+- Shows emoji, title, description
+- Strengths list with checkmarks
+- Tips list with numbered items
+- "Create Your Profile" button linking to /onboarding?role=sitter
+- "Share Result" button with Web Share API + clipboard fallback
+- "Take Quiz Again" link
+**Dependencies:** TASK-001
+**Files:** components/quiz/QuizResult.tsx
+
+### TASK-006: QuizContainer Component
+**Status:** pending
+**Description:** Main quiz orchestrator with state management
+**Acceptance Criteria:**
+- Manages quiz stage: questions → lead-capture → result
+- Tracks currentQuestionIndex and answers{}
+- Progress bar showing X of 6
+- Previous/Next navigation
+- Calculates result after last question
+- Handles UTM parameter extraction
+**Dependencies:** TASK-003, TASK-004, TASK-005
+**Files:** components/quiz/QuizContainer.tsx, components/quiz/index.ts
+
+### TASK-007: Quiz Page
+**Status:** pending
+**Description:** Next.js page at /quiz with metadata
+**Acceptance Criteria:**
+- Page at app/quiz/page.tsx
+- SEO metadata for sharing
+- Suspense boundary for client components
+- Clean, centered layout
+- Mobile responsive
 **Dependencies:** TASK-006
-**Estimated Complexity:** medium
-
-### TASK-008: Get Single Todo Endpoint
-**Status:** pending
-**Description:** GET /api/v1/todos/:id
-**Acceptance Criteria:**
-- Returns todo if user owns it
-- 404 if todo doesn't exist
-- 403 if todo belongs to another user
-**Tests:**
-- Owner can access todo
-- Non-owner gets 403
-- Invalid ID gets 404
-**Dependencies:** TASK-007
-**Estimated Complexity:** low
-
-### TASK-009: Update Todo Endpoint
-**Status:** pending
-**Description:** PUT /api/v1/todos/:id
-**Acceptance Criteria:**
-- User can update their own todos
-- Zod validation on updates
-- 403 for other users' todos
-**Tests:**
-- Valid update succeeds
-- Authorization check works
-- Validation works
-**Dependencies:** TASK-008
-**Estimated Complexity:** low
-
-### TASK-010: Delete Todo Endpoint
-**Status:** pending
-**Description:** DELETE /api/v1/todos/:id
-**Acceptance Criteria:**
-- User can delete their own todos
-- 403 for other users' todos
-- 404 for non-existent todos
-**Tests:**
-- Valid deletion succeeds
-- Authorization check works
-- Returns appropriate errors
-**Dependencies:** TASK-009
-**Estimated Complexity:** low
+**Files:** app/quiz/page.tsx, app/quiz/QuizPageContent.tsx
 
 ## Medium Priority
 
-### TASK-011: Error Handling Middleware
+### TASK-008: Sitemap Update
 **Status:** pending
-**Description:** Global error handler with consistent format
+**Description:** Add /quiz to sitemap for SEO
 **Acceptance Criteria:**
-- All errors return consistent JSON format
-- Appropriate HTTP status codes
-- Error logging (without sensitive data)
-**Tests:**
-- Various error types handled correctly
-**Dependencies:** TASK-010
-**Estimated Complexity:** low
+- Quiz page included in sitemap
+- Appropriate priority and change frequency
+**Dependencies:** TASK-007
+**Files:** app/sitemap.ts
 
-### TASK-012: API Documentation
-**Status:** pending
-**Description:** Create comprehensive API documentation
-**Acceptance Criteria:**
-- README with setup instructions
-- API endpoint documentation
-- Example requests/responses
-- Postman collection
-**Tests:** N/A (documentation)
-**Dependencies:** TASK-011
-**Estimated Complexity:** low
-
-## Test Summary
-- Total tasks: 12
-- Estimated time: 3-4 hours (autonomous)
-- Critical path: TASK-001 → TASK-002 → TASK-003 → TASK-004 → TASK-005 → TASK-006
+## Summary
+- Total tasks: 8
+- Estimated time: 2-3 hours (autonomous)
+- Critical path: TASK-001 → TASK-002 → TASK-003/004/005 → TASK-006 → TASK-007
 ```
 
 **Output from Planning mode:**
 ```
-[Iteration 1] Reading specs files...
-[Iteration 2] Analyzing project structure...
-[Iteration 3] Creating implementation plan with 12 tasks...
+[Iteration 1] Reading specs and project structure...
+[Iteration 2] Analyzing existing component patterns...
+[Iteration 3] Creating implementation plan with 8 tasks...
 PLAN COMPLETE
 ```
 
 **Commit:**
 ```bash
 git add IMPLEMENTATION_PLAN.md
-git commit -m "Generate implementation plan with 12 tasks"
+git commit -m "Generate implementation plan with 8 tasks"
 ```
 
-## Phase 3: Building Mode (Overnight Run)
+## Phase 3: Building Mode (Autonomous Run)
 
 Now we run Building mode and let Ralph implement everything autonomously.
 
@@ -544,20 +437,19 @@ You are in BUILDING mode. Implement tasks from the plan.
 For each iteration:
 1. Read IMPLEMENTATION_PLAN.md and progress.txt
 2. Pick the highest priority task with status: pending
-3. Study existing code
+3. Study existing code patterns in the project
 4. Implement the feature completely
-5. Write comprehensive tests
-6. Run: npm test && npm run type-check
-7. When all tests pass:
-   - Commit: "feat(area): description"
+5. Run: npm run lint (if available)
+6. When implementation is complete:
+   - Commit: "feat(quiz): description"
    - Update task status to completed
    - Append to progress.txt with timestamp
 
 ## Critical Rules
 - ONE task at a time
-- NEVER commit failing tests
-- NEVER skip test execution
-- Tests are backpressure—respect them
+- Match existing code patterns and conventions
+- Use existing UI components from components/ui/
+- Use path aliases (@/) for imports
 - Each commit must be atomic and working
 
 Output "ALL TASKS COMPLETE" when all tasks have status: completed.
@@ -566,139 +458,113 @@ Output "ALL TASKS COMPLETE" when all tasks have status: completed.
 ### Run Building Mode
 
 ```bash
-/ralph-loop "$(cat PROMPT_build.md)" --max-iterations 50 --completion-promise "ALL TASKS COMPLETE"
+/ralph-loop "$(cat PROMPT_build.md)" --max-iterations 30 --completion-promise "ALL TASKS COMPLETE"
 ```
 
 ### Monitoring the Build
 
-If you're following along with Ralph TUI (covered in [Part 3: Ralph TUI Monitoring](/blog/ralph-wiggum-part-3-ralph-tui-monitoring)), you'll see real-time progress as Claude works through each task. For this tutorial, we'll focus on the file changes and final results.
+If you're following along with Ralph TUI (covered in [Part 3: Ralph TUI Monitoring](/blog/ralph-wiggum-part-3-ralph-tui-monitoring)), you'll see real-time progress as Claude works through each task.
 
 ### Progress Over Time
 
-**After 2 hours (12 iterations):**
-- ✅ TASK-001: Project Foundation
-- ✅ TASK-002: Database Setup
-- ✅ TASK-003: User Registration
-- ✅ TASK-004: User Login
-- ✅ TASK-005: Auth Middleware
-- ✅ TASK-006: Create Todo
-- 🔄 TASK-007: List Todos (in progress)
+**After 1 hour (8 iterations):**
+- ✅ TASK-001: Quiz Data Models
+- ✅ TASK-002: Convex Schema and Mutation
+- ✅ TASK-003: QuizQuestion Component
+- ✅ TASK-004: QuizLeadCapture Component
+- 🔄 TASK-005: QuizResult Component (in progress)
 
-**After 3.5 hours (28 iterations):**
-- All 12 tasks completed!
-- 78 tests passing
-- 87% code coverage
-- 28 clean commits
+**After 2 hours (15 iterations):**
+- All 8 tasks completed!
+- Clean, working quiz
+- 15 atomic commits
 
 ### Examining progress.txt
 
 ```
-[2026-01-16 14:15] Completed TASK-001: Project Foundation
-- Configured TypeScript with strict mode
-- Set up Express with basic middleware
-- Added development scripts
-- Environment variables with dotenv
-- Learning: Used tsx for dev mode (faster than ts-node)
-- Next: TASK-002 (Database Setup)
+[2026-01-19 10:15] Completed TASK-001: Quiz Data Models
+- Created lib/models/quiz.ts with full type definitions
+- Defined QuizQuestion, QuizOption, QuizResult interfaces
+- Implemented all 6 questions with weighted scoring
+- Added 5 personality types with full content (emoji, title, description, strengths, tips)
+- Created calculateResult() function with tie-breaking logic
+- Learning: Used Record<QuizResultType, number> for type-safe scoring
+- Next: TASK-002 (Convex Schema)
 
-[2026-01-16 14:35] Completed TASK-002: Database Setup
-- Created Prisma schema with User and Todo models
-- Set up PostgreSQL connection
-- Created initial migration
-- Added database test connection
-- Learning: Used DATABASE_URL_TEST for test database
-- Challenge: Had to configure separate test database
-- Next: TASK-003 (User Registration)
+[2026-01-19 10:35] Completed TASK-002: Convex Schema and Mutation
+- Added quizLeads table to convex/schema.ts
+- Created convex/quizLeads.ts with saveQuizLead mutation
+- Mutation handles duplicate emails (updates existing record)
+- Added getQuizStats query for analytics
+- Indexes on email, resultType, createdAt for efficient queries
+- Learning: Convex withIndex syntax for duplicate checking
+- Next: TASK-003 (QuizQuestion Component)
 
-[2026-01-16 15:10] Completed TASK-003: User Registration
-- Implemented POST /api/v1/auth/register
-- Added bcrypt password hashing (12 rounds)
-- Zod validation schema for registration
-- Comprehensive tests (valid/invalid/duplicate cases)
-- Learning: Extracted validation schemas to separate file
-- Next: TASK-004 (User Login)
+[2026-01-19 10:52] Completed TASK-003: QuizQuestion Component
+- Created components/quiz/QuizQuestion.tsx
+- Used existing Button component patterns
+- Added visual feedback for selected option (ring + background)
+- Keyboard accessible with proper focus states
+- Responsive grid layout for options
+- Learning: Matched existing cn() utility pattern for conditional classes
+- Next: TASK-004 (QuizLeadCapture Component)
 
-[2026-01-16 15:42] Completed TASK-004: User Login
-- Implemented POST /api/v1/auth/login
-- JWT generation with jsonwebtoken
-- httpOnly cookie configuration
-- Tests for valid/invalid credentials
-- Learning: SameSite=strict for cookies important for security
-- Challenge: Debugged cookie settings for development
-- Next: TASK-005 (Auth Middleware)
+[2026-01-19 11:15] Completed TASK-004: QuizLeadCapture Component
+- Created components/quiz/QuizLeadCapture.tsx
+- Email input with Mail icon and validation
+- Optional firstName field
+- Loading state with Loader2 spinner
+- "Skip for now" link below form
+- Privacy note about email usage
+- Used existing Card, Input, Label, Button components
+- Learning: Sonner toast already available in project
+- Next: TASK-005 (QuizResult Component)
 
-[2026-01-16 16:05] Completed TASK-005: Auth Middleware
-- JWT verification middleware
-- User ID extraction and attachment to request
-- Error handling for invalid/expired tokens
-- Tests covering all auth scenarios
-- Learning: Extended Express Request type for TypeScript
-- Next: TASK-006 (Create Todo)
+[2026-01-19 11:42] Completed TASK-005: QuizResult Component
+- Created components/quiz/QuizResult.tsx
+- Gradient text for title using result.color
+- Strengths with Check icons in green circles
+- Tips with numbered circles
+- CTA card with gradient background
+- "Create Your Profile" links to /onboarding?role=sitter
+- "Share Result" with Web Share API + clipboard fallback
+- "Take Quiz Again" button
+- Learning: navigator.share with try/catch for fallback
+- Next: TASK-006 (QuizContainer Component)
 
-[2026-01-16 16:25] Completed TASK-006: Create Todo Endpoint
-- POST /api/v1/todos implementation
-- Zod validation for todo input
-- Association with authenticated user
-- Tests for auth + validation
-- Learning: Reused validation pattern from auth
-- Next: TASK-007 (List Todos)
+[2026-01-19 12:10] Completed TASK-006: QuizContainer Component
+- Created components/quiz/QuizContainer.tsx
+- State management for stage, currentQuestionIndex, answers
+- Progress bar using existing Progress component
+- Previous/Next navigation with proper disabled states
+- UTM parameter extraction from URL
+- Integrated with Convex saveQuizLead mutation
+- Created components/quiz/index.ts for exports
+- Learning: useCallback for memoized handlers
+- Challenge: Getting stage transitions smooth took 2 iterations
+- Next: TASK-007 (Quiz Page)
 
-[2026-01-16 17:10] Completed TASK-007: List Todos Endpoint
-- GET /api/v1/todos with filtering
-- Query parameter validation
-- Sorting by createdAt, dueDate, title
-- Completed filter implementation
-- Tests for filtering and sorting
-- Learning: Prisma orderBy syntax for dynamic sorting
-- Challenge: Type-safe query parameter parsing took 2 iterations
-- Next: TASK-008 (Get Single Todo)
+[2026-01-19 12:30] Completed TASK-007: Quiz Page
+- Created app/quiz/page.tsx with SEO metadata
+- Created app/quiz/QuizPageContent.tsx client component
+- Suspense boundary for loading state
+- Centered layout with max-w-2xl container
+- Gradient background from background to muted/30
+- PawPrint icon in header
+- Mobile responsive with proper padding
+- Next: TASK-008 (Sitemap Update)
 
-[2026-01-16 17:30] Completed TASK-008: Get Single Todo
-- GET /api/v1/todos/:id
-- Authorization check (user owns todo)
-- 404 and 403 error handling
-- Tests for ownership validation
-- Next: TASK-009 (Update Todo)
-
-[2026-01-16 17:48] Completed TASK-009: Update Todo
-- PUT /api/v1/todos/:id
-- Partial update support
-- Authorization check
-- Validation on updates
-- Tests for all update scenarios
-- Learning: Prisma update with partial data
-- Next: TASK-010 (Delete Todo)
-
-[2026-01-16 18:05] Completed TASK-010: Delete Todo
-- DELETE /api/v1/todos/:id
-- Authorization check
-- Proper error responses
-- Tests for delete scenarios
-- Next: TASK-011 (Error Handling)
-
-[2026-01-16 18:25] Completed TASK-011: Error Handling Middleware
-- Global error handler
-- Consistent error response format
-- Appropriate HTTP status codes
-- Error logging (sanitized)
-- Tests for various error types
-- Learning: Express error middleware signature (4 params)
-- Next: TASK-012 (Documentation)
-
-[2026-01-16 18:40] Completed TASK-012: API Documentation
-- Comprehensive README.md
-- Setup and installation guide
-- API endpoint documentation
-- Example requests/responses
-- Postman collection exported
+[2026-01-19 12:38] Completed TASK-008: Sitemap Update
+- Added /quiz to app/sitemap.ts
+- Set changeFrequency: monthly
+- Set priority: 0.8 (high value page)
 - All tasks complete!
 
 SUMMARY:
-- 12 tasks completed
-- 78 tests passing
-- 87% code coverage
-- 28 commits
-- 3 hours 40 minutes autonomous time
+- 8 tasks completed
+- 15 commits
+- 2 hours 23 minutes autonomous time
+- Quiz fully functional and ready for testing
 ```
 
 ### Git Commit History
@@ -708,257 +574,222 @@ git log --oneline --graph
 ```
 
 ```
-* a4f8d2c feat(docs): add comprehensive API documentation
-* 9e3c1b5 feat(error): implement global error handling middleware
-* 7d2a8f1 feat(todos): add delete todo endpoint with tests
-* 6c9b4e2 feat(todos): add update todo endpoint with validation
-* 5a7f3d8 feat(todos): add get single todo with authorization
-* 4b6e2c1 feat(todos): implement list todos with filtering and sorting
-* 3d5c1a9 feat(todos): add create todo endpoint with tests
-* 2e4b8f7 feat(auth): implement JWT verification middleware
-* 1c3d9a6 feat(auth): add login endpoint with JWT generation
-* 0b2c8f5 feat(auth): implement user registration with validation
-* 9a1d7e4 feat(db): configure Prisma with PostgreSQL schema
-* 8b0c6d3 feat(setup): initialize TypeScript and Express project
-* 7a9e5c2 Generate implementation plan with 12 tasks
-* 6d8f4b1 Add complete API specifications
-* 5c7e3a0 Initial project setup
+* f8a3d2c feat(quiz): add quiz page to sitemap
+* e7b2c1d feat(quiz): create quiz page with SEO metadata
+* d6a1b0c feat(quiz): implement QuizContainer orchestrator
+* c5f9a8b feat(quiz): add quiz component exports
+* b4e8d7a feat(quiz): create QuizResult component with sharing
+* a3d7c6f feat(quiz): create QuizLeadCapture component
+* 92c6b5e feat(quiz): create QuizQuestion component
+* 81b5a4d feat(quiz): add quizLeads Convex mutation
+* 70a4f3c feat(quiz): add quizLeads table to schema
+* 6f3e2b1 feat(quiz): create quiz data models and scoring
+* 5e2d1a0 Generate implementation plan with 8 tasks
+* 4d1c0f9 Add quiz requirements specification
 ```
 
 ## Handling Errors (What Went Wrong)
 
-Ralph hit a few snags along the way. Here's how they were resolved:
+Ralph hit a couple of snags. Here's how they were resolved:
 
-### Error 1: Test Database Configuration (Iteration 6)
-
-**Error:**
-```
-[Iteration 6] Running tests...
-Error: P1001: Can't reach database server at localhost:5432
-```
-
-**What happened:** Ralph tried to run tests but the test database wasn't configured.
-
-**How Ralph fixed it:**
-```
-[Iteration 7] Detected database connection issue
-[Iteration 7] Updating test script to use TEST_DATABASE_URL
-[Iteration 7] Added setup script to create test database
-[Iteration 7] Tests now passing
-```
-
-**Learning:** Ralph read the error, understood the issue, and fixed it autonomously by adding proper test database configuration.
-
-### Error 2: TypeScript Type Error (Iteration 14)
+### Error 1: Missing Import (Iteration 9)
 
 **Error:**
 ```
-[Iteration 14] Type checking...
-Error: Property 'userId' does not exist on type 'Request'
+[Iteration 9] Lint error...
+Module not found: Can't resolve '@/convex/_generated/api'
 ```
 
-**What happened:** The Express Request type didn't include our custom `userId` property from auth middleware.
+**What happened:** Ralph tried to import from Convex before the types were generated.
 
 **How Ralph fixed it:**
 ```
-[Iteration 15] Creating types/express.d.ts
-[Iteration 15] Extending Express Request interface
-[Iteration 15] Type check passing
+[Iteration 10] Detected missing Convex types
+[Iteration 10] This is expected - types generate on dev server start
+[Iteration 10] Import is correct, marking task complete
+```
+
+**Learning:** Ralph understood this was a development environment issue, not a code bug.
+
+### Error 2: State Update Logic (Iteration 12)
+
+**Error:**
+```
+[Iteration 12] Quiz not advancing to next question...
+Previous button disabled when it shouldn't be
+```
+
+**What happened:** State update timing issue with React's batching.
+
+**How Ralph fixed it:**
+```
+[Iteration 13] Analyzing state flow...
+[Iteration 13] Issue: checking index before state update completes
+[Iteration 13] Fix: use callback form of setState and memoize handlers
+[Iteration 13] Quiz navigation working correctly
 ```
 
 **Solution Ralph implemented:**
 
 ```typescript
-// types/express.d.ts
-declare namespace Express {
-  export interface Request {
-    userId?: string;
+// Before (problematic)
+const handleNext = () => {
+  setCurrentQuestionIndex(currentQuestionIndex + 1);
+  // Bug: checking old value
+};
+
+// After (fixed)
+const handleNext = useCallback(() => {
+  if (isLastQuestion) {
+    // handle completion
+  } else {
+    setCurrentQuestionIndex((prev) => prev + 1);
   }
-}
+}, [isLastQuestion]);
 ```
 
-### Error 3: Flaky Test (Iteration 22)
+## Testing the Quiz
 
-**Error:**
-```
-[Iteration 22] Test failed: "should filter completed todos"
-Expected 2 but got 0
-```
+Start the development server:
 
-**What happened:** Test timing issue—todos weren't being created before the query.
-
-**How Ralph fixed it:**
-```
-[Iteration 23] Analyzing test failure...
-[Iteration 23] Added await to todo creation in test
-[Iteration 23] Tests passing (72/72)
+```bash
+npm run dev
+# In another terminal:
+npm run convex:dev
 ```
 
-**Learning:** Ralph debugged the async issue and fixed the test properly.
+Visit `http://localhost:3000/quiz` and try it out:
+
+1. Answer all 6 questions
+2. Enter your email (or skip)
+3. See your personality result
+4. Click "Share Result" to test sharing
+5. Check Convex dashboard for the lead data
 
 ## Cost Breakdown
 
 Using Claude Max 20x ($200/month):
 
 **Phase 1: Requirements (Conversational)**
-- Time: 30 minutes
+- Time: 25 minutes
 - Usage: Minimal (normal conversation)
 - Iterations: N/A
 
 **Phase 2: Planning**
 - Iterations: 3
 - Time: ~8 minutes
-- Usage: ~5% of daily Max 20x allowance
+- Usage: ~3% of daily Max 20x allowance
 
 **Phase 3: Building**
-- Iterations: 28 (actual), 50 (max set)
-- Time: 3 hours 40 minutes
-- Usage: ~30% of daily Max 20x allowance
+- Iterations: 15 (actual), 30 (max set)
+- Time: 2 hours 23 minutes
+- Usage: ~20% of daily Max 20x allowance
 
 **Total Project:**
-- Human time: 30 minutes (Phase 1 only)
-- Ralph autonomous time: 3 hours 48 minutes
-- Traditional development time estimate: 16-20 hours
-- Time saved: ~16+ hours
-- Cost with Max 20x: ~35% of daily usage (~$6.50 if amortized)
+- Human time: 25 minutes (Phase 1 only)
+- Ralph autonomous time: 2 hours 31 minutes
+- Traditional development time estimate: 8-12 hours
+- Time saved: ~8+ hours
+- Cost with Max 20x: ~23% of daily usage (~$4.60 if amortized)
 
-**ROI:** At $50/hour billing rate, Ralph saved $800-1000 worth of development time for ~$6.50 in usage.
+**ROI:** At $50/hour billing rate, Ralph saved $400-600 worth of development time for ~$4.60 in usage.
 
 ## Final Project Structure
 
 ```
-todo-api-ralph/
+petsitters/
 ├── specs/
-│   ├── authentication.md
-│   ├── todos.md
-│   └── testing.md
-├── src/
-│   ├── index.ts
-│   ├── routes/
-│   │   ├── auth.routes.ts
-│   │   └── todos.routes.ts
-│   ├── controllers/
-│   │   ├── auth.controller.ts
-│   │   └── todos.controller.ts
-│   ├── middleware/
-│   │   ├── auth.middleware.ts
-│   │   ├── error.middleware.ts
-│   │   └── validation.middleware.ts
-│   ├── services/
-│   │   ├── auth.service.ts
-│   │   └── todos.service.ts
-│   ├── models/
-│   │   └── schemas.ts
-│   └── types/
-│       └── express.d.ts
-├── tests/
-│   ├── auth.test.ts
-│   ├── todos.test.ts
-│   └── setup.ts
-├── prisma/
-│   ├── schema.prisma
-│   └── migrations/
+│   └── quiz-requirements.md
+├── lib/
+│   └── models/
+│       └── quiz.ts                 # Quiz types and data
+├── convex/
+│   ├── schema.ts                   # + quizLeads table
+│   └── quizLeads.ts                # Mutations and queries
+├── components/
+│   └── quiz/
+│       ├── index.ts                # Exports
+│       ├── QuizContainer.tsx       # Main orchestrator
+│       ├── QuizQuestion.tsx        # Single question display
+│       ├── QuizResult.tsx          # Result display + CTAs
+│       └── QuizLeadCapture.tsx     # Email capture form
+├── app/
+│   └── quiz/
+│       ├── page.tsx                # Page with metadata
+│       └── QuizPageContent.tsx     # Client component
 ├── PROMPT_plan.md
 ├── PROMPT_build.md
 ├── IMPLEMENTATION_PLAN.md
-├── progress.txt
-├── README.md
-└── package.json
+└── progress.txt
 ```
-
-## Testing the API
-
-Start the server:
-
-```bash
-npm run dev
-```
-
-Try it out:
-
-```bash
-# Register
-curl -X POST http://localhost:3000/api/v1/auth/register \
-  -H "Content-Type: application/json" \
-  -d '{"email":"test@example.com","password":"test1234","name":"Test User"}'
-
-# Login
-curl -X POST http://localhost:3000/api/v1/auth/login \
-  -H "Content-Type: application/json" \
-  -d '{"email":"test@example.com","password":"test1234"}' \
-  -c cookies.txt
-
-# Create Todo
-curl -X POST http://localhost:3000/api/v1/todos \
-  -H "Content-Type: application/json" \
-  -b cookies.txt \
-  -d '{"title":"Test Ralph Wiggum","description":"Write tutorial","dueDate":"2026-01-20T10:00:00Z"}'
-
-# List Todos
-curl http://localhost:3000/api/v1/todos -b cookies.txt
-```
-
-Everything works! Ralph built a production-ready API autonomously.
 
 ## Key Lessons Learned
 
 ### What Worked Well
 
-1. **Clear specs = fast implementation**: The 30-minute conversation upfront saved hours of back-and-forth
-2. **Atomic tasks**: Breaking the project into 12 tasks allowed Ralph to complete each in 2-3 iterations
-3. **Test-driven backpressure**: Requiring tests to pass prevented broken code from propagating
-4. **Progress tracking**: progress.txt provided valuable context across iterations
-5. **Fresh context**: Each iteration started clean, preventing context degradation
+1. **Real project context**: Building for an actual platform meant realistic requirements and patterns
+2. **Existing UI components**: Ralph leveraged shadcn/ui components already in the project
+3. **Clear scoring system**: Weighted scoring was well-defined in specs, making implementation straightforward
+4. **Atomic tasks**: Each component was a single task, allowing clean commits
+5. **Pattern matching**: Ralph picked up on existing code conventions automatically
 
 ### What Could Be Improved
 
-1. **Test database config**: Should have been in the plan explicitly
-2. **TypeScript types**: Adding custom Express types to the plan would have prevented the error
-3. **Async testing patterns**: More explicit test patterns in specs would help
+1. **Test coverage**: We didn't include test requirements—next time add unit tests for scoring logic
+2. **Accessibility audit**: Should verify screen reader experience
+3. **Analytics events**: Could add PostHog tracking for funnel analysis
 
 ### Time Comparison
 
 **Traditional Development:**
-- Setup: 1 hour
-- Auth implementation: 3-4 hours
-- Todo CRUD: 3-4 hours
-- Tests: 4-5 hours
-- Documentation: 1-2 hours
-- Debugging: 2-3 hours
-- **Total: 14-19 hours**
+- Data models: 1 hour
+- Convex setup: 30 minutes
+- Components (4): 4-5 hours
+- Page + routing: 1 hour
+- Styling polish: 1-2 hours
+- Debugging: 1-2 hours
+- **Total: 8-12 hours**
 
 **With Ralph Wiggum:**
-- Requirements conversation: 30 minutes
-- Planning mode: 10 minutes
-- Building mode (autonomous): 3 hours 40 minutes
-- Review and testing: 20 minutes
-- **Total human time: 1 hour**
-- **Total elapsed time: 4 hours 40 minutes**
+- Requirements conversation: 25 minutes
+- Planning mode: 8 minutes
+- Building mode (autonomous): 2 hours 23 minutes
+- Review and testing: 15 minutes
+- **Total human time: 48 minutes**
+- **Total elapsed time: 3 hours**
 
-**Productivity multiplier: ~15x**
+**Productivity multiplier: ~10x**
 
 ## What's Next
 
-You've now seen Ralph Wiggum in action building a real project from start to finish. You understand how the three phases work together, how to monitor progress, and how to handle errors when they occur.
+You just watched Ralph build a complete marketing feature—8 tasks, 15 commits, 2.5 hours of autonomous work. And it's not some tutorial throwaway. It's live, capturing leads, generating revenue.
 
-In [Part 4: Advanced Guide and Resources](/blog/ralph-wiggum-part-4-resources), we'll cover advanced techniques, comprehensive troubleshooting, and provide a complete resource library organized by skill level. This is your reference guide for mastering Ralph Wiggum professionally.
+That's the power of the Three-Phase Methodology in action.
+
+But what happens when things go really wrong? When Ralph gets stuck in a loop? When the tests keep failing? When you're debugging at 2 AM because you need this feature shipped?
+
+In [Part 5: Advanced Patterns and Troubleshooting](/blog/ralph-wiggum-part-5-advanced-troubleshooting), we cover the hard stuff: debugging stuck loops, complex multi-repo projects, enterprise patterns, and the edge cases that separate Ralph practitioners from Ralph masters.
 
 ---
 
 ## Key Takeaways
 
-✅ Spend time on Phase 1 (Requirements) - it pays off massively
-✅ Break projects into atomic tasks (2-3 iterations each)
-✅ Always include test requirements in specs
-✅ Monitor with Ralph-TUI for real-time visibility
-✅ progress.txt is invaluable for understanding Ralph's decisions
-✅ Git history from Ralph is clean and professional
-✅ Ralph can debug and fix its own errors autonomously
-✅ ROI is incredible even with usage costs
+- Real projects work better than toy examples—Ralph picks up your existing patterns
+- BuzzFeed quizzes are perfect Ralph projects (clear completion, testable outcomes)
+- `progress.txt` shows Ralph's thinking—invaluable for debugging
+- Small errors get fixed autonomously in the next iteration
+- Git history from Ralph is clean and atomic
+- ROI: ~$5 in usage for 8+ hours of saved development time
 
-## Project Files
+## Live Demo
 
-All code from this tutorial is available in the example repository:
-- [todo-api-ralph on GitHub](https://github.com/example/todo-api-ralph) *(example repo)*
+Try the quiz yourself: [What Type of Pet Sitter Are You?](https://www.globalpetsitter.com/quiz)
 
-You can clone it and explore the actual commits, tests, and implementation that Ralph generated.
+Ralph built this. It's in production. It's capturing leads right now.
+
+{/* IMAGE: Screenshot of the live quiz with "Your result: Animal Whisperer" displayed */}
+
+---
+
+*Previous: [Part 3: Ralph TUI Monitoring](/blog/ralph-wiggum-part-3-ralph-tui-monitoring)*
+*Next: [Part 5: Advanced Patterns and Troubleshooting](/blog/ralph-wiggum-part-5-advanced-troubleshooting)*

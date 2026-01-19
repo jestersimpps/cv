@@ -1,6 +1,6 @@
 ---
 title: "Mastering Ralph Wiggum Part 2: The Three-Phase Methodology"
-description: "Master the advanced Ralph Wiggum methodology with separate Planning and Building prompts for autonomous, long-running AI coding projects."
+description: "The professional workflow for multi-day autonomous coding projects. Separate planning from building, and wake up to production-ready features."
 publishedAt: "2026-01-18"
 author: "Jo Vinkenroye"
 category: "Tutorials"
@@ -14,37 +14,49 @@ series:
   total: 6
 ---
 
-In Part 1, we covered the basics of Ralph Wiggum: installation, simple usage, and when to use it. But there's a more powerful approach for complex, multi-day projects: the **Three-Phase Methodology**.
+Here's the difference between developers who "tried Ralph and it was okay" and developers who are shipping entire features overnight: **methodology**.
 
-This advanced technique, originated by [Geoffrey Huntley](https://github.com/ghuntley/how-to-ralph-wiggum) and refined by [Clayton Farr](https://claytonfarr.github.io/ralph-playbook/), uses separate prompts for different phases of development. As Huntley describes it: **"A funnel with 3 Phases, 2 Prompts, and 1 Loop."**
+Running `/ralph-loop` on a vague prompt is like giving a junior developer a task with no context and no success criteria. They'll work hard. They'll produce *something*. But it probably won't be what you wanted.
 
-## How the Three Phases Work
+The Three-Phase Methodology fixes this. It's how the pros run multi-day autonomous projects that actually work.
 
-The methodology uses **separate prompts for different phases**, not a single continuous loop:
+{/* IMAGE: Two git histories side-by-side: chaotic commits vs clean, atomic commits labeled by task */}
 
-**Phase 1: Requirements Definition (Specs)** - Human-led conversation
-**Phase 2: Planning** - AI analyzes and plans (no coding)
-**Phase 3: Building** - AI implements and loops (continuous coding)
+## The Core Insight: Separate Planning from Building
 
-This separation is crucial. As [The Ralph Playbook](https://claytonfarr.github.io/ralph-playbook/) explains: *"PLANNING prompt does gap analysis (specs vs code) and outputs a prioritized TODO list—no implementation, no commits. BUILDING prompt assumes plan exists, picks tasks from it, implements, runs tests (backpressure), commits."*
+[Geoffrey Huntley](https://github.com/ghuntley/how-to-ralph-wiggum) describes it as **"A funnel with 3 Phases, 2 Prompts, and 1 Loop."** Here's the breakdown:
 
-## Phase 1: Requirements Definition (Specs)
+- **Phase 1: Requirements** — You + Claude in conversation, defining specs and acceptance criteria
+- **Phase 2: Planning** — Claude analyzes specs (read-only loop), outputs prioritized TODO list
+- **Phase 3: Building** — Claude implements tasks one by one, commits, loops until done
 
-This is a **conversational phase** where you work with Claude to define what needs to be built. Spend 30+ minutes talking through requirements before writing any specs.
+The separation is crucial. As [The Ralph Playbook](https://claytonfarr.github.io/ralph-playbook/) puts it: *"PLANNING prompt does gap analysis and outputs a prioritized TODO list—no implementation, no commits. BUILDING prompt picks tasks, implements, runs tests, commits."*
 
-### Creating Specs Files
+> **Why this works:** Planning mode prevents Claude from jumping into code before understanding the full picture. Building mode stays focused on one task at a time instead of scope-creeping into chaos.
 
-Create `specs/*.md` files that serve as the source of truth. Don't follow a rigid template—let the LLM dictate the format that works best for your project.
+## Phase 1: Requirements (The Human Part)
 
-**Key principle:** Have a long conversation with Claude about your requirements before asking it to implement anything. Break down "Jobs to Be Done" into topics of concern, then document each topic.
+This is the only phase that requires your active involvement. And it's where most people cut corners—which is exactly why their Ralph sessions produce garbage.
 
-**Example topics:**
-- `specs/authentication.md` - User login, JWT tokens, session management
-- `specs/api-design.md` - REST endpoints, request/response formats, error handling
-- `specs/database.md` - Schema design, relationships, indexes
-- `specs/testing.md` - Coverage requirements, test types needed, CI/CD
+**Spend at least 30 minutes** talking through requirements with Claude before writing any code. Seriously. This conversation is where you catch the "oh wait, what about..." moments that would otherwise derail your overnight build.
 
-**Example conversation flow:**
+{/* IMAGE: Hourglass with "30 min conversation" on top, "8 hours autonomous coding" on bottom */}
+
+### What Goes in Specs Files
+
+Create `specs/*.md` files that become the source of truth. Don't overthink the format—focus on clarity:
+
+```
+specs/
+├── authentication.md    # Login, JWT, sessions
+├── api-design.md        # Endpoints, request/response formats
+├── database.md          # Schema, relationships
+└── testing.md           # Coverage requirements, test strategy
+```
+
+### The Conversation That Matters
+
+Here's how a good requirements conversation flows:
 
 ```
 You: "I want to build a REST API for managing todos"
@@ -57,10 +69,12 @@ Claude: "Got it. What about authentication? User accounts?"
 
 You: "Yes, users should only see their own todos"
 
-Claude: "Excellent. Let me create specs for this..."
+Claude: "Makes sense. How should we handle..."
 ```
 
-After the conversation, Claude creates structured markdown files documenting everything discussed.
+This back-and-forth surfaces edge cases you wouldn't think of alone. After the conversation, Claude generates structured specs documenting everything discussed.
+
+> **The investment pays off:** 30 minutes of requirements conversation prevents hours of Ralph spinning on ambiguous goals.
 
 ## Phase 2: Planning
 
@@ -553,25 +567,50 @@ A well-structured PRD is critical for Ralph's success. This is an alternative to
 
 ## What's Next
 
-You now understand the advanced Three-Phase Methodology that separates planning from building. You know how to create specs files, run Planning mode to generate implementation plans, and use Building mode for autonomous execution. You understand the file structure, prompt templates, and common pitfalls.
+You now have the professional methodology: specs for requirements, planning mode for gap analysis, building mode for autonomous execution. The file structure. The prompt templates. The pitfalls to avoid.
 
-In Part 3: Complete Practical Tutorial *(coming soon)*, we'll put this all into practice with an end-to-end build of a Todo API from scratch. You'll see actual conversation logs, generated plans, real commit history, and how to troubleshoot when things go wrong. This is where theory meets reality.
+But there's a gap between knowing the methodology and watching it work on a real project.
+
+In [Part 3: Ralph TUI Monitoring](/blog/ralph-wiggum-part-3-ralph-tui-monitoring), we'll cover real-time visibility for long-running loops—dashboards, keyboard controls, and session management.
+
+Then in [Part 4: Complete Practical Tutorial](/blog/ralph-wiggum-part-4-tutorial), we put theory into practice. You'll see actual conversation logs, generated plans, real commit history, and how to troubleshoot when things go wrong. This is where it clicks.
 
 ---
 
+## Quick Reference
+
+```bash
+# Phase 1: Requirements (conversational)
+# Talk with Claude, create specs/*.md files
+
+# Phase 2: Planning (read-only loop)
+/ralph-loop "$(cat PROMPT_plan.md)" --max-iterations 5 --completion-promise "PLAN COMPLETE"
+
+# Phase 3: Building (autonomous loop)
+/ralph-loop "$(cat PROMPT_build.md)" --max-iterations 50 --completion-promise "ALL TASKS COMPLETE"
+
+# When plan becomes stale
+rm IMPLEMENTATION_PLAN.md && ./loop.sh plan
+```
+
 ## Key Takeaways
 
-✅ Three phases use separate prompts: specs/*.md, PROMPT_plan.md, PROMPT_build.md
-✅ Planning mode generates plans, Building mode implements them
-✅ Fresh context per iteration prevents degradation
-✅ Backpressure through tests is your quality gate
-✅ progress.txt tracks learnings across iterations
-✅ Plans are disposable—regenerate when stale
-✅ Atomic tasks (2-3 iterations each) work best
+- Three phases with separate prompts: specs, planning, building
+- Planning mode generates the roadmap—no code, no commits
+- Building mode implements one task at a time
+- Tests are your backpressure—Ralph can't commit broken code
+- `progress.txt` preserves learnings across iterations
+- Plans are disposable—regenerate when stale
+- Atomic tasks (2-3 iterations each) work best
 
-## Resources Referenced
+## Resources
 
-- [The Ralph Playbook by Clayton Farr](https://claytonfarr.github.io/ralph-playbook/) - Complete methodology guide
-- [How to Ralph Wiggum by Geoffrey Huntley](https://github.com/ghuntley/how-to-ralph-wiggum) - Original technique documentation
-- [11 Tips for AI Coding with Ralph Wiggum](https://www.aihero.dev/tips-for-ai-coding-with-ralph-wiggum) - Community best practices
-- [Official Ralph Wiggum Plugin](https://github.com/anthropics/claude-code/tree/main/plugins/ralph-wiggum) - Plugin source and docs
+- [The Ralph Playbook](https://claytonfarr.github.io/ralph-playbook/) — Complete methodology guide
+- [Geoffrey Huntley's Guide](https://github.com/ghuntley/how-to-ralph-wiggum) — Original technique
+- [11 Tips for AI Coding](https://www.aihero.dev/tips-for-ai-coding-with-ralph-wiggum) — Community best practices
+- [Official Plugin](https://github.com/anthropics/claude-code/tree/main/plugins/ralph-wiggum) — Source and docs
+
+---
+
+*Previous: [Part 1: Introduction and Fundamentals](/blog/ralph-wiggum-part-1-introduction)*
+*Next: [Part 3: Ralph TUI Monitoring](/blog/ralph-wiggum-part-3-ralph-tui-monitoring)*

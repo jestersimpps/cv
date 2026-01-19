@@ -2,6 +2,8 @@
 
 ## Blog Post Creation Guide
 
+**For voice, style, and quality standards, see `specs/blog-writing-guide.md`**
+
 When asked to write a blog post, create an MDX file in `content/blog/` with the following structure:
 
 ### File Naming
