@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
 import readingTime from 'reading-time';
+import GithubSlugger from 'github-slugger';
 import { BlogPost, BlogPostFrontmatter, BlogSeries, TableOfContentsItem } from '@/lib/models/blog';
 
 const BLOG_DIR = path.join(process.cwd(), 'content/blog');
@@ -84,17 +85,16 @@ export function getRelatedPosts(currentPost: BlogPost, limit = 3): BlogPost[] {
 }
 
 export function generateTableOfContents(content: string): TableOfContentsItem[] {
+  const contentWithoutCodeBlocks = content.replace(/```[\s\S]*?```/g, '');
   const headingRegex = /^(#{2,4})\s+(.+)$/gm;
   const toc: TableOfContentsItem[] = [];
+  const slugger = new GithubSlugger();
   let match;
 
-  while ((match = headingRegex.exec(content)) !== null) {
+  while ((match = headingRegex.exec(contentWithoutCodeBlocks)) !== null) {
     const level = match[1].length;
     const text = match[2];
-    const id = text
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, '-')
-      .replace(/(^-|-$)/g, '');
+    const id = slugger.slug(text);
 
     toc.push({ id, text, level });
   }

@@ -68,25 +68,25 @@ The npm installation method is deprecated. Here are the official ways to install
 **macOS or Linux (Recommended):**
 
 ```bash
-curl -fsSL https://claude.ai/install.sh | bash
+Curl -fsSL https://claude.ai/install.sh | bash
 ```
 
 **Homebrew (macOS/Linux):**
 
 ```bash
-brew install --cask claude-code
+Brew install --cask claude-code
 ```
 
 **Windows (PowerShell):**
 
 ```powershell
-irm https://claude.ai/install.ps1 | iex
+Irm https://claude.ai/install.ps1 | iex
 ```
 
 **Windows (WinGet):**
 
 ```bash
-winget install Anthropic.ClaudeCode
+Winget install Anthropic.ClaudeCode
 ```
 
 After installation, Claude Code auto-updates in the background. Homebrew and WinGet users need to update manually with `brew upgrade claude-code` or `winget upgrade Anthropic.ClaudeCode`.
@@ -96,7 +96,7 @@ After installation, Claude Code auto-updates in the background. Homebrew and Win
 Navigate to any project directory and run:
 
 ```bash
-claude
+Claude
 ```
 
 What happens next depends on your setup:
@@ -125,7 +125,7 @@ This installs terminal shortcuts that let you use `Shift + Enter` for multi-line
 ### Interactive Mode (Your Daily Driver)
 
 ```bash
-claude
+Claude
 ```
 
 Opens a REPL session where you have a back-and-forth conversation. Claude maintains context throughout, remembers what you discussed, and can handle complex multi-step tasks.
@@ -153,7 +153,7 @@ Plan Mode is covered in depth in [Part 2: The Mental Model](/blog/claude-code-ma
 ### One-Shot Mode (Quick Questions)
 
 ```bash
-claude -p "your question here"
+Claude -p "your question here"
 ```
 
 Runs a single command and exits. No interactive session, just question → answer → done.
@@ -208,10 +208,10 @@ Sometimes you need to continue where you left off:
 
 ```bash
 # Continue your last session exactly where you stopped
-claude -c
+Claude -c
 
 # Browse and select from recent sessions
-claude -r
+Claude -r
 ```
 
 The `-r` flag is particularly useful when you realize "wait, I was working on that auth bug two days ago and Claude had figured something out." You can jump back into that exact conversation.
@@ -221,14 +221,14 @@ The `-r` flag is particularly useful when you realize "wait, I was working on th
 Here's a great way to test your setup. Navigate to any project and run:
 
 ```bash
-claude
+Claude
 ```
 
 Then type:
 
 ```
 Explain the architecture of this project. What are the main components
-and how do they connect? Where would I look if I wanted to add a new
+And how do they connect? Where would I look if I wanted to add a new
 API endpoint?
 ```
 
@@ -303,7 +303,7 @@ Once you have a solid plan and understand it, ask Claude to create a GitHub issu
 
 Ask Claude to write tests before implementation. Sounds counterintuitive, but it forces the LLM to think clearly about what "done" looks like—and gives you a safety net. If tests don't pass, something's off with the implementation.
 
-This is called TDD (test-driven development), or "going from red to green" based on the typical CLI colors for failing vs. passing tests. It's not just good practice—it's how you keep Claude honest.
+This is called TDD (test-driven development), or "going from red to green" based on the typical CLI colors for failing vs. Passing tests. It's not just good practice—it's how you keep Claude honest.
 
 ### Linters Catch "Creative" Choices
 
@@ -357,15 +357,15 @@ If you're not committing frequently, you're one bad generation away from a frust
 
 ```bash
 # Installation (pick one)
-curl -fsSL https://claude.ai/install.sh | bash    # macOS/Linux
-brew install --cask claude-code                    # Homebrew
-winget install Anthropic.ClaudeCode               # Windows
+Curl -fsSL https://claude.ai/install.sh | bash    # macOS/Linux
+Brew install --cask claude-code                    # Homebrew
+Winget install Anthropic.ClaudeCode               # Windows
 
 # Starting Claude
-claude                    # Interactive mode
-claude -p "query"         # One-shot mode
-claude -c                 # Continue last session
-claude -r                 # Resume with session picker
+Claude                    # Interactive mode
+Claude -p "query"         # One-shot mode
+Claude -c                 # Continue last session
+Claude -r                 # Resume with session picker
 
 # First commands to run
 /terminal-setup           # Enable multi-line input

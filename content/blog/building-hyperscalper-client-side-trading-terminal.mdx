@@ -37,7 +37,7 @@ Even though everything runs in the browser, I still needed robust encryption for
 
 ```typescript
 // AES-GCM encryption with PBKDF2 key derivation
-const deriveKey = async (password: string, salt: Uint8Array) => {
+Const deriveKey = async (password: string, salt: Uint8Array) => {
   const keyMaterial = await crypto.subtle.importKey(
     'raw',
     new TextEncoder().encode(password),
@@ -85,7 +85,7 @@ Sometimes you want to place an order at a specific price level you see on the ch
 ![Precise Order Placement](/assets/blog/hyperscalper/preciseordering.gif)
 
 ```typescript
-const handleChartClick = (params) => {
+Const handleChartClick = (params) => {
   if (!crosshairActive) return;
 
   const price = params.price;
@@ -109,13 +109,13 @@ Click below current price = buy limit order. Click above = sell limit order. Sim
 The signature feature. Instead of placing a single order, Cloud orders place 5 limit orders stacked at intervals below (for buys) or above (for sells) the current price.
 
 ```typescript
-const buyCloud = async ({ symbol, currentPrice, priceInterval, percentage }) => {
+Const buyCloud = async ({ symbol, currentPrice, priceInterval, percentage }) => {
   const ORDER_COUNT = 5;
   const TAKE_PROFIT_PERCENT = 2;
   const orders = [];
 
-  for (let i = 0; i < ORDER_COUNT; i++) {
-    const price = currentPrice - (priceInterval * i);
+  for (let I = 0; I < ORDER_COUNT; I++) {
+    const price = currentPrice - (priceInterval * I);
     const size = totalSize / ORDER_COUNT;
     orders.push({
       type: 'limit',
@@ -146,17 +146,17 @@ For speed traders, reaching for the mouse is too slow. I mapped all common actio
 ![Keyboard Shortcuts](/assets/blog/hyperscalper/keyboardshortcuts.png)
 
 ```typescript
-useEffect(() => {
+UseEffect(() => {
   const handleKeyDown = (e: KeyboardEvent) => {
     if (e.metaKey || e.ctrlKey) {
       switch (e.key) {
         case 'b':
           e.preventDefault();
-          inverted ? sellCloud() : buyCloud();
+          inverted ? SellCloud() : buyCloud();
           break;
         case 's':
           e.preventDefault();
-          inverted ? buyCloud() : sellCloud();
+          inverted ? BuyCloud() : sellCloud();
           break;
         case 'e':
           e.preventDefault();
@@ -178,7 +178,7 @@ Notice the `inverted` check - more on that later.
 Nobody wants to wait 500ms for an API response before seeing feedback. I implemented optimistic updates:
 
 ```typescript
-const placeOrder = async (order) => {
+Const placeOrder = async (order) => {
   // 1. Immediately show in UI
   const optimisticId = crypto.randomUUID();
   addOptimisticOrder({ ...order, id: optimisticId });
@@ -212,10 +212,10 @@ Each scanner subscribes to candle data via WebSocket and runs analysis on every 
 
 ```typescript
 // Shared WebSocket connection (singleton pattern)
-const ws = getWebSocketService();
+Const ws = getWebSocketService();
 
 // Subscribe to all symbols on multiple timeframes
-symbols.forEach(symbol => {
+Symbols.forEach(symbol => {
   ['1m', '5m', '15m', '1h'].forEach(timeframe => {
     ws.subscribeToCandles(symbol, timeframe, (candles) => {
       runScanners(symbol, timeframe, candles);
@@ -229,7 +229,7 @@ symbols.forEach(symbol => {
 The stochastic oscillator is great for finding oversold/overbought conditions. I implemented four variants with different periods:
 
 ```typescript
-const scanStochastic = (candles, config) => {
+Const scanStochastic = (candles, config) => {
   const variants = {
     ultraFast: { period: 5, smoothK: 2, smoothD: 2 },
     fast: { period: 9, smoothK: 3, smoothD: 3 },
@@ -264,7 +264,7 @@ const scanStochastic = (candles, config) => {
 Divergences are powerful signals - when price makes a new low but RSI makes a higher low, it often signals a reversal. This required more complex logic:
 
 ```typescript
-const detectDivergence = (candles, rsiValues) => {
+Const detectDivergence = (candles, rsiValues) => {
   const pricePivots = findPivots(candles, 3);
   const rsiPivots = findPivots(rsiValues, 3);
   const divergences = [];
@@ -272,9 +272,9 @@ const detectDivergence = (candles, rsiValues) => {
     .filter(p => p.type === 'low')
     .slice(-5);
 
-  for (let i = 1; i < recentPriceLows.length; i++) {
-    const current = recentPriceLows[i];
-    const previous = recentPriceLows[i - 1];
+  for (let I = 1; I < recentPriceLows.length; I++) {
+    const current = recentPriceLows[I];
+    const previous = recentPriceLows[I - 1];
     // Price made lower low
     if (current.price < previous.price) {
       const currentRsi = findClosestPivot(rsiPivots, current.index);
@@ -300,7 +300,7 @@ Running 8 scanners across 500+ symbols on 4 timeframes could easily kill browser
 
 **Memoization with TTL:**
 ```typescript
-const memoizedCalculate = createMemoizedFunction(
+Const memoizedCalculate = createMemoizedFunction(
   calculateStochastic,
   (candles, period) => `stoch-${candles.length}-${period}`,
   100,    // max cache entries
@@ -311,7 +311,7 @@ const memoizedCalculate = createMemoizedFunction(
 **Debounced divergence detection:**
 ```typescript
 // Don't recalculate on every tick
-const debouncedDivergence = useDebouncedCallback(
+Const debouncedDivergence = useDebouncedCallback(
   detectDivergence,
   1000  // Wait 1s after last update
 );
@@ -339,13 +339,13 @@ One of the most powerful features is the multi-timeframe view. Seeing the same s
 All charts are synchronized - when you zoom or pan one chart, all others follow. This is achieved through a shared chart sync store:
 
 ```typescript
-const useChartSyncStore = create((set) => ({
+Const useChartSyncStore = create((set) => ({
   timeRange: null,
   setTimeRange: (range) => set({ timeRange: range }),
 }));
 
 // In each chart component
-useEffect(() => {
+UseEffect(() => {
   const unsubscribe = useChartSyncStore.subscribe(
     (state) => state.timeRange,
     (range) => {
@@ -365,19 +365,19 @@ Automated trendline detection is one of those features that sounds simple but ha
 The most intuitive approach: find pivot points and draw lines through them.
 
 ```typescript
-const detectPivots = (candles, strength = 3) => {
+Const detectPivots = (candles, strength = 3) => {
   const pivots = [];
-  for (let i = strength; i < candles.length - strength; i++) {
-    const current = candles[i];
+  for (let I = strength; I < candles.length - strength; I++) {
+    const current = candles[I];
     let isHigh = true;
-    for (let j = i - strength; j <= i + strength; j++) {
-      if (j !== i && candles[j].high >= current.high) {
+    for (let j = I - strength; j <= I + strength; j++) {
+      if (j !== I && candles[j].high >= current.high) {
         isHigh = false;
         break;
       }
     }
     if (isHigh) {
-      pivots.push({ index: i, price: current.high, type: 'high' });
+      pivots.push({ index: I, price: current.high, type: 'high' });
     }
     // Same logic for lows...
   }
@@ -390,13 +390,13 @@ const detectPivots = (candles, strength = 3) => {
 A support line that gets violated isn't useful. I validate lines against all candles:
 
 ```typescript
-const findBestSupportLine = (pivots, candles) => {
+Const findBestSupportLine = (pivots, candles) => {
   let bestLine = null;
   let bestScore = -Infinity;
 
-  for (let i = 0; i < pivots.length - 1; i++) {
-    for (let j = i + 1; j < pivots.length; j++) {
-      const line = createLine(pivots[i], pivots[j]);
+  for (let I = 0; I < pivots.length - 1; I++) {
+    for (let j = I + 1; j < pivots.length; j++) {
+      const line = createLine(pivots[I], pivots[j]);
       let touches = 0;
       let violations = 0;
 
@@ -442,15 +442,15 @@ When you're a short-biased trader, the standard UI is confusing. Green means pri
 Inverted mode flips everything:
 
 ```typescript
-const getSignalColor = (signal, inverted) => {
+Const getSignalColor = (signal, inverted) => {
   const isBullish = signal.direction === 'bullish';
 
   if (inverted) {
     // Bullish signal = shorting opportunity = show as "good" (green)
-    return isBullish ? colors.bearish : colors.bullish;
+    return isBullish ? Colors.bearish : colors.bullish;
   }
 
-  return isBullish ? colors.bullish : colors.bearish;
+  return isBullish ? Colors.bullish : colors.bearish;
 };
 ```
 
@@ -465,13 +465,13 @@ Professional traders often use multiple monitors. Hyperscalper supports detachin
 Each popup window maintains its own WebSocket connection and syncs state with the main window via BroadcastChannel:
 
 ```typescript
-const channel = new BroadcastChannel('hyperscalper-sync');
+Const channel = new BroadcastChannel('hyperscalper-sync');
 
 // Main window broadcasts state changes
-channel.postMessage({ type: 'POSITION_UPDATE', data: positions });
+Channel.postMessage({ type: 'POSITION_UPDATE', data: positions });
 
 // Popup windows listen
-channel.onmessage = (event) => {
+Channel.onmessage = (event) => {
   if (event.data.type === 'POSITION_UPDATE') {
     setPositions(event.data.data);
   }
@@ -483,7 +483,7 @@ channel.onmessage = (event) => {
 With 20+ stores managing different domains, I needed lightweight state management. Redux felt like overkill. I chose Zustand:
 
 ```typescript
-const useTradingStore = create<TradingStore>((set, get) => ({
+Const useTradingStore = create<TradingStore>((set, get) => ({
   orders: [],
   positions: [],
   addOrder: (order) => set((state) => ({

@@ -3,7 +3,7 @@
 import { useState, useMemo } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { BookOpen, Home, X, Library } from 'lucide-react';
+import { Home, X, Library } from 'lucide-react';
 import { BlogPost, BlogCategory, BLOG_CATEGORIES } from '@/lib/models/blog';
 import { SeriesInfo } from '@/lib/blog';
 import { BlogList } from '@/components/blog';
@@ -23,6 +23,7 @@ export default function BlogPageClient({ posts, tags, series }: BlogPageClientPr
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [selectedYear, setSelectedYear] = useState<number | null>(null);
   const [selectedSeries, setSelectedSeries] = useState<string | null>(null);
+  const [showAllTags, setShowAllTags] = useState(false);
 
   const { years, postCountByYear } = useMemo(() => {
     const countByYear: Record<number, number> = {};
@@ -35,6 +36,26 @@ export default function BlogPageClient({ posts, tags, series }: BlogPageClientPr
       .sort((a, b) => b - a);
     return { years: sortedYears, postCountByYear: countByYear };
   }, [posts]);
+
+  const sortedTags = useMemo(() => {
+    const tagCounts: Record<string, number> = {};
+    posts.forEach((post) => {
+      post.tags.forEach((tag) => {
+        tagCounts[tag] = (tagCounts[tag] || 0) + 1;
+      });
+    });
+    return tags.sort((a, b) => (tagCounts[b] || 0) - (tagCounts[a] || 0));
+  }, [posts, tags]);
+
+  const visibleTags = useMemo(() => {
+    const maxInitialTags = 12;
+    if (showAllTags) return sortedTags;
+
+    const initialTags = sortedTags.slice(0, maxInitialTags);
+    const hiddenSelectedTags = selectedTags.filter(tag => !initialTags.includes(tag));
+
+    return [...initialTags, ...hiddenSelectedTags];
+  }, [sortedTags, showAllTags, selectedTags]);
 
   const filteredPosts = useMemo(() => {
     let filtered = posts.filter((post) => {
@@ -98,12 +119,6 @@ export default function BlogPageClient({ posts, tags, series }: BlogPageClientPr
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-full mb-4">
-              <BookOpen className="w-4 h-4 text-white" />
-              <span className="text-sm text-neutral-400">
-                Articles & Tutorials
-              </span>
-            </div>
             <h1 className="text-5xl md:text-6xl font-bold text-white mb-4">
               Blog
             </h1>
@@ -243,20 +258,30 @@ export default function BlogPageClient({ posts, tags, series }: BlogPageClientPr
                 <span className="text-xs uppercase tracking-wider text-neutral-500 pt-2.5">
                   Tags
                 </span>
-                <div className="flex flex-wrap gap-2">
-                  {tags.map((tag) => (
+                <div className="space-y-2">
+                  <div className="flex flex-wrap gap-2">
+                    {visibleTags.map((tag) => (
+                      <button
+                        key={tag}
+                        onClick={() => toggleTag(tag)}
+                        className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${
+                          selectedTags.includes(tag)
+                            ? 'bg-white text-black'
+                            : 'bg-white/5 text-neutral-400 hover:text-white hover:bg-white/10 border border-white/10'
+                        }`}
+                      >
+                        #{tag}
+                      </button>
+                    ))}
+                  </div>
+                  {sortedTags.length > 12 && (
                     <button
-                      key={tag}
-                      onClick={() => toggleTag(tag)}
-                      className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all ${
-                        selectedTags.includes(tag)
-                          ? 'bg-white text-black'
-                          : 'bg-white/5 text-neutral-400 hover:text-white hover:bg-white/10 border border-white/10'
-                      }`}
+                      onClick={() => setShowAllTags(!showAllTags)}
+                      className="text-sm text-neutral-400 hover:text-white transition-colors flex items-center gap-1"
                     >
-                      #{tag}
+                      {showAllTags ? '− Show less tags' : `+ Show ${sortedTags.length - 12} more tags`}
                     </button>
-                  ))}
+                  )}
                 </div>
               </div>
             )}

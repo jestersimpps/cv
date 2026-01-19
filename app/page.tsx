@@ -5,6 +5,7 @@ import ExperienceSection from "@/components/landing/ExperienceSection";
 // import EducationSection from "@/components/landing/EducationSection";
 import BlogSection from "@/components/landing/BlogSection";
 import ContactSection from "@/components/landing/ContactSection";
+import Footer from "@/components/landing/Footer";
 import SectionDivider from "@/components/ui/SectionDivider";
 import { getAllPosts } from "@/lib/blog";
 
@@ -26,6 +27,8 @@ export default function Home() {
       <BlogSection posts={posts} />
       <SectionDivider />
       <ContactSection />
+      <SectionDivider />
+      <Footer />
     </div>
   );
 }

@@ -39,13 +39,13 @@ The magic: these commands can accept arguments, specify which tools Claude can u
 ### Step 1: Create the Directory
 
 ```bash
-mkdir -p .claude/commands
+Mkdir -p .claude/commands
 ```
 
 ### Step 2: Create a Command File
 
 ```bash
-cat > .claude/commands/review.md << 'EOF'
+Cat > .claude/commands/review.md << 'EOF'
 Review the staged changes for:
 - Security vulnerabilities
 - Performance issues
@@ -120,8 +120,8 @@ The real power comes from YAML frontmatter at the top of your command file. This
 
 ```yaml
 ---
-description: Review code for security issues
-argument-hint: [file-or-directory]
+Description: Review code for security issues
+Argument-hint: [file-or-directory]
 ---
 Review $ARGUMENTS for security vulnerabilities including:
 - SQL injection
@@ -137,9 +137,9 @@ Tired of approving the same git commands every time? Use `allowed-tools`:
 
 ```yaml
 ---
-description: Smart git commit
-allowed-tools: Bash(git add:*), Bash(git status:*), Bash(git commit:*), Bash(git diff:*)
-argument-hint: [optional message]
+Description: Smart git commit
+Allowed-tools: Bash(git add:*), Bash(git status:*), Bash(git commit:*), Bash(git diff:*)
+Argument-hint: [optional message]
 ---
 Analyze the staged changes and create a commit.
 
@@ -160,8 +160,8 @@ Some commands work better with specific models:
 
 ```yaml
 ---
-description: Deep architecture analysis
-model: claude-sonnet-4-5-20250929
+Description: Deep architecture analysis
+Model: claude-sonnet-4-5-20250929
 ---
 Analyze the architecture of $ARGUMENTS.
 
@@ -176,8 +176,8 @@ Use Haiku for quick tasks, Sonnet for balanced work, Opus for complex reasoning:
 
 ```yaml
 ---
-description: Quick code explanation
-model: claude-3-5-haiku-20241022
+Description: Quick code explanation
+Model: claude-3-5-haiku-20241022
 ---
 Briefly explain what $ARGUMENTS does in 2-3 sentences.
 ```
@@ -188,8 +188,8 @@ Commands can define their own hooks that run during execution:
 
 ```yaml
 ---
-description: Format and commit
-hooks:
+Description: Format and commit
+Hooks:
   PostToolUse:
     - matcher: "Edit|Write"
       hooks:
@@ -229,7 +229,7 @@ This keeps your `/help` output organized and commands easy to discover.
 ### Project Commands (Team)
 
 ```
-your-project/.claude/commands/
+Your-project/.claude/commands/
 ```
 
 - Available only in this project
@@ -271,8 +271,8 @@ Here are battle-tested commands. Copy them, modify them, make them yours.
 
 ```yaml
 ---
-description: Comprehensive code review
-argument-hint: [file or leave empty for staged changes]
+Description: Comprehensive code review
+Argument-hint: [file or leave empty for staged changes]
 ---
 Review $ARGUMENTS (or staged changes if not specified).
 
@@ -292,8 +292,8 @@ Review $ARGUMENTS (or staged changes if not specified).
 
 ```yaml
 ---
-description: Analyze changes and create commit
-allowed-tools: Bash(git *)
+Description: Analyze changes and create commit
+Allowed-tools: Bash(git *)
 ---
 1. Run `git diff --staged` to see changes
 2. Analyze what was changed and why
@@ -309,8 +309,8 @@ allowed-tools: Bash(git *)
 
 ```yaml
 ---
-description: Generate comprehensive tests
-argument-hint: [file-to-test]
+Description: Generate comprehensive tests
+Argument-hint: [file-to-test]
 ---
 Generate tests for $ARGUMENTS.
 
@@ -330,8 +330,8 @@ Generate tests for $ARGUMENTS.
 
 ```yaml
 ---
-description: Debug an issue systematically
-argument-hint: [description of the problem]
+Description: Debug an issue systematically
+Argument-hint: [description of the problem]
 ---
 Debug: $ARGUMENTS
 
@@ -353,9 +353,9 @@ Debug: $ARGUMENTS
 
 ```yaml
 ---
-description: Security vulnerability scan
-argument-hint: [file, directory, or leave empty for full scan]
-allowed-tools: Read, Grep, Glob
+Description: Security vulnerability scan
+Argument-hint: [file, directory, or leave empty for full scan]
+Allowed-tools: Read, Grep, Glob
 ---
 Audit $ARGUMENTS for security vulnerabilities.
 
@@ -377,8 +377,8 @@ Severity-ranked findings with:
 
 ```yaml
 ---
-description: Refactor while maintaining behavior
-argument-hint: [file-or-function]
+Description: Refactor while maintaining behavior
+Argument-hint: [file-or-function]
 ---
 Refactor $ARGUMENTS.
 
@@ -401,9 +401,9 @@ Explain each change.
 
 ```yaml
 ---
-description: Explain code for someone new
-argument-hint: [file, function, or concept]
-model: claude-3-5-haiku-20241022
+Description: Explain code for someone new
+Argument-hint: [file, function, or concept]
+Model: claude-3-5-haiku-20241022
 ---
 Explain $ARGUMENTS.
 
@@ -421,8 +421,8 @@ Assume reader knows the language but not this codebase.
 
 ```yaml
 ---
-description: Analyze and optimize performance
-argument-hint: [file-or-function]
+Description: Analyze and optimize performance
+Argument-hint: [file-or-function]
 ---
 Analyze $ARGUMENTS for performance.
 
@@ -444,8 +444,8 @@ Analyze $ARGUMENTS for performance.
 
 ```yaml
 ---
-description: Pre-deployment verification
-allowed-tools: Bash(npm *), Bash(git *)
+Description: Pre-deployment verification
+Allowed-tools: Bash(npm *), Bash(git *)
 ---
 Pre-deploy checklist:
 
@@ -467,8 +467,8 @@ This command implements the [/clear + /catchup pattern from Part 2](/blog/claude
 
 ```yaml
 ---
-description: Rebuild context after /clear
-allowed-tools: Bash(git *)
+Description: Rebuild context after /clear
+Allowed-tools: Bash(git *)
 ---
 I just cleared context. Help me catch up.
 
@@ -488,8 +488,8 @@ Commands aren't limited to code workflows. You can integrate any API or service 
 
 ```yaml
 ---
-description: Generate a meme using Imgflip API
-argument-hint: "top text" "bottom text" [template]
+Description: Generate a meme using Imgflip API
+Argument-hint: "top text" "bottom text" [template]
 ---
 Generate a meme using the Imgflip API.
 
@@ -520,9 +520,9 @@ This is one of my favorites. Google's Imagen API lets you generate images direct
 
 ```yaml
 ---
-description: Generate an image using Google Imagen
-argument-hint: "prompt" [output-path]
-allowed-tools: Bash(node *)
+Description: Generate an image using Google Imagen
+Argument-hint: "prompt" [output-path]
+Allowed-tools: Bash(node *)
 ---
 Generate an image using Google Imagen.
 
@@ -536,15 +536,15 @@ The real magic is in the script. Here's a complete implementation you can drop i
 
 ```javascript
 #!/usr/bin/env node
-const https = require('https');
-const fs = require('fs');
-const path = require('path');
+Const https = require('https');
+Const fs = require('fs');
+Const path = require('path');
 
-const API_KEY = process.env.GOOGLE_AI_API_KEY || 'your-api-key-here';
+Const API_KEY = process.env.GOOGLE_AI_API_KEY || 'your-api-key-here';
 // Note: Check https://ai.google.dev/gemini-api/docs/imagen for the latest model ID
-const MODEL = 'imagen-4.0-generate-001';
+Const MODEL = 'imagen-4.0-generate-001';
 
-async function generateImage(prompt, outputPath) {
+Async function generateImage(prompt, outputPath) {
   const requestBody = {
     instances: [{ prompt }],
     parameters: {
@@ -593,8 +593,8 @@ async function generateImage(prompt, outputPath) {
   });
 }
 
-const [prompt, outputPath = `./generated-${Date.now()}.png`] = process.argv.slice(2);
-generateImage(prompt, outputPath).then(p => console.log(`Saved: ${p}`));
+Const [prompt, outputPath = `./generated-${Date.now()}.png`] = process.argv.slice(2);
+GenerateImage(prompt, outputPath).then(p => console.log(`Saved: ${p}`));
 ```
 
 **Getting an API Key:**
@@ -654,14 +654,14 @@ If a command isn't working:
 
 ```bash
 # Create command directory
-mkdir -p .claude/commands
+Mkdir -p .claude/commands
 
 # Basic command
-echo "Do something" > .claude/commands/name.md
+Echo "Do something" > .claude/commands/name.md
 
 # Command with namespace
-mkdir -p .claude/commands/git
-echo "Commit stuff" > .claude/commands/git/commit.md
+Mkdir -p .claude/commands/git
+Echo "Commit stuff" > .claude/commands/git/commit.md
 
 # View available commands
 /help
@@ -671,11 +671,11 @@ echo "Commit stuff" > .claude/commands/git/commit.md
 
 ```yaml
 ---
-description: Shows in /help
-argument-hint: [what-to-pass]
-allowed-tools: Bash(git *), Read, Write
-model: claude-3-5-haiku-20241022
-hooks:
+Description: Shows in /help
+Argument-hint: [what-to-pass]
+Allowed-tools: Bash(git *), Read, Write
+Model: claude-3-5-haiku-20241022
+Hooks:
   PostToolUse:
     - matcher: "Edit"
       hooks:

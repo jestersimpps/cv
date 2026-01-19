@@ -3,17 +3,19 @@
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Clock, Calendar, ArrowRight } from 'lucide-react';
+import { Clock, Calendar, ArrowRight, Eye } from 'lucide-react';
 import { BlogPost } from '@/lib/models/blog';
 import { formatDate } from '@/lib/utils/date';
+import { formatViewCount } from '@/lib/utils/formatNumber';
 
 interface BlogCardProps {
   post: BlogPost;
   index: number;
   featured?: boolean;
+  viewCount?: number;
 }
 
-export default function BlogCard({ post, index, featured = false }: BlogCardProps) {
+export default function BlogCard({ post, index, featured = false, viewCount }: BlogCardProps) {
   if (featured) {
     return (
       <motion.article
@@ -63,6 +65,12 @@ export default function BlogCard({ post, index, featured = false }: BlogCardProp
                 <Clock className="w-3 h-3" />
                 {post.readingTime}
               </div>
+              {viewCount !== undefined && viewCount > 0 && (
+                <div className="flex items-center gap-1">
+                  <Eye className="w-3 h-3" />
+                  {formatViewCount(viewCount)}
+                </div>
+              )}
             </div>
           </div>
         </Link>
@@ -93,7 +101,7 @@ export default function BlogCard({ post, index, featured = false }: BlogCardProp
           </div>
         )}
         <div className="p-5">
-          <div className="flex items-center gap-3 mb-2">
+          <div className="flex items-center gap-3 mb-2 flex-wrap">
             <span className="px-2.5 py-0.5 bg-white/10 rounded-full text-[11px] text-neutral-300 font-medium">
               {post.category}
             </span>
@@ -101,6 +109,12 @@ export default function BlogCard({ post, index, featured = false }: BlogCardProp
               <Clock className="w-3 h-3" />
               {post.readingTime}
             </div>
+            {viewCount !== undefined && viewCount > 0 && (
+              <div className="flex items-center gap-1 text-neutral-500 text-[11px]">
+                <Eye className="w-3 h-3" />
+                {formatViewCount(viewCount)}
+              </div>
+            )}
           </div>
           <h2 className="text-base font-semibold text-white mb-1.5 group-hover:text-white/90 line-clamp-2">
             {post.title}

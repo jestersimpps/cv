@@ -17,10 +17,11 @@ import {
   Comments,
   SeriesNav,
   NewsletterSignup,
+  LinkPreviewProvider,
 } from '@/components/blog';
 import GradientOrbs from '@/components/ui/GradientOrbs';
 import GridLines from '@/components/ui/GridLines';
-import DotGrid from '@/components/ui/DotGrid';
+import BlogPostClient from './BlogPostClient';
 
 interface BlogPostPageProps {
   params: Promise<{ slug: string }>;
@@ -94,50 +95,50 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-white/5 via-transparent to-transparent" />
 
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <BlogHeader post={post} />
+          <BlogPostClient post={post} />
         </div>
       </section>
 
-      <section className="py-12 bg-gradient-to-b from-black via-neutral-950 to-black relative overflow-hidden">
-        <DotGrid dotColor="rgba(255, 255, 255, 0.05)" spacing={32} />
-
+      <section className="py-12 bg-gradient-to-b from-black via-neutral-950 to-black relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="grid lg:grid-cols-4 gap-12">
-            <article className="lg:col-span-3 prose prose-invert max-w-none overflow-hidden">
-              {seriesNav && (
-                <SeriesNav
-                  series={seriesNav.series}
-                  posts={seriesNav.posts}
-                  currentIndex={seriesNav.currentIndex}
-                  prevPost={seriesNav.prevPost}
-                  nextPost={seriesNav.nextPost}
+          <LinkPreviewProvider content={post.content}>
+            <div className="grid lg:grid-cols-4 gap-12">
+              <article className="lg:col-span-3 prose prose-invert max-w-none overflow-hidden">
+                {seriesNav && (
+                  <SeriesNav
+                    series={seriesNav.series}
+                    posts={seriesNav.posts}
+                    currentIndex={seriesNav.currentIndex}
+                    prevPost={seriesNav.prevPost}
+                    nextPost={seriesNav.nextPost}
+                  />
+                )}
+
+                <MDXRemote
+                  source={post.content}
+                  components={MDXComponents}
+                  options={{
+                    mdxOptions: {
+                      rehypePlugins: [
+                        rehypeSlug,
+                        [rehypeAutolinkHeadings, { behavior: 'wrap' }],
+                      ],
+                    },
+                  }}
                 />
-              )}
 
-              <MDXRemote
-                source={post.content}
-                components={MDXComponents}
-                options={{
-                  mdxOptions: {
-                    rehypePlugins: [
-                      rehypeSlug,
-                      [rehypeAutolinkHeadings, { behavior: 'wrap' }],
-                    ],
-                  },
-                }}
-              />
+                <NewsletterSignup />
 
-              <NewsletterSignup />
+                <Comments />
+              </article>
 
-              <Comments />
-            </article>
+              <aside className="hidden lg:block">
+                <TableOfContents items={toc} />
+              </aside>
+            </div>
 
-            <aside className="hidden lg:block">
-              <TableOfContents items={toc} />
-            </aside>
-          </div>
-
-          <RelatedPosts posts={relatedPosts} />
+            <RelatedPosts posts={relatedPosts} />
+          </LinkPreviewProvider>
         </div>
       </section>
     </div>

@@ -2,6 +2,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { ReactNode } from 'react';
 import CodeBlock from './CodeBlock';
+import Mermaid from './Mermaid';
+import LinkPreview from './LinkPreview';
 
 function extractTextFromChildren(children: ReactNode): string {
   if (typeof children === 'string') return children;
@@ -26,7 +28,7 @@ export const MDXComponents = {
   h2: ({ children, id, ...props }: { children: ReactNode; id?: string }) => (
     <h2
       id={id}
-      className="text-2xl font-bold text-white mt-12 mb-4 scroll-mt-24"
+      className="text-2xl font-bold text-white mt-12 mb-4 scroll-mt-24 [&_a]:border-none [&_a]:text-white [&_a:hover]:text-white"
       {...props}
     >
       {children}
@@ -35,7 +37,7 @@ export const MDXComponents = {
   h3: ({ children, id, ...props }: { children: ReactNode; id?: string }) => (
     <h3
       id={id}
-      className="text-xl font-semibold text-white mt-8 mb-3 scroll-mt-24"
+      className="text-xl font-semibold text-white mt-8 mb-3 scroll-mt-24 [&_a]:border-none [&_a]:text-white [&_a:hover]:text-white"
       {...props}
     >
       {children}
@@ -44,7 +46,7 @@ export const MDXComponents = {
   h4: ({ children, id, ...props }: { children: ReactNode; id?: string }) => (
     <h4
       id={id}
-      className="text-lg font-medium text-white mt-6 mb-2 scroll-mt-24"
+      className="text-lg font-medium text-white mt-6 mb-2 scroll-mt-24 [&_a]:border-none [&_a]:text-white [&_a:hover]:text-white"
       {...props}
     >
       {children}
@@ -64,14 +66,15 @@ export const MDXComponents = {
 
     return <p className="text-neutral-300 leading-relaxed mb-4 break-words">{children}</p>;
   },
-  a: ({ href, children }: { href?: string; children: ReactNode }) => (
-    <Link
-      href={href || '#'}
-      className="text-blue-400 hover:text-blue-300 underline underline-offset-4 transition-colors"
-    >
-      {children}
-    </Link>
-  ),
+  a: ({ href, children }: { href?: string; children: ReactNode }) => {
+    const isExternal = href?.startsWith('http://') || href?.startsWith('https://');
+
+    return (
+      <LinkPreview href={href || '#'} isExternal={isExternal}>
+        {children}
+      </LinkPreview>
+    );
+  },
   ul: ({ children }: { children: ReactNode }) => (
     <ul className="list-disc list-outside ml-6 space-y-2 mb-4 text-neutral-300">
       {children}
@@ -95,6 +98,11 @@ export const MDXComponents = {
     const code = extractTextFromChildren(codeElement?.props?.children);
     const className = codeElement?.props?.className || '';
     const language = className.replace('language-', '') || 'typescript';
+
+    if (language === 'mermaid') {
+      return <Mermaid chart={code} />;
+    }
+
     return <CodeBlock code={code} language={language} />;
   },
   code: ({ children, className }: { children: ReactNode; className?: string }) => {

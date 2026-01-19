@@ -8,34 +8,34 @@ tags: ["Startup", "Entrepreneurship", "Side Project", "Lessons Learned", "Convex
 coverImage: "/assets/blog/global-pet-sitter/hero.jpeg"
 ---
 
-I co-founded [Global Pet Sitter](https://www.globalpetsitter.com) with my friend Geert. two developers, over 10 years of housesitting experience between us, trying to build something transparent and community-driven. it started as a simple idea and honestly turned into one of the most educational experiences of my life
+I co-founded [Global Pet Sitter](https://www.globalpetsitter.com) with my friend Geert. Two developers, over 10 years of housesitting experience between us, trying to build something transparent and community-driven. It started as a simple idea and honestly turned into one of the most educational experiences of my life
 
 ## Why We Built It
 
-We'd been housesitters ourselves for years. used platforms like TrustedHousesitters and Nomador. and honestly, we got frustrated
+We'd been housesitters ourselves for years. Used platforms like TrustedHousesitters and Nomador. And honestly, we got frustrated
 
 The problems kept piling up:
 
-- **fees getting out of control** - TrustedHousesitters introduced a $12 booking fee per sit on top of annual memberships. felt like nickel-and-diming the community
-- **customer support that doesn't respond** - emails go unanswered, phone support removed, just chatbots. when something goes wrong during a sit, you're on your own
-- **review systems that feel broken** - false reviews can't be removed even with proof. no accountability when hosts or sitters behave badly
-- **no real vetting** - background checks are voluntary and paid by the sitter. platform takes minimal action even when theft or pet neglect is reported
+- **fees getting out of control** - TrustedHousesitters introduced a $12 booking fee per sit on top of annual memberships. Felt like nickel-and-diming the community
+- **customer support that doesn't respond** - emails go unanswered, phone support removed, just chatbots. When something goes wrong during a sit, you're on your own
+- **review systems that feel broken** - false reviews can't be removed even with proof. No accountability when hosts or sitters behave badly
+- **no real vetting** - background checks are voluntary and paid by the sitter. Platform takes minimal action even when theft or pet neglect is reported
 
-We kept reading the same complaints over and over on Trustpilot and Sitejabber. TrustedHousesitters has a 2.7/5 rating on Sitejabber with over 1000 reviews. people describing theft, property damage, last-minute cancellations, and a platform that "investigated but refused to take action"
+We kept reading the same complaints over and over on Trustpilot and Sitejabber. TrustedHousesitters has a 2.7/5 rating on Sitejabber with over 1000 reviews. People describing theft, property damage, last-minute cancellations, and a platform that "investigated but refused to take action"
 
-Something that started as community-focused became over-commercialised. and we thought, maybe we could do better
+Something that started as community-focused became over-commercialised. And we thought, maybe we could do better
 
-The mission was clear: build something transparent where pet owners and sitters could connect without all the friction. sounds simple right? haha
+The mission was clear: build something transparent where pet owners and sitters could connect without all the friction. Sounds simple right? Haha
 
 ## The Tech Stack
 
 We went with Next.js 16 (App Router + Turbopack), Convex for the real-time backend, and Clerk for auth. Tailwind for styling because life's too short to write CSS from scratch
 
-Why Convex? real-time updates out of the box. when a sitter applies or a message comes in, you see it instantly. no websocket setup, no polling, no headaches. the schema is defined in TypeScript, queries are type-safe, and deployments just work
+Why Convex? Real-time updates out of the box. When a sitter applies or a message comes in, you see it instantly. No websocket setup, no polling, no headaches. The schema is defined in TypeScript, queries are type-safe, and deployments just work
 
 ```typescript
 // this is how clean Convex queries are
-export const getApplicationsByAssignment = query({
+Export const getApplicationsByAssignment = query({
   args: { assignmentId: v.id("sitAssignments") },
   handler: async (ctx, args) => {
     const applications = await ctx.db
@@ -52,16 +52,16 @@ export const getApplicationsByAssignment = query({
 
 ## Trust is Everything
 
-When you're asking someone to take care of their pet, you're asking for a lot of trust. pets are family. people don't just hand over their dog to a stranger on the internet
+When you're asking someone to take care of their pet, you're asking for a lot of trust. Pets are family. People don't just hand over their dog to a stranger on the internet
 
-We spent way more time on verification, reviews, and safety features than we initially planned. privacy controls became a big thing. and honestly we should have started there. building trust isn't a feature you add later, it's the foundation
+We spent way more time on verification, reviews, and safety features than we initially planned. Privacy controls became a big thing. And honestly we should have started there. Building trust isn't a feature you add later, it's the foundation
 
 ### Blind Reviews
 
-One thing we built that i'm pretty happy with: blind reviews. both parties submit their review independently, and neither can see the other's review until both have submitted (or 14 days pass). prevents retaliation reviews and keeps things honest
+One thing we built that I'm pretty happy with: blind reviews. Both parties submit their review independently, and neither can see the other's review until both have submitted (or 14 days pass). Prevents retaliation reviews and keeps things honest
 
 ```typescript
-const isReviewVisible = (review: { visibleAt?: number }): boolean => {
+Const isReviewVisible = (review: { visibleAt?: number }): boolean => {
   if (!review.visibleAt) return false;
   return review.visibleAt <= Date.now();
 };
@@ -71,17 +71,17 @@ Simple logic but it changes the whole dynamic
 
 ### Importing Reviews from Other Platforms
 
-One problem new platforms face: experienced sitters already have reviews on other sites. they don't want to start from zero. so we built a review import system
+One problem new platforms face: experienced sitters already have reviews on other sites. They don't want to start from zero. So we built a review import system
 
 The flow works like this:
 
-1. user links their profile on another platform (TrustedHousesitters, Nomador, etc.)
-2. we verify they own the profile by having them add a unique code to their bio
-3. once verified, they can upload screenshots of their reviews
+1. User links their profile on another platform (TrustedHousesitters, Nomador, etc.)
+2. We verify they own the profile by having them add a unique code to their bio
+3. Once verified, they can upload screenshots of their reviews
 4. GPT-4 Vision extracts the review data automatically
 
 ```typescript
-export const extractReviewFromScreenshot = action({
+Export const extractReviewFromScreenshot = action({
   args: { imageUrl: v.string() },
   handler: async (_, args) => {
     const response = await openai.chat.completions.create({
@@ -100,29 +100,29 @@ export const extractReviewFromScreenshot = action({
 });
 ```
 
-The verification part was interesting. we generate a unique code like `gps-verify-abc123`, user adds it to their profile bio, and we fetch the page to check if the code exists
+The verification part was interesting. We generate a unique code like `gps-verify-abc123`, user adds it to their profile bio, and we fetch the page to check if the code exists
 
 ```typescript
-const codeFound = html.includes(profile.verificationCode);
-if (codeFound) {
+Const codeFound = html.includes(profile.verificationCode);
+If (codeFound) {
   await updateProfileStatus({ status: "verified" });
 }
 ```
 
-Simple but effective. prevents people from claiming reviews that aren't theirs
+Simple but effective. Prevents people from claiming reviews that aren't theirs
 
 ## Two-Sided Marketplaces are Hard
 
-You need pet owners AND pet sitters. but pet owners won't join without sitters, and sitters won't join without pet owners. classic chicken and egg
+You need pet owners AND pet sitters. But pet owners won't join without sitters, and sitters won't join without pet owners. Classic chicken and egg
 
-We ended up focusing on building features that actually help both sides - map search so you can find sits near you, dual accounts so you can be both a sitter and an owner. the little things that make the experience smoother
+We ended up focusing on building features that actually help both sides - map search so you can find sits near you, dual accounts so you can be both a sitter and an owner. The little things that make the experience smoother
 
 ### The Map Search Problem
 
-Map search sounds easy until you actually build it. we use LocationIQ for geocoding (way cheaper than Google) and had to build a backfill system for existing users
+Map search sounds easy until you actually build it. We use LocationIQ for geocoding (way cheaper than Google) and had to build a backfill system for existing users
 
 ```typescript
-export const backfillSitterCoordinates = action({
+Export const backfillSitterCoordinates = action({
   args: {
     batchSize: v.optional(v.number()),
     delayMs: v.optional(v.number()), // rate limit protection
@@ -141,23 +141,23 @@ export const backfillSitterCoordinates = action({
 });
 ```
 
-We also use supercluster for clustering markers when you zoom out. otherwise the map becomes unusable with too many pins
+We also use supercluster for clustering markers when you zoom out. Otherwise the map becomes unusable with too many pins
 
 ## Listening Changes Everything
 
-One of the biggest lessons: listen to your users. we recently changed how we talk about the platform entirely based on feedback. the way we described Global Pet Sitter wasn't resonating with people, so we rewrote it
+One of the biggest lessons: listen to your users. We recently changed how we talk about the platform entirely based on feedback. The way we described Global Pet Sitter wasn't resonating with people, so we rewrote it
 
-Every complaint is a feature request in disguise. every confused user is showing you where your product falls short. pretty cool when you start seeing it that way
+Every complaint is a feature request in disguise. Every confused user is showing you where your product falls short. Pretty cool when you start seeing it that way
 
 ## Soft Deletes Everywhere
 
-Early on we learned: never actually delete data. everything uses soft deletes with a `deletedAt` field. when something goes wrong (and it will), you can recover. when users ask "what happened to my listing?", you can actually tell them
+Early on we learned: never actually delete data. Everything uses soft deletes with a `deletedAt` field. When something goes wrong (and it will), you can recover. When users ask "what happened to my listing?", you can actually tell them
 
 ```typescript
 .filter((q) => q.eq(q.field("deletedAt"), undefined))
 ```
 
-You see this pattern everywhere in our codebase. slightly annoying to remember but saves you so many headaches
+You see this pattern everywhere in our codebase. Slightly annoying to remember but saves you so many headaches
 
 ## What We've Shipped
 
@@ -171,18 +171,18 @@ Looking back at what we built:
 - **review importing** - bring your reputation from other platforms using AI extraction
 - **early adopter rewards** - because the first users took a chance on us
 
-And we're working on an iPhone app. it's coming :)
+And we're working on an iPhone app. It's coming :)
 
 ## The Tech Wasn't the Hard Part
 
-I spent so much time worrying about the tech stack, the architecture, the performance. turns out the hard part was getting people to care about your product
+I spent so much time worrying about the tech stack, the architecture, the performance. Turns out the hard part was getting people to care about your product
 
-The best code in the world doesn't matter if nobody uses it. i wish i learned this earlier
+The best code in the world doesn't matter if nobody uses it. I wish I learned this earlier
 
 That said, picking the right tools (Convex, Clerk, Next.js) made the dev experience smooth enough that we could focus on the product instead of fighting infrastructure
 
 ## Would I Do It Again
 
-Absolutely. even with all the late nights and moments of doubt. building something from scratch with someone you trust teaches you things you can't learn any other way
+Absolutely. Even with all the late nights and moments of doubt. Building something from scratch with someone you trust teaches you things you can't learn any other way
 
-Maybe that's the real lesson. the product might succeed or fail, but you always come out knowing more than when you started
+Maybe that's the real lesson. The product might succeed or fail, but you always come out knowing more than when you started
