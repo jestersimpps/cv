@@ -84,12 +84,13 @@ export function getRelatedPosts(currentPost: BlogPost, limit = 3): BlogPost[] {
 }
 
 export function generateTableOfContents(content: string): TableOfContentsItem[] {
+  const contentWithoutCodeBlocks = content.replace(/```[\s\S]*?```/g, '');
   const headingRegex = /^(#{2,4})\s+(.+)$/gm;
   const toc: TableOfContentsItem[] = [];
   const idCounts = new Map<string, number>();
   let match;
 
-  while ((match = headingRegex.exec(content)) !== null) {
+  while ((match = headingRegex.exec(contentWithoutCodeBlocks)) !== null) {
     const level = match[1].length;
     const text = match[2];
     let id = text
