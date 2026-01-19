@@ -4,10 +4,11 @@ import { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Clock, Library, ChevronRight, Eye } from 'lucide-react';
+import { Clock, Library, ChevronRight, Eye, Calendar } from 'lucide-react';
 import { BlogPost } from '@/lib/models/blog';
 import { BentoSize } from '@/lib/models/bento';
 import { formatViewCount } from '@/lib/utils/formatNumber';
+import { formatDate } from '@/lib/utils/date';
 
 interface SeriesCardStackProps {
   seriesId: string;
@@ -133,6 +134,10 @@ export default function SeriesCardStack({
 
           <div className="flex items-center justify-between mt-auto">
             <div className="flex items-center gap-3 text-neutral-500 text-[11px]">
+              <div className="flex items-center gap-1">
+                <Calendar className="w-3 h-3" />
+                {formatDate(firstPost.publishedAt)}
+              </div>
               {totalViewCount !== undefined && totalViewCount > 0 && (
                 <div className="flex items-center gap-1">
                   <Eye className="w-3 h-3" />
