@@ -4,6 +4,13 @@ interface ViewCounts {
   [slug: string]: number;
 }
 
+interface CachedData {
+  data: ViewCounts;
+  timestamp: number;
+}
+
+const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes
+let cachedViewCounts: CachedData | null = null;
 let posthogClient: PostHog | null = null;
 
 function getPostHogClient(): PostHog | null {
@@ -24,13 +31,22 @@ function getPostHogClient(): PostHog | null {
   return posthogClient;
 }
 
+function isCacheValid(): boolean {
+  if (!cachedViewCounts) return false;
+  return Date.now() - cachedViewCounts.timestamp < CACHE_TTL_MS;
+}
+
 export async function getPageViewCounts(): Promise<ViewCounts> {
+  if (isCacheValid()) {
+    return cachedViewCounts!.data;
+  }
+
   const client = getPostHogClient();
   const projectId = process.env.POSTHOG_PROJECT_ID;
 
   if (!client || !projectId) {
     console.error('Missing PostHog credentials');
-    return {};
+    return cachedViewCounts?.data || {};
   }
 
   try {
@@ -93,10 +109,15 @@ export async function getPageViewCounts(): Promise<ViewCounts> {
       console.log('No results from PostHog query:', data);
     }
 
+    cachedViewCounts = {
+      data: viewCounts,
+      timestamp: Date.now(),
+    };
+
     return viewCounts;
   } catch (error) {
     console.error('Error fetching PostHog view counts:', error);
-    return {};
+    return cachedViewCounts?.data || {};
   }
 }
 
