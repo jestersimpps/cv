@@ -4,6 +4,7 @@ import { useMemo } from 'react';
 import { BlogPost } from '@/lib/models/blog';
 import BlogCard from './BlogCard';
 import SeriesCardStack from './SeriesCardStack';
+import { useViewCounts } from '@/hooks/useViewCounts';
 
 interface BlogListProps {
   posts: BlogPost[];
@@ -89,6 +90,8 @@ export default function BlogList({
   groupByYear = false,
   bundleSeries = true,
 }: BlogListProps) {
+  const { viewCounts } = useViewCounts();
+
   const featuredPost = showFeatured ? posts.find((p) => p.featured) : null;
   const regularPosts =
     showFeatured && featuredPost
@@ -126,12 +129,22 @@ export default function BlogList({
       <div className="space-y-8">
         {featuredPost && (
           <div className="grid grid-cols-1">
-            <BlogCard post={featuredPost} index={0} featured />
+            <BlogCard
+              post={featuredPost}
+              index={0}
+              featured
+              viewCount={viewCounts[featuredPost.slug]}
+            />
           </div>
         )}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {displayItems.map((item, index) => {
             if (item.type === 'series' && item.series) {
+              // Calculate total view count for series
+              const totalViewCount = item.series.posts.reduce((sum, post) => {
+                return sum + (viewCounts[post.slug] || 0);
+              }, 0);
+
               return (
                 <SeriesCardStack
                   key={item.series.id}
@@ -139,12 +152,18 @@ export default function BlogList({
                   seriesTitle={item.series.title}
                   posts={item.series.posts}
                   index={index}
+                  totalViewCount={totalViewCount}
                 />
               );
             }
             if (item.type === 'post' && item.post) {
               return (
-                <BlogCard key={item.post.slug} post={item.post} index={index} />
+                <BlogCard
+                  key={item.post.slug}
+                  post={item.post}
+                  index={index}
+                  viewCount={viewCounts[item.post.slug]}
+                />
               );
             }
             return null;
@@ -159,7 +178,12 @@ export default function BlogList({
       <div className="space-y-12">
         {featuredPost && (
           <div className="grid grid-cols-1">
-            <BlogCard post={featuredPost} index={0} featured />
+            <BlogCard
+              post={featuredPost}
+              index={0}
+              featured
+              viewCount={viewCounts[featuredPost.slug]}
+            />
           </div>
         )}
         {postsByYear.map(({ year, posts: yearPosts }) => (
@@ -173,7 +197,12 @@ export default function BlogList({
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {yearPosts.map((post, index) => (
-                <BlogCard key={post.slug} post={post} index={index} />
+                <BlogCard
+                  key={post.slug}
+                  post={post}
+                  index={index}
+                  viewCount={viewCounts[post.slug]}
+                />
               ))}
             </div>
           </div>
@@ -186,12 +215,22 @@ export default function BlogList({
     <div className="space-y-8">
       {featuredPost && (
         <div className="grid grid-cols-1">
-          <BlogCard post={featuredPost} index={0} featured />
+          <BlogCard
+            post={featuredPost}
+            index={0}
+            featured
+            viewCount={viewCounts[featuredPost.slug]}
+          />
         </div>
       )}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {regularPosts.map((post, index) => (
-          <BlogCard key={post.slug} post={post} index={index + 1} />
+          <BlogCard
+            key={post.slug}
+            post={post}
+            index={index + 1}
+            viewCount={viewCounts[post.slug]}
+          />
         ))}
       </div>
     </div>

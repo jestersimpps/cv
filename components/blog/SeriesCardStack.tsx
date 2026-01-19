@@ -4,14 +4,16 @@ import { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Clock, Library, ChevronRight } from 'lucide-react';
+import { Clock, Library, ChevronRight, Eye } from 'lucide-react';
 import { BlogPost } from '@/lib/models/blog';
+import { formatViewCount } from '@/lib/utils/formatNumber';
 
 interface SeriesCardStackProps {
   seriesId: string;
   seriesTitle: string;
   posts: BlogPost[];
   index: number;
+  totalViewCount?: number;
 }
 
 function seededRandom(seed: number): () => number {
@@ -26,6 +28,7 @@ export default function SeriesCardStack({
   seriesTitle,
   posts,
   index,
+  totalViewCount,
 }: SeriesCardStackProps) {
   const firstPost = posts[0];
   const totalReadingTime = posts.reduce((acc, post) => {
@@ -137,9 +140,17 @@ export default function SeriesCardStack({
           </div>
 
           <div className="flex items-center justify-between pt-3 border-t border-white/5 mt-auto">
-            <div className="flex items-center gap-1 text-neutral-500 text-xs">
-              <Clock className="w-3 h-3" />
-              ~{totalReadingTime} min total
+            <div className="flex items-center gap-3 text-neutral-500 text-xs">
+              <div className="flex items-center gap-1">
+                <Clock className="w-3 h-3" />
+                ~{totalReadingTime} min
+              </div>
+              {totalViewCount !== undefined && totalViewCount > 0 && (
+                <div className="flex items-center gap-1">
+                  <Eye className="w-3 h-3" />
+                  {formatViewCount(totalViewCount)}
+                </div>
+              )}
             </div>
             <span className="flex items-center gap-1 text-xs text-cyan-400 group-hover:text-cyan-300 transition-colors">
               Start series

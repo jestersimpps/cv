@@ -3,16 +3,18 @@
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, Eye } from 'lucide-react';
 import { BlogPost } from '@/lib/models/blog';
 import { formatDate } from '@/lib/utils/date';
+import { formatViewCount } from '@/lib/utils/formatNumber';
 import ShareButtons from './ShareButtons';
 
 interface BlogHeaderProps {
   post: BlogPost;
+  viewCount?: number;
 }
 
-export default function BlogHeader({ post }: BlogHeaderProps) {
+export default function BlogHeader({ post, viewCount }: BlogHeaderProps) {
   return (
     <header className="mb-12">
       <Link
@@ -28,12 +30,21 @@ export default function BlogHeader({ post }: BlogHeaderProps) {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
       >
-        <div className="flex items-center gap-2 text-sm mb-6">
+        <div className="flex items-center gap-2 text-sm mb-6 flex-wrap">
           <span className="px-3 py-1 bg-white/10 rounded-full text-xs text-neutral-300 font-medium">
             {post.category}
           </span>
           <span className="text-neutral-500">·</span>
           <span className="text-neutral-500">{post.readingTime}</span>
+          {viewCount !== undefined && viewCount > 0 && (
+            <>
+              <span className="text-neutral-500">·</span>
+              <span className="flex items-center gap-1 text-neutral-500">
+                <Eye className="w-3.5 h-3.5" />
+                {formatViewCount(viewCount)}
+              </span>
+            </>
+          )}
         </div>
 
         <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">
