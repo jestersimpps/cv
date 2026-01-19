@@ -17,7 +17,7 @@ export async function getPageViewCounts(): Promise<ViewCounts> {
 
   try {
     const response = await fetch(
-      `https://eu.i.posthog.com/api/projects/${projectId}/query/`,
+      `https://eu.posthog.com/api/projects/${projectId}/query/`,
       {
         method: 'POST',
         headers: {
