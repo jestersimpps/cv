@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
 import readingTime from 'reading-time';
+import GithubSlugger from 'github-slugger';
 import { BlogPost, BlogPostFrontmatter, BlogSeries, TableOfContentsItem } from '@/lib/models/blog';
 
 const BLOG_DIR = path.join(process.cwd(), 'content/blog');
@@ -87,23 +88,13 @@ export function generateTableOfContents(content: string): TableOfContentsItem[] 
   const contentWithoutCodeBlocks = content.replace(/```[\s\S]*?```/g, '');
   const headingRegex = /^(#{2,4})\s+(.+)$/gm;
   const toc: TableOfContentsItem[] = [];
-  const idCounts = new Map<string, number>();
+  const slugger = new GithubSlugger();
   let match;
 
   while ((match = headingRegex.exec(contentWithoutCodeBlocks)) !== null) {
     const level = match[1].length;
     const text = match[2];
-    let id = text
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, '-')
-      .replace(/(^-|-$)/g, '');
-
-    // Handle duplicate IDs by appending a counter
-    const count = idCounts.get(id) || 0;
-    if (count > 0) {
-      id = `${id}-${count}`;
-    }
-    idCounts.set(id.replace(/-\d+$/, ''), count + 1);
+    const id = slugger.slug(text);
 
     toc.push({ id, text, level });
   }
