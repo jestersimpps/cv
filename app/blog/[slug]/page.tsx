@@ -21,7 +21,6 @@ import {
 } from '@/components/blog';
 import GradientOrbs from '@/components/ui/GradientOrbs';
 import GridLines from '@/components/ui/GridLines';
-import DotGrid from '@/components/ui/DotGrid';
 
 interface BlogPostPageProps {
   params: Promise<{ slug: string }>;
@@ -100,8 +99,6 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       </section>
 
       <section className="py-12 bg-gradient-to-b from-black via-neutral-950 to-black relative">
-        <DotGrid dotColor="rgba(255, 255, 255, 0.05)" spacing={32} />
-
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <LinkPreviewProvider content={post.content}>
             <div className="grid lg:grid-cols-4 gap-12">

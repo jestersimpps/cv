@@ -5,7 +5,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { BookOpen, Clock, Calendar, ArrowRight } from 'lucide-react';
-import DotGrid from '@/components/ui/DotGrid';
 import { BlogPost } from '@/lib/models/blog';
 import { formatDate } from '@/lib/utils/date';
 import SeriesCardStack from '@/components/blog/SeriesCardStack';
@@ -89,7 +88,6 @@ export default function BlogSection({ posts }: BlogSectionProps) {
 
   return (
     <section id="blog" className="py-24 bg-gradient-to-b from-black via-neutral-950 to-black relative overflow-hidden">
-      <DotGrid dotColor="rgba(255, 255, 255, 0.08)" spacing={24} />
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

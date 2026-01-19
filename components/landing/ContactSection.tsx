@@ -160,7 +160,7 @@ export default function ContactSection() {
               </div>
             ))}
 
-            <div className="pt-6 border-t border-white/10">
+            <div className="pt-6">
               <h4 className="text-sm text-neutral-500 mb-4">Connect with me</h4>
               <div className="flex gap-3">
                 {socialLinks.map((social) => (
@@ -179,7 +179,7 @@ export default function ContactSection() {
             </div>
 
             {/* Recruiters link */}
-            <div className="pt-6 border-t border-white/10">
+            <div className="pt-6">
               <Link
                 href="/recruiters"
                 className="inline-flex items-center gap-2 text-neutral-300 hover:text-white transition-colors text-sm group"
@@ -276,18 +276,6 @@ export default function ContactSection() {
             )}
           </motion.div>
         </div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
-          className="mt-24 pt-8 border-t border-white/10 text-center"
-        >
-          <p className="text-neutral-500 text-sm">
-            &copy; {new Date().getFullYear()} Jo Vinkenroye. All rights reserved.
-          </p>
-        </motion.div>
       </div>
     </section>
   );
