@@ -77,7 +77,7 @@ export default function SeriesCardStack({
 
       <Link
         href={`/blog/${firstPost.slug}`}
-        className="relative flex flex-col h-full bg-gradient-to-br from-white/[0.08] to-white/[0.03] border border-white/10 rounded-2xl overflow-hidden hover:border-cyan-500/30 hover:from-white/[0.1] hover:to-white/[0.05] transition-all duration-300 group-hover:rotate-0 group-hover:translate-x-0 group-hover:translate-y-0"
+        className="relative flex flex-col h-full bg-gradient-to-br from-white/[0.08] to-white/[0.03] border border-white/10 rounded-2xl overflow-hidden hover:border-white/20 hover:from-white/[0.1] hover:to-white/[0.05] transition-all duration-300 group-hover:rotate-0 group-hover:translate-x-0 group-hover:translate-y-0"
         style={{
           transform: `rotate(${cardOffsets[2].rotate}deg) translateX(${cardOffsets[2].x}px) translateY(${cardOffsets[2].y}px)`,
         }}

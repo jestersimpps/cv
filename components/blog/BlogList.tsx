@@ -135,7 +135,7 @@ export default function BlogList({
             viewCount={viewCounts[featuredPost.slug]}
           />
         )}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-fr">
           {displayItems.map((item, index) => {
             if (item.type === 'series' && item.series) {
               const totalViewCount = item.series.posts.reduce((sum, post) => {
@@ -192,7 +192,7 @@ export default function BlogList({
                 {yearPosts.length} {yearPosts.length === 1 ? 'post' : 'posts'}
               </span>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-fr">
               {yearPosts.map((post, index) => (
                 <BlogCard
                   key={post.slug}
@@ -220,7 +220,7 @@ export default function BlogList({
           />
         </div>
       )}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-fr">
         {regularPosts.map((post, index) => (
           <BlogCard
             key={post.slug}
