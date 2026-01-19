@@ -6,7 +6,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Clock, Library, ChevronRight, Eye, Calendar } from 'lucide-react';
 import { BlogPost } from '@/lib/models/blog';
-import { BentoSize } from '@/lib/models/bento';
 import { formatViewCount } from '@/lib/utils/formatNumber';
 import { formatDate } from '@/lib/utils/date';
 
@@ -16,7 +15,6 @@ interface SeriesCardStackProps {
   posts: BlogPost[];
   index: number;
   totalViewCount?: number;
-  size?: BentoSize;
 }
 
 function seededRandom(seed: number): () => number {
@@ -32,7 +30,6 @@ export default function SeriesCardStack({
   posts,
   index,
   totalViewCount,
-  size,
 }: SeriesCardStackProps) {
   const firstPost = posts[0];
   const totalReadingTime = posts.reduce((acc, post) => {
