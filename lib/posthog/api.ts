@@ -44,11 +44,13 @@ export async function getPageViewCounts(): Promise<ViewCounts> {
     );
 
     if (!response.ok) {
-      console.error('PostHog API error:', response.status, response.statusText);
+      const errorText = await response.text();
+      console.error('PostHog API error:', response.status, response.statusText, errorText);
       return {};
     }
 
-    const data: PostHogQueryResponse = await response.json();
+    const data = await response.json();
+    console.log('PostHog API response:', JSON.stringify(data, null, 2));
 
     // Convert pathname to slug and build counts object
     const viewCounts: ViewCounts = {};
