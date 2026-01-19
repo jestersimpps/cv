@@ -100,7 +100,7 @@ export default function SeriesCardStack({
               {posts.length}-Part Series
             </span>
           </div>
-          <h3 className="text-base font-bold text-white mb-2 line-clamp-2">{seriesTitle}</h3>
+          <h3 className="text-xl font-bold text-white mb-2 line-clamp-2">{seriesTitle}</h3>
           <p className="text-neutral-400 text-sm line-clamp-2 mb-3">
             {firstPost.description}
           </p>

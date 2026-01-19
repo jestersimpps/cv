@@ -112,7 +112,7 @@ export default function BlogCard({ post, index, featured = false, size, viewCoun
                 {post.readingTime}
               </div>
             </div>
-            <h2 className="text-base font-bold text-white mb-2 group-hover:text-white/90 line-clamp-2">
+            <h2 className="text-xl font-bold text-white mb-2 group-hover:text-white/90 line-clamp-2">
               {post.title}
             </h2>
             <p className="text-neutral-400 text-sm line-clamp-2 flex-1">
