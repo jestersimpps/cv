@@ -21,6 +21,7 @@ import {
 } from '@/components/blog';
 import GradientOrbs from '@/components/ui/GradientOrbs';
 import GridLines from '@/components/ui/GridLines';
+import BlogPostClient from './BlogPostClient';
 
 interface BlogPostPageProps {
   params: Promise<{ slug: string }>;
