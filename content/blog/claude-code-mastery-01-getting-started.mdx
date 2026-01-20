@@ -353,34 +353,48 @@ If you're wondering why you're getting billed when you have a subscription, chec
 
 If you're not committing frequently, you're one bad generation away from a frustrating afternoon. Commit before big changes. Commit after successful changes. Commits are free.
 
-## Quick Reference Card
-
-```bash
-# Installation (pick one)
-Curl -fsSL https://claude.ai/install.sh | bash    # macOS/Linux
-Brew install --cask claude-code                    # Homebrew
-Winget install Anthropic.ClaudeCode               # Windows
-
-# Starting Claude
-Claude                    # Interactive mode
-Claude -p "query"         # One-shot mode
-Claude -c                 # Continue last session
-Claude -r                 # Resume with session picker
-
-# First commands to run
-/terminal-setup           # Enable multi-line input
-/status                   # Verify authentication method
-/help                     # See all available commands
-
-# Commands you'll use constantly
-/clear                    # Fresh start (save tokens!)
-/model                    # Switch models
-/compact                  # Compress context
-/init                     # Update CLAUDE.md after major changes
-```
-
 ## What's Next
 
 You now have Claude Code installed and understand not just the commands, but the *mindset* that makes AI-assisted coding work. Structure and guardrails aren't constraints—they're what make the speed actually useful instead of chaotic.
 
 In [Part 2: The Mental Model](/blog/claude-code-mastery-02-mental-model), we'll dive into how Claude Code actually "thinks"—understanding context windows, tool usage, and how to structure your prompts to get consistently better results. This knowledge transforms Claude from a sometimes-helpful assistant into a reliable engineering partner.
+
+<QuickReference>
+
+**Installation** (pick one)
+
+`curl -fsSL https://claude.ai/install.sh | bash` — macOS/Linux
+
+`brew install --cask claude-code` — Homebrew
+
+`winget install Anthropic.ClaudeCode` — Windows
+
+**Starting Claude**
+
+`claude` — Interactive mode
+
+`claude -p "query"` — One-shot mode
+
+`claude -c` — Continue last session
+
+`claude -r` — Resume with picker
+
+**First commands**
+
+`/terminal-setup` — Enable multi-line input
+
+`/status` — Verify auth
+
+`/help` — See all commands
+
+**Essential commands**
+
+`/clear` — Fresh start (saves tokens)
+
+`/model` — Switch models
+
+`/compact` — Compress context
+
+`/init` — Update CLAUDE.md
+
+</QuickReference>

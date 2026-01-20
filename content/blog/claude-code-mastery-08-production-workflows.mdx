@@ -532,49 +532,40 @@ Add more context to CLAUDE.md or be more specific in your mention.
 - Reduce max_tokens
 - Use Haiku for simple tasks, Opus for complex ones
 
-## Quick Reference
-
-```bash
-# Install GitHub integration
-/install-github-app
-
-# Workflow file location
-.github/workflows/claude.yml
-```
-
-**Common @claude commands:**
-```
-@claude review              # Code review
-@claude review security     # Security-focused review
-@claude implement          # Create PR from issue
-@claude fix                # Investigate and patch bug
-@claude explain            # Explain code/decisions
-@claude add tests          # Add test coverage
-@claude refactor           # Improve code quality
-```
-
-**Workflow triggers:**
-```yaml
-On:
-  issue_comment:           # @claude mentions
-  pull_request:           # Automatic PR review
-  issues:                 # Issue triage
-  schedule:               # Scheduled maintenance
-```
-
-**Key action inputs:**
-```yaml
-Anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
-Prompt: "Your instructions here"
-Max_tokens: 4096
-```
-
 ## What's Next
 
 You now have Claude integrated into your development workflow—locally and on GitHub. Commands, skills, subagents, MCP servers, and GitHub Actions give you a complete AI-assisted development toolkit.
 
 In [Part 9: Power User Secrets](/blog/claude-code-mastery-09-power-user-secrets), we'll explore advanced techniques that experienced users rely on: prompt engineering patterns, debugging strategies, and workflows that maximize Claude's capabilities.
 
----
+<QuickReference>
 
-*Previous: [Part 7: MCP Servers](/blog/claude-code-mastery-07-mcp-servers)*
+**Setup** — `/install-github-app`
+
+**Workflow file** — `.github/workflows/claude.yml`
+
+**Common @claude commands**
+
+`@claude review` — Code review
+
+`@claude implement` — Build from issue
+
+`@claude fix` — Debug and patch
+
+`@claude explain` — Explain code
+
+`@claude add tests` — Write tests
+
+`@claude refactor` — Clean up code
+
+**Workflow triggers**
+
+`issue_comment` — @claude mentions
+
+`pull_request` — Automatic PR review
+
+`issues` — Issue triage
+
+`schedule` — Scheduled maintenance
+
+</QuickReference>

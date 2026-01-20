@@ -53,7 +53,10 @@ export default function LinkPreview({ href, children, isExternal = false }: Link
     setIsHovered(false);
   };
 
-  const LinkComponent = isExternal ? 'a' : Link;
+  const isAnchor = href.startsWith('#');
+  const useNativeLink = isExternal || isAnchor;
+
+  const LinkComponent = useNativeLink ? 'a' : Link;
   const linkProps = isExternal
     ? { href, target: '_blank', rel: 'noopener noreferrer' }
     : { href };

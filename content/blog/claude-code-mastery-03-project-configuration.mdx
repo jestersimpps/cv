@@ -395,35 +395,42 @@ What tech stack is this? What commands should you use for testing?
 
 If Claude misses something important, your CLAUDE.md needs work.
 
-## Quick Reference
-
-**File locations:**
-
-- `CLAUDE.md` — Project root (recommended)
-- `.claude/CLAUDE.md` — Alternative location
-- `~/.claude/CLAUDE.md` — Global (all projects)
-- `CLAUDE.local.md` — Local (gitignored)
-- `.claude/rules/` — Additional rule files (all .md files auto-loaded)
-
-**Settings files:**
-
-- `.claude/settings.json` — Project settings
-- `.claude/settings.local.json` — Local overrides
-- `~/.claude/settings.json` — Global settings
-
-**Key features:**
-
-- `@path/to/file` — Import syntax in CLAUDE.md
-- `#` key — Add instructions during session
-- `/init` — Generate/update CLAUDE.md
-- `/hooks` — Configure hooks interactively
-
 ## What's Next
 
 You now know how to configure Claude Code for your specific project. But configuration only goes so far—the real power comes from extending Claude with custom commands.
 
 In [Part 4: Custom Commands](/blog/claude-code-mastery-04-custom-commands), we'll build slash commands that encode your workflows into reusable actions. Think of it as teaching Claude your team's shortcuts.
 
----
+<QuickReference>
 
-*Previous: [Part 2: The Mental Model](/blog/claude-code-mastery-02-mental-model)*
+**File locations**
+
+`CLAUDE.md` — Project root (recommended)
+
+`.claude/CLAUDE.md` — Alternative
+
+`~/.claude/CLAUDE.md` — Global
+
+`CLAUDE.local.md` — Local (gitignored)
+
+`.claude/rules/` — Additional rule files
+
+**Settings files**
+
+`.claude/settings.json` — Project
+
+`.claude/settings.local.json` — Local overrides
+
+`~/.claude/settings.json` — Global
+
+**Key features**
+
+`@path/to/file` — Import syntax
+
+`#` key — Add instructions during session
+
+`/init` — Generate/update CLAUDE.md
+
+`/hooks` — Configure hooks
+
+</QuickReference>

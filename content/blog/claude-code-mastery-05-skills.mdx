@@ -417,42 +417,38 @@ Https://github.com/topics/claude-skills
 
 **The Agent Skills Specification** — Released December 2025 as an open standard. OpenAI adopted the same format for Codex CLI and ChatGPT, so Skills you build for Claude work across tools.
 
-## Quick Reference
-
-**File locations:**
-- `~/.claude/skills/name/SKILL.md` — Personal (all projects)
-- `.claude/skills/name/SKILL.md` — Project (team)
-
-**Required structure:**
-```
-Skill-name/
-├── SKILL.md              # Required
-├── examples/             # Optional
-├── templates/            # Optional
-└── scripts/              # Optional
-```
-
-**Frontmatter:**
-```yaml
----
-Name: skill-name
-Description: "When to use this skill - be specific"
-Allowed-tools: Read, Write, Bash(npm *)
-Model: claude-sonnet-4-20250514
----
-```
-
-**Install superpowers:**
-```bash
-Git clone https://github.com/obra/superpowers.git ~/.claude/skills/superpowers
-```
-
 ## What's Next
 
 Skills give Claude specialized knowledge that activates automatically. But what if you need Claude to do multiple things simultaneously? What if one task could benefit from parallel execution?
 
 That's where Subagents come in. In [Part 6: Subagents](/blog/claude-code-mastery-06-subagents), we'll explore how to spawn specialized agents that work in parallel—running tests while generating documentation while checking for security issues, all at once.
 
----
+<QuickReference>
 
-*Previous: [Part 4: Custom Commands](/blog/claude-code-mastery-04-custom-commands)*
+**File locations**
+
+`~/.claude/skills/name/SKILL.md` — Personal (all projects)
+
+`.claude/skills/name/SKILL.md` — Project (team)
+
+**Required structure**
+
+`skill-name/SKILL.md` — Required
+
+`examples/`, `templates/`, `scripts/` — Optional
+
+**Frontmatter**
+
+`Name` — Skill identifier
+
+`Description` — When to use (be specific)
+
+`Allowed-tools` — e.g., `Read, Write, Bash(npm *)`
+
+`Model` — Override model
+
+**Install superpowers**
+
+`git clone https://github.com/obra/superpowers.git ~/.claude/skills/superpowers`
+
+</QuickReference>

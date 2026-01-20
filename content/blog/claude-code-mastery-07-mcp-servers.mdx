@@ -520,49 +520,34 @@ Before installing any MCP server, check:
 - Topic: `mcp-server`
 - Search: `"@modelcontextprotocol"` in package.json
 
-## Quick Reference
-
-```bash
-# CLI commands
-Claude mcp add [name] --scope [user|project|local]
-Claude mcp list
-Claude mcp get [name]
-Claude mcp remove [name]
-
-# In-session command
-/mcp                          # Check server status
-
-# Debug mode
-Claude --mcp-debug            # Detailed connection logs
-```
-
-**Configuration file (`.mcp.json`):**
-
-```json
-{
-  "mcpServers": {
-    "name": {
-      "command": "npx",
-      "args": ["-y", "@package/server"],
-      "env": {
-        "API_KEY": "${ENV_VAR}"
-      }
-    }
-  }
-}
-```
-
-**File locations:**
-- `.mcp.json` — Project, version-controlled
-- `.claude/settings.local.json` — Project, gitignored
-- `~/.claude/settings.json` — User, all projects
-
 ## What's Next
 
 MCP servers extend Claude's reach to external services. Combined with everything we've covered—commands, skills, and subagents—you now have a powerful toolkit for AI-assisted development.
 
 In [Part 8: Production Workflows](/blog/claude-code-mastery-08-production-workflows), we'll put it all together with real-world patterns: CI/CD integration, team collaboration, and workflows that scale from side project to production system.
 
----
+<QuickReference>
 
-*Previous: [Part 6: Subagents](/blog/claude-code-mastery-06-subagents)*
+**CLI commands**
+
+`claude mcp add [name] --scope [user|project|local]`
+
+`claude mcp list`
+
+`claude mcp get [name]`
+
+`claude mcp remove [name]`
+
+**In-session** — `/mcp` (check status)
+
+**Debug** — `claude --mcp-debug`
+
+**File locations**
+
+`.mcp.json` — Project (version-controlled)
+
+`.claude/settings.local.json` — Project (gitignored)
+
+`~/.claude/settings.json` — User (all projects)
+
+</QuickReference>

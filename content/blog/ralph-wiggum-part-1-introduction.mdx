@@ -1,5 +1,5 @@
 ---
-title: "Mastering Ralph Wiggum Part 1: Introduction and Fundamentals"
+title: "Getting Started with Ralph Wiggum Part 1: Introduction and Fundamentals"
 description: "Install Ralph Wiggum and run your first autonomous coding loop in 15 minutes. Learn the core concepts, safety settings, and when to use it."
 publishedAt: "2026-01-18"
 author: "Jo Vinkenroye"
@@ -8,10 +8,10 @@ tags: ["Claude Code", "AI", "Automation", "Developer Tools", "Productivity", "Ra
 coverImage: "/assets/blog/ralph-wiggum-coding.webp"
 featured: true
 series:
-  id: "mastering-ralph-wiggum"
-  title: "Mastering Ralph Wiggum for Autonomous AI Coding"
+  id: "getting-started-ralph-wiggum"
+  title: "Getting Started with Ralph Wiggum"
   part: 1
-  total: 6
+  total: 5
 ---
 
 You're staring at a tedious migration task—200 test files that need converting from Jest to Vitest. The patterns are clear. The work is mechanical. But it's going to take you all day.
@@ -67,7 +67,11 @@ sudo apt-get install jq
 
 ### Step 2: Install the Plugin
 
-Inside Claude Code, run:
+Inside Claude Code, run `/plugin` to open the plugin discovery interface. Search for "ralph" and select `ralph-loop` from the official plugins.
+
+![Claude Code plugin discovery showing ralph-loop plugin](/assets/blog/wiggum-tutorial/plugin.png)
+
+Or install directly with:
 
 ```bash
 /plugin install ralph-loop@claude-plugins-official
@@ -98,7 +102,7 @@ Add the tools Ralph needs to your `.claude/settings.local.json`:
 
 **Option B: Use permission flags**
 
-For overnight runs in a sandboxed environment, you can bypass permission prompts entirely:
+For long-running tasks in a sandboxed environment, you can bypass permission prompts entirely:
 
 ```bash
 claude --dangerously-skip-permissions
@@ -109,6 +113,34 @@ claude --permission-mode acceptEdits
 > **Warning:** Only use `--dangerously-skip-permissions` in sandboxed environments (containers, VMs, disposable cloud instances). It gives Claude full access to your filesystem.
 
 As [Boris Cherny notes](https://www.threads.com/@boris_cherny/post/DTBVuylEjqQ), for very long-running tasks you'll want either `--permission-mode=dontAsk` or `--dangerously-skip-permissions` in a sandbox so Claude isn't blocked waiting for you.
+
+**Option C: Full Sandboxing (Recommended for Long-Running Tasks)**
+
+For serious autonomous work, Claude Code's [built-in sandboxing](https://code.claude.com/docs/en/sandboxing) isolates Ralph while still allowing necessary operations. [JeredBlu's guide](https://github.com/JeredBlu/guides/blob/main/Ralph_Wiggum_Guide.md) provides a practical configuration—create `.claude/settings.json`:
+
+```json
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:registry.npmjs.org)",
+      "WebFetch(domain:github.com)"
+    ],
+    "deny": [
+      "Bash(sudo *)",
+      "Bash(docker *)",
+      "Read(./.env)",
+      "Read(~/.ssh/**)"
+    ]
+  },
+  "sandbox": {
+    "enabled": true,
+    "autoAllowBashIfSandboxed": true,
+    "allowUnsandboxedCommands": false
+  }
+}
+```
+
+Customize the allow/deny lists for your project's needs.
 
 ### Step 4: Run Your First Loop
 
@@ -133,6 +165,46 @@ Watch it work. Review the commits. Get a feel for the rhythm.
 ```bash
 /ralph-loop "<your task>" --max-iterations 30 --completion-promise "TASK COMPLETE"
 ```
+
+## Plugin vs Bash Loop: Which to Use
+
+There are two ways to run Ralph:
+
+**Plugin Method (`/ralph-loop`)**
+- Runs in a single context window
+- Easier to set up
+- Good for tasks under 20-30 iterations
+
+**Bash Loop Method**
+- Launches fresh context window per iteration
+- Prevents context bloat and hallucination
+- Better for long-running tasks
+
+Here's a minimal bash loop example:
+
+```bash
+#!/bin/bash
+# loop.sh - Run this instead of the plugin for long tasks
+for ((i=1; i<=30; i++)); do
+  echo "=== Iteration $i ==="
+  result=$(claude -p "$(cat PROMPT.md)" --output-format text 2>&1) || true
+  echo "$result"
+
+  if [[ "$result" == *"ALL TASKS COMPLETE"* ]]; then
+    echo "Done after $i iterations"
+    exit 0
+  fi
+done
+```
+
+As [JeredBlu notes](https://github.com/JeredBlu/guides/blob/main/Ralph_Wiggum_Guide.md), the bash loop method is "fundamentally better for long-running tasks" because each iteration starts fresh. The plugin runs everything in a single context, which can lead to degraded performance after 30-40 iterations.
+
+> **See real implementations:** Browse complete Ralph setups from the community:
+> - [snarktank/ralph](https://github.com/snarktank/ralph) — Complete ralph.sh, prompt.md, and AGENTS.md
+> - [ClaytonFarr/ralph-playbook](https://github.com/ClaytonFarr/ralph-playbook) — PROMPT_plan.md and PROMPT_build.md templates
+> - [frankbria/ralph-claude-code](https://github.com/frankbria/ralph-claude-code) — Implementation with intelligent exit detection
+
+**Recommendation:** Start with the plugin to learn. Graduate to bash loop for production long-running tasks.
 
 ## Writing Prompts That Work
 
@@ -198,7 +270,7 @@ The community mantra: *"Better to fail predictably than succeed unpredictably."*
 
 ## Monitoring Long-Running Loops
 
-When Ralph runs overnight, you'll want visibility. **Ralph TUI** gives you a real-time dashboard: iteration count, current task, token usage, and keyboard controls to pause or stop.
+When Ralph runs for extended periods, you'll want visibility. **Ralph TUI** gives you a real-time dashboard: iteration count, current task, token usage, and keyboard controls to pause or stop.
 
 We cover monitoring in detail in [Part 3: Ralph TUI Monitoring](/blog/ralph-wiggum-part-3-ralph-tui-monitoring).
 
@@ -208,9 +280,9 @@ Ralph works with Claude subscriptions or API access. Here's the quick guide:
 
 - **Claude Pro ($20/mo)** — 10-30 iterations/session, good for learning and side projects
 - **Claude Max 5x ($100/mo)** — 50-150 iterations/session, ideal for daily development
-- **Claude Max 20x ($200/mo)** — 200-600+ iterations/session, professional/overnight loops
+- **Claude Max 20x ($200/mo)** — 200-600+ iterations/session, professional long-running loops
 
-**My recommendation:** Start with Pro to learn the workflow. Upgrade to Max 5x once you're running Ralph daily—it's 5x the capacity for 5x the price, which is fair. Go Max 20x if you're doing client work or need overnight autonomy.
+**My recommendation:** Start with Pro to learn the workflow. Upgrade to Max 5x once you're running Ralph daily—it's 5x the capacity for 5x the price, which is fair. Go Max 20x if you're doing client work or need extended autonomous sessions.
 
 > **The ROI math:** At $200/month for Max 20x, if Ralph saves you just 5 hours (at $40/hr billing), it's already paid for itself. Most serious users report 20-40+ hours saved monthly.
 
@@ -227,42 +299,34 @@ You've got Ralph installed. You understand the loop. You know when to use it and
 
 But we've only scratched the surface.
 
-In [Part 2: The Three-Phase Methodology](/blog/ralph-wiggum-part-2-methodology), we'll cover the professional workflow—separate prompts for planning and building, spec files that guide multi-day projects, and the techniques that make overnight autonomous builds actually work. This is where Ralph goes from "useful tool" to "force multiplier."
+In [Part 2: The Three-Phase Methodology](/blog/ralph-wiggum-part-2-methodology), we'll cover the professional workflow—separate prompts for planning and building, spec files that guide multi-day projects, and the techniques that make long-running autonomous builds actually work. This is where Ralph goes from "useful tool" to "force multiplier."
 
----
+<QuickReference>
 
-## Quick Reference Card
+**Installation**
 
-```bash
-# Installation
-brew install jq                                    # Dependency (macOS)
-/plugin install ralph-loop@claude-plugins-official # Plugin
+`brew install jq` — Install dependency (macOS)
 
-# Basic usage
-/ralph-loop "<prompt>" --max-iterations 20 --completion-promise "DONE"
+`/plugin install ralph-loop@claude-plugins-official` — Install plugin
 
-# Safe first experiment
-/ralph-loop "Add tests to src/utils.ts until coverage > 80%. \
-Output <promise>DONE</promise> when complete." \
---completion-promise "DONE" --max-iterations 15
-```
+**Basic usage**
 
-## Key Takeaways
+`/ralph-loop "<prompt>" --max-iterations 20 --completion-promise "DONE"`
 
-- Ralph is an autonomous loop that iterates until tasks genuinely complete
-- Always set `--max-iterations` — it's your safety net
-- Start with 10-20 iterations to learn costs and behavior
-- Best for mechanical, testable tasks with clear completion criteria
-- Prompt quality determines success rate
+**Safe first experiment**
 
-## Resources
+`/ralph-loop "Add tests to src/utils.ts until coverage > 80%. Output <promise>DONE</promise> when complete." --completion-promise "DONE" --max-iterations 15`
 
-- [Official Plugin](https://github.com/anthropics/claude-code/tree/main/plugins/ralph-wiggum) — Installation and docs
-- [Geoffrey Huntley's Guide](https://github.com/ghuntley/how-to-ralph-wiggum) — Original technique
-- [The Ralph Playbook](https://claytonfarr.github.io/ralph-playbook/) — Comprehensive methodology
-- [Ralph-TUI](https://github.com/subsy/ralph-tui) — Visual monitoring tool
-- [VentureBeat Coverage](https://venturebeat.com/technology/how-ralph-wiggum-went-from-the-simpsons-to-the-biggest-name-in-ai-right-now) — How Ralph went mainstream
+**Key takeaways**
 
----
+Ralph is an autonomous loop that iterates until tasks genuinely complete
 
-*Next: [Part 2: The Three-Phase Methodology](/blog/ralph-wiggum-part-2-methodology)*
+Always set `--max-iterations` as your safety net
+
+Start with 10-20 iterations to learn costs and behavior
+
+Best for mechanical, testable tasks with clear completion criteria
+
+Prompt quality determines success rate
+
+</QuickReference>

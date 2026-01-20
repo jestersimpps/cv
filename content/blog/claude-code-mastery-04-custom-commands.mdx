@@ -650,51 +650,38 @@ If a command isn't working:
 3. **Run `/help`** — Your command should appear in the list
 4. **Check frontmatter** — YAML must be valid (proper indentation, quotes around strings with special chars)
 
-## Quick Reference
-
-```bash
-# Create command directory
-Mkdir -p .claude/commands
-
-# Basic command
-Echo "Do something" > .claude/commands/name.md
-
-# Command with namespace
-Mkdir -p .claude/commands/git
-Echo "Commit stuff" > .claude/commands/git/commit.md
-
-# View available commands
-/help
-```
-
-**Frontmatter fields:**
-
-```yaml
----
-Description: Shows in /help
-Argument-hint: [what-to-pass]
-Allowed-tools: Bash(git *), Read, Write
-Model: claude-3-5-haiku-20241022
-Hooks:
-  PostToolUse:
-    - matcher: "Edit"
-      hooks:
-        - type: command
-          command: "npm run lint"
----
-```
-
-**Argument placeholders:**
-
-- `$ARGUMENTS` — Everything after the command
-- `$1`, `$2`, `$3` — Positional arguments
-
 ## What's Next
 
 Custom commands encode your workflows into reusable actions. But what if you want to share commands beyond your team? What if you want commands that work across different projects without copying files everywhere?
 
 That's where Skills come in. In [Part 5: Skills](/blog/claude-code-mastery-05-skills), we'll explore how to package commands for broader distribution and create more sophisticated automation.
 
----
+<QuickReference>
 
-*Previous: [Part 3: Project Configuration](/blog/claude-code-mastery-03-project-configuration)*
+**Create commands**
+
+`mkdir -p .claude/commands` — Create directory
+
+`.claude/commands/name.md` — Basic command
+
+`.claude/commands/git/commit.md` — Namespaced (`/git:commit`)
+
+**Frontmatter fields**
+
+`Description` — Shows in /help
+
+`Argument-hint` — Usage hint
+
+`Allowed-tools` — e.g., `Bash(git *), Read, Write`
+
+`Model` — Override model
+
+**Argument placeholders**
+
+`$ARGUMENTS` — Everything after command
+
+`$1`, `$2`, `$3` — Positional arguments
+
+**View commands** — `/help`
+
+</QuickReference>

@@ -4,6 +4,7 @@ import { ReactNode } from 'react';
 import CodeBlock from './CodeBlock';
 import Mermaid from './Mermaid';
 import LinkPreview from './LinkPreview';
+import { QuickReference } from './QuickReference';
 
 function extractTextFromChildren(children: ReactNode): string {
   if (typeof children === 'string') return children;
@@ -173,4 +174,5 @@ export const MDXComponents = {
   em: ({ children }: { children: ReactNode }) => (
     <em className="italic text-neutral-200">{children}</em>
   ),
+  QuickReference,
 };

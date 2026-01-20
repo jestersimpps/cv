@@ -1,5 +1,5 @@
 ---
-title: "Mastering Ralph Wiggum Part 2: The Three-Phase Methodology"
+title: "Getting Started with Ralph Wiggum Part 2: The Three-Phase Methodology"
 description: "The professional workflow for multi-day autonomous coding projects. Separate planning from building, and wake up to production-ready features."
 publishedAt: "2026-01-18"
 author: "Jo Vinkenroye"
@@ -8,17 +8,17 @@ tags: ["Claude Code", "AI", "Automation", "Developer Tools", "Productivity", "Ra
 coverImage: "/assets/blog/ralph-wiggum-coding.webp"
 featured: true
 series:
-  id: "mastering-ralph-wiggum"
-  title: "Mastering Ralph Wiggum for Autonomous AI Coding"
+  id: "getting-started-ralph-wiggum"
+  title: "Getting Started with Ralph Wiggum"
   part: 2
-  total: 6
+  total: 5
 ---
 
-Here's the difference between developers who "tried Ralph and it was okay" and developers who are shipping entire features overnight: **methodology**.
+You installed Ralph, ran a loop, and... it kind of worked? Maybe it got stuck. Maybe it went in circles. Maybe it built something, but not quite what you needed.
 
-Running `/ralph-loop` on a vague prompt is like giving a junior developer a task with no context and no success criteria. They'll work hard. They'll produce *something*. But it probably won't be what you wanted.
+That's normal. Ralph without structure is like any autonomous agent—capable but directionless.
 
-The Three-Phase Methodology fixes this. It's how the pros run multi-day autonomous projects that actually work.
+This part covers the Three-Phase Methodology: a practical workflow for turning vague project ideas into working code while you sleep.
 
 {/* IMAGE: Two git histories side-by-side: chaotic commits vs clean, atomic commits labeled by task */}
 
@@ -38,13 +38,15 @@ The separation is crucial. As [The Ralph Playbook](https://claytonfarr.github.io
 
 This is the only phase that requires your active involvement. And it's where most people cut corners—which is exactly why their Ralph sessions produce garbage.
 
-**Spend at least 30 minutes** talking through requirements with Claude before writing any code. Seriously. This conversation is where you catch the "oh wait, what about..." moments that would otherwise derail your overnight build.
+**Spend at least 30 minutes** talking through requirements with Claude before writing any code. Seriously. This conversation is where you catch the "oh wait, what about..." moments that would otherwise derail your autonomous build.
 
 {/* IMAGE: Hourglass with "30 min conversation" on top, "8 hours autonomous coding" on bottom */}
 
 ### What Goes in Specs Files
 
 Create `specs/*.md` files that become the source of truth. Don't overthink the format—focus on clarity:
+
+> **Tip:** If you want a structured approach to requirements gathering, check out [JeredBlu's PRD Creator](https://github.com/JeredBlu/custom-instructions/blob/main/prd-creator-3-25.md)—a conversational prompt system that guides you through creating comprehensive specs.
 
 ```
 specs/
@@ -82,21 +84,34 @@ This back-and-forth surfaces edge cases you wouldn't think of alone. After the c
 
 Planning mode does gap analysis between specs and code, creating a prioritized TODO list **without any implementation or commits**.
 
+### Two Ways to Run Ralph
+
+There are two methods for running Ralph loops, and understanding when to use each is critical:
+
+**Plugin Method (`/ralph-loop`)** — Runs iterations within a single context window. Easier to set up, good for shorter tasks (under 20-30 iterations).
+
+**Bash Loop Method (`loop.sh`)** — Launches a fresh Claude instance per iteration. As [Geoffrey Huntley's original guide](https://github.com/ghuntley/how-to-ralph-wiggum) explains, each iteration "deterministically loads the same files and reads the current state from disk." This prevents context bloat and hallucination that can occur when running many iterations in a single context. See community examples: [snarktank/ralph.sh](https://github.com/snarktank/ralph/blob/main/ralph.sh), [frankbria/ralph_loop.sh](https://github.com/frankbria/ralph-claude-code/blob/main/ralph_loop.sh), [peteristhegreat's gist](https://gist.github.com/peteristhegreat/31e7114805e24b9e38084772e2e7cf46).
+
+> **Why fresh context matters:** The plugin runs everything in one context window, which fills up over time. After 30-40 iterations, Claude may start ignoring parts of your prompt or making inconsistent decisions. The bash loop method avoids this by starting fresh each time—the only shared state is what's written to disk (your code, `IMPLEMENTATION_PLAN.md`, and `progress.txt`).
+
+We'll show you how to create `loop.sh` in [The Bash Loop Script](#the-bash-loop-script) section below.
+
 ### How to Run Planning Mode
 
-**Using the bash loop method:**
-```bash
-./loop.sh plan
-```
+For planning, the plugin method works well since you only need ~5 iterations (context bloat isn't a concern):
 
-**Using Claude Code plugin:**
 ```bash
 /ralph-loop "$(cat PROMPT_plan.md)" --max-iterations 5 --completion-promise "PLAN COMPLETE"
 ```
 
+Or using the bash loop (see [The Bash Loop Script](#the-bash-loop-script) below):
+```bash
+./loop.sh plan
+```
+
 ### PROMPT_plan.md Template
 
-Here's the complete template for planning mode:
+Here's the complete template for planning mode. For real-world examples, see [ClaytonFarr's PROMPT_plan.md](https://github.com/ClaytonFarr/ralph-playbook/blob/main/PROMPT_plan.md) or [snarktank's prompt.md](https://github.com/snarktank/ralph/blob/main/prompt.md).
 
 ```markdown
 # PLANNING MODE
@@ -185,21 +200,22 @@ Building mode assumes the plan exists, picks one task at a time, implements it w
 
 ### How to Run Building Mode
 
-**Using the bash loop method:**
-```bash
-./loop.sh              # Default mode is building
-```
-
-**Using Claude Code plugin:**
+**Quick start with the plugin:**
 ```bash
 /ralph-loop "$(cat PROMPT_build.md)" --max-iterations 50 --completion-promise "ALL TASKS COMPLETE"
 ```
 
+**For long-running builds (recommended):** Use the bash loop method for fresh context per iteration. After setting up `loop.sh` ([shown below](#the-bash-loop-script)):
+```bash
+./loop.sh              # Default mode is building
+./loop.sh build 100    # With custom iteration limit
+```
+
 ### PROMPT_build.md Template
 
-Here's the complete template for building mode:
+Here's the complete template for building mode. For real-world examples, see [ClaytonFarr's PROMPT_build.md](https://github.com/ClaytonFarr/ralph-playbook/blob/main/PROMPT_build.md) or [frankbria's PROMPT.md](https://github.com/frankbria/ralph-claude-code/blob/main/templates/PROMPT.md).
 
-```markdown
+````markdown
 # BUILDING MODE
 
 You are in BUILDING mode. Your job is implementation with quality gates.
@@ -246,7 +262,70 @@ After completing each task, append to progress.txt:
 ```
 
 When all tasks show status: completed, output "ALL TASKS COMPLETE"
+````
+
+### The Bash Loop Script
+
+Here's a `loop.sh` script that supports both planning and building modes. This pattern comes from [JeredBlu's guide](https://github.com/JeredBlu/guides/blob/main/Ralph_Wiggum_Guide.md) and [Geoffrey Huntley's original approach](https://github.com/ghuntley/how-to-ralph-wiggum):
+
+```bash
+#!/bin/bash
+# loop.sh - Fresh context per iteration
+
+MODE=${1:-build}  # Default to build mode
+MAX_ITERATIONS=${2:-50}
+
+if [[ "$MODE" == "plan" ]]; then
+  PROMPT_FILE="PROMPT_plan.md"
+  COMPLETION="PLAN COMPLETE"
+  MAX_ITERATIONS=${2:-5}  # Planning needs fewer iterations
+else
+  PROMPT_FILE="PROMPT_build.md"
+  COMPLETION="ALL TASKS COMPLETE"
+fi
+
+echo "Running in $MODE mode with max $MAX_ITERATIONS iterations"
+echo "Using prompt: $PROMPT_FILE"
+echo "Completion signal: $COMPLETION"
+echo "=========================================="
+
+for ((i=1; i<=$MAX_ITERATIONS; i++)); do
+  echo "Iteration $i / $MAX_ITERATIONS"
+  echo "--------------------------------"
+
+  result=$(claude -p "$(cat $PROMPT_FILE)" --output-format text 2>&1) || true
+  echo "$result"
+
+  if [[ "$result" == *"$COMPLETION"* ]]; then
+    echo "=========================================="
+    echo "$MODE complete after $i iterations."
+    exit 0
+  fi
+
+  echo "--- End of iteration $i ---"
+done
+
+echo "Reached max iterations ($MAX_ITERATIONS)"
+exit 1
 ```
+
+Make it executable:
+
+```bash
+chmod +x loop.sh
+```
+
+**Usage:**
+```bash
+./loop.sh plan      # Run planning mode (default 5 iterations)
+./loop.sh build     # Run building mode (default 50 iterations)
+./loop.sh           # Same as ./loop.sh build
+./loop.sh build 30  # Building mode with 30 iterations max
+```
+
+This gives you fresh context per iteration, preventing the context bloat that can occur with the plugin method on long runs.
+
+For more sophisticated implementations with error handling, logging, and parallel execution, see [snarktank/ralph](https://github.com/snarktank/ralph/blob/main/ralph.sh) and [mikeyobrien/ralph-orchestrator](https://github.com/mikeyobrien/ralph-orchestrator).
 
 ### The Building Loop Flow
 
@@ -263,7 +342,7 @@ As [11 Tips for AI Coding with Ralph Wiggum](https://www.aihero.dev/tips-for-ai-
 
 ## Complete Three-Phase Workflow
 
-Here's how it all flows together:
+Here's how it all flows together (using the `loop.sh` script from the [previous section](#the-bash-loop-script)):
 
 ```bash
 # Phase 1: Define Requirements (conversational, not looped)
@@ -272,12 +351,13 @@ Here's how it all flows together:
 
 # Phase 2: Generate Plan (run once, or when plan needs refresh)
 ./loop.sh plan
+# Or with the plugin: /ralph-loop "$(cat PROMPT_plan.md)" --max-iterations 5 --completion-promise "PLAN COMPLETE"
 # Creates IMPLEMENTATION_PLAN.md with prioritized tasks
 
 # Phase 3: Build Autonomously (continuous loop)
 ./loop.sh
+# Or with the plugin: /ralph-loop "$(cat PROMPT_build.md)" --max-iterations 50 --completion-promise "ALL TASKS COMPLETE"
 # Implements tasks one by one, commits, loops
-# Run overnight, check progress in the morning
 
 # When plan becomes stale (features changed, new requirements):
 rm IMPLEMENTATION_PLAN.md
@@ -575,42 +655,32 @@ In [Part 3: Ralph TUI Monitoring](/blog/ralph-wiggum-part-3-ralph-tui-monitoring
 
 Then in [Part 4: Complete Practical Tutorial](/blog/ralph-wiggum-part-4-tutorial), we put theory into practice. You'll see actual conversation logs, generated plans, real commit history, and how to troubleshoot when things go wrong. This is where it clicks.
 
----
+<QuickReference>
 
-## Quick Reference
+**Phase 1: Requirements** — Talk with Claude, create `specs/*.md` files
 
-```bash
-# Phase 1: Requirements (conversational)
-# Talk with Claude, create specs/*.md files
+**Phase 2: Planning** — Read-only loop: `/ralph-loop "$(cat PROMPT_plan.md)" --max-iterations 5 --completion-promise "PLAN COMPLETE"`
 
-# Phase 2: Planning (read-only loop)
-/ralph-loop "$(cat PROMPT_plan.md)" --max-iterations 5 --completion-promise "PLAN COMPLETE"
+**Phase 3: Building** — Autonomous loop: `/ralph-loop "$(cat PROMPT_build.md)" --max-iterations 50 --completion-promise "ALL TASKS COMPLETE"`
 
-# Phase 3: Building (autonomous loop)
-/ralph-loop "$(cat PROMPT_build.md)" --max-iterations 50 --completion-promise "ALL TASKS COMPLETE"
+**When plan becomes stale**
 
-# When plan becomes stale
-rm IMPLEMENTATION_PLAN.md && ./loop.sh plan
-```
+`rm IMPLEMENTATION_PLAN.md` then re-run planning mode
 
-## Key Takeaways
+**Key takeaways**
 
-- Three phases with separate prompts: specs, planning, building
-- Planning mode generates the roadmap—no code, no commits
-- Building mode implements one task at a time
-- Tests are your backpressure—Ralph can't commit broken code
-- `progress.txt` preserves learnings across iterations
-- Plans are disposable—regenerate when stale
-- Atomic tasks (2-3 iterations each) work best
+Three phases with separate prompts: specs, planning, building
 
-## Resources
+Planning mode generates the roadmap—no code, no commits
 
-- [The Ralph Playbook](https://claytonfarr.github.io/ralph-playbook/) — Complete methodology guide
-- [Geoffrey Huntley's Guide](https://github.com/ghuntley/how-to-ralph-wiggum) — Original technique
-- [11 Tips for AI Coding](https://www.aihero.dev/tips-for-ai-coding-with-ralph-wiggum) — Community best practices
-- [Official Plugin](https://github.com/anthropics/claude-code/tree/main/plugins/ralph-wiggum) — Source and docs
+Building mode implements one task at a time
 
----
+Tests are your backpressure—Ralph can't commit broken code
 
-*Previous: [Part 1: Introduction and Fundamentals](/blog/ralph-wiggum-part-1-introduction)*
-*Next: [Part 3: Ralph TUI Monitoring](/blog/ralph-wiggum-part-3-ralph-tui-monitoring)*
+`progress.txt` preserves learnings across iterations
+
+Plans are disposable—regenerate when stale
+
+Atomic tasks (2-3 iterations each) work best
+
+</QuickReference>

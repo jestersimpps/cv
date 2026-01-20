@@ -392,28 +392,38 @@ The goal isn't blind trust—it's informed trust. You're training your intuition
 
 **Using Claude for trivial tasks** — Sometimes typing `git status` is faster than explaining what you want to see.
 
-## Key Takeaways
-
-1. **Claude Code runs an agentic loop** — Think → Act → Observe → Correct → Repeat until done
-
-2. **`/clear` is your friend** — Use it aggressively between tasks. For complex work, use "Document & Clear" instead of trusting compaction.
-
-3. **`/compact` is unreliable** — The summarization is opaque and lossy. Prefer `/clear` when you can rebuild context easily.
-
-4. **Plan mode prevents mistakes** — `Shift+Tab` twice to research without risk. Planning is cheap, undoing is expensive.
-
-5. **`ultrathink` for hard problems** — Include thinking keywords to allocate more reasoning budget when Claude is stuck or facing complex architecture decisions.
-
-6. **Specific prompts produce better loops** — Clear completion conditions, file paths, and broken-down tasks help the loop converge.
-
-7. **Iteration is expected** — Guide Claude like a colleague. First attempts rarely need to be final attempts.
-
-8. **Context economics vary by plan** — Max plans have generous limits; Pro/API users should manage context aggressively.
-
 ## What's Next
 
 You now understand how Claude Code thinks. In [Part 3: Project Configuration](/blog/claude-code-mastery-03-project-configuration), we'll dive into CLAUDE.md—the file that shapes Claude's behavior for your specific project. A well-crafted CLAUDE.md is the difference between Claude that understands your codebase and Claude that fights against your patterns.
 
----
+<QuickReference>
 
-*Previous: [Part 1: Getting Started](/blog/claude-code-mastery-01-getting-started)*
+**Context management**
+
+`/clear` — Reset context (recommended)
+
+`/compact` — Compress context (use sparingly)
+
+`Shift+Tab` twice — Enter Plan Mode
+
+**Extended thinking**
+
+"think about..." — 4K tokens
+
+"think hard about..." — 10K tokens
+
+"ultrathink about..." — 32K tokens
+
+**Key takeaways**
+
+Claude Code runs an agentic loop: Think → Act → Observe → Correct → Repeat
+
+`/clear` is your friend—use between tasks
+
+Plan mode prevents mistakes
+
+Specific prompts produce better loops
+
+Iteration is expected
+
+</QuickReference>

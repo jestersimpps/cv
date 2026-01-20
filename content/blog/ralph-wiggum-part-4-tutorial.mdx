@@ -1,5 +1,5 @@
 ---
-title: "Mastering Ralph Wiggum Part 4: Complete Practical Tutorial"
+title: "Getting Started with Ralph Wiggum Part 4: Complete Practical Tutorial"
 description: "Watch Ralph build a complete BuzzFeed-style quiz in 3 hours. Real conversations, real commits, real troubleshooting. This is where theory meets code."
 publishedAt: "2026-01-18"
 author: "Jo Vinkenroye"
@@ -8,10 +8,10 @@ tags: ["Claude Code", "AI", "Automation", "Developer Tools", "Productivity", "Ra
 coverImage: "/assets/blog/ralph-wiggum-coding.webp"
 featured: true
 series:
-  id: "mastering-ralph-wiggum"
-  title: "Mastering Ralph Wiggum for Autonomous AI Coding"
+  id: "getting-started-ralph-wiggum"
+  title: "Getting Started with Ralph Wiggum"
   part: 4
-  total: 6
+  total: 5
 ---
 
 Enough theory. Let's build something real.
@@ -290,6 +290,10 @@ Each task must include:
 Output "PLAN COMPLETE" when done.
 ```
 
+> **See real examples:** Browse actual planning prompts from the community:
+> - [snarktank/ralph](https://github.com/snarktank/ralph/blob/main/prompt.md) — Complete prompt.md with AGENTS.md
+> - [ClaytonFarr/ralph-playbook](https://github.com/ClaytonFarr/ralph-playbook) — PROMPT_plan.md and PROMPT_build.md templates
+
 ### Run Planning Mode
 
 ```bash
@@ -454,6 +458,10 @@ For each iteration:
 
 Output "ALL TASKS COMPLETE" when all tasks have status: completed.
 ```
+
+> **See real examples:** Check out these community building prompts:
+> - [snarktank/ralph](https://github.com/snarktank/ralph) — Complete ralph.sh and prompt configuration
+> - [mikeyobrien/ralph-orchestrator](https://github.com/mikeyobrien/ralph-orchestrator) — Enhanced orchestration for complex builds
 
 ### Run Building Mode
 
@@ -770,17 +778,6 @@ But what happens when things go really wrong? When Ralph gets stuck in a loop? W
 
 In [Part 5: Advanced Patterns and Troubleshooting](/blog/ralph-wiggum-part-5-advanced-troubleshooting), we cover the hard stuff: debugging stuck loops, complex multi-repo projects, enterprise patterns, and the edge cases that separate Ralph practitioners from Ralph masters.
 
----
-
-## Key Takeaways
-
-- Real projects work better than toy examples—Ralph picks up your existing patterns
-- BuzzFeed quizzes are perfect Ralph projects (clear completion, testable outcomes)
-- `progress.txt` shows Ralph's thinking—invaluable for debugging
-- Small errors get fixed autonomously in the next iteration
-- Git history from Ralph is clean and atomic
-- ROI: ~$5 in usage for 8+ hours of saved development time
-
 ## Live Demo
 
 Try the quiz yourself: [What Type of Pet Sitter Are You?](https://www.globalpetsitter.com/quiz)
@@ -789,7 +786,32 @@ Ralph built this. It's in production. It's capturing leads right now.
 
 {/* IMAGE: Screenshot of the live quiz with "Your result: Animal Whisperer" displayed */}
 
----
+<QuickReference>
 
-*Previous: [Part 3: Ralph TUI Monitoring](/blog/ralph-wiggum-part-3-ralph-tui-monitoring)*
-*Next: [Part 5: Advanced Patterns and Troubleshooting](/blog/ralph-wiggum-part-5-advanced-troubleshooting)*
+**Setup** — `git checkout -b feature/your-feature`
+
+**Phase 1** — Define requirements with Claude (creates `specs/*.md`)
+
+**Phase 2** — `/ralph-loop "$(cat PROMPT_plan.md)" --max-iterations 5 --completion-promise "PLAN COMPLETE"`
+
+**Phase 3** — `/ralph-loop "$(cat PROMPT_build.md)" --max-iterations 30 --completion-promise "ALL TASKS COMPLETE"`
+
+**Monitor** — `ralph-tui run` (separate terminal)
+
+**Check progress** — `cat progress.txt` and `git log --oneline`
+
+**Key takeaways**
+
+Real projects work better than toy examples—Ralph picks up your existing patterns
+
+BuzzFeed quizzes are perfect Ralph projects (clear completion, testable outcomes)
+
+`progress.txt` shows Ralph's thinking—invaluable for debugging
+
+Small errors get fixed autonomously in the next iteration
+
+Git history from Ralph is clean and atomic
+
+ROI: ~$5 in usage for 8+ hours of saved development time
+
+</QuickReference>

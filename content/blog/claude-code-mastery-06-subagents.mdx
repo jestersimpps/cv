@@ -399,42 +399,32 @@ Git clone https://github.com/VoltAgent/awesome-claude-code-subagents.git .claude
 - **Coordination**: Complex multi-agent workflows require clear orchestration
 - **Write conflicts**: Be careful with multiple agents writing to the same files
 
-## Quick Reference
-
-```bash
-# Agent location
-.claude/agents/agent-name/AGENT.md
-
-# Minimal AGENT.md
----
-Name: my-agent
-Description: "When to use this agent"
-Tools: Read, Grep, Glob
----
-Instructions here...
-
-# Invoke specific agent
-"Use the security-auditor agent on src/auth/"
-
-# Invoke built-in type
-"Use an Explore agent to find all API routes"
-
-# Parallel execution
-"Run security-auditor and performance-analyzer in parallel on this PR"
-```
-
-**Frontmatter fields:**
-- `name` — Agent identifier
-- `description` — When to invoke (be specific!)
-- `tools` — Allowed tools (Read, Write, Edit, Bash, Grep, Glob)
-- `model` — sonnet, opus, haiku, or inherit
-
 ## What's Next
 
 Subagents let Claude delegate and parallelize work. But what if you want Claude to connect to external services—databases, APIs, or custom tools your team has built?
 
 That's where MCP (Model Context Protocol) comes in. In [Part 7: MCP Servers](/blog/claude-code-mastery-07-mcp-servers), we'll explore how to extend Claude's capabilities by connecting it to external data sources and services.
 
----
+<QuickReference>
 
-*Previous: [Part 5: Skills](/blog/claude-code-mastery-05-skills)*
+**Agent location** — `.claude/agents/agent-name/AGENT.md`
+
+**Frontmatter**
+
+`name` — Agent identifier
+
+`description` — When to invoke (be specific)
+
+`tools` — e.g., `Read, Grep, Glob`
+
+`model` — sonnet, opus, haiku, or inherit
+
+**Invoke agents**
+
+"Use the security-auditor agent on src/auth/"
+
+"Use an Explore agent to find all API routes"
+
+"Run security-auditor and performance-analyzer in parallel"
+
+</QuickReference>

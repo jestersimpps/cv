@@ -1,6 +1,6 @@
 ---
-title: "Mastering Ralph Wiggum Part 3: Ralph TUI Monitoring & Visibility"
-description: "Master Ralph TUI for real-time autonomous loop monitoring. Learn keyboard controls, task orchestration, session management, and debugging techniques for long-running AI builds."
+title: "Getting Started with Ralph Wiggum Part 3: Ralph TUI Monitoring & Visibility"
+description: "Use Ralph TUI for real-time autonomous loop monitoring. Learn keyboard controls, task orchestration, session management, and debugging techniques for long-running AI builds."
 publishedAt: "2026-01-18"
 author: "Jo Vinkenroye"
 category: "Tutorials"
@@ -8,10 +8,10 @@ tags: ["Claude Code", "AI", "Automation", "Developer Tools", "Productivity", "Ra
 coverImage: "/assets/blog/ralph-wiggum-coding.webp"
 featured: true
 series:
-  id: "mastering-ralph-wiggum"
-  title: "Mastering Ralph Wiggum for Autonomous AI Coding"
+  id: "getting-started-ralph-wiggum"
+  title: "Getting Started with Ralph Wiggum"
   part: 3
-  total: 6
+  total: 5
 ---
 
 Running Ralph Wiggum autonomously is powerful—but monitoring blind loops can feel like trusting a pilot you can't see. Ralph-TUI solves the visibility problem by giving you a real-time dashboard into every iteration, task, and decision your AI agent makes.
@@ -57,7 +57,7 @@ Ralph-TUI runs **alongside** Ralph Wiggum—it doesn't control or interrupt the 
 
 ## Installation & Setup
 
-Install Ralph-TUI globally via npm:
+Install [Ralph-TUI](https://github.com/subsy/ralph-tui) globally via npm:
 
 ```bash
 npm install -g ralph-tui
@@ -109,7 +109,7 @@ This answers the question: "Where are we in the build?"
 
 Need to stop monitoring but keep Ralph running? Ralph-TUI sessions persist. Close the terminal, grab lunch, resume later—progress tracking continues.
 
-**Use case:** Start a 6-hour build at 5 PM, monitor for 30 minutes, close Ralph-TUI, check back at 9 AM. The session shows everything that happened overnight.
+**Use case:** Start a 6-hour build, monitor for 30 minutes, close Ralph-TUI, check back later. The session shows everything that happened while you were away.
 
 ### 4. Subagent Tracing
 
@@ -344,11 +344,11 @@ To stop both Ralph and Ralph-TUI: `Ctrl+C` (or kill the Ralph process separately
 
 **Ralph-TUI workflow:**
 1. Day 1, 9 AM: Start Ralph, monitor with Ralph-TUI
-2. Day 1, 6 PM: Ralph is at task 23/50. Export logs, close Ralph-TUI, leave Ralph running overnight
-3. Day 2, 9 AM: Launch Ralph-TUI again—session shows overnight progress (tasks 24-38 completed)
+2. Day 1, 6 PM: Ralph is at task 23/50. Export logs, close Ralph-TUI, leave Ralph running
+3. Day 2, 9 AM: Launch Ralph-TUI again—session shows progress (tasks 24-38 completed)
 4. Day 2, 12 PM: Ralph finishes. Review complete log export
 
-**Why Ralph-TUI helps:** Session persistence means you don't lose visibility into what happened overnight. Logs show every decision Ralph made while you were offline.
+**Why Ralph-TUI helps:** Session persistence means you don't lose visibility into what happened during extended runs. Logs show every decision Ralph made while you were away.
 
 ### Use Case 3: Team Collaboration
 
@@ -671,6 +671,43 @@ This deletes sessions and archives older than 7 days.
 
 ---
 
+## Alternative: Headless Visual Feedback with Playwright MCP
+
+For bash loop runs without a visible browser, [JeredBlu recommends](https://github.com/JeredBlu/guides/blob/main/Ralph_Wiggum_Guide.md) Playwright MCP for visual verification.
+
+Create `.mcp.json` in your project root:
+
+```json
+{
+  "mcpServers": {
+    "playwright": {
+      "command": "npx",
+      "args": ["-y", "@playwright/mcp@latest", "--headless", "--output-dir", "screenshots"]
+    }
+  }
+}
+```
+
+Then reference it in your PROMPT_build.md:
+
+```markdown
+After implementing, use Playwright to:
+1. Navigate to the local server URL
+2. Take a screenshot: screenshots/[task-name].png
+
+Include the screenshot filename in your progress.txt entry.
+```
+
+This gives you visual verification of Ralph's work without needing Claude for Chrome or a visible browser window. Screenshots accumulate in your project folder, providing a visual audit trail of what Ralph built.
+
+**When to use Playwright MCP vs Ralph-TUI:**
+- **Ralph-TUI:** Real-time log monitoring, task orchestration, keyboard controls
+- **Playwright MCP:** Headless visual verification, screenshot audit trails, CI/CD integration
+
+Both tools complement each other—use Ralph-TUI for live monitoring and Playwright MCP for visual verification.
+
+---
+
 ## What's Next
 
 You now have full visibility into Ralph's autonomous loops. In [Part 4](/blog/ralph-wiggum-part-4-tutorial), we'll put everything together—building a complete production-grade API from scratch using the three-phase methodology with Ralph-TUI monitoring.
@@ -683,25 +720,49 @@ You'll learn:
 
 This is where Ralph Wiggum's power becomes real: watching an AI agent build a feature-complete application over 6+ hours while you monitor progress with Ralph-TUI.
 
----
+<QuickReference>
 
-## Key Takeaways
+**Installation**
 
-✅ **Ralph-TUI provides essential visibility for autonomous loops** without interrupting execution
+`npm install -g ralph-tui` then `ralph-tui setup`
 
-✅ **Keyboard controls enable hands-off monitoring** with search, export, and session persistence
+**Start monitoring**
 
-✅ **Session persistence supports multi-day projects** by maintaining context across terminal sessions
+`ralph-tui run`
 
-✅ **Task orchestration shows real-time priority** and progress through `IMPLEMENTATION_PLAN.md`
+**Keyboard controls**
 
-✅ **Perfect companion for the tutorial in Part 4** where we'll use Ralph-TUI to monitor a full project build
+`Space` — Pause/resume auto-scroll
 
-## Resources Referenced
+`/` — Search logs
 
-- [Ralph-TUI GitHub Repository](https://github.com/subsy/ralph-tui)
-- [Ralph-TUI npm Package](https://www.npmjs.com/package/ralph-tui)
-- [Ralph-TUI Documentation](https://ralph-tui.dev)
-- [Part 1: Introduction and Fundamentals](/blog/ralph-wiggum-part-1-introduction)
-- [Part 2: The Three-Phase Methodology](/blog/ralph-wiggum-part-2-methodology)
-- [Part 4: Complete Practical Tutorial](/blog/ralph-wiggum-part-4-tutorial)
+`e` — Export logs
+
+`q` — Quit (Ralph continues)
+
+`Ctrl+C` — Emergency stop
+
+**View switching**
+
+`1` — Main log
+
+`2` — Task list
+
+`3` — File changes
+
+`4` — Test results
+
+**Key takeaways**
+
+Ralph-TUI provides essential visibility for autonomous loops without interrupting execution
+
+Keyboard controls enable hands-off monitoring with search, export, and session persistence
+
+Session persistence supports multi-day projects
+
+Task orchestration shows real-time priority through IMPLEMENTATION_PLAN.md
+
+Perfect companion for long-running builds
+
+</QuickReference>
+
