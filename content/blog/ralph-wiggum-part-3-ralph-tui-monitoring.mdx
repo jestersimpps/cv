@@ -77,6 +77,8 @@ This installs three skills to `~/.claude/skills/` as slash commands:
 - `/ralph-tui-create-json` — Convert PRD to `prd.json` format
 - `/ralph-tui-create-beads` — Convert PRD to Beads issue tracking format
 
+> **What are skills?** Skills are specialized knowledge modules that Claude loads automatically when you invoke them via slash commands. They extend Claude's capabilities with domain-specific prompts and workflows. See [Mastery Part 5: Skills](/blog/claude-code-mastery-05-skills) for details on creating and using skills.
+
 **First launch verification:**
 
 ```bash
@@ -116,6 +118,8 @@ Need to stop monitoring but keep Ralph running? Ralph-TUI sessions persist. Clos
 ### 4. Subagent Tracing
 
 When Ralph spawns subagents (for testing, linting, or subtasks), Ralph-TUI traces the call stack. See which subagent is active, what it's working on, and when it returns to the main loop.
+
+> **What are subagents?** Subagents are specialized AI workers with independent context windows that Claude spawns to handle specific tasks in parallel. They can run tests, lint code, or tackle subtasks without consuming the main agent's context. See [Mastery Part 6: Subagents](/blog/claude-code-mastery-06-subagents) for a complete explanation.
 
 **Why it matters:** Complex builds use 5-10 subagents. Without tracing, you lose visibility into nested execution.
 
@@ -280,6 +284,8 @@ The header updates:
 ```
 
 **Iteration 3** doesn't mean "task 3"—it means Ralph has completed 3 full think-act-observe-correct cycles. A single task might take 5-10 iterations if tests fail or requirements are complex.
+
+**Understanding iterations vs tasks:** An iteration is one complete think-act-observe cycle—Claude reads the prompt, takes action (writes code, runs tests), observes results, and corrects if needed. A task from your `IMPLEMENTATION_PLAN.md` may require multiple iterations to complete. For example, implementing authentication might take 8 iterations: initial implementation (2), fixing failing tests (3), adding edge cases (2), and final cleanup (1).
 
 ### Step 6: Use Search During Errors
 

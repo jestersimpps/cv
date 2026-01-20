@@ -108,13 +108,15 @@ This gives you fresh context with exactly what's relevant.
 
 ### `/compact` — Use With Caution
 
+> **January 2026 Update:** Since v2.0.64, `/compact` is now **instant**—no more waiting. Also try `/context` to check if MCP servers are eating space before compacting.
+
 ```
 /compact
 ```
 
 Instead of wiping everything, `/compact` creates an intelligent summary of your conversation and starts fresh with that summary as context.
 
-**The honest truth:** Many experienced users avoid `/compact` when possible. The automatic summarization is opaque—you don't know exactly what gets preserved or lost. It can be error-prone and slow.
+**The honest truth:** Many experienced users avoid `/compact` when possible. The automatic summarization is opaque—you don't know exactly what gets preserved or lost.
 
 ![/compact - We don't do that here](/assets/blog/we-dont-do-that-here-meme.jpg)
 
@@ -155,11 +157,15 @@ For complex, multi-session tasks, there's a better pattern than trusting compact
 
 This creates **durable external memory** that survives sessions perfectly—no lossy summarization.
 
+> **January 2026 Update:** This pattern is now built into Plan Mode. When you accept a plan, Claude automatically clears context and loads the plan into a fresh window. This significantly improves plan adherence. You can opt out if you prefer to keep context.
+
 ### Auto-Compact: The Safety Net You Shouldn't Rely On
 
-Claude Code automatically compacts when your context hits approximately 92-95% capacity. This prevents running out of space mid-task.
+> **January 2026 Update:** Auto-compact now triggers at **75% capacity** (not 92-95%), leaving ~50k tokens free for reasoning. This is a significant improvement.
 
-**But don't trust it.** Auto-compaction is emergency behavior, not a strategy. By the time it triggers, you've likely already experienced degraded output quality. The compaction itself is the same opaque summarization that makes manual `/compact` unreliable.
+Claude Code automatically compacts when your context hits capacity. This prevents running out of space mid-task.
+
+**But don't over-rely on it.** Auto-compaction is still emergency behavior, not a strategy. By the time it triggers, you may have already experienced degraded output quality.
 
 Better approach: **clear proactively at natural breakpoints** rather than letting context bloat until the system intervenes.
 

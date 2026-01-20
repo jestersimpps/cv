@@ -22,6 +22,10 @@ That's Ralph Wiggum. And once you've used it, you'll wonder how you ever worked 
 
 ![Before Ralph: stressed developer vs After Ralph: relaxed developer with code commits](/assets/blog/ralph-before-after.png)
 
+## What is Claude Code?
+
+Claude Code is Anthropic's official CLI for Claude—a terminal-based AI coding assistant that can read, write, and edit files in your codebase. Unlike chat interfaces, Claude Code works directly with your local files, runs commands, and integrates into your development workflow. For a complete introduction, see [Claude Code Mastery Part 1: Getting Started](/blog/claude-code-mastery-01-getting-started).
+
 ## What is Ralph Wiggum?
 
 Ralph is a Claude Code plugin that turns your AI assistant into an autonomous coding agent. Instead of the usual back-and-forth—prompt, review, prompt, review—you give Ralph a task and walk away. It works until the job is actually done.
@@ -34,7 +38,7 @@ Here's the mechanics:
 
 1. You give Claude a task with clear completion criteria
 2. Claude works on it and tries to exit when "done"
-3. A Stop hook intercepts and checks: is it *actually* done?
+3. A Stop hook intercepts and checks: is it *actually* done? (Hooks are automated actions that run at specific points in Claude's lifecycle—see [Mastery Part 3](/blog/claude-code-mastery-03-project-configuration#hooks-automated-actions) for details)
 4. If not, the same prompt gets fed back in
 5. Claude sees its previous work in the files
 6. The loop continues until genuine completion
@@ -110,6 +114,8 @@ Add the tools Ralph needs to your `.claude/settings.local.json`:
   }
 }
 ```
+
+> **Understanding permission syntax:** The `Bash(npm test:*)` pattern means "allow any Bash command starting with `npm test`". The `*` acts as a wildcard. This gives Ralph permission to run tests without prompting you each time. See [Mastery Part 3: Project Configuration](/blog/claude-code-mastery-03-project-configuration#the-permission-system) for full details on permission patterns.
 
 **Option B: Use permission flags**
 
@@ -188,6 +194,8 @@ There are two ways to run Ralph:
 - Launches fresh context window per iteration
 - Prevents context bloat and hallucination
 - Better for long-running tasks
+
+> **What is a context window?** The context window is Claude's working memory—everything Claude knows about your conversation must fit here (~200K tokens). As you work, this fills up with your prompts, code, and Claude's responses. When it's full, Claude starts forgetting earlier details. See [Mastery Part 2: Mental Model](/blog/claude-code-mastery-02-mental-model#the-context-window-claudes-working-memory) for a deeper explanation.
 
 Here's a minimal bash loop example:
 
@@ -295,6 +303,24 @@ You've got Ralph installed. You understand the loop. You know when to use it and
 But we've only scratched the surface.
 
 In [Part 2: The Three-Phase Methodology](/blog/ralph-wiggum-part-2-methodology), we'll cover the professional workflow—separate prompts for planning and building, spec files that guide multi-day projects, and the techniques that make long-running autonomous builds actually work. This is where Ralph goes from "useful tool" to "force multiplier."
+
+## Glossary
+
+New to Claude Code? Here are the key terms you'll encounter throughout this series:
+
+**Context window** — Claude's working memory. Everything Claude knows about your conversation must fit here (~200K tokens). [Learn more](/blog/claude-code-mastery-02-mental-model#the-context-window-claudes-working-memory)
+
+**Backpressure** — Automated validation (tests, lints, type checks) that rejects bad work, forcing Claude to iterate until correct
+
+**Completion promise** — Exact text Claude must output to signal task completion. Ralph uses string matching to detect this
+
+**Iteration** — One complete think-act-observe-correct cycle. A task may take multiple iterations
+
+**Subagent** — Specialized AI worker with independent context that runs in parallel. [Learn more](/blog/claude-code-mastery-06-subagents)
+
+**MCP** — Model Context Protocol. Connects Claude to external services like databases, APIs, and browser automation. [Learn more](/blog/claude-code-mastery-07-mcp-servers)
+
+**Ultrathink** — Keyword that allocates maximum thinking budget (~32K tokens) for complex reasoning. [Learn more](/blog/claude-code-mastery-09-power-user-secrets#extended-thinking-the-real-story)
 
 <QuickReference>
 

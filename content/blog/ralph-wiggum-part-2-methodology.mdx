@@ -199,6 +199,8 @@ Example structure:
 
 **This is the continuous loop mode** using `PROMPT_build.md`. This is where Ralph shines—autonomously implementing tasks while you sleep.
 
+> **What is backpressure?** In the Ralph methodology, backpressure refers to automated validation mechanisms—tests, type checks, linters, builds—that reject unacceptable work. Instead of prescribing exactly *how* Claude should implement something, you create "gates" that reject bad output. Failing tests force Claude to iterate until the code is correct. This is the core insight behind autonomous coding loops.
+
 Building mode assumes the plan exists, picks one task at a time, implements it with tests, commits, then loops with fresh context.
 
 ### How to Run Building Mode
@@ -303,6 +305,7 @@ for ((i=1; i<=$MAX_ITERATIONS; i++)); do
   echo "Iteration $i / $MAX_ITERATIONS"
   echo "--------------------------------"
 
+  # The -p flag runs Claude in one-shot mode (see Mastery Part 1: https://jocv.dev/blog/claude-code-mastery-01-getting-started#one-shot-mode-quick-questions)
   result=$(claude -p "$(cat $PROMPT_FILE)" --output-format text 2>&1) || true
   echo "$result"
 
@@ -509,7 +512,7 @@ Based on community learnings from [The Ralph Wiggum Playbook](https://claytonfar
 
 - **"Study the codebase first"** → Reduces assumptions about what exists
 - **"Don't assume not implemented"** → Encourages verification before writing
-- **"Ultrathink before acting"** → Promotes careful planning before changes
+- **"Ultrathink before acting"** → Promotes careful planning before changes (`ultrathink` allocates maximum thinking budget for complex reasoning—see [Mastery Part 9](/blog/claude-code-mastery-09-power-user-secrets#extended-thinking-the-real-story))
 - **"Capture the why in commits"** → Improves git history quality
 - **"MUST pass all tests"** → Enforces quality gates strictly
 
@@ -547,6 +550,6 @@ Tests are your backpressure—Ralph can't commit broken code
 
 Plans are disposable—regenerate when stale
 
-Atomic tasks (2-3 iterations each) work best
+Atomic tasks work best—self-contained tasks that can complete in 2-3 iterations with clear pass/fail verification
 
 </QuickReference>

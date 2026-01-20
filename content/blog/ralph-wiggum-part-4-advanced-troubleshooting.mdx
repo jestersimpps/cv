@@ -294,6 +294,13 @@ A well-structured PRD is critical for Ralph's success. This is an alternative to
 
 **Fix:** Use the Bash loop method instead of the plugin for long-running projects—each iteration gets a fresh context window. This is a key insight from [Geoffrey Huntley's guide](https://github.com/ghuntley/how-to-ralph-wiggum).
 
+**When to use which method:**
+- **< 20 iterations**: Plugin (`/ralph-loop`) is fine—simpler setup, context stays manageable
+- **20-40 iterations**: Either works; bash loop preferred for consistency
+- **> 40 iterations**: Bash loop required—prevents context degradation and hallucination
+
+The plugin runs everything in a single context window, which fills up over time. The bash loop method launches a fresh Claude instance per iteration, with only the codebase state carrying over.
+
 ### No Cost Monitoring
 
 **Mistake:** Not tracking API spending during development
@@ -440,6 +447,9 @@ done
 ```
 
 **Solution 2: Context Compression Prompt**
+
+> **About `/compact`:** The `/compact` command compresses your conversation context, letting you continue working without losing important details. Use it proactively before hitting context limits. See [Mastery Part 2](/blog/claude-code-mastery-02-mental-model#compact--use-with-caution) for when to use `/compact` vs `/clear`.
+
 ```markdown
 Every 10 iterations, before continuing:
 
@@ -744,6 +754,8 @@ ralph-tui run --port 9999
 ## Headless Visual Feedback with Playwright MCP
 
 For bash loop runs without a visible browser, [JeredBlu recommends](https://github.com/JeredBlu/guides/blob/main/Ralph_Wiggum_Guide.md) Playwright MCP for visual verification.
+
+> **What is MCP?** Model Context Protocol (MCP) is an open standard that lets Claude connect to external services—databases, APIs, browser automation, and more. MCP servers extend Claude's capabilities beyond text processing. See [Mastery Part 7: MCP Servers](/blog/claude-code-mastery-07-mcp-servers) for setup and configuration.
 
 Create `.mcp.json` in your project root:
 
