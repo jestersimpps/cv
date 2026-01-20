@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
+import { createContext, useContext, useState, useCallback, useRef, ReactNode } from 'react';
 import LinkPreviewSidebar from './LinkPreviewSidebar';
 
 interface PreviewData {
@@ -18,7 +18,8 @@ interface ActivePreview {
 
 interface LinkPreviewContextType {
   previews: Record<string, PreviewData>;
-  isLoading: boolean;
+  loadingUrls: Set<string>;
+  fetchPreview: (url: string) => void;
 }
 
 interface ActivePreviewContextType {
@@ -28,7 +29,8 @@ interface ActivePreviewContextType {
 
 const LinkPreviewContext = createContext<LinkPreviewContextType>({
   previews: {},
-  isLoading: true,
+  loadingUrls: new Set(),
+  fetchPreview: () => {},
 });
 
 const ActivePreviewContext = createContext<ActivePreviewContextType>({
@@ -45,80 +47,36 @@ interface LinkPreviewProviderProps {
   content: string;
 }
 
-function extractExternalLinks(mdxContent: string): string[] {
-  const links: string[] = [];
-
-  // Match markdown links: [text](url)
-  const markdownLinkRegex = /\[([^\]]+)\]\((https?:\/\/[^\)]+)\)/g;
-  let match;
-
-  while ((match = markdownLinkRegex.exec(mdxContent)) !== null) {
-    const url = match[2];
-    if (!links.includes(url)) {
-      links.push(url);
-    }
-  }
-
-  return links;
-}
-
-export default function LinkPreviewProvider({ children, content }: LinkPreviewProviderProps) {
+export default function LinkPreviewProvider({ children }: LinkPreviewProviderProps) {
   const [previews, setPreviews] = useState<Record<string, PreviewData>>({});
-  const [isLoading, setIsLoading] = useState(true);
   const [activePreview, setActivePreview] = useState<ActivePreview | null>(null);
+  const loadingUrlsRef = useRef<Set<string>>(new Set());
+  const [, forceUpdate] = useState({});
 
-  useEffect(() => {
-    const abortController = new AbortController();
+  const fetchPreview = useCallback(async (url: string) => {
+    if (previews[url] || loadingUrlsRef.current.has(url)) {
+      return;
+    }
 
-    const loadPreviews = async () => {
-      const externalLinks = extractExternalLinks(content);
+    loadingUrlsRef.current.add(url);
+    forceUpdate({});
 
-      if (externalLinks.length === 0) {
-        setIsLoading(false);
-        return;
+    try {
+      const response = await fetch(`/api/link-preview?url=${encodeURIComponent(url)}`);
+      if (response.ok) {
+        const data = await response.json();
+        setPreviews(prev => ({ ...prev, [url]: data }));
       }
-
-      const previewPromises = externalLinks.map(async (url) => {
-        try {
-          const response = await fetch(`/api/link-preview?url=${encodeURIComponent(url)}`, {
-            signal: abortController.signal,
-          });
-          if (response.ok) {
-            const data = await response.json();
-            return { url, data };
-          }
-        } catch (error) {
-          if (error instanceof Error && error.name === 'AbortError') {
-            return { url, data: null };
-          }
-        }
-        return { url, data: null };
-      });
-
-      const results = await Promise.all(previewPromises);
-
-      if (abortController.signal.aborted) return;
-
-      const previewMap: Record<string, PreviewData> = {};
-      results.forEach(({ url, data }) => {
-        if (data) {
-          previewMap[url] = data;
-        }
-      });
-
-      setPreviews(previewMap);
-      setIsLoading(false);
-    };
-
-    loadPreviews();
-
-    return () => {
-      abortController.abort();
-    };
-  }, [content]);
+    } catch {
+      // Silently fail - preview is optional
+    } finally {
+      loadingUrlsRef.current.delete(url);
+      forceUpdate({});
+    }
+  }, [previews]);
 
   return (
-    <LinkPreviewContext.Provider value={{ previews, isLoading }}>
+    <LinkPreviewContext.Provider value={{ previews, loadingUrls: loadingUrlsRef.current, fetchPreview }}>
       <ActivePreviewContext.Provider value={{ activePreview, setActivePreview }}>
         {children}
         <LinkPreviewSidebar />

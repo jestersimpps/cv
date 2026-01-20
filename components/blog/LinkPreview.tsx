@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { useLinkPreviews, useSetActivePreview } from './LinkPreviewProvider';
 
@@ -14,15 +13,14 @@ interface LinkPreviewProps {
 export default function LinkPreview({ href, children, isExternal = false }: LinkPreviewProps) {
   const [isHovered, setIsHovered] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const [linkPosition, setLinkPosition] = useState<{ x: number; y: number } | null>(null);
   const linkRef = useRef<HTMLAnchorElement>(null);
-  const { previews } = useLinkPreviews();
+  const { previews, fetchPreview } = useLinkPreviews();
   const setActivePreview = useSetActivePreview();
+  const hasTriggeredFetch = useRef(false);
 
   const previewData = previews[href];
 
   useEffect(() => {
-    // Check if mobile
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 1024);
     };
@@ -32,13 +30,30 @@ export default function LinkPreview({ href, children, isExternal = false }: Link
   }, []);
 
   useEffect(() => {
+    if (!isExternal || !linkRef.current || hasTriggeredFetch.current) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && !hasTriggeredFetch.current) {
+            hasTriggeredFetch.current = true;
+            fetchPreview(href);
+            observer.disconnect();
+          }
+        });
+      },
+      { rootMargin: '100px' }
+    );
+
+    observer.observe(linkRef.current);
+
+    return () => observer.disconnect();
+  }, [href, isExternal, fetchPreview]);
+
+  useEffect(() => {
     if (isHovered && linkRef.current && isExternal) {
       const rect = linkRef.current.getBoundingClientRect();
       const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-      setLinkPosition({
-        x: rect.right,
-        y: rect.top + scrollTop + rect.height / 2,
-      });
       setActivePreview({ href, data: previewData || null, position: { x: rect.right, y: rect.top + scrollTop + rect.height / 2 } });
     } else {
       setActivePreview(null);
