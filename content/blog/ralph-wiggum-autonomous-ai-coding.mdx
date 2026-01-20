@@ -13,8 +13,6 @@ Picture this: you push a complex feature request to Claude Code at 11 PM, close 
 
 That's not a fantasy—it's what developers using Ralph Wiggum are doing right now. And if you're still manually shepherding every AI interaction, you're leaving massive productivity gains on the table.
 
-{/* IMAGE: Developer sleeping peacefully while code commits appear on screen - "Sleep. Ship. Repeat." */}
-
 Here's the uncomfortable truth: while you're carefully crafting prompts and reviewing every AI suggestion, other developers are shipping entire features autonomously. YC hackathon teams have built 6+ repositories during long-running sessions—for $297 in API costs. One developer completed a $50k contract for less than $300. Geoffrey Huntley ran a 3-month autonomous loop that built an entire programming language.
 
 The gap between developers who've figured this out and those who haven't is widening fast. This guide is your shortcut to the right side of that gap.
@@ -36,15 +34,30 @@ Here's the magic:
 
 **The key insight?** The prompt never changes—but Claude's work persists. Each iteration builds on the last, creating a self-referential feedback loop where Claude improves its own output until it actually works.
 
-{/* IMAGE: Loop diagram showing "Prompt → Work → Check → Repeat" with files persisting between iterations */}
+```mermaid
+graph LR
+    A[📝 Prompt] --> B[⚙️ Work]
+    B --> C[💾 Files Updated]
+    C --> D{✓ Done?}
+    D -->|No| A
+    D -->|Yes| E[🎉 Complete]
+
+    subgraph Persists Between Iterations
+        C
+    end
+
+    style A fill:#7c3aed,stroke:#5b21b6,color:#fff
+    style B fill:#2563eb,stroke:#1d4ed8,color:#fff
+    style C fill:#0891b2,stroke:#0e7490,color:#fff
+    style D fill:#059669,stroke:#047857,color:#fff
+    style E fill:#16a34a,stroke:#15803d,color:#fff
+```
 
 ## From Clever Hack to Industry Standard
 
 What started as a bash script experiment has become an official Anthropic plugin. [Boris Cherny](https://github.com/anthropics/claude-code/tree/main/plugins/ralph-wiggum), Anthropic's Head of Claude Code, formalized it in summer 2025. By [early 2026](https://venturebeat.com/technology/how-ralph-wiggum-went-from-the-simpsons-to-the-biggest-name-in-ai-right-now), VentureBeat was calling it "the biggest name in AI right now."
 
 This represents a fundamental shift in how we work with AI: from "chatting" to managing autonomous sessions.
-
-{/* IMAGE: "Evolution of AI coding" meme - before: developer typing prompts constantly, after: developer sleeping while git commits pile up */}
 
 ## The Three-Phase Methodology (How the Pros Do It)
 
@@ -77,8 +90,6 @@ The developer community has gone all-in on Ralph for production work:
 **Teams** run parallel Ralph sessions on different features. Monday standup becomes "here's what Ralph shipped over the weekend."
 
 **Open source maintainers** automate the tedious stuff—migrating from React 16 to 19, converting CommonJS to ESM, adding TypeScript types to legacy codebases.
-
-{/* IMAGE: "Developers who use Ralph vs developers who don't" Drake meme */}
 
 ## Master Ralph Wiggum: The Complete Series
 
