@@ -551,35 +551,19 @@ If coverage drops below threshold:
 - Inconsistent file structure
 - Multiple ways to do the same thing
 
-**Solution:** Add pattern documentation to prompt:
+**Solution:** Add pattern documentation to your prompt. Include your project's actual file structure and naming conventions so Ralph follows them consistently:
 
 ```markdown
 ## Codebase Patterns (MUST FOLLOW)
 
-### File Structure
-```
-src/
-  features/
-    [feature-name]/
-      [feature].controller.ts
-      [feature].service.ts
-      [feature].routes.ts
-      [feature].types.ts
-      [feature].test.ts
-```
-
-### Naming Conventions
-- Controllers: `[Entity]Controller` (UserController)
-- Services: `[Entity]Service` (UserService)
-- Routes: `[entity].routes.ts` (user.routes.ts)
-- Tests: `[feature].test.ts`
-
-### Code Patterns
-Study existing features before implementing new ones:
-1. Read user feature as reference
-2. Follow same structure
-3. Reuse established patterns
+Before implementing any feature:
+1. Study existing features as reference (e.g., the user module)
+2. Follow the same directory structure and file organization
+3. Reuse established naming conventions and code patterns
 4. Only deviate if specs explicitly require it
+
+If unsure about a pattern, check how similar features are implemented
+in the codebase before writing new code.
 ```
 
 ## Ralph-TUI Advanced Configuration
