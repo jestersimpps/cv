@@ -68,6 +68,8 @@ export default function LinkPreviewProvider({ children, content }: LinkPreviewPr
   const [activePreview, setActivePreview] = useState<ActivePreview | null>(null);
 
   useEffect(() => {
+    const abortController = new AbortController();
+
     const loadPreviews = async () => {
       const externalLinks = extractExternalLinks(content);
 
@@ -76,21 +78,26 @@ export default function LinkPreviewProvider({ children, content }: LinkPreviewPr
         return;
       }
 
-      // Fetch all previews in parallel
       const previewPromises = externalLinks.map(async (url) => {
         try {
-          const response = await fetch(`/api/link-preview?url=${encodeURIComponent(url)}`);
+          const response = await fetch(`/api/link-preview?url=${encodeURIComponent(url)}`, {
+            signal: abortController.signal,
+          });
           if (response.ok) {
             const data = await response.json();
             return { url, data };
           }
-        } catch {
-          // Silently fail - preview is optional
+        } catch (error) {
+          if (error instanceof Error && error.name === 'AbortError') {
+            return { url, data: null };
+          }
         }
         return { url, data: null };
       });
 
       const results = await Promise.all(previewPromises);
+
+      if (abortController.signal.aborted) return;
 
       const previewMap: Record<string, PreviewData> = {};
       results.forEach(({ url, data }) => {
@@ -104,6 +111,10 @@ export default function LinkPreviewProvider({ children, content }: LinkPreviewPr
     };
 
     loadPreviews();
+
+    return () => {
+      abortController.abort();
+    };
   }, [content]);
 
   return (
