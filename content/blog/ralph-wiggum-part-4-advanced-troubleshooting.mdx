@@ -1,5 +1,5 @@
 ---
-title: "Getting Started with Ralph Wiggum Part 5: Advanced Patterns and Troubleshooting"
+title: "Getting Started with Ralph Wiggum Part 4: Advanced Patterns & Troubleshooting"
 description: "Advanced Ralph Wiggum techniques with expert prompt patterns, comprehensive troubleshooting strategies, and enterprise-grade implementations."
 publishedAt: "2026-01-18"
 author: "Jo Vinkenroye"
@@ -10,11 +10,11 @@ featured: true
 series:
   id: "getting-started-ralph-wiggum"
   title: "Getting Started with Ralph Wiggum"
-  part: 5
-  total: 5
+  part: 4
+  total: 4
 ---
 
-You've learned the fundamentals, mastered the methodology, and seen Ralph build a complete project. Now let's dive into advanced techniques that separate hobbyists from professionals.
+You've learned the fundamentals and mastered the methodology. Now let's dive into advanced techniques that separate hobbyists from professionals.
 
 This is your advanced playbook—techniques for complex scenarios, comprehensive troubleshooting, and enterprise-grade patterns that will make you a Ralph expert.
 
@@ -180,6 +180,150 @@ Create checkpoints for long-running projects:
 - Test data setup takes 2-3 iterations
 - Auth patterns now stable and reusable
 ```
+
+## Setting Up PRDs for Ralph
+
+A well-structured PRD is critical for Ralph's success. This is an alternative to the `specs/*.md` + `IMPLEMENTATION_PLAN.md` approach—some teams prefer JSON for machine readability.
+
+> **Tools to help:** [Ralph TUI](https://github.com/subsy/ralph-tui) includes `/ralph-tui-prd` to create PRDs interactively and `/ralph-tui-create-json` to convert them to JSON. [snarktank/ralph](https://github.com/snarktank/ralph) offers PRD-driven task management with automatic branching and flowchart visualization.
+
+### prd.json Template
+
+```json
+{
+  "project": "Todo API",
+  "schema_version": "2.0",
+  "final_tests": ["npm test", "npm run type-check", "npm run lint"],
+  "stories": [
+    {
+      "id": "S001",
+      "priority": 1,
+      "title": "User Authentication",
+      "category": "backend",
+      "description": "Implement JWT-based authentication with login/logout",
+      "acceptance": [
+        "User can register with email/password",
+        "User can login and receive JWT token",
+        "Protected routes require valid JWT",
+        "User can logout and invalidate token"
+      ],
+      "steps_to_verify": [
+        "Run: npm test -- auth.test.ts",
+        "Verify all 12 auth tests pass",
+        "Check JWT is stored in httpOnly cookie",
+        "Verify token expiry works correctly"
+      ],
+      "tests": ["npm test -- auth.test.ts"],
+      "estimated_complexity": "medium",
+      "depends_on": [],
+      "passes": false
+    },
+    {
+      "id": "S002",
+      "priority": 2,
+      "title": "Todo CRUD Endpoints",
+      "category": "backend",
+      "description": "Create POST, GET, PUT, DELETE endpoints for todos",
+      "acceptance": [
+        "POST /api/todos creates a todo",
+        "GET /api/todos returns user's todos only",
+        "PUT /api/todos/:id updates a todo",
+        "DELETE /api/todos/:id deletes a todo"
+      ],
+      "steps_to_verify": [
+        "Run: npm test -- todos.test.ts",
+        "Test with Postman or curl",
+        "Verify authorization works"
+      ],
+      "tests": ["npm test -- todos.test.ts"],
+      "estimated_complexity": "medium",
+      "depends_on": ["S001"],
+      "passes": false
+    }
+  ]
+}
+```
+
+### Key PRD Principles
+
+**Binary Pass/Fail Criteria**: Each task needs automated verification. As [The Ralph Playbook](https://claytonfarr.github.io/ralph-playbook/) emphasizes: "Make it better" isn't testable—"All tests pass with 80%+ coverage" is.
+
+**Atomic Tasks**: If a task requires 500+ lines of code, break it down. Each story should complete in 2-3 iterations.
+
+**The `passes` Field**: Ralph updates this to `true` when complete. The loop continues until all tasks pass.
+
+**Test Requirements**: Every story should specify how to verify completion automatically. No manual verification steps.
+
+## Common Pitfalls and How to Avoid Them
+
+### Starting Too Ambitious
+
+**Mistake:** Running 50 iterations on your first Ralph project.
+
+**Fix:** Start with 10-20 iterations to understand costs and behavior. As documented in [community tips](https://www.aihero.dev/tips-for-ai-coding-with-ralph-wiggum), a 50-iteration loop can cost $50-100+.
+
+### Vague Completion Criteria
+
+**Mistake:** "Make the app faster" or "Improve the UI"
+
+**Fix:** Use specific, testable criteria:
+- ✅ "Reduce API response time to under 200ms (verified by load tests)"
+- ✅ "All Lighthouse scores above 90"
+- ✅ "Test coverage above 80% on all modules"
+
+### No Automated Verification
+
+**Mistake:** Tasks that require human judgment like "make it look good"
+
+**Fix:** Ralph needs binary pass/fail conditions. If you can't write an automated test for it, Ralph can't verify it. As [The Ralph Playbook](https://claytonfarr.github.io/ralph-playbook/) states: *"Backpressure beats direction."*
+
+### Tasks Too Large
+
+**Mistake:** "Build entire authentication system" as one task
+
+**Fix:** Break into smaller stories:
+- S001: User registration endpoint
+- S002: Login endpoint with JWT
+- S003: Token refresh mechanism
+- S004: Password reset flow
+- S005: Email verification
+
+### Ignoring Context Limits
+
+**Mistake:** Letting Ralph run indefinitely without fresh context
+
+**Fix:** Use the Bash loop method instead of the plugin for long-running projects—each iteration gets a fresh context window. This is a key insight from [Geoffrey Huntley's guide](https://github.com/ghuntley/how-to-ralph-wiggum).
+
+### No Cost Monitoring
+
+**Mistake:** Not tracking API spending during development
+
+**Fix:** Set billing alerts and start with low iteration counts. Monitor costs per iteration. Track your spending at https://console.anthropic.com
+
+### Wrong Task Types
+
+**Good Ralph tasks:**
+- Migrating tests from Jest to Vitest
+- Adding CRUD endpoints with tests
+- Implementing well-specified features
+- Refactoring with existing test coverage
+
+**Bad Ralph tasks:**
+- "Figure out why the app is slow" (exploration)
+- "Make the UI prettier" (subjective)
+- "Fix this weird bug" (requires deep debugging context)
+- UX decisions requiring aesthetic judgment
+
+### The Thrashing Problem
+
+**Symptom:** Ralph gets stuck in a loop—same error, same fix attempt, same failure.
+
+**Solutions:**
+- Set `--max-iterations` to limit damage
+- Review your tests—are they too strict or unclear?
+- Break the task into smaller, more atomic pieces
+- Add explicit debugging steps to your prompt
+- Check if dependencies are properly installed
 
 ## Comprehensive Troubleshooting Guide
 
@@ -434,11 +578,228 @@ Study existing features before implementing new ones:
 4. Only deviate if specs explicitly require it
 ```
 
+## Ralph-TUI Advanced Configuration
+
+Ralph-TUI supports customization via a config file at `~/.ralph-tui/config.json`.
+
+### Custom Task Priorities
+
+Override default priority sorting:
+
+```json
+{
+  "taskPriority": {
+    "TASK-001": 10,
+    "TASK-005": 9,
+    "TASK-002": 8
+  }
+}
+```
+
+Ralph-TUI displays tasks in this order, even if `IMPLEMENTATION_PLAN.md` lists them differently.
+
+### Output Filtering
+
+Filter log lines by keyword or regex:
+
+```json
+{
+  "logFilters": {
+    "exclude": ["Reading", "Skipping"],
+    "include": ["✓", "✗", "completed", "failed"]
+  }
+}
+```
+
+This hides noisy lines (file reads) and highlights important events (test results, task completion).
+
+### Export Formats
+
+Choose log export format:
+
+```json
+{
+  "exportFormat": "markdown"
+}
+```
+
+Options: `txt`, `markdown`, `json`, `html`
+
+**Markdown export** generates:
+
+```markdown
+# Ralph-TUI Log Export
+**Project:** my-saas-app
+**Duration:** 2h 15m
+**Tasks Completed:** 12 / 15
+
+## Iteration 1
+[10:05:12] Reading specs...
+...
+```
+
+### Integration with Other Tools
+
+Send Ralph-TUI events to external systems:
+
+```json
+{
+  "webhooks": {
+    "taskComplete": "https://myapp.com/api/ralph-task-complete",
+    "testFailure": "https://myapp.com/api/ralph-test-failed"
+  }
+}
+```
+
+When Ralph completes a task, Ralph-TUI POSTs to your webhook:
+
+```json
+{
+  "event": "taskComplete",
+  "taskId": "TASK-003",
+  "timestamp": "2026-01-16T10:30:45Z",
+  "iteration": 12
+}
+```
+
+**Use cases:**
+- Update project management tools (Linear, Jira)
+- Send Slack notifications
+- Trigger CI/CD pipelines on task completion
+
+## Ralph-TUI Troubleshooting
+
+### Ralph-TUI Not Detecting Ralph Loop
+
+**Symptom:** `ralph-tui run` shows "Waiting for Ralph loop..." indefinitely.
+
+**Cause:** Ralph-TUI looks for a running `ralph` process in the current directory. If you started Ralph in a different directory, Ralph-TUI won't find it.
+
+**Solution:**
+1. Run `ps aux | grep ralph` to find the Ralph process
+2. Note the working directory from `lsof -p <pid>`
+3. `cd` to that directory and run `ralph-tui run` again
+
+**Alternative:** Explicitly specify the Ralph process ID:
+
+```bash
+ralph-tui run --pid 12345
+```
+
+### Session Lost/Corrupted
+
+**Symptom:** Ralph-TUI shows "Session data corrupted" on startup.
+
+**Cause:** Ralph-TUI stores session state in `~/.ralph-tui/sessions/<project-name>.json`. If Ralph crashes mid-iteration, the session file may be incomplete.
+
+**Solution:**
+1. Delete the corrupted session: `rm ~/.ralph-tui/sessions/my-project.json`
+2. Restart Ralph-TUI: `ralph-tui run`
+
+Ralph-TUI creates a fresh session, but you lose historical context (previous iterations won't show in logs).
+
+**Prevention:** Enable session backups in config:
+
+```json
+{
+  "sessionBackups": {
+    "enabled": true,
+    "interval": 300
+  }
+}
+```
+
+This creates backups every 5 minutes in `~/.ralph-tui/sessions/backups/`.
+
+### Performance Issues with Large Logs
+
+**Symptom:** Ralph-TUI becomes slow or unresponsive after several hours of monitoring.
+
+**Cause:** Log buffer grows to 100,000+ lines, slowing down rendering.
+
+**Solution:**
+1. Export logs periodically: press `e` every hour
+2. Enable log rotation in config:
+
+```json
+{
+  "logRotation": {
+    "maxLines": 10000,
+    "archiveOld": true
+  }
+}
+```
+
+When logs hit 10,000 lines, Ralph-TUI archives old logs to `~/.ralph-tui/archives/` and clears the buffer.
+
+**Alternative:** Increase terminal buffer size if your terminal supports it (e.g., iTerm2 → Preferences → Profiles → Terminal → Scrollback lines).
+
+### Port Conflicts
+
+**Symptom:** `ralph-tui run` fails with "Port 9876 already in use".
+
+**Cause:** Ralph-TUI uses port 9876 for internal communication. Another process is using it.
+
+**Solution:**
+1. Find the conflicting process: `lsof -i :9876`
+2. Kill it or use a different port:
+
+```bash
+ralph-tui run --port 9999
+```
+
+**Permanent fix:** Set default port in config:
+
+```json
+{
+  "port": 9999
+}
+```
+
+## Headless Visual Feedback with Playwright MCP
+
+For bash loop runs without a visible browser, [JeredBlu recommends](https://github.com/JeredBlu/guides/blob/main/Ralph_Wiggum_Guide.md) Playwright MCP for visual verification.
+
+Create `.mcp.json` in your project root:
+
+```json
+{
+  "mcpServers": {
+    "playwright": {
+      "command": "npx",
+      "args": ["-y", "@playwright/mcp@latest", "--headless", "--output-dir", "screenshots"]
+    }
+  }
+}
+```
+
+Then reference it in your PROMPT_build.md:
+
+```markdown
+After implementing, use Playwright to:
+1. Navigate to the local server URL
+2. Take a screenshot: screenshots/[task-name].png
+
+Include the screenshot filename in your progress.txt entry.
+```
+
+This gives you visual verification of Ralph's work without needing Claude for Chrome or a visible browser window. Screenshots accumulate in your project folder, providing a visual audit trail of what Ralph built.
+
+**When to use Playwright MCP vs Ralph-TUI:**
+- **Ralph-TUI:** Real-time log monitoring, task orchestration, keyboard controls
+- **Playwright MCP:** Headless visual verification, screenshot audit trails, CI/CD integration
+
+Both tools complement each other—use Ralph-TUI for live monitoring and Playwright MCP for visual verification.
+
 ## Enterprise Patterns
 
 ### Multi-Developer Ralph Coordination
 
-When multiple developers use Ralph on the same project, coordination becomes critical. For advanced orchestration with task dependencies and parallel execution, [Ralph Orchestrator](https://github.com/mikeyobrien/ralph-orchestrator) provides tooling specifically designed for this.
+When multiple developers use Ralph on the same project, coordination becomes critical. Several tools exist for this:
+
+- [ralph-orchestrator](https://github.com/mikeyobrien/ralph-orchestrator) — Supports 7+ AI backends (Claude, Gemini, Copilot, etc.) with a persona/hat system for specialized tasks
+- [multi-agent-ralph-loop](https://github.com/alfredolopez80/multi-agent-ralph-loop) — Parallel workstream orchestration for running multiple Ralph instances simultaneously
+- [ralph-loop-agent](https://github.com/vercel-labs/ralph-loop-agent) — Vercel's TypeScript SDK wrapper for programmatic control
 
 **Pattern 1: Feature Branch Ralph**
 ```bash
@@ -522,6 +883,25 @@ jobs:
 
             See progress.txt for details.
 ```
+
+## Choosing a Claude Plan for Ralph
+
+Ralph works with Claude subscriptions or API access. Here's the quick guide:
+
+- **Claude Pro ($20/mo)** — 10-30 iterations/session, good for learning and side projects
+- **Claude Max 5x ($100/mo)** — 50-150 iterations/session, ideal for daily development
+- **Claude Max 20x ($200/mo)** — 200-600+ iterations/session, professional long-running loops
+
+**Recommendation:** Start with Pro to learn the workflow. Upgrade to Max 5x once you're running Ralph daily—it's 5x the capacity for 5x the price, which is fair. Go Max 20x if you're doing client work or need extended autonomous sessions.
+
+> **The ROI math:** At $200/month for Max 20x, if Ralph saves you just 5 hours (at $40/hr billing), it's already paid for itself. Most serious users report 20-40+ hours saved monthly.
+
+### Cost Management Tips
+
+- **Always set `--max-iterations`** — Your real safety net
+- **Start small** — 10-20 iterations until you understand the costs
+- **Focused prompts = fewer iterations** — Vague prompts burn tokens
+- **Track your usage** — Check at https://claude.ai/settings
 
 ## Conclusion
 

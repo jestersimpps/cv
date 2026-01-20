@@ -11,7 +11,7 @@ series:
   id: "getting-started-ralph-wiggum"
   title: "Getting Started with Ralph Wiggum"
   part: 1
-  total: 5
+  total: 4
 ---
 
 You're staring at a tedious migration task—200 test files that need converting from Jest to Vitest. The patterns are clear. The work is mechanical. But it's going to take you all day.
@@ -20,7 +20,7 @@ Or you could type one command, grab lunch, and come back to find it done.
 
 That's Ralph Wiggum. And once you've used it, you'll wonder how you ever worked without it.
 
-{/* IMAGE: Developer looking frustrated at screen vs developer relaxed with coffee while code commits - "Before Ralph vs After Ralph" */}
+![Before Ralph: stressed developer vs After Ralph: relaxed developer with code commits](/assets/blog/ralph-before-after.png)
 
 ## What is Ralph Wiggum?
 
@@ -41,7 +41,18 @@ Here's the mechanics:
 
 **The key insight?** The prompt never changes—but the codebase does. Each iteration builds on the last. Claude reads its own previous work and improves on it.
 
-{/* IMAGE: Simple flowchart showing the loop: Prompt → Work → Check → (if not done) → back to Work */}
+```mermaid
+graph LR
+    A[📝 Prompt] --> B[⚙️ Work]
+    B --> C{✓ Done?}
+    C -->|No| B
+    C -->|Yes| D[🎉 Complete]
+
+    style A fill:#7c3aed,stroke:#5b21b6,color:#fff
+    style B fill:#2563eb,stroke:#1d4ed8,color:#fff
+    style C fill:#059669,stroke:#047857,color:#fff
+    style D fill:#16a34a,stroke:#15803d,color:#fff
+```
 
 ## Why This Matters
 
@@ -152,8 +163,6 @@ Start small. Here's a safe first experiment:
 
 Watch it work. Review the commits. Get a feel for the rhythm.
 
-{/* IMAGE: Terminal showing Ralph loop in action with iteration counter */}
-
 ## The Two Parameters That Matter
 
 **`--max-iterations`** is your safety net. Always set it. The default is unlimited, which means Ralph will run forever if the completion promise never triggers.
@@ -203,6 +212,11 @@ As [JeredBlu notes](https://github.com/JeredBlu/guides/blob/main/Ralph_Wiggum_Gu
 > - [snarktank/ralph](https://github.com/snarktank/ralph) — Complete ralph.sh, prompt.md, and AGENTS.md
 > - [ClaytonFarr/ralph-playbook](https://github.com/ClaytonFarr/ralph-playbook) — PROMPT_plan.md and PROMPT_build.md templates
 > - [frankbria/ralph-claude-code](https://github.com/frankbria/ralph-claude-code) — Implementation with intelligent exit detection
+
+> **Not using Claude Code?** Ralph works with other tools too:
+> - [ralph-wiggum-cursor](https://github.com/agrimsingh/ralph-wiggum-cursor) — Cursor IDE integration with token tracking
+> - [aymenfurter/ralph](https://github.com/aymenfurter/ralph) — VS Code extension with visual control panel
+> - [opencode-ralph-wiggum](https://github.com/Th0rgal/opencode-ralph-wiggum) — OpenCode with struggle detection
 
 **Recommendation:** Start with the plugin to learn. Graduate to bash loop for production long-running tasks.
 
@@ -255,7 +269,7 @@ The good prompt has:
 
 > **The rule of thumb:** If you can write an automated test for "done," Ralph can do it. If completion requires human judgment, do it yourself.
 
-{/* IMAGE: Two columns comparison - "Ralph tasks" (mechanical, testable) vs "Human tasks" (creative, judgment-based) */}
+![Ralph tasks vs Human tasks comparison](/assets/blog/ralph-tasks-comparison.png)
 
 ## The Ralph Philosophy
 
@@ -273,25 +287,6 @@ The community mantra: *"Better to fail predictably than succeed unpredictably."*
 When Ralph runs for extended periods, you'll want visibility. **Ralph TUI** gives you a real-time dashboard: iteration count, current task, token usage, and keyboard controls to pause or stop.
 
 We cover monitoring in detail in [Part 3: Ralph TUI Monitoring](/blog/ralph-wiggum-part-3-ralph-tui-monitoring).
-
-## Choosing a Claude Plan for Ralph
-
-Ralph works with Claude subscriptions or API access. Here's the quick guide:
-
-- **Claude Pro ($20/mo)** — 10-30 iterations/session, good for learning and side projects
-- **Claude Max 5x ($100/mo)** — 50-150 iterations/session, ideal for daily development
-- **Claude Max 20x ($200/mo)** — 200-600+ iterations/session, professional long-running loops
-
-**My recommendation:** Start with Pro to learn the workflow. Upgrade to Max 5x once you're running Ralph daily—it's 5x the capacity for 5x the price, which is fair. Go Max 20x if you're doing client work or need extended autonomous sessions.
-
-> **The ROI math:** At $200/month for Max 20x, if Ralph saves you just 5 hours (at $40/hr billing), it's already paid for itself. Most serious users report 20-40+ hours saved monthly.
-
-### Cost Management Tips
-
-- **Always set `--max-iterations`** — Your real safety net
-- **Start small** — 10-20 iterations until you understand the costs
-- **Focused prompts = fewer iterations** — Vague prompts burn tokens
-- **Track your usage** — Check at https://claude.ai/settings
 
 ## What's Next
 

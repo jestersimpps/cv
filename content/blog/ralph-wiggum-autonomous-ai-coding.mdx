@@ -17,67 +17,17 @@ Here's the uncomfortable truth: while you're carefully crafting prompts and revi
 
 The gap between developers who've figured this out and those who haven't is widening fast. This guide is your shortcut to the right side of that gap.
 
-## What is Ralph Wiggum?
-
-Ralph Wiggum is an official Claude Code plugin that turns your AI assistant into an autonomous coding agent. Named after The Simpsons' lovably persistent character, it embodies a simple but powerful philosophy: **Iteration > Perfection**.
-
-As [Geoffrey Huntley](https://github.com/ghuntley/how-to-ralph-wiggum), the technique's pioneer, puts it: "Ralph is a Bash loop." That's it. A `while true` that repeatedly feeds Claude the same prompt until the job is actually done.
-
-Here's the magic:
-
-1. You give Claude Code a task with clear completion criteria
-2. Claude works on it and tries to exit when "done"
-3. A Stop hook intercepts the exit and checks if it's *really* done
-4. If not complete, the same prompt is fed back in
-5. Claude sees its previous work in the files and git history
-6. The loop continues until genuine completion
-
-**The key insight?** The prompt never changes—but Claude's work persists. Each iteration builds on the last, creating a self-referential feedback loop where Claude improves its own output until it actually works.
-
-```mermaid
-graph LR
-    A[📝 Prompt] --> B[⚙️ Work]
-    B --> C[💾 Files Updated]
-    C --> D{✓ Done?}
-    D -->|No| A
-    D -->|Yes| E[🎉 Complete]
-
-    subgraph Persists Between Iterations
-        C
-    end
-
-    style A fill:#7c3aed,stroke:#5b21b6,color:#fff
-    style B fill:#2563eb,stroke:#1d4ed8,color:#fff
-    style C fill:#0891b2,stroke:#0e7490,color:#fff
-    style D fill:#059669,stroke:#047857,color:#fff
-    style E fill:#16a34a,stroke:#15803d,color:#fff
-```
-
 ## From Clever Hack to Industry Standard
 
 What started as a bash script experiment has become an official Anthropic plugin. [Boris Cherny](https://github.com/anthropics/claude-code/tree/main/plugins/ralph-wiggum), Anthropic's Head of Claude Code, formalized it in summer 2025. By [early 2026](https://venturebeat.com/technology/how-ralph-wiggum-went-from-the-simpsons-to-the-biggest-name-in-ai-right-now), VentureBeat was calling it "the biggest name in AI right now."
 
 This represents a fundamental shift in how we work with AI: from "chatting" to managing autonomous sessions.
 
-## The Three-Phase Methodology (How the Pros Do It)
+## The Professional Workflow
 
-Simple tasks? Just run `/ralph-loop` and let it rip. But for serious projects—the kind that used to take weeks—professionals use a structured three-phase approach:
+Simple tasks? Just run `/ralph-loop` and let it rip. But for serious projects—the kind that used to take weeks—professionals use a structured three-phase approach: **Requirements → Planning → Building**. Define specs, generate a plan, then let Ralph build autonomously while you sleep.
 
-**Phase 1: Requirements (The Human Part)**
-
-This is where you earn your paycheck. Spend 30+ minutes talking through requirements with Claude before anything gets built. Define specs in dedicated files. Create acceptance criteria that can be automatically verified.
-
-> **Why this matters:** Vague requirements produce vague results. "Make it better" isn't testable. "All tests pass with 80%+ coverage" is.
-
-**Phase 2: Planning (AI Analyzes, You Approve)**
-
-Ralph analyzes your requirements against the existing codebase, identifies gaps, and generates a prioritized implementation plan. No code written yet—just a TODO list with dependencies mapped out.
-
-**Phase 3: Building (The Autonomous Shift)**
-
-This is where the magic happens. Ralph picks up tasks one by one, implements them, runs tests, fixes failures, commits working code, and moves to the next task. Rinse and repeat until the plan is complete.
-
-You wake up to a git history full of clean, tested commits. Review them over coffee.
+The full methodology is covered in [Part 2: The Three-Phase Methodology](/blog/ralph-wiggum-part-2-methodology).
 
 ## Who's Using This (And What They're Building)
 
@@ -93,15 +43,14 @@ The developer community has gone all-in on Ralph for production work:
 
 ## Master Ralph Wiggum: The Complete Series
 
-I've put together everything you need to go from "what's Ralph?" to running long-running autonomous builds with confidence. Five parts, zero fluff, all actionable.
+I've put together everything you need to go from "what's Ralph?" to running long-running autonomous builds with confidence. Four parts, zero fluff, all actionable.
 
 ### The Series
 
 1. **[Part 1: Introduction and Fundamentals](/blog/ralph-wiggum-part-1-introduction)** — Installation, core concepts, when to use it (and when not to)
 2. **[Part 2: The Three-Phase Methodology](/blog/ralph-wiggum-part-2-methodology)** — The professional workflow for multi-day autonomous projects
 3. **[Part 3: Ralph TUI Monitoring](/blog/ralph-wiggum-part-3-ralph-tui-monitoring)** — Real-time visibility, keyboard controls, session management
-4. **[Part 4: Hands-On Tutorial](/blog/ralph-wiggum-part-4-tutorial)** — Build a real project from scratch with actual conversation logs
-5. **[Part 5: Advanced Troubleshooting](/blog/ralph-wiggum-part-5-advanced-troubleshooting)** — Expert patterns, debugging stuck loops, enterprise techniques
+4. **[Part 4: Advanced Patterns & Troubleshooting](/blog/ralph-wiggum-part-4-advanced-troubleshooting)** — Expert patterns, debugging stuck loops, enterprise techniques
 
 ## The Uncomfortable Question
 
@@ -149,6 +98,12 @@ The gap is widening. The question isn't whether autonomous AI coding will become
 
 [Ralph-TUI](https://github.com/subsy/ralph-tui) — Visual monitoring for long-running loops
 
-[VentureBeat Coverage](https://venturebeat.com/technology/how-ralph-wiggum-went-from-the-simpsons-to-the-biggest-name-in-ai-right-now) — How Ralph went mainstream
+[Geoffrey Huntley's Deep Dive Video](https://www.youtube.com/watch?v=SB6cO97tfiY) — Definitive video with live coding
+
+[awesome-ralph](https://github.com/snwfdhmp/awesome-ralph) — Curated list of Ralph tools and resources
+
+[r/RalphCoding](https://www.reddit.com/r/RalphCoding/) — Reddit community
+
+[Ralph Discord](https://discord.gg/MUyRMqKcWx) — Active Discord community
 
 </QuickReference>

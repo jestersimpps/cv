@@ -11,7 +11,7 @@ series:
   id: "getting-started-ralph-wiggum"
   title: "Getting Started with Ralph Wiggum"
   part: 3
-  total: 5
+  total: 4
 ---
 
 Running Ralph Wiggum autonomously is powerful—but monitoring blind loops can feel like trusting a pilot you can't see. Ralph-TUI solves the visibility problem by giving you a real-time dashboard into every iteration, task, and decision your AI agent makes.
@@ -37,6 +37,8 @@ Ralph-TUI was created to bridge the gap between "fully autonomous" and "complete
 3. **Confidence building**: See the agent's reasoning and decision-making as it happens
 
 Ralph-TUI runs **alongside** Ralph Wiggum—it doesn't control or interrupt the loop. Think of it as a monitoring dashboard, not a steering wheel.
+
+> **Alternative for OpenCode users:** [opencode-ralph-wiggum](https://github.com/Th0rgal/opencode-ralph-wiggum) includes built-in struggle detection that automatically identifies when the agent is stuck and surfaces it in real-time.
 
 ## When to Use Ralph-TUI vs. When Not To
 
@@ -378,188 +380,6 @@ To stop both Ralph and Ralph-TUI: `Ctrl+C` (or kill the Ralph process separately
 
 ---
 
-## Advanced Configuration
-
-Ralph-TUI supports customization via a config file at `~/.ralph-tui/config.json`.
-
-### Custom Task Priorities
-
-Override default priority sorting:
-
-```json
-{
-  "taskPriority": {
-    "TASK-001": 10,
-    "TASK-005": 9,
-    "TASK-002": 8
-  }
-}
-```
-
-Ralph-TUI displays tasks in this order, even if `IMPLEMENTATION_PLAN.md` lists them differently.
-
-### Output Filtering
-
-Filter log lines by keyword or regex:
-
-```json
-{
-  "logFilters": {
-    "exclude": ["Reading", "Skipping"],
-    "include": ["✓", "✗", "completed", "failed"]
-  }
-}
-```
-
-This hides noisy lines (file reads) and highlights important events (test results, task completion).
-
-### Export Formats
-
-Choose log export format:
-
-```json
-{
-  "exportFormat": "markdown"
-}
-```
-
-Options: `txt`, `markdown`, `json`, `html`
-
-**Markdown export** generates:
-
-```markdown
-# Ralph-TUI Log Export
-**Project:** my-saas-app
-**Duration:** 2h 15m
-**Tasks Completed:** 12 / 15
-
-## Iteration 1
-[10:05:12] Reading specs...
-...
-```
-
-### Integration with Other Tools
-
-Send Ralph-TUI events to external systems:
-
-```json
-{
-  "webhooks": {
-    "taskComplete": "https://myapp.com/api/ralph-task-complete",
-    "testFailure": "https://myapp.com/api/ralph-test-failed"
-  }
-}
-```
-
-When Ralph completes a task, Ralph-TUI POSTs to your webhook:
-
-```json
-{
-  "event": "taskComplete",
-  "taskId": "TASK-003",
-  "timestamp": "2026-01-16T10:30:45Z",
-  "iteration": 12
-}
-```
-
-**Use cases:**
-- Update project management tools (Linear, Jira)
-- Send Slack notifications
-- Trigger CI/CD pipelines on task completion
-
----
-
-## Troubleshooting
-
-### Ralph-TUI Not Detecting Ralph Loop
-
-**Symptom:** `ralph-tui run` shows "Waiting for Ralph loop..." indefinitely.
-
-**Cause:** Ralph-TUI looks for a running `ralph` process in the current directory. If you started Ralph in a different directory, Ralph-TUI won't find it.
-
-**Solution:**
-1. Run `ps aux | grep ralph` to find the Ralph process
-2. Note the working directory from `lsof -p <pid>`
-3. `cd` to that directory and run `ralph-tui run` again
-
-**Alternative:** Explicitly specify the Ralph process ID:
-
-```bash
-ralph-tui run --pid 12345
-```
-
-### Session Lost/Corrupted
-
-**Symptom:** Ralph-TUI shows "Session data corrupted" on startup.
-
-**Cause:** Ralph-TUI stores session state in `~/.ralph-tui/sessions/<project-name>.json`. If Ralph crashes mid-iteration, the session file may be incomplete.
-
-**Solution:**
-1. Delete the corrupted session: `rm ~/.ralph-tui/sessions/my-project.json`
-2. Restart Ralph-TUI: `ralph-tui run`
-
-Ralph-TUI creates a fresh session, but you lose historical context (previous iterations won't show in logs).
-
-**Prevention:** Enable session backups in config:
-
-```json
-{
-  "sessionBackups": {
-    "enabled": true,
-    "interval": 300
-  }
-}
-```
-
-This creates backups every 5 minutes in `~/.ralph-tui/sessions/backups/`.
-
-### Performance Issues with Large Logs
-
-**Symptom:** Ralph-TUI becomes slow or unresponsive after several hours of monitoring.
-
-**Cause:** Log buffer grows to 100,000+ lines, slowing down rendering.
-
-**Solution:**
-1. Export logs periodically: press `e` every hour
-2. Enable log rotation in config:
-
-```json
-{
-  "logRotation": {
-    "maxLines": 10000,
-    "archiveOld": true
-  }
-}
-```
-
-When logs hit 10,000 lines, Ralph-TUI archives old logs to `~/.ralph-tui/archives/` and clears the buffer.
-
-**Alternative:** Increase terminal buffer size if your terminal supports it (e.g., iTerm2 → Preferences → Profiles → Terminal → Scrollback lines).
-
-### Port Conflicts
-
-**Symptom:** `ralph-tui run` fails with "Port 9876 already in use".
-
-**Cause:** Ralph-TUI uses port 9876 for internal communication. Another process is using it.
-
-**Solution:**
-1. Find the conflicting process: `lsof -i :9876`
-2. Kill it or use a different port:
-
-```bash
-ralph-tui run --port 9999
-```
-
-**Permanent fix:** Set default port in config:
-
-```json
-{
-  "port": 9999
-}
-```
-
----
-
 ## Best Practices
 
 ### When to Pause/Resume
@@ -671,54 +491,11 @@ This deletes sessions and archives older than 7 days.
 
 ---
 
-## Alternative: Headless Visual Feedback with Playwright MCP
-
-For bash loop runs without a visible browser, [JeredBlu recommends](https://github.com/JeredBlu/guides/blob/main/Ralph_Wiggum_Guide.md) Playwright MCP for visual verification.
-
-Create `.mcp.json` in your project root:
-
-```json
-{
-  "mcpServers": {
-    "playwright": {
-      "command": "npx",
-      "args": ["-y", "@playwright/mcp@latest", "--headless", "--output-dir", "screenshots"]
-    }
-  }
-}
-```
-
-Then reference it in your PROMPT_build.md:
-
-```markdown
-After implementing, use Playwright to:
-1. Navigate to the local server URL
-2. Take a screenshot: screenshots/[task-name].png
-
-Include the screenshot filename in your progress.txt entry.
-```
-
-This gives you visual verification of Ralph's work without needing Claude for Chrome or a visible browser window. Screenshots accumulate in your project folder, providing a visual audit trail of what Ralph built.
-
-**When to use Playwright MCP vs Ralph-TUI:**
-- **Ralph-TUI:** Real-time log monitoring, task orchestration, keyboard controls
-- **Playwright MCP:** Headless visual verification, screenshot audit trails, CI/CD integration
-
-Both tools complement each other—use Ralph-TUI for live monitoring and Playwright MCP for visual verification.
-
----
-
 ## What's Next
 
-You now have full visibility into Ralph's autonomous loops. In [Part 4](/blog/ralph-wiggum-part-4-tutorial), we'll put everything together—building a complete production-grade API from scratch using the three-phase methodology with Ralph-TUI monitoring.
+You now have full visibility into Ralph's autonomous loops with Ralph-TUI.
 
-You'll learn:
-- How to structure specs for complex projects
-- Writing effective PROMPTs for multi-day builds
-- Using Ralph-TUI to catch and fix issues mid-build
-- Debugging common failure modes in autonomous loops
-
-This is where Ralph Wiggum's power becomes real: watching an AI agent build a feature-complete application over 6+ hours while you monitor progress with Ralph-TUI.
+In [Part 4: Advanced Patterns & Troubleshooting](/blog/ralph-wiggum-part-4-advanced-troubleshooting), we cover advanced prompt engineering, common pitfalls, comprehensive troubleshooting strategies, and enterprise-grade patterns that will make you a Ralph expert.
 
 <QuickReference>
 

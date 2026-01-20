@@ -11,7 +11,7 @@ series:
   id: "getting-started-ralph-wiggum"
   title: "Getting Started with Ralph Wiggum"
   part: 2
-  total: 5
+  total: 4
 ---
 
 You installed Ralph, ran a loop, and... it kind of worked? Maybe it got stuck. Maybe it went in circles. Maybe it built something, but not quite what you needed.
@@ -19,8 +19,6 @@ You installed Ralph, ran a loop, and... it kind of worked? Maybe it got stuck. M
 That's normal. Ralph without structure is like any autonomous agent—capable but directionless.
 
 This part covers the Three-Phase Methodology: a practical workflow for turning vague project ideas into working code while you sleep.
-
-{/* IMAGE: Two git histories side-by-side: chaotic commits vs clean, atomic commits labeled by task */}
 
 ## The Core Insight: Separate Planning from Building
 
@@ -40,7 +38,7 @@ This is the only phase that requires your active involvement. And it's where mos
 
 **Spend at least 30 minutes** talking through requirements with Claude before writing any code. Seriously. This conversation is where you catch the "oh wait, what about..." moments that would otherwise derail your autonomous build.
 
-{/* IMAGE: Hourglass with "30 min conversation" on top, "8 hours autonomous coding" on bottom */}
+![Hourglass: 30 min conversation yields 8 hours autonomous coding](/assets/blog/ralph-hourglass.png)
 
 ### What Goes in Specs Files
 
@@ -92,7 +90,7 @@ There are two methods for running Ralph loops, and understanding when to use eac
 
 **Bash Loop Method (`loop.sh`)** — Launches a fresh Claude instance per iteration. As [Geoffrey Huntley's original guide](https://github.com/ghuntley/how-to-ralph-wiggum) explains, each iteration "deterministically loads the same files and reads the current state from disk." This prevents context bloat and hallucination that can occur when running many iterations in a single context. See community examples: [snarktank/ralph.sh](https://github.com/snarktank/ralph/blob/main/ralph.sh), [frankbria/ralph_loop.sh](https://github.com/frankbria/ralph-claude-code/blob/main/ralph_loop.sh), [peteristhegreat's gist](https://gist.github.com/peteristhegreat/31e7114805e24b9e38084772e2e7cf46).
 
-> **Why fresh context matters:** The plugin runs everything in one context window, which fills up over time. After 30-40 iterations, Claude may start ignoring parts of your prompt or making inconsistent decisions. The bash loop method avoids this by starting fresh each time—the only shared state is what's written to disk (your code, `IMPLEMENTATION_PLAN.md`, and `progress.txt`).
+> **Why fresh context matters:** The plugin runs everything in one context window, which fills up over time. After 30-40 iterations, Claude may start ignoring parts of your prompt or making inconsistent decisions. The bash loop method avoids this by starting fresh each time—the only shared state is what's written to disk (your code, `IMPLEMENTATION_PLAN.md`, and `progress.txt`). For advanced techniques, see [Advanced Context Engineering for Coding Agents](https://github.com/humanlayer/advanced-context-engineering-for-coding-agents).
 
 We'll show you how to create `loop.sh` in [The Bash Loop Script](#the-bash-loop-script) section below.
 
@@ -111,7 +109,7 @@ Or using the bash loop (see [The Bash Loop Script](#the-bash-loop-script) below)
 
 ### PROMPT_plan.md Template
 
-Here's the complete template for planning mode. For real-world examples, see [ClaytonFarr's PROMPT_plan.md](https://github.com/ClaytonFarr/ralph-playbook/blob/main/PROMPT_plan.md) or [snarktank's prompt.md](https://github.com/snarktank/ralph/blob/main/prompt.md).
+Here's the complete template for planning mode. For real-world examples, see [ClaytonFarr's PROMPT_plan.md](https://github.com/ClaytonFarr/ralph-playbook/blob/main/files/PROMPT_plan.md) or [snarktank's prompt.md](https://github.com/snarktank/ralph/blob/main/prompt.md).
 
 ```markdown
 # PLANNING MODE
@@ -148,6 +146,11 @@ Organize tasks by priority:
 
 When complete, output "PLAN COMPLETE"
 ```
+
+> **See real examples:** Browse actual prompt files from the community:
+> - [snarktank/ralph](https://github.com/snarktank/ralph/blob/main/prompt.md) — Complete prompt.md with AGENTS.md
+> - [ClaytonFarr/ralph-playbook](https://github.com/ClaytonFarr/ralph-playbook/blob/main/files/PROMPT_plan.md) — PROMPT_plan.md template
+> - [frankbria/ralph-claude-code](https://github.com/frankbria/ralph-claude-code) — Implementation with exit detection
 
 ### What Planning Produces
 
@@ -213,7 +216,7 @@ Building mode assumes the plan exists, picks one task at a time, implements it w
 
 ### PROMPT_build.md Template
 
-Here's the complete template for building mode. For real-world examples, see [ClaytonFarr's PROMPT_build.md](https://github.com/ClaytonFarr/ralph-playbook/blob/main/PROMPT_build.md) or [frankbria's PROMPT.md](https://github.com/frankbria/ralph-claude-code/blob/main/templates/PROMPT.md).
+Here's the complete template for building mode. For real-world examples, see [ClaytonFarr's PROMPT_build.md](https://github.com/ClaytonFarr/ralph-playbook/blob/main/files/PROMPT_build.md) or [frankbria's PROMPT.md](https://github.com/frankbria/ralph-claude-code/blob/main/templates/PROMPT.md).
 
 ````markdown
 # BUILDING MODE
@@ -263,6 +266,13 @@ After completing each task, append to progress.txt:
 
 When all tasks show status: completed, output "ALL TASKS COMPLETE"
 ````
+
+> **See real examples:** Browse actual PROMPT_build.md implementations:
+> - [ClaytonFarr/ralph-playbook](https://github.com/ClaytonFarr/ralph-playbook/blob/main/files/PROMPT_build.md) — PROMPT_build.md template
+> - [frankbria/ralph-claude-code](https://github.com/frankbria/ralph-claude-code/blob/main/templates/PROMPT.md) — Implementation with intelligent exit detection
+> - [mikeyobrien/ralph-orchestrator](https://github.com/mikeyobrien/ralph-orchestrator) — Enhanced orchestration implementation
+
+> **Deep dive:** Geoffrey Huntley's [Don't Waste Your Back Pressure](https://ghuntley.com/pressure/) explains why validation and rejection mechanisms are critical for autonomous loops.
 
 ### The Bash Loop Script
 
@@ -503,157 +513,13 @@ Based on community learnings from [The Ralph Wiggum Playbook](https://claytonfar
 - **"Capture the why in commits"** → Improves git history quality
 - **"MUST pass all tests"** → Enforces quality gates strictly
 
-## Setting Up PRDs for Ralph
-
-A well-structured PRD is critical for Ralph's success. This is an alternative to the `specs/*.md` + `IMPLEMENTATION_PLAN.md` approach—some teams prefer JSON for machine readability.
-
-### prd.json Template
-
-```json
-{
-  "project": "Todo API",
-  "schema_version": "2.0",
-  "final_tests": ["npm test", "npm run type-check", "npm run lint"],
-  "stories": [
-    {
-      "id": "S001",
-      "priority": 1,
-      "title": "User Authentication",
-      "category": "backend",
-      "description": "Implement JWT-based authentication with login/logout",
-      "acceptance": [
-        "User can register with email/password",
-        "User can login and receive JWT token",
-        "Protected routes require valid JWT",
-        "User can logout and invalidate token"
-      ],
-      "steps_to_verify": [
-        "Run: npm test -- auth.test.ts",
-        "Verify all 12 auth tests pass",
-        "Check JWT is stored in httpOnly cookie",
-        "Verify token expiry works correctly"
-      ],
-      "tests": ["npm test -- auth.test.ts"],
-      "estimated_complexity": "medium",
-      "depends_on": [],
-      "passes": false
-    },
-    {
-      "id": "S002",
-      "priority": 2,
-      "title": "Todo CRUD Endpoints",
-      "category": "backend",
-      "description": "Create POST, GET, PUT, DELETE endpoints for todos",
-      "acceptance": [
-        "POST /api/todos creates a todo",
-        "GET /api/todos returns user's todos only",
-        "PUT /api/todos/:id updates a todo",
-        "DELETE /api/todos/:id deletes a todo"
-      ],
-      "steps_to_verify": [
-        "Run: npm test -- todos.test.ts",
-        "Test with Postman or curl",
-        "Verify authorization works"
-      ],
-      "tests": ["npm test -- todos.test.ts"],
-      "estimated_complexity": "medium",
-      "depends_on": ["S001"],
-      "passes": false
-    }
-  ]
-}
-```
-
-### Key PRD Principles
-
-**Binary Pass/Fail Criteria**: Each task needs automated verification. As [The Ralph Playbook](https://claytonfarr.github.io/ralph-playbook/) emphasizes: "Make it better" isn't testable—"All tests pass with 80%+ coverage" is.
-
-**Atomic Tasks**: If a task requires 500+ lines of code, break it down. Each story should complete in 2-3 iterations.
-
-**The `passes` Field**: Ralph updates this to `true` when complete. The loop continues until all tasks pass.
-
-**Test Requirements**: Every story should specify how to verify completion automatically. No manual verification steps.
-
-## Common Pitfalls and How to Avoid Them
-
-### Starting Too Ambitious
-
-**Mistake:** Running 50 iterations on your first Ralph project.
-
-**Fix:** Start with 10-20 iterations to understand costs and behavior. As documented in [community tips](https://www.aihero.dev/tips-for-ai-coding-with-ralph-wiggum), a 50-iteration loop can cost $50-100+.
-
-### Vague Completion Criteria
-
-**Mistake:** "Make the app faster" or "Improve the UI"
-
-**Fix:** Use specific, testable criteria:
-- ✅ "Reduce API response time to under 200ms (verified by load tests)"
-- ✅ "All Lighthouse scores above 90"
-- ✅ "Test coverage above 80% on all modules"
-
-### No Automated Verification
-
-**Mistake:** Tasks that require human judgment like "make it look good"
-
-**Fix:** Ralph needs binary pass/fail conditions. If you can't write an automated test for it, Ralph can't verify it. As [The Ralph Playbook](https://claytonfarr.github.io/ralph-playbook/) states: *"Backpressure beats direction."*
-
-### Tasks Too Large
-
-**Mistake:** "Build entire authentication system" as one task
-
-**Fix:** Break into smaller stories:
-- S001: User registration endpoint
-- S002: Login endpoint with JWT
-- S003: Token refresh mechanism
-- S004: Password reset flow
-- S005: Email verification
-
-### Ignoring Context Limits
-
-**Mistake:** Letting Ralph run indefinitely without fresh context
-
-**Fix:** Use the Bash loop method instead of the plugin for long-running projects—each iteration gets a fresh context window. This is a key insight from [Geoffrey Huntley's guide](https://github.com/ghuntley/how-to-ralph-wiggum).
-
-### No Cost Monitoring
-
-**Mistake:** Not tracking API spending during development
-
-**Fix:** Set billing alerts and start with low iteration counts. Monitor costs per iteration. Track your spending at https://console.anthropic.com
-
-### Wrong Task Types
-
-**Good Ralph tasks:**
-- Migrating tests from Jest to Vitest
-- Adding CRUD endpoints with tests
-- Implementing well-specified features
-- Refactoring with existing test coverage
-
-**Bad Ralph tasks:**
-- "Figure out why the app is slow" (exploration)
-- "Make the UI prettier" (subjective)
-- "Fix this weird bug" (requires deep debugging context)
-- UX decisions requiring aesthetic judgment
-
-### The Thrashing Problem
-
-**Symptom:** Ralph gets stuck in a loop—same error, same fix attempt, same failure.
-
-**Solutions:**
-- Set `--max-iterations` to limit damage
-- Review your tests—are they too strict or unclear?
-- Break the task into smaller, more atomic pieces
-- Add explicit debugging steps to your prompt
-- Check if dependencies are properly installed
-
 ## What's Next
 
-You now have the professional methodology: specs for requirements, planning mode for gap analysis, building mode for autonomous execution. The file structure. The prompt templates. The pitfalls to avoid.
-
-But there's a gap between knowing the methodology and watching it work on a real project.
+You now have the professional methodology: specs for requirements, planning mode for gap analysis, building mode for autonomous execution. The file structure. The prompt templates.
 
 In [Part 3: Ralph TUI Monitoring](/blog/ralph-wiggum-part-3-ralph-tui-monitoring), we'll cover real-time visibility for long-running loops—dashboards, keyboard controls, and session management.
 
-Then in [Part 4: Complete Practical Tutorial](/blog/ralph-wiggum-part-4-tutorial), we put theory into practice. You'll see actual conversation logs, generated plans, real commit history, and how to troubleshoot when things go wrong. This is where it clicks.
+Then in [Part 4: Advanced Patterns & Troubleshooting](/blog/ralph-wiggum-part-4-advanced-troubleshooting), we dive into advanced prompt engineering, common pitfalls, comprehensive troubleshooting, and enterprise-grade patterns.
 
 <QuickReference>
 
