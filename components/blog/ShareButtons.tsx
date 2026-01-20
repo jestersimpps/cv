@@ -75,11 +75,8 @@ export default function ShareButtons({
         platform: 'native',
         slug: post.slug,
       });
-    } catch (error) {
-      // User cancelled or share failed
-      if (error instanceof Error && error.name !== 'AbortError') {
-        console.error('Share failed:', error);
-      }
+    } catch {
+      // User cancelled or share failed - silent
     }
   };
 

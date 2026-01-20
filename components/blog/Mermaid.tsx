@@ -27,8 +27,7 @@ export default function Mermaid({ chart }: MermaidProps) {
               chart
             );
             ref.current.innerHTML = svg;
-          } catch (error) {
-            console.error('Mermaid rendering error:', error);
+          } catch {
             ref.current.innerHTML = `<pre>${chart}</pre>`;
           }
         }

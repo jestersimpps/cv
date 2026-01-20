@@ -37,7 +37,6 @@ export function useViewCounts(): UseViewCountsReturn {
           setViewCounts(data);
         }
       } catch (err) {
-        console.error('Error fetching view counts:', err);
         if (isMounted) {
           setError(err instanceof Error ? err : new Error('Unknown error'));
         }
@@ -88,7 +87,6 @@ export function useViewCount(slug: string): {
           setViewCount(data.views || 0);
         }
       } catch (err) {
-        console.error('Error fetching view count:', err);
         if (isMounted) {
           setError(err instanceof Error ? err : new Error('Unknown error'));
         }

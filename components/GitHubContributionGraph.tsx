@@ -104,8 +104,7 @@ export default function GitHubContributionGraph({ username, className = '' }: Gi
         setContributions(days);
         setTotalContributions(data.total?.lastYear || days.reduce((sum, day) => sum + day.count, 0));
         setIsLoading(false);
-      } catch (err) {
-        console.error('Error fetching GitHub contributions:', err);
+      } catch {
         setError('Failed to load contributions');
         setIsLoading(false);
       }

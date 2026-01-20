@@ -104,9 +104,6 @@ export async function getPageViewCounts(): Promise<ViewCounts> {
         }
       });
 
-      console.log('Successfully fetched view counts:', Object.keys(viewCounts).length, 'posts');
-    } else {
-      console.log('No results from PostHog query:', data);
     }
 
     cachedViewCounts = {

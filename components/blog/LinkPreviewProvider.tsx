@@ -84,8 +84,8 @@ export default function LinkPreviewProvider({ children, content }: LinkPreviewPr
             const data = await response.json();
             return { url, data };
           }
-        } catch (error) {
-          console.error(`Failed to fetch preview for ${url}:`, error);
+        } catch {
+          // Silently fail - preview is optional
         }
         return { url, data: null };
       });

@@ -30,7 +30,6 @@ export async function subscribeToNewsletter(email: string): Promise<SubscribeRes
     });
 
     const data = await response.json();
-    console.log('Buttondown response:', response.status, data);
 
     if (response.status === 201) {
       return {

@@ -58,8 +58,7 @@ export default function AIChatBubble() {
         timestamp: new Date(),
       };
       setMessages((prev) => [...prev, aiResponse]);
-    } catch (error) {
-      console.error("Error getting AI response:", error);
+    } catch {
       const errorResponse: Message = {
         id: (Date.now() + 1).toString(),
         text: "I apologize, but I'm having trouble connecting. Please try again or contact Jo directly at jov2all@gmail.com.",

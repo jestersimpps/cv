@@ -94,7 +94,6 @@ export default function RecruitersPage() {
         setTimeout(() => setShowContactForm(true), 1500);
       }
     } catch (error) {
-      console.error('Error analyzing job:', error);
       posthog.capture('job_analysis_failed', {
         error: error instanceof Error ? error.message : 'Unknown error',
       });
@@ -137,7 +136,6 @@ export default function RecruitersPage() {
         company_website: contactData.companyWebsite,
       });
     } catch (error) {
-      console.error('Error submitting contact:', error);
       posthog.capture('recruiter_contact_failed', {
         error: error instanceof Error ? error.message : 'Unknown error',
       });
