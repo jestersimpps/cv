@@ -178,19 +178,25 @@ Watch it work. Review the commits. Get a feel for the rhythm.
 /ralph-loop "<your task>" --max-iterations 30 --completion-promise "TASK COMPLETE"
 ```
 
-## Plugin vs Bash Loop: Which to Use
+## Plugin vs Bash Loop vs TUI: Which to Use
 
-There are two ways to run Ralph:
+There are three ways to run Ralph:
 
 **Plugin Method (`/ralph-loop`)**
 - Runs in a single context window
-- Easier to set up
+- Easiest to set up—zero configuration
 - Good for tasks under 20-30 iterations
 
 **Bash Loop Method**
 - Launches fresh context window per iteration
 - Prevents context bloat and hallucination
-- Better for long-running tasks
+- Requires manual prompt and file setup
+
+**Ralph TUI** (covered in [Part 3](/blog/ralph-wiggum-part-3-ralph-tui-monitoring))
+- Fresh context per iteration (like bash loop)
+- Built-in PRD creation, task tracking, and monitoring dashboard
+- Handles all the prompt juggling and file management for you
+- Best for serious long-running builds
 
 > **What is a context window?** The context window is Claude's working memory—everything Claude knows about your conversation must fit here (~200K tokens). As you work, this fills up with your prompts, code, and Claude's responses. When it's full, Claude starts forgetting earlier details. See [Mastery Part 2: Mental Model](/blog/claude-code-mastery-02-mental-model#the-context-window-claudes-working-memory) for a deeper explanation.
 
@@ -223,7 +229,7 @@ As [JeredBlu notes](https://github.com/JeredBlu/guides/blob/main/Ralph_Wiggum_Gu
 > - [aymenfurter/ralph](https://github.com/aymenfurter/ralph) — VS Code extension with visual control panel
 > - [opencode-ralph-wiggum](https://github.com/Th0rgal/opencode-ralph-wiggum) — OpenCode with struggle detection
 
-**Recommendation:** Start with the plugin to learn. Graduate to bash loop for production long-running tasks.
+**Recommendation:** Start with the plugin to learn the concepts. For production long-running tasks, use Ralph TUI—it gives you the benefits of the bash loop approach without the manual setup. See [Part 3](/blog/ralph-wiggum-part-3-ralph-tui-monitoring) for the full TUI guide.
 
 ## Writing Prompts That Work
 
