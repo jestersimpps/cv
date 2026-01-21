@@ -88,9 +88,11 @@ ralph-tui setup
 
 The setup wizard lets you choose your issue tracker:
 
-- **JSON File Tracker** — Track tasks in a local `prd.json` file
+- **JSON File Tracker** — Track tasks in a local `prd.json` file (simplest option, no dependencies)
 - **Beads Issue Tracker** — Track issues using the bd (beads) CLI
 - **Beads + Beads Viewer (Smart Mode)** — Smart task selection using graph analysis (PageRank, critical path)
+
+> **What is Beads?** [Beads](https://github.com/subsy/beads) is a lightweight CLI issue tracker designed for AI-driven workflows. It stores issues as local markdown files with dependency tracking, making it easy for Claude to read and update task status. The "Smart Mode" option adds [Beads Viewer](https://github.com/subsy/beads-viewer) which visualizes task dependencies and uses PageRank to suggest which task to tackle next based on blockers and critical path analysis.
 
 It also installs three skills to `~/.claude/skills/` as slash commands:
 
