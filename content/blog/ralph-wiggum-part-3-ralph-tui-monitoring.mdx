@@ -286,6 +286,25 @@ See the [Ralph TUI documentation](https://github.com/subsy/ralph-tui) for full r
 
 **Don't pause indefinitely**—the log buffer still grows in the background. If you pause for > 30 minutes, consider exporting logs and restarting Ralph-TUI.
 
+### Adjusting Iterations On-the-Fly
+
+Need more iterations than you originally planned? Or want to wrap up early?
+
+- **`+`** — Add more iterations to the current run
+- **`-`** — Reduce remaining iterations
+
+**Use `+` when:**
+- Ralph is making good progress but running low on iterations
+- A task is more complex than expected and needs more cycles
+- You want to extend an overnight run without restarting
+
+**Use `-` when:**
+- Ralph completed the core work and remaining tasks are optional
+- You need to free up resources for another build
+- The current approach isn't working and you want to stop gracefully
+
+This beats killing the process—Ralph finishes its current iteration cleanly and commits progress before stopping.
+
 ### Log Management
 
 **Export logs regularly** (every 1-2 hours for long builds):
@@ -409,6 +428,10 @@ In [Part 4: Advanced Patterns & Troubleshooting](/blog/ralph-wiggum-part-4-advan
 `q` — Quit (Ralph continues)
 
 `Ctrl+C` — Emergency stop
+
+`+` — Add more iterations
+
+`-` — Reduce remaining iterations
 
 **View switching**
 
