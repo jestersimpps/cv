@@ -35,6 +35,7 @@ Ralph-TUI was created to bridge the gap between "fully autonomous" and "complete
 1. **Debugging efficiency**: Catch issues in real-time instead of discovering them after 100 iterations
 2. **Progress tracking**: Know which tasks are complete, in progress, or pending
 3. **Confidence building**: See the agent's reasoning and decision-making as it happens
+4. **No manual juggling**: Automates all the prompt templates, file management, and iteration tracking we set up manually in [Part 1](/blog/ralph-wiggum-part-1-project-setup) and [Part 2](/blog/ralph-wiggum-part-2-loop-setup)
 
 Ralph-TUI runs **alongside** Ralph Wiggum—it doesn't control or interrupt the loop. Think of it as a monitoring dashboard, not a steering wheel.
 
@@ -59,19 +60,37 @@ Ralph-TUI runs **alongside** Ralph Wiggum—it doesn't control or interrupt the 
 
 ## Installation & Setup
 
-Install [Ralph-TUI](https://github.com/subsy/ralph-tui) globally via npm:
+[Ralph-TUI](https://github.com/subsy/ralph-tui) requires [Bun](https://bun.sh) as its runtime. Install bun first if you don't have it:
 
 ```bash
-npm install -g ralph-tui
+curl -fsSL https://bun.sh/install | bash
 ```
 
-After installation, run the setup command to install skills:
+Restart your terminal (or run `source ~/.zshrc`) to load bun into your path.
+
+Then install Ralph-TUI globally with bun:
+
+```bash
+bun install -g ralph-tui
+```
+
+> **Why bun?** Ralph-TUI uses bun-native modules for performance. Installing with npm will result in a `Cannot find module '@opentui/core-darwin-arm64'` error.
+
+After installation, run the setup command to configure Ralph TUI for your project:
 
 ```bash
 ralph-tui setup
 ```
 
-This installs three skills to `~/.claude/skills/` as slash commands:
+![Ralph TUI Setup Wizard](/assets/blog/ralph-tui-setup-wizard.png)
+
+The setup wizard lets you choose your issue tracker:
+
+- **JSON File Tracker** — Track tasks in a local `prd.json` file
+- **Beads Issue Tracker** — Track issues using the bd (beads) CLI
+- **Beads + Beads Viewer (Smart Mode)** — Smart task selection using graph analysis (PageRank, critical path)
+
+It also installs three skills to `~/.claude/skills/` as slash commands:
 
 - `/ralph-tui-prd` — Create product requirement documents interactively
 - `/ralph-tui-create-json` — Convert PRD to `prd.json` format
@@ -85,7 +104,67 @@ This installs three skills to `~/.claude/skills/` as slash commands:
 ralph-tui --version
 ```
 
-You should see version information (1.0.0 or higher). If you encounter permissions errors, run with sudo or adjust npm global permissions.
+You should see version information (0.3.0 or higher).
+
+---
+
+## Creating PRDs with Ralph TUI
+
+Before Ralph can build autonomously, it needs a clear specification. The `/ralph-tui-prd` skill transforms your rough idea into a structured Product Requirements Document through an interactive conversation.
+
+### Step 1: Describe Your Feature
+
+Run `/ralph-tui-prd` and describe what you want to build in plain language:
+
+![PRD Creator Initial Prompt](/assets/blog/ralph-tui-prd-initial.png)
+
+You don't need a formal spec—just explain your feature like you would to a colleague. Include context about your existing setup, target users, and any constraints.
+
+### Step 2: Review the PRD Preview
+
+After asking clarifying questions, the skill generates a PRD preview:
+
+![PRD Creator Preview](/assets/blog/ralph-tui-prd-preview.png)
+
+### Step 3: Choose Output Format
+
+The skill asks which format you want—JSON file or Beads issues—then automatically converts the PRD. Once complete, Ralph TUI shows the interface for running the autonomous loop.
+
+---
+
+## How Ralph TUI Manages Context
+
+Like the bash loop approach covered in [Part 2](/blog/ralph-wiggum-part-2-loop-setup), Ralph TUI starts a **fresh context window each iteration**. This is the core insight that makes long-running autonomous builds possible.
+
+### Why Fresh Context Matters
+
+Standard agent loops suffer from context accumulation—every failed attempt stays in the conversation history. After a few iterations, the model processes a long history of noise before focusing on the current task. Ralph TUI solves this by spawning a new agent instance each cycle.
+
+Progress persists in files and git, not in the LLM's context window. When context fills up, you get a fresh agent with fresh context.
+
+### Key Files
+
+Ralph TUI uses these files to maintain state across iterations:
+
+- `prd.json` — Task definitions and status
+- `.ralph-tui/progress.md` — Cross-iteration context summary
+- `.ralph-tui-session.json` — Session state for pause/resume
+- `.ralph-tui/config.toml` — Project configuration
+- `.ralph-tui/iterations/` — Iteration logs (`iteration-{N}-{taskId}.log`)
+
+### The Execution Cycle
+
+Each iteration follows this pattern:
+
+1. **Select task** — Pick highest-priority incomplete task from `prd.json`
+2. **Build prompt** — Render Handlebars template with task context
+3. **Execute agent** — Spawn fresh Claude instance with clean context
+4. **Detect completion** — Parse output for task completion signals
+5. **Update tracker** — Mark task complete, log iteration, loop
+
+This architecture means each PRD item should be small enough to complete in one context window. If a task is too large, break it into subtasks.
+
+![Ralph TUI Running](/assets/blog/ralph-tui-running.png)
 
 ---
 
@@ -134,201 +213,6 @@ This turns a stream of events into a coherent narrative.
 
 ---
 
-## Interface Walkthrough
-
-When you run `ralph-tui run`, you'll see a terminal interface divided into sections:
-
-### Header Bar
-```
-╭──────────────────────────────────────────────────────╮
-│ Ralph Wiggum - Building Mode                         │
-│ Project: todo-api-ralph                              │
-│ Iteration: 8 / 50                                    │
-│ Current Task: TASK-004 (User Authentication - Login) │
-╰──────────────────────────────────────────────────────╯
-```
-
-- **Mode**: Building, Testing, Planning, or Idle
-- **Project name**: From your project directory
-- **Iteration counter**: Shows current/max iterations (max from `loop.sh` or default 50)
-- **Current task**: Task ID and description from `IMPLEMENTATION_PLAN.md`
-
-### Main Log Stream
-
-```
-[14:23:15] Reading IMPLEMENTATION_PLAN.md...
-[14:23:18] Task TASK-003 completed, moving to TASK-004
-[14:23:20] Implementing login endpoint...
-[14:23:45] Writing auth.test.ts...
-[14:24:10] Running tests...
-[14:24:15] ✓ All tests passing (15/15)
-[14:24:18] Committing changes...
-[14:24:20] Updated progress.txt
-```
-
-Timestamps show real-time progress. Color coding:
-- **Green checkmarks** (✓): Successful operations
-- **Red X**: Failures or errors
-- **Yellow arrows** (→): State transitions
-
-### Footer Status
-
-```
-Tasks: 3 completed | 1 in progress | 8 pending
-```
-
-Quick glance at overall progress. Updates after each task transition.
-
----
-
-## Keyboard Shortcuts & Controls
-
-Ralph-TUI is designed for hands-off monitoring, but keyboard controls let you navigate and inspect:
-
-### Navigation
-- **↑ / ↓** — Scroll through log output
-- **Page Up / Page Down** — Jump by screens
-- **Home / End** — Jump to start/end of logs
-- **g + g** — Go to top (Vim-style)
-- **Shift + G** — Go to bottom (Vim-style)
-
-### View Switching
-- **1** — Main log view (default)
-- **2** — Task list view (see all tasks from `IMPLEMENTATION_PLAN.md`)
-- **3** — File changes view (modified files per iteration)
-- **4** — Test results view (test summary across iterations)
-
-### Actions
-- **Space** — Pause log auto-scroll (resume with Space again)
-- **r** — Refresh current view
-- **/** — Search logs (type keyword, press Enter)
-- **n / N** — Next/previous search result
-- **c** — Copy current view to clipboard
-- **e** — Export logs to file (`ralph-tui-logs-[timestamp].txt`)
-
-### Session Control
-- **q** — Quit Ralph-TUI (Ralph loop continues running)
-- **Ctrl+C** — Emergency stop (kills both Ralph-TUI and Ralph loop)
-
-**Pro tip:** Use `Space` to pause auto-scroll when you see an error, then use `/` to search for related log lines.
-
----
-
-## Running Your First Monitoring Session
-
-Let's walk through a real monitoring session from start to finish.
-
-### Step 1: Start Ralph Loop
-
-In your project directory, start Ralph Wiggum:
-
-```bash
-ralph loop PROMPT_plan.md --max-iterations 30
-```
-
-Ralph begins planning, reading specs, and building.
-
-### Step 2: Launch Ralph-TUI
-
-In a **separate terminal window** (or tmux pane), launch Ralph-TUI:
-
-```bash
-ralph-tui run
-```
-
-Ralph-TUI connects to the running Ralph loop and displays the header:
-
-```
-╭──────────────────────────────────────────────────────╮
-│ Ralph Wiggum - Planning Mode                         │
-│ Project: my-saas-app                                 │
-│ Iteration: 1 / 30                                    │
-│ Current Task: Initializing                           │
-╰──────────────────────────────────────────────────────╯
-```
-
-### Step 3: Watch the Planning Phase
-
-The log stream shows Ralph reading specs and creating `IMPLEMENTATION_PLAN.md`:
-
-```
-[10:05:12] Reading specs/authentication.md...
-[10:05:15] Reading specs/api-design.md...
-[10:05:18] Analyzing requirements...
-[10:05:42] Generated IMPLEMENTATION_PLAN.md with 12 tasks
-[10:05:45] Transitioning to Building Mode
-```
-
-Notice the mode changes from "Planning" to "Building" in the header.
-
-### Step 4: Monitor Task Execution
-
-Ralph picks the first task:
-
-```
-[10:06:00] Starting TASK-001: Database schema setup
-[10:06:15] Creating migrations/001_create_users_table.sql...
-[10:06:30] Running migration tests...
-[10:06:45] ✓ Migration successful
-[10:06:50] Committing changes: "Add users table migration"
-[10:06:55] Task TASK-001 completed
-```
-
-### Step 5: Interpret Iteration Counters
-
-The header updates:
-
-```
-│ Iteration: 3 / 30                                    │
-│ Current Task: TASK-002 (User model implementation)   │
-```
-
-**Iteration 3** doesn't mean "task 3"—it means Ralph has completed 3 full think-act-observe-correct cycles. A single task might take 5-10 iterations if tests fail or requirements are complex.
-
-**Understanding iterations vs tasks:** An iteration is one complete think-act-observe cycle—Claude reads the prompt, takes action (writes code, runs tests), observes results, and corrects if needed. A task from your `IMPLEMENTATION_PLAN.md` may require multiple iterations to complete. For example, implementing authentication might take 8 iterations: initial implementation (2), fixing failing tests (3), adding edge cases (2), and final cleanup (1).
-
-### Step 6: Use Search During Errors
-
-If you see a test failure:
-
-```
-[10:15:32] Running tests...
-[10:15:40] ✗ 2 tests failed
-```
-
-Press `/` and search for "failed" to see which tests:
-
-```
-[10:15:40]   - test/auth.test.ts: "should hash passwords"
-[10:15:40]   - test/auth.test.ts: "should validate email format"
-```
-
-### Step 7: Pause to Analyze
-
-Press `Space` to pause auto-scroll, then scroll back through logs to see what Ralph tried. You might discover Ralph used an outdated library version or misunderstood a spec.
-
-Resume auto-scroll with `Space` when ready.
-
-### Step 8: Export Logs for Debugging
-
-If you need to share logs with the team or file an issue:
-
-Press `e` to export. Ralph-TUI saves to:
-
-```
-ralph-tui-logs-2026-01-16-10-30-45.txt
-```
-
-This file includes **all** log output from session start, not just what's visible on screen.
-
-### Step 9: Quit When Done
-
-Press `q` to exit Ralph-TUI. Ralph Wiggum continues running in the background.
-
-To stop both Ralph and Ralph-TUI: `Ctrl+C` (or kill the Ralph process separately).
-
----
-
 ## Common Use Cases
 
 ### Use Case 1: Long-Running Builds (3+ Hours)
@@ -358,31 +242,32 @@ To stop both Ralph and Ralph-TUI: `Ctrl+C` (or kill the Ralph process separately
 
 **Why Ralph-TUI helps:** Session persistence means you don't lose visibility into what happened during extended runs. Logs show every decision Ralph made while you were away.
 
-### Use Case 3: Team Collaboration
+### Use Case 3: CI/CD Integration
 
-**Scenario:** Two developers pair-programming with Ralph. One writes specs, the other monitors execution.
+**Scenario:** Running Ralph in a GitHub Actions workflow or remote server for automated feature builds.
 
-**Ralph-TUI workflow:**
-1. Developer A writes specs in `specs/` directory
-2. Developer A starts Ralph loop
-3. Developer B launches Ralph-TUI on their machine (connecting to the same Ralph instance)
-4. Developer B calls out issues: "Ralph is stuck on test failures for 15 minutes"
-5. Developer A updates specs or fixes test data
-6. Ralph self-corrects on next iteration
+Ralph TUI supports **headless mode** for CI/CD pipelines:
 
-**Why Ralph-TUI helps:** Real-time collaboration. Developer B can spot issues immediately instead of waiting for Developer A to check files manually.
+```bash
+ralph-tui run --headless
+```
 
-### Use Case 4: CI/CD Integration
+This executes the agent autonomously without interactive controls.
 
-**Scenario:** Running Ralph in a GitHub Actions workflow for automated feature builds.
+**Remote monitoring:** You can monitor headless instances from your local machine using Ralph TUI's remote management:
 
-**Ralph-TUI workflow:**
-- Don't use Ralph-TUI in CI/CD—use file-based logging instead
-- Ralph-TUI is designed for interactive terminal monitoring
-- In CI, redirect Ralph logs to a file: `ralph loop PROMPT_plan.md > build.log 2>&1`
-- Parse `build.log` in CI for test results and task completion
+```bash
+# On remote/CI server
+ralph-tui run --listen --prd ./prd.json
 
-**Exception:** Use Ralph-TUI in CI if you're triggering builds manually and want to monitor via SSH connection to the runner.
+# On your local machine
+ralph-tui remote add ci server.example.com:7890 --token <TOKEN>
+ralph-tui
+```
+
+The TUI displays tabs for local and remote instances with connection status indicators. Security features include two-tier tokens, audit logging, and automatic token rotation.
+
+See the [Ralph TUI documentation](https://github.com/subsy/ralph-tui) for full remote setup details.
 
 ---
 
@@ -507,7 +392,7 @@ In [Part 4: Advanced Patterns & Troubleshooting](/blog/ralph-wiggum-part-4-advan
 
 **Installation**
 
-`npm install -g ralph-tui` then `ralph-tui setup`
+`curl -fsSL https://bun.sh/install | bash` then `bun install -g ralph-tui` then `ralph-tui setup`
 
 **Start monitoring**
 
