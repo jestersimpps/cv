@@ -106,16 +106,16 @@ Add the tools Ralph needs to your `.claude/settings.local.json`:
     "allow": [
       "Edit",
       "Write",
-      "Bash(npm test:*)",
-      "Bash(npm run build:*)",
-      "Bash(git add:*)",
-      "Bash(git commit:*)"
+      "Bash(npm:test *)",
+      "Bash(npm:run build *)",
+      "Bash(git:add *)",
+      "Bash(git:commit *)"
     ]
   }
 }
 ```
 
-> **Understanding permission syntax:** The `Bash(npm test:*)` pattern means "allow any Bash command starting with `npm test`". The `*` acts as a wildcard. This gives Ralph permission to run tests without prompting you each time. See [Mastery Part 3: Project Configuration](/blog/claude-code-mastery-03-project-configuration#the-permission-system) for full details on permission patterns.
+> **Understanding permission syntax:** The `Bash(npm:test *)` pattern means "allow any Bash command starting with `npm test`". The `*` acts as a wildcard. This gives Ralph permission to run tests without prompting you each time. See [Mastery Part 3: Project Configuration](/blog/claude-code-mastery-03-project-configuration#the-permission-system) for full details on permission patterns.
 
 **Option B: Use permission flags**
 
@@ -129,11 +129,13 @@ claude --permission-mode acceptEdits
 
 > **Warning:** Only use `--dangerously-skip-permissions` in sandboxed environments (containers, VMs, disposable cloud instances). It gives Claude full access to your filesystem.
 
-As [Boris Cherny notes](https://www.threads.com/@boris_cherny/post/DTBVuylEjqQ), for very long-running tasks you'll want either `--permission-mode=dontAsk` or `--dangerously-skip-permissions` in a sandbox so Claude isn't blocked waiting for you.
+As [Boris Cherny notes](https://www.threads.com/@boris_cherny/post/DTBVuylEjqQ), for very long-running tasks you'll want either `--permission-mode=acceptEdits` or `--dangerously-skip-permissions` in a sandbox so Claude isn't blocked waiting for you.
 
 **Option C: Full Sandboxing (Recommended for Long-Running Tasks)**
 
-For serious autonomous work, Claude Code's [built-in sandboxing](https://code.claude.com/docs/en/sandboxing) isolates Ralph while still allowing necessary operations. [JeredBlu's guide](https://github.com/JeredBlu/guides/blob/main/Ralph_Wiggum_Guide.md) provides a practical configuration—create `.claude/settings.json`:
+For serious autonomous work, Claude Code's [built-in sandboxing](https://code.claude.com/docs/en/sandboxing) isolates Ralph while still allowing necessary operations. Enable it by running `/sandbox` in Claude Code, which provides OS-level filesystem and network isolation.
+
+You can also configure permission rules in `.claude/settings.json` to control what Ralph can access:
 
 ```json
 {
@@ -143,21 +145,16 @@ For serious autonomous work, Claude Code's [built-in sandboxing](https://code.cl
       "WebFetch(domain:github.com)"
     ],
     "deny": [
-      "Bash(sudo *)",
-      "Bash(docker *)",
+      "Bash(sudo:*)",
+      "Bash(docker:*)",
       "Read(./.env)",
       "Read(~/.ssh/**)"
     ]
-  },
-  "sandbox": {
-    "enabled": true,
-    "autoAllowBashIfSandboxed": true,
-    "allowUnsandboxedCommands": false
   }
 }
 ```
 
-Customize the allow/deny lists for your project's needs.
+Customize the allow/deny lists for your project's needs. See [JeredBlu's guide](https://github.com/JeredBlu/guides/blob/main/Ralph_Wiggum_Guide.md) for more configuration examples.
 
 ### Step 4: Run Your First Loop
 
