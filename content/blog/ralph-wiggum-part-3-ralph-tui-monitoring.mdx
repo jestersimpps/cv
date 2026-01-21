@@ -14,7 +14,7 @@ series:
   total: 4
 ---
 
-Running Ralph Wiggum autonomously is powerful—but monitoring blind loops can feel like trusting a pilot you can't see. Ralph-TUI solves the visibility problem by giving you a real-time dashboard into every iteration, task, and decision your AI agent makes.
+Running Ralph Wiggum autonomously is powerful—but monitoring blind loops can feel like trusting a pilot you can't see. [Ralph-TUI](https://github.com/subsy/ralph-tui) solves the visibility problem by giving you a real-time dashboard into every iteration, task, and decision your AI agent makes.
 
 ## The Visibility Problem
 
@@ -89,10 +89,12 @@ ralph-tui setup
 The setup wizard lets you choose your issue tracker:
 
 - **JSON File Tracker** — Track tasks in a local `prd.json` file (simplest option, no dependencies)
-- **Beads Issue Tracker** — Track issues using the bd (beads) CLI
-- **Beads + Beads Viewer (Smart Mode)** — Smart task selection using graph analysis (PageRank, critical path)
+- **Beads Issue Tracker** — Track issues using the `bd` CLI, parsed from `.beads/beads.jsonl`
+- **Beads + BV (Smart Mode)** — Graph-aware task selection using `bv --robot-triage`
 
-> **What is Beads?** [Beads](https://github.com/subsy/beads) is a lightweight CLI issue tracker designed for AI-driven workflows. It stores issues as local markdown files with dependency tracking, making it easy for Claude to read and update task status. The "Smart Mode" option adds [Beads Viewer](https://github.com/subsy/beads-viewer) which visualizes task dependencies and uses PageRank to suggest which task to tackle next based on blockers and critical path analysis.
+> **What is Beads?** [Beads](https://github.com/steveyegge/beads) is Steve Yegge's git-backed issue tracker designed for AI coding agents. Tasks are stored in `.beads/beads.jsonl` with hash-based IDs (like `bd-a1b2`) that prevent merge conflicts in multi-agent workflows. It supports hierarchical tasks (epics → tasks → subtasks) and dependency tracking via `bd dep add`.
+>
+> **What is BV?** The "Smart Mode" option uses `bv` (beads viewer)—a graph-aware triage engine. Instead of Claude parsing JSONL and guessing priorities, `bv --robot-triage` computes PageRank, critical paths, betweenness centrality, and cycle detection to deterministically recommend the highest-impact task. The `selectionReason` in your prompt template explains *why* that task was chosen.
 
 It also installs three skills to `~/.claude/skills/` as slash commands:
 
