@@ -273,6 +273,22 @@ See the [Ralph TUI documentation](https://github.com/subsy/ralph-tui) for full r
 
 ## Best Practices
 
+### Always Start on a Fresh Branch
+
+Before launching Ralph, create a dedicated feature branch:
+
+```bash
+git checkout -b feature/my-ralph-task
+```
+
+**Why this matters:**
+- Ralph makes frequent commits—isolating them keeps your main branch clean
+- Easy rollback if something goes wrong (`git checkout main && git branch -D feature/my-ralph-task`)
+- Clean PR history when you're ready to merge
+- Multiple Ralph runs can work in parallel on different branches
+
+**Don't run Ralph on main/master.** If Ralph gets stuck in a loop or makes architectural mistakes, reverting dozens of commits on your primary branch is painful.
+
 ### When to Pause/Resume
 
 **Pause** (press `Space`) when:
