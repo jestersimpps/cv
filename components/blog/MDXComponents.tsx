@@ -6,6 +6,7 @@ import Mermaid from './Mermaid';
 import LinkPreview from './LinkPreview';
 import { QuickReference } from './QuickReference';
 import { BentoGrid } from './BentoGrid';
+import { VideoPlayer } from './VideoPlayer';
 
 function extractTextFromChildren(children: ReactNode): string {
   if (typeof children === 'string') return children;
@@ -177,4 +178,5 @@ export const MDXComponents = {
   ),
   QuickReference,
   BentoGrid,
+  VideoPlayer,
 };
