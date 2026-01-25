@@ -12,3 +12,4 @@ export { default as NewsletterSignup } from './NewsletterSignup';
 export { default as ShareButtons } from './ShareButtons';
 export { default as LinkPreviewProvider } from './LinkPreviewProvider';
 export { default as LinkPreviewSidebar } from './LinkPreviewSidebar';
+export { BentoGrid } from './BentoGrid';

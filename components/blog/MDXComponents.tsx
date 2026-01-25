@@ -5,6 +5,7 @@ import CodeBlock from './CodeBlock';
 import Mermaid from './Mermaid';
 import LinkPreview from './LinkPreview';
 import { QuickReference } from './QuickReference';
+import { BentoGrid } from './BentoGrid';
 
 function extractTextFromChildren(children: ReactNode): string {
   if (typeof children === 'string') return children;
@@ -175,4 +176,5 @@ export const MDXComponents = {
     <em className="italic text-neutral-200">{children}</em>
   ),
   QuickReference,
+  BentoGrid,
 };
