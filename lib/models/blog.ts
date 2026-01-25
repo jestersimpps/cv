@@ -37,7 +37,8 @@ export type BlogCategory =
   | 'Web3 & Blockchain'
   | 'Architecture'
   | 'Career'
-  | 'Tutorials';
+  | 'Tutorials'
+  | 'Life';
 
 export const BLOG_CATEGORIES: BlogCategory[] = [
   'Development',
@@ -46,4 +47,5 @@ export const BLOG_CATEGORIES: BlogCategory[] = [
   'Architecture',
   'Career',
   'Tutorials',
+  'Life',
 ];
