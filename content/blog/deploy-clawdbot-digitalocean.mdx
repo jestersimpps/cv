@@ -1,6 +1,6 @@
 ---
 title: "Deploy Your AI Assistant on DigitalOcean in 15 Minutes"
-description: "Set up Clawdbot on a $6/month droplet and have your own AI assistant responding on Telegram—no babysitting required."
+description: "Set up Clawdbot on a DigitalOcean droplet and have your own AI assistant responding on Telegram—no babysitting required."
 publishedAt: "2026-01-25"
 author: "Jo Vinkenroye"
 category: "Tutorials"
@@ -11,7 +11,7 @@ featured: false
 
 Picture this: you're on a flight, your phone buzzes, and your AI assistant just handled a complex task you messaged it about three hours ago. No laptop. No SSH. Just results waiting in your Telegram.
 
-That's not some premium SaaS product—it's Clawdbot running on a $6/month DigitalOcean droplet. And you can set it up in about 15 minutes.
+That's not some premium SaaS product—it's Clawdbot running on a DigitalOcean droplet. And you can set it up in about 15 minutes.
 
 Here's exactly how to do it.
 
@@ -19,10 +19,17 @@ Here's exactly how to do it.
 
 You could run Clawdbot on any VPS, but DigitalOcean hits the sweet spot:
 
-- **$6/month** gets you 1GB RAM and 25GB SSD—plenty for Clawdbot
-- **One-click Node.js droplets** skip the dependency headaches
 - **Reliable uptime** means your assistant is always available
 - **Simple firewall rules** keep things locked down
+- **Easy scaling** when you need more power
+
+**Which droplet size?**
+
+- **$6/month (1GB RAM):** Technically works, but you'll likely hit heap exhaustion under real usage. Not recommended.
+- **$12/month (2GB RAM):** Minimum for comfortable operation.
+- **$48/month (8GB RAM, 4 vCPU):** What I actually run. Handles multiple conversations, image generation, and heavy tool use without breaking a sweat.
+
+Go with at least **2GB RAM** unless you enjoy debugging memory errors at 2am.
 
 No affiliate links here. It just works.
 
@@ -34,7 +41,7 @@ Head to [DigitalOcean](https://www.digitalocean.com) and create a new Droplet.
 
 - **Region:** Wherever you are (lower latency = faster responses)
 - **Image:** Ubuntu 24.04 LTS
-- **Size:** Basic → Regular → $6/mo (1 GB RAM, 1 vCPU)
+- **Size:** Basic → Regular → $12/mo minimum (2GB RAM), $48/mo recommended (8GB RAM, 4 vCPU)
 - **Authentication:** SSH keys (please, not password)
 
 Hit Create and wait 60 seconds.
@@ -184,7 +191,7 @@ The real power comes when you set up a workspace with custom instructions. But t
 
 ## Key Takeaways
 
-- **$6/month** gets you a personal AI assistant on Telegram
+- **$12-48/month** gets you a personal AI assistant on Telegram (skip the $6 tier—heap exhaustion is real)
 - **15 minutes** from zero to working setup
 - **No maintenance** once the daemon is running
 - **Pairing system** keeps your bot private
