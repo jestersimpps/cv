@@ -1,0 +1,216 @@
+---
+title: "Deploy Your AI Assistant on DigitalOcean in 15 Minutes"
+description: "Set up Clawdbot on a $6/month droplet and have your own AI assistant responding on Telegram—no babysitting required."
+publishedAt: "2026-01-25"
+author: "Jo Vinkenroye"
+category: "Tutorials"
+tags: ["Clawdbot", "DigitalOcean", "Telegram", "AI", "Self-Hosted"]
+featured: false
+---
+
+Picture this: you're on a flight, your phone buzzes, and your AI assistant just handled a complex task you messaged it about three hours ago. No laptop. No SSH. Just results waiting in your Telegram.
+
+That's not some premium SaaS product—it's Clawdbot running on a $6/month DigitalOcean droplet. And you can set it up in about 15 minutes.
+
+Here's exactly how to do it.
+
+## Why DigitalOcean?
+
+You could run Clawdbot on any VPS, but DigitalOcean hits the sweet spot:
+
+- **$6/month** gets you 1GB RAM and 25GB SSD—plenty for Clawdbot
+- **One-click Node.js droplets** skip the dependency headaches
+- **Reliable uptime** means your assistant is always available
+- **Simple firewall rules** keep things locked down
+
+No affiliate links here. It just works.
+
+## Step 1: Create Your Droplet
+
+Head to [DigitalOcean](https://www.digitalocean.com) and create a new Droplet.
+
+**Choose your config:**
+
+- **Region:** Wherever you are (lower latency = faster responses)
+- **Image:** Ubuntu 24.04 LTS
+- **Size:** Basic → Regular → $6/mo (1 GB RAM, 1 vCPU)
+- **Authentication:** SSH keys (please, not password)
+
+Hit Create and wait 60 seconds.
+
+{/* IMAGE: DigitalOcean droplet creation screen with Ubuntu selected */}
+
+## Step 2: SSH In and Install Node.js 22
+
+Once your droplet is live, SSH in:
+
+```bash
+ssh root@your-droplet-ip
+```
+
+Clawdbot needs Node.js 22+. The fastest way:
+
+```bash
+curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash -
+apt-get install -y nodejs
+```
+
+Verify it worked:
+
+```bash
+node -v
+# Should show v22.x.x
+```
+
+## Step 3: Install Clawdbot
+
+One command:
+
+```bash
+curl -fsSL https://clawd.bot/install.sh | bash
+```
+
+This installs Clawdbot globally and kicks off the onboarding wizard. The wizard will ask you a few questions:
+
+- **API provider:** Pick Anthropic (Claude) or OpenAI
+- **API key:** Paste your key
+- **Install daemon:** Say yes—this keeps Clawdbot running after you disconnect
+
+If you accidentally skipped onboarding:
+
+```bash
+clawdbot onboard --install-daemon
+```
+
+## Step 4: Connect Telegram
+
+Now the fun part. You need a Telegram bot token:
+
+1. Open Telegram and message [@BotFather](https://t.me/BotFather)
+2. Send `/newbot`
+3. Pick a name and username (must end in `bot`)
+4. Copy the API token BotFather gives you
+
+Add it to your config:
+
+```bash
+nano ~/.clawdbot/clawdbot.json
+```
+
+Find (or add) the `channels` section:
+
+```json
+{
+  "channels": {
+    "telegram": {
+      "enabled": true,
+      "botToken": "YOUR_BOT_TOKEN_HERE"
+    }
+  }
+}
+```
+
+Save and restart:
+
+```bash
+clawdbot gateway restart
+```
+
+## Step 5: Pair Your Account
+
+Clawdbot uses a pairing system so random people can't spam your bot. Message your bot on Telegram—you'll get a pairing code.
+
+Back on your droplet:
+
+```bash
+clawdbot pairing approve telegram YOUR_CODE
+```
+
+That's it. You're connected.
+
+## Step 6: Verify Everything Works
+
+Check the status:
+
+```bash
+clawdbot status
+```
+
+You should see the Gateway running and Telegram connected. Send a message to your bot—you should get a response within seconds.
+
+If something's wrong:
+
+```bash
+clawdbot health
+clawdbot gateway logs
+```
+
+## Making It Production-Ready
+
+A few tweaks for long-term reliability:
+
+**Enable automatic updates:**
+
+```bash
+apt-get install unattended-upgrades
+dpkg-reconfigure -plow unattended-upgrades
+```
+
+**Set up a firewall:**
+
+```bash
+ufw allow OpenSSH
+ufw enable
+```
+
+You don't need to open any other ports—Clawdbot connects outbound to Telegram's servers.
+
+**Monitor with DigitalOcean:**
+
+Enable Droplet metrics in your DO dashboard. Set up an alert if CPU stays above 80% for 5 minutes (usually means something's stuck).
+
+## What Can You Do Now?
+
+Your AI assistant is live 24/7. Some ideas:
+
+- **Research on the go:** "Summarize the latest news about [topic]"
+- **Code reviews:** Send a file, ask for feedback
+- **Reminders:** "Remind me in 2 hours to check the deployment"
+- **Web searches:** "Find the best restaurants in [city]"
+- **Anything Claude/GPT can do**—but from your pocket
+
+The real power comes when you set up a workspace with custom instructions. But that's a topic for another post.
+
+## Key Takeaways
+
+- **$6/month** gets you a personal AI assistant on Telegram
+- **15 minutes** from zero to working setup
+- **No maintenance** once the daemon is running
+- **Pairing system** keeps your bot private
+- **SSH keys only**—don't be that person with password auth
+
+## Quick Reference
+
+```bash
+# Install
+curl -fsSL https://clawd.bot/install.sh | bash
+
+# Check status
+clawdbot status
+clawdbot health
+
+# View logs
+clawdbot gateway logs
+
+# Restart
+clawdbot gateway restart
+
+# Approve Telegram pairing
+clawdbot pairing approve telegram CODE
+```
+
+---
+
+Got questions? Check the [Clawdbot docs](https://docs.clawd.bot) or join the [Discord](https://discord.com/invite/clawd).
+
+Now go message your assistant from the airport lounge. You've earned it.
