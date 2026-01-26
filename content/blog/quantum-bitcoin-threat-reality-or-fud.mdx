@@ -1,0 +1,161 @@
+---
+title: "Is Quantum Computing a Real Threat to Bitcoin? Here's What Actually Matters"
+description: "a wall street strategist just dumped bitcoin over quantum fears. let's break down what's actually at risk—and what isn't."
+publishedAt: "2026-01-26"
+author: "Jo V"
+category: "Crypto"
+tags: ["Bitcoin", "Quantum Computing", "Cryptography", "Security", "Crypto"]
+coverImage: "/assets/blog/quantum-bitcoin/quantum-threat.jpg"
+featured: false
+---
+
+Christopher Wood just dropped his entire Bitcoin allocation.
+
+The widely-followed Wall Street strategist at Jefferies—whose "Greed and Fear" newsletter moves markets—pulled Bitcoin from his model portfolio this week. His reason? Quantum computing.
+
+He's replacing BTC with gold. The kind you can hold. The kind that doesn't care about Shor's algorithm.
+
+This comes after Coinbase's head of research suggested **33% of Bitcoin's supply** could be vulnerable to quantum attacks. Bankless went further, saying quantum could "divide Bitcoin by zero."
+
+So is this the end? Or is it FUD?
+
+Let's break it down.
+
+## What Quantum Actually Threatens
+
+First, some technical clarity. Bitcoin relies on two cryptographic primitives:
+
+1. **ECDSA (Elliptic Curve Digital Signature Algorithm)** — Used to sign transactions. This proves you own the private key without revealing it.
+
+2. **SHA-256** — Used for mining (proof of work) and creating addresses from public keys.
+
+Quantum computers threaten these differently.
+
+### ECDSA: The Real Risk
+
+Shor's algorithm, running on a sufficiently powerful quantum computer, could theoretically derive a private key from a public key in polynomial time. Today's classical computers would take longer than the age of the universe for the same task.
+
+The key word is "theoretically." We'll get to why.
+
+Here's the attack scenario:
+
+```
+1. You broadcast a transaction (reveals your public key)
+2. Attacker has ~10 minutes before it's mined
+3. Quantum computer derives private key from public key
+4. Attacker double-spends your funds
+```
+
+This is called the "transaction interception" attack. It's real in theory, but requires:
+
+- A quantum computer with **millions** of stable qubits
+- Error correction that doesn't exist yet
+- Sub-10-minute execution time
+
+### SHA-256: Not Really at Risk
+
+Grover's algorithm could theoretically speed up brute-force searches, but only quadratically. For SHA-256, this means reducing security from 256 bits to 128 bits.
+
+128-bit security is still considered unbreakable by any foreseeable technology. Your addresses are safe from quantum hash attacks.
+
+## The "33% Vulnerable" Claim
+
+Coinbase's research noted that roughly 33% of Bitcoin's supply sits in addresses where the public key has been exposed.
+
+This includes:
+
+- **P2PK addresses** (original Satoshi-era format, public key is the address)
+- **Addresses that have been spent from** (spending reveals the public key)
+- **Lost coins** (many early addresses used P2PK)
+
+Satoshi's estimated 1 million BTC? Sitting in P2PK addresses with exposed public keys.
+
+**Here's what's NOT vulnerable:**
+
+- Modern P2PKH and P2SH addresses (public key hidden behind hash)
+- Addresses you've never spent from
+- Any address using newer formats
+
+If you're using a modern wallet and following best practices (fresh address per transaction), your Bitcoin isn't at risk until you spend it.
+
+## The Timeline Problem
+
+Here's where the FUD falls apart: **we're not close.**
+
+Google's Willow chip, announced in late 2024, has 105 qubits. It made headlines for solving a specific benchmark problem in 5 minutes that would take classical computers 10 septillion years.
+
+Impressive? Sure. Relevant to Bitcoin? Not really.
+
+Breaking ECDSA-256 would require an estimated **1,500 to 4,000 logical qubits**. But logical qubits require error correction, which means you need millions of physical qubits to produce thousands of logical ones.
+
+Current estimates:
+
+| Metric | Current State | Required for BTC Attack |
+|--------|--------------|------------------------|
+| Physical qubits | ~1,000 | Millions |
+| Logical qubits | ~0 | 1,500-4,000 |
+| Error rates | High | Near-zero |
+| Estimated timeline | 2024 | 2030-2050+ |
+
+Even quantum computing optimists don't expect cryptographically-relevant quantum computers before 2030. Most serious researchers say 2040-2050.
+
+## What Bitcoin Can Do About It
+
+Bitcoin has time. And options.
+
+### 1. Post-Quantum Cryptography
+
+NIST finalized its first post-quantum cryptographic standards in 2024. These include:
+
+- **CRYSTALS-Dilithium** — Digital signatures resistant to Shor's algorithm
+- **SPHINCS+** — Hash-based signatures (even more conservative)
+- **CRYSTALS-Kyber** — Key encapsulation for future use
+
+Bitcoin could soft-fork to support these new signature schemes. The community has been discussing BIP proposals for quantum resistance since 2016.
+
+### 2. Address Format Migration
+
+A coordinated migration to quantum-resistant addresses could protect the network. This has precedent—Bitcoin has upgraded address formats multiple times (P2PKH → P2SH → P2WPKH → P2TR).
+
+### 3. The Nuclear Option
+
+In an emergency, a hard fork could:
+
+- Freeze all P2PK addresses (controversial—includes Satoshi's coins)
+- Require migration to new address formats within a deadline
+- Implement quantum-resistant signatures immediately
+
+Nobody wants this option. But it exists.
+
+## The Incentive Argument
+
+Here's something the doomers miss: **quantum computer operators have stronger incentives to mine Bitcoin than to attack it.**
+
+A quantum computer capable of breaking ECDSA could also find SHA-256 hashes faster (via Grover's algorithm). The first entity with such a computer could:
+
+1. **Attack Bitcoin** — Steal some coins, destroy confidence in the network, crash the price of everything you stole
+2. **Mine Bitcoin** — Earn consistent, legitimate block rewards while the network functions normally
+
+Option 2 is obviously more profitable. You'd be killing the golden goose for a one-time meal.
+
+## My Take
+
+Christopher Wood is a smart guy. He's also managing other people's money and needs to account for tail risks.
+
+For institutional allocators with fiduciary duties, "quantum might break Bitcoin someday" is a reasonable concern to flag. It's conservative risk management.
+
+For individual holders? I think it's overblown.
+
+The timeline is long. The solutions exist. The incentives work in Bitcoin's favor. And the 33% "vulnerable" supply includes coins that are probably lost forever anyway (including Satoshi's stash, which moving would be a bigger story than quantum computing).
+
+**What I'm watching:**
+
+- Progress on quantum error correction (the real bottleneck)
+- Bitcoin BIPs proposing quantum-resistant upgrades
+- NIST post-quantum standard adoption in other protocols
+
+If you see a 10,000-qubit quantum computer with stable error correction, then start worrying. Until then, the bigger risk to your Bitcoin is forgetting your seed phrase.
+
+---
+
+*This isn't financial or cryptographic advice. I'm a developer, not a quantum physicist. Do your own research—but maybe don't sell your Bitcoin because of a threat that's decades away.*
