@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 const PROFILE_SUMMARY = `
-# Jo Vinkenroye - Profile Summary
+# Jo V - Profile Summary
 
 ## Experience
 - 13+ years building ERP systems, SaaS platforms, and modern web applications

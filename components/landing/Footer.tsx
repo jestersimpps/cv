@@ -14,7 +14,7 @@ export default function Footer() {
           className="text-center"
         >
           <p className="text-neutral-500 text-sm">
-            &copy; {new Date().getFullYear()} Jo Vinkenroye. All rights reserved.
+            &copy; {new Date().getFullYear()} Jo V. All rights reserved.
           </p>
         </motion.div>
       </div>

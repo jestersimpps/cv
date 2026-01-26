@@ -17,7 +17,7 @@ export default function Header() {
           <div className="absolute inset-0 bg-gradient-to-br from-primary-400 to-accent-400 opacity-20"></div>
           <Image
             src="/assets/avatar.png"
-            alt="Jo Vinkenroye"
+            alt="Jo V"
             fill
             className="object-cover"
             priority
@@ -25,7 +25,7 @@ export default function Header() {
         </div>
         <div className="text-center sm:text-left flex-1">
           <h1 className="text-4xl font-bold text-neutral-900 dark:text-white mb-2">
-            Jo Vinkenroye
+            Jo V
           </h1>
           <p className="text-xl font-semibold text-neutral-700 dark:text-neutral-300">
             Web Application Developer

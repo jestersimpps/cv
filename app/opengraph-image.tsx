@@ -2,7 +2,7 @@ import { ImageResponse } from 'next/og';
 
 export const runtime = 'edge';
 
-export const alt = 'Jo Vinkenroye - Web Application Developer';
+export const alt = 'Jo V - Web Application Developer';
 export const size = {
   width: 1200,
   height: 630,
@@ -39,7 +39,7 @@ export default async function Image() {
               lineHeight: 1.1,
             }}
           >
-            Jo Vinkenroye
+            Jo V
           </div>
           <div
             style={{

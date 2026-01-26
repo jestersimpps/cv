@@ -20,7 +20,7 @@ export async function GET() {
     .map((exp) => `- ${exp.company}: ${exp.description[0]}`)
     .join('\n');
 
-  const content = `# Jo Vinkenroye - Web Application Developer
+  const content = `# Jo V - Web Application Developer
 
 > ${cvData.header.tagline}
 

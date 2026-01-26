@@ -7,7 +7,7 @@ const siteUrl = 'https://www.jovweb.dev';
 export const metadata: Metadata = {
   title: 'Blog',
   description:
-    'Articles and tutorials on web development, AI integration, blockchain technology, and software architecture by Jo Vinkenroye.',
+    'Articles and tutorials on web development, AI integration, blockchain technology, and software architecture by Jo V.',
   keywords: [
     'Blog',
     'Web Development',
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     'Next.js',
   ],
   openGraph: {
-    title: 'Blog | Jo Vinkenroye',
+    title: 'Blog | Jo V',
     description:
       'Articles and tutorials on web development, AI integration, blockchain technology, and software architecture.',
     type: 'website',
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Blog | Jo Vinkenroye',
+    title: 'Blog | Jo V',
     description:
       'Articles and tutorials on web development, AI integration, blockchain technology, and software architecture.',
   },

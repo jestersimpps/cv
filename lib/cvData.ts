@@ -1,6 +1,6 @@
 export const cvData = {
   header: {
-    name: "Jo Vinkenroye",
+    name: "Jo V",
     title: "Web Application Developer",
     tagline: "13+ years building ERP systems, SaaS platforms, and modern web applications"
   },

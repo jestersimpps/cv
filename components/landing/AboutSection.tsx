@@ -82,7 +82,7 @@ export default function AboutSection() {
                 <div className="relative w-20 h-20 rounded-full overflow-hidden ring-2 ring-white/10 flex-shrink-0">
                   <Image
                     src="/assets/avatar.png"
-                    alt="Jo Vinkenroye"
+                    alt="Jo V"
                     fill
                     className="object-cover"
                   />

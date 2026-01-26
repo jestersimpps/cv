@@ -2,14 +2,14 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Work Experience",
-  description: "Full career timeline of Jo Vinkenroye - 13+ years of professional experience in web development, from SAP to AI integration.",
+  description: "Full career timeline of Jo V - 13+ years of professional experience in web development, from SAP to AI integration.",
   openGraph: {
-    title: "Work Experience | Jo Vinkenroye",
-    description: "Full career timeline of Jo Vinkenroye - 13+ years of professional experience in web development, from SAP to AI integration.",
+    title: "Work Experience | Jo V",
+    description: "Full career timeline of Jo V - 13+ years of professional experience in web development, from SAP to AI integration.",
   },
   twitter: {
-    title: "Work Experience | Jo Vinkenroye",
-    description: "Full career timeline of Jo Vinkenroye - 13+ years of professional experience in web development, from SAP to AI integration.",
+    title: "Work Experience | Jo V",
+    description: "Full career timeline of Jo V - 13+ years of professional experience in web development, from SAP to AI integration.",
   },
 };
 

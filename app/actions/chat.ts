@@ -8,8 +8,8 @@ export async function getChatResponse(message: string): Promise<string> {
         return "I apologize, but the AI chat is not configured. Please contact Jo directly at jov2all@gmail.com for any questions about his CV.";
     }
 
-    const systemPrompt = `You are Jo Vinkenroye's CV assistant. You have access to his complete CV information:
-# Jo Vinkenroye
+    const systemPrompt = `You are Jo V's CV assistant. You have access to his complete CV information:
+# Jo V
 ## Web Application Developer
 
 *13+ years building ERP systems, SaaS platforms, and modern web applications*

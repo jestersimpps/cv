@@ -21,8 +21,8 @@ const siteUrl = "https://www.jovweb.dev";
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Jo Vinkenroye - Senior Web & Blockchain Developer | Available for Hire",
-    template: "%s | Jo Vinkenroye",
+    default: "Jo V - Senior Web & Blockchain Developer | Available for Hire",
+    template: "%s | Jo V",
   },
   description: "Senior Full Stack Developer with 13+ years experience. Specializing in React, Next.js, Web3, Solidity smart contracts, and AI integration. Available for remote positions and contract work.",
   keywords: [
@@ -46,9 +46,9 @@ export const metadata: Metadata = {
     "ERP Developer",
     "SaaS Developer",
   ],
-  authors: [{ name: "Jo Vinkenroye", url: siteUrl }],
-  creator: "Jo Vinkenroye",
-  publisher: "Jo Vinkenroye",
+  authors: [{ name: "Jo V", url: siteUrl }],
+  creator: "Jo V",
+  publisher: "Jo V",
   robots: {
     index: true,
     follow: true,
@@ -64,18 +64,18 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: siteUrl,
-    siteName: "Jo Vinkenroye",
-    title: "Jo Vinkenroye - Senior Web & Blockchain Developer | Available for Hire",
+    siteName: "Jo V",
+    title: "Jo V - Senior Web & Blockchain Developer | Available for Hire",
     description: "Senior Full Stack Developer with 13+ years experience. Specializing in React, Next.js, Web3, Solidity smart contracts, and AI integration. Available for remote positions and contract work.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Jo Vinkenroye - Senior Web & Blockchain Developer | Available for Hire",
+    title: "Jo V - Senior Web & Blockchain Developer | Available for Hire",
     description: "Senior Full Stack Developer with 13+ years experience. Specializing in React, Next.js, Web3, Solidity smart contracts, and AI integration. Available for remote positions and contract work.",
     creator: "@jestersimpps",
   },
   other: {
-    "linkedin:author": "Jo Vinkenroye",
+    "linkedin:author": "Jo V",
   },
   icons: {
     icon: "/favicon.ico",
@@ -88,7 +88,7 @@ export const metadata: Metadata = {
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Person",
-  name: "Jo Vinkenroye",
+  name: "Jo V",
   url: siteUrl,
   jobTitle: "Senior Full Stack Developer",
   description: "Senior Full Stack Developer with 13+ years experience specializing in React, Next.js, Web3, blockchain development, and AI integration.",

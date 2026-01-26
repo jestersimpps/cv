@@ -88,7 +88,7 @@ export default function ContactFooter() {
 
         <div className="mt-8 pt-6 border-t border-white/20 text-center">
           <p className="text-sm text-neutral-500 dark:text-neutral-400">
-            &copy; {new Date().getFullYear()} Jo Vinkenroye. Built with Next.js & Tailwind CSS.
+            &copy; {new Date().getFullYear()} Jo V. Built with Next.js & Tailwind CSS.
           </p>
         </div>
       </div>

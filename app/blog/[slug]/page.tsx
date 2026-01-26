@@ -52,7 +52,7 @@ export async function generateMetadata({ params }: BlogPostPageProps) {
       description: post.description,
       type: 'article',
       url: postUrl,
-      siteName: 'Jo Vinkenroye',
+      siteName: 'Jo V',
       locale: 'en_US',
       publishedTime: post.publishedAt,
       modifiedTime: post.updatedAt || post.publishedAt,
@@ -108,7 +108,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     },
     publisher: {
       '@type': 'Person',
-      name: 'Jo Vinkenroye',
+      name: 'Jo V',
       url: siteUrl,
     },
     mainEntityOfPage: {
