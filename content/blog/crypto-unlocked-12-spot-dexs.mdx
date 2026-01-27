@@ -1,0 +1,151 @@
+---
+title: "Crypto Unlocked Part 12: Spot DEXs — The AMM Revolution"
+description: "From Uniswap to Jupiter to Curve — a tour of the major decentralized spot exchanges, how each one works differently, and which to use when."
+publishedAt: "2026-01-27"
+author: "Jo Vinkenroye"
+category: "Tutorials"
+tags: ["Crypto", "DEX", "Uniswap", "Jupiter", "Curve", "Beginners"]
+coverImage: "/assets/blog/crypto-unlocked-cover.png"
+series:
+  id: "crypto-unlocked"
+  title: "Crypto Unlocked"
+  part: 12
+  total: 20
+---
+
+You walk into a farmers' market. There's no Walmart greeter, no checkout lane, no corporate HQ deciding what goes on the shelves. Farmers show up, set prices, buyers browse, and deals happen peer-to-peer. That's a decentralized exchange — a **DEX** — but for crypto. No sign-ups, no KYC, no one holding your funds. Just you, your wallet, and a smart contract acting as the world's most transparent middleman.
+
+In [Part 11](/blog/crypto-unlocked-11-defi-intro) we covered DeFi fundamentals. Now let's zoom into where most of DeFi's action actually happens: **spot DEXs** — the places where you swap one token for another, right now, at market price. There are dozens of them across every chain, each with a different twist. Let's tour the heavyweights.
+
+## Uniswap — The OG That Changed Everything
+
+If one project kicked off the DEX revolution, it's **Uniswap**. Launched in 2018 on Ethereum, it proved you don't need an order book to run an exchange. Instead, it introduced the **Automated Market Maker (AMM)** — a formula (x × y = k) that lets liquidity pools set prices automatically based on supply and demand.
+
+Here's the quick evolution:
+
+- **V2 (2020):** The classic. Any ERC-20 token pair, simple 50/50 liquidity pools. Worked beautifully but was capital-inefficient — your liquidity was spread across every possible price, even ones that would never get hit.
+- **V3 (2021):** Introduced **concentrated liquidity**. Instead of spreading money across the entire price range, LPs (liquidity providers) choose a specific range. Think of it like a street musician choosing to play in the busy square instead of an empty alley — same effort, way more tips.
+- **V4 (2024):** Added **hooks** — customizable plugins that let developers bolt new logic onto pools. Custom fee structures, on-chain limit orders, dynamic fees that adjust with volatility. It turned Uniswap from a DEX into a DEX *platform*.
+- **Unichain (2025):** Uniswap's own Layer 2 chain, purpose-built for trading. Faster blocks, cheaper fees, MEV protection baked in. The DEX got its own country.
+
+> 💡 **Beginner tip:** Uniswap is the default choice on Ethereum and most EVM chains. If you're swapping tokens on Ethereum, Arbitrum, Polygon, or Base — start here. The interface at [app.uniswap.org](https://app.uniswap.org) is clean and battle-tested.
+
+## Jupiter — Solana's Swiss Army Knife
+
+If Uniswap is the king of Ethereum DEXs, **Jupiter** is the emperor of Solana. But Jupiter isn't really a DEX itself — it's an **aggregator** that routes your trade across *every* Solana DEX to find the best price. Think of it as a travel search engine that checks every airline for the cheapest flight.
+
+What makes Jupiter special:
+
+- **Smart routing:** Your swap might hop through Raydium, Orca, and three other pools in a single transaction to minimize slippage. You don't see any of that complexity — you just get a better price.
+- **Limit orders:** Set a target price and Jupiter fills it when the market gets there. No more staring at charts.
+- **DCA (Dollar-Cost Averaging):** Automatically buy a token in chunks over time. Set it and forget it.
+- **JLP (Jupiter Liquidity Pool):** A basket of assets (SOL, ETH, BTC, stablecoins) that earns fees from Jupiter's perpetual trading platform. It's like an index fund that also earns trading fees.
+
+> 💡 **Pro tip:** On Solana, *always* route through Jupiter rather than going directly to individual DEXs. The aggregation almost always saves you money. Bookmark [jup.ag](https://jup.ag).
+
+## Curve — The Stableswap Specialist
+
+Need to swap USDC for USDT? Or one type of wrapped Bitcoin for another? **Curve** is your place. While Uniswap uses a general-purpose formula, Curve built a custom bonding curve optimized for assets that *should* trade near the same price — stablecoins, wrapped versions of the same asset, and liquid staking tokens.
+
+The result? **Dramatically lower slippage** on stable-pair swaps. On Uniswap, swapping $1M of USDC→USDT might cost you in slippage. On Curve, that same trade barely moves the needle.
+
+But Curve's real claim to fame is the **Curve Wars** — a meta-game of governance and incentives:
+
+- **veCRV:** Lock CRV tokens to get voting power. Votes direct where Curve's emission rewards flow.
+- **The Wars:** Protocols like Convex and Yearn compete to accumulate veCRV, because controlling those votes means directing yields to their preferred pools. It's like a political lobbying battle, but for liquidity.
+
+Sounds complicated? It is. But as a regular user, you just need to know: **Curve = stablecoin swaps and deep stable liquidity**.
+
+## Raydium — Solana's Hybrid Engine
+
+**Raydium** was one of Solana's first major DEXs and does something clever: it combines an **AMM with an order book** (originally sharing liquidity with Serum/OpenBook's central limit order book). This hybrid approach means tighter spreads and more efficient price discovery than a pure AMM.
+
+Raydium is also where a *lot* of new Solana token launches happen. If a memecoin graduates from a launchpad like Pump.fun, it often migrates to a Raydium pool. That makes Raydium the de facto "listing venue" for Solana's long tail of tokens.
+
+## PancakeSwap — The BNB Chain Powerhouse
+
+**PancakeSwap** did for BNB Chain (formerly Binance Smart Chain) what Uniswap did for Ethereum — but cheaper and with more gamification. It's got:
+
+- The classic AMM swap (now with v3 concentrated liquidity too)
+- Lottery and prediction markets
+- NFT marketplace
+- Multi-chain expansion to Ethereum, Arbitrum, Base, and more
+
+PancakeSwap was the gateway DEX for millions of users who found Ethereum's gas fees too high in 2021. It's still BNB Chain's dominant exchange by a wide margin and remains a solid choice for swaps on that network.
+
+## Orca — Solana's Concentrated Liquidity Pioneer
+
+**Orca** brought concentrated liquidity to Solana with its **Whirlpools** — think Uniswap V3-style positions but with Solana's speed and low fees. The interface is clean, the UX is beginner-friendly, and it's one of the most capital-efficient DEXs on Solana.
+
+For liquidity providers, Orca's Whirlpools allow much tighter ranges and higher fee capture compared to traditional AMMs. If you're LPing on Solana, Orca is where the sophisticated money goes.
+
+## Aerodrome — Base Chain's ve(3,3) King
+
+**Aerodrome** is the leading DEX on **Base** (Coinbase's L2), and it runs on the **ve(3,3) model** pioneered by André Cronje's Solidly and refined by Velodrome on Optimism.
+
+The ve(3,3) model is a governance flywheel:
+
+- Lock AERO tokens → get veAERO (vote-escrowed AERO)
+- Vote on which pools receive emissions → earn trading fees and bribes from those pools
+- Protocols bribe veAERO voters to direct emissions toward their liquidity → deeper liquidity → more trading → more fees → more bribes
+
+It aligns incentives between the exchange, liquidity providers, and the protocols building on top. Aerodrome exploded in 2024-2025 and became one of the highest-revenue DEXs across all chains.
+
+> 💡 **Why it matters:** If you're trading on Base, Aerodrome is likely offering the deepest liquidity. If you want to earn yield, its ve(3,3) model offers compelling rewards for active governance participants.
+
+## Trader Joe — The Liquidity Book
+
+**Trader Joe** started on Avalanche and expanded to Arbitrum and BNB Chain. Its standout feature is the **Liquidity Book** model — instead of a continuous price curve, liquidity is organized into discrete price **bins** (think of tiny buckets at exact price points).
+
+This gives LPs precise control over where they deploy capital and results in zero-slippage trades within a single bin. It's a different flavor of concentrated liquidity that some find more intuitive than Uniswap V3's range model.
+
+## Osmosis — The Cosmos Hub
+
+In the **Cosmos ecosystem**, blockchains communicate via IBC (Inter-Blockchain Communication), and **Osmosis** is the central trading hub that connects them all. It's the place to swap ATOM, OSMO, and dozens of Cosmos chain tokens.
+
+Osmosis is unique because it's its own blockchain — an appchain DEX with custom modules for superfluid staking (stake your LP tokens and secure the network simultaneously). If you're in the Cosmos world, Osmosis is where you trade.
+
+## Camelot — Arbitrum's Launchpad DEX
+
+**Camelot** carved out a niche as **Arbitrum's native DEX and launchpad**. Beyond standard swaps, it focuses on being a launch partner for new Arbitrum projects — providing initial liquidity, custom pool types, and community-driven incentives.
+
+It features Nitro pools (incentivized staking positions with specific conditions), dynamic directional fees, and a strong community-first ethos. Think of it as the local boutique exchange that knows every new Arbitrum project by name.
+
+## Aggregators — Your Secret Weapon
+
+Here's an important concept: **you don't have to pick one DEX**. Aggregators check prices across multiple DEXs and route your trade through the optimal path — sometimes splitting it across several pools.
+
+The big three on Ethereum/EVM:
+
+- **1inch:** The OG aggregator. Clean interface, Fusion mode for gasless swaps using a Dutch auction mechanism. Works across most EVM chains.
+- **CowSwap:** Uses a unique **batch auction** system where traders' orders are matched peer-to-peer first (saving on fees), and only the remainder goes to on-chain DEXs. Also offers MEV protection — your trade won't get sandwich-attacked.
+- **ParaSwap:** Another solid aggregator with smart routing and a focus on DeFi power users. Offers a nice API for developers building on top.
+
+> 💡 **The golden rule:** For any swap over a few hundred dollars on Ethereum or EVM chains, try an aggregator first. The price improvement often pays for itself compared to going directly to a single DEX. CowSwap is my personal pick for MEV protection.
+
+## Quick Reference: Which DEX for Which Chain?
+
+| Chain | Go-To DEX | Why |
+|---|---|---|
+| **Ethereum** | Uniswap / CowSwap | Deepest liquidity + MEV protection |
+| **Solana** | Jupiter | Aggregates everything |
+| **Base** | Aerodrome | ve(3,3) flywheel, deepest Base liquidity |
+| **Arbitrum** | Uniswap / Camelot | Depends on the token |
+| **BNB Chain** | PancakeSwap | Dominant by far |
+| **Avalanche** | Trader Joe | Liquidity Book efficiency |
+| **Cosmos** | Osmosis | IBC hub |
+| **Stablecoin swaps** | Curve | Purpose-built for stable pairs |
+
+## The Big Picture
+
+What's remarkable is how *different* each of these DEXs is. They're not just Uniswap clones — they're genuine experiments in market design. Concentrated liquidity, ve(3,3) flywheels, liquidity books, batch auctions, hybrid order books — DeFi is a live laboratory for financial innovation that would take decades to play out in traditional finance.
+
+And remember: on a DEX, **you never give up custody of your funds**. Your tokens go from your wallet to the smart contract and back — no intermediary holds them overnight. That's the fundamental promise of DeFi.
+
+---
+
+## What's Next?
+
+In **Part 13**, we're moving from spot trading to the wild world of **perpetual DEXs** — decentralized platforms where you can trade with leverage, go long or short, and access derivative-style trading without a centralized exchange. We'll do a deep dive into **Hyperliquid**, the protocol that's challenging CEXs at their own game, plus GMX, dYdX, and the rest of the perps landscape.
+
+Buckle up — it gets spicier from here. 🌶️
