@@ -1,0 +1,178 @@
+---
+title: "Crypto Unlocked Part 8: DeFi Fundamentals"
+description: "Decentralized finance rebuilt banking without banks. Lending, borrowing, and earning yield — all controlled by code, not corporations."
+publishedAt: "2026-01-27"
+author: "Jo Vinkenroye"
+category: "Tutorials"
+tags: ["Crypto", "DeFi", "Lending", "Aave", "Beginners"]
+coverImage: "/assets/blog/crypto-unlocked-cover.png"
+series:
+  id: "crypto-unlocked"
+  title: "Crypto Unlocked"
+  part: 8
+  total: 20
+---
+
+Imagine walking into a bank. There's no teller. No manager. No security guard asking you for two forms of ID and your mother's maiden name. Instead, there's a vending machine. You put crypto in, and it lends, borrows, earns interest, or swaps assets for you — instantly, 24/7, with no one's permission required.
+
+That's DeFi. And it's not a thought experiment. It's been running since 2020, handling billions of dollars, and it never takes a lunch break.
+
+## What Is DeFi, Actually?
+
+DeFi stands for **Decentralized Finance**. Strip away the buzzword and it means: financial services built on smart contracts instead of institutions.
+
+Remember smart contracts from [Part 5](/blog/crypto-unlocked-05-smart-contracts)? Self-executing code that lives on a blockchain. DeFi takes that concept and builds an entire banking system on top of it. Lending, borrowing, trading, insurance — all of it, running on code that anyone can inspect and no single company controls.
+
+Traditional finance (TradFi, if you want the lingo) works because you trust *institutions*. You trust your bank won't lose your money. You trust the stock exchange to settle trades fairly. You trust regulators to keep everyone honest.
+
+DeFi replaces that trust with **transparency**. The code is open source. The rules are enforced by math. And your money is controlled by your wallet, not someone else's database.
+
+## TradFi vs. DeFi: A Side-by-Side
+
+Let's make this concrete:
+
+- **Opening an account:** TradFi needs your ID, proof of address, credit check, 3-5 business days. DeFi needs a wallet. Takes 30 seconds.
+- **Getting a loan:** TradFi requires credit history, income verification, weeks of waiting. DeFi requires collateral and one transaction. Minutes.
+- **Earning interest:** TradFi gives you 0.5% if you're lucky. DeFi rates fluctuate but often run 2-8% (sometimes much more, sometimes less).
+- **Operating hours:** TradFi is 9-5, Monday to Friday, closed on holidays. DeFi is 24/7/365. Christmas Day at 3 AM? The smart contracts don't care.
+- **Access:** TradFi requires citizenship, residency, sometimes minimum deposits. DeFi is permissionless — if you have an internet connection and a wallet, you're in.
+
+> **The tradeoff:** DeFi gives you freedom but also full responsibility. No customer support hotline. No fraud protection. No "forgot my password" reset. You are the bank.
+
+## Lending and Borrowing: The Core of DeFi
+
+The killer app of DeFi is surprisingly boring: lending and borrowing. The same thing banks have done for centuries, but without the bank.
+
+Here's how it works on platforms like **Aave** or **Compound**:
+
+**If you want to earn interest:**
+1. You deposit your crypto (say, ETH or stablecoins) into a lending pool — a smart contract that holds everyone's deposits together
+2. The protocol lends your crypto out to borrowers
+3. You earn interest, paid by those borrowers
+4. You can withdraw anytime — no lock-up, no penalty
+
+**If you want to borrow:**
+1. You deposit collateral (crypto you already own)
+2. The protocol lets you borrow *different* crypto against that collateral
+3. You pay interest on what you borrowed
+4. When you're done, you repay the loan plus interest and get your collateral back
+
+Simple, right? But there's a catch that confuses everyone at first.
+
+## Why Do You Need $150 to Borrow $100?
+
+This is the question that trips up every newcomer: "If I already have crypto, why would I borrow more?"
+
+In DeFi, loans are **overcollateralized**. You need to deposit more value than you borrow. Typically 150% or more. So to borrow $100 worth of stablecoins, you'd need to lock up $150 worth of ETH.
+
+"That's insane. Why not just sell the ETH?"
+
+Great question. Here's why it makes sense:
+
+- **You're bullish on ETH.** You think ETH will go up, so you don't want to sell. But you need cash *now*. So you borrow stablecoins against your ETH, spend those, and when ETH moons, you repay the loan and still have your ETH (now worth more).
+- **Tax efficiency.** In many jurisdictions, selling crypto triggers a taxable event. Borrowing against it doesn't. You keep your position and access liquidity.
+- **Leverage.** Some people borrow stablecoins, use them to buy *more* ETH, deposit that ETH, borrow more... and ride the leverage loop up (or get destroyed on the way down).
+
+The overcollateralization exists because **there's no credit check**. The smart contract doesn't know if you're a whale or a teenager. It only knows the collateral you've locked. If you could borrow $100 by depositing $100, there'd be no buffer if prices drop — and the lenders would get wrecked.
+
+> **Think of it like a pawnshop.** You leave your watch worth $150, they give you $100 cash. If you never come back, they still have the watch. The lender is always protected.
+
+## Liquidation: When Things Go Wrong
+
+Here's where it gets serious. Your collateral is crypto, and crypto is volatile. What happens when the price drops?
+
+Let's say you deposited $150 of ETH and borrowed $100 of USDC. If ETH drops 30%, your collateral is now worth $105. That's dangerously close to your loan amount.
+
+The protocol has a **liquidation threshold** — usually around 80-85% loan-to-value. Cross it, and the smart contract automatically sells (liquidates) your collateral to repay the loan. No warning phone call. No extension. The code executes.
+
+You'll get back whatever's left after the loan is repaid and the liquidation penalty is deducted. But you'll lose a chunk of your collateral.
+
+**Liquidation is the single biggest risk in DeFi lending.** It happens automatically, instantly, and the market doesn't care that you were asleep when ETH dropped 20% at 4 AM.
+
+> **Pro tip:** If you use DeFi lending, keep your loan-to-value ratio well below the liquidation threshold. Borrow less than you're allowed to. Give yourself a buffer. And monitor your positions — or use tools that alert you when you're getting close.
+
+## Where Does the Yield Come From?
+
+This is the right question to ask. When someone promises you 5% or 10% or 50% returns, your first thought should be: *who is paying for this?*
+
+In legitimate DeFi lending, the answer is straightforward:
+
+- **Borrowers pay interest.** That interest gets distributed to lenders. Supply and demand set the rate.
+- **Higher demand to borrow = higher rates for lenders.** When everyone wants to borrow a particular asset, the interest rate goes up.
+- **Lower demand = lower rates.** Simple market dynamics.
+
+The yield isn't magic. It's not printed out of thin air. Someone is paying to use your capital. Same as a bank — except you're getting a much bigger cut because there's no bank in the middle taking a fat margin.
+
+> **Red flag:** If you can't figure out where the yield comes from, *you* are the yield. This rule has saved people millions. If a protocol offers 100% APY and can't explain why, run.
+
+## TVL: The Scoreboard of DeFi
+
+**Total Value Locked (TVL)** is the most-watched metric in DeFi. It measures how much money is deposited across all DeFi protocols — the total collateral sitting in smart contracts.
+
+At DeFi's peak in late 2021, TVL across all chains exceeded **$180 billion**. During the bear market, it dropped below $40 billion. It's a rough thermometer for how much capital trusts DeFi enough to participate.
+
+You can track TVL on sites like [DeFiLlama](https://defillama.com) — it breaks down by protocol, by chain, and over time. When TVL rises, it generally means confidence and adoption are growing. When it drops, people are pulling capital out (or getting liquidated).
+
+## Flash Loans: The Craziest Innovation in Finance
+
+Okay, here's where DeFi gets truly wild.
+
+A **flash loan** lets you borrow *millions of dollars* with **zero collateral**. No credit check. No deposit. Nothing.
+
+The catch? You have to borrow and repay within a **single transaction**. One atomic blockchain transaction. If you can't repay, the entire transaction reverts — like it never happened. The lender loses nothing.
+
+"Why would anyone need to borrow millions for a fraction of a second?"
+
+Arbitrage. If ETH is trading at $2,000 on one exchange and $2,010 on another, you can:
+1. Flash-borrow $2 million
+2. Buy 1,000 ETH on the cheap exchange
+3. Sell it on the expensive exchange for $2,010,000
+4. Repay the loan ($2,000,000 + small fee)
+5. Pocket the profit
+
+All in one transaction. All in about 12 seconds. This is something that was **physically impossible** before DeFi. Flash loans democratized arbitrage — you don't need to be a hedge fund with millions in capital.
+
+Of course, flash loans have also been used for exploits. Attackers have manipulated oracle prices, drained liquidity pools, and pulled off multi-million dollar heists using flash-borrowed funds. The tool is neutral — the usage isn't always.
+
+## DeFi Summer 2020: The Big Bang
+
+DeFi existed before 2020, but it was niche. A handful of protocols, a few hundred million in TVL, mostly used by Ethereum developers.
+
+Then **Compound** launched its COMP governance token in June 2020. They started distributing tokens to anyone who lent or borrowed through the protocol — a concept called **liquidity mining**. Suddenly, you weren't just earning interest. You were earning *tokens* on top, which themselves had value.
+
+The math was insane. Early participants were earning triple-digit APYs. Word spread. Capital flooded in. Other protocols launched their own tokens and incentive programs. **Yearn Finance**, **SushiSwap**, **Curve** — new protocols popped up weekly.
+
+TVL exploded from ~$1 billion in June 2020 to over $15 billion by the end of the year. People called it **DeFi Summer**, and it changed crypto forever. It proved that decentralized financial services could attract serious capital and that code could coordinate billions without a CEO.
+
+## The Risks Are Real
+
+DeFi isn't a free lunch. If you're going to play in this space, respect the risks:
+
+- **Smart contract bugs.** Code can have vulnerabilities. Millions have been lost to exploits. Just because a contract is audited doesn't mean it's bulletproof.
+- **Oracle manipulation.** DeFi protocols need price data (from oracles). If an attacker manipulates the price feed, they can trick the protocol into bad trades or unfair liquidations.
+- **Rug pulls.** A developer launches a protocol, attracts deposits, then drains the smart contract and disappears. More common with unaudited, anonymous projects.
+- **Impermanent loss.** (We'll cover this in Part 9, but it's real.)
+- **Regulatory risk.** Governments are still figuring out how to regulate DeFi. Rules could change and impact protocols you're using.
+- **Composability risk.** DeFi protocols build on each other like LEGO blocks. If one piece breaks, everything stacked on top can collapse. This is sometimes called "DeFi contagion."
+
+> **The golden rule of DeFi:** Never deposit more than you can afford to lose. Start small. Use established protocols (Aave, Compound, MakerDAO). Read the docs. And don't chase unsustainable yields — if it sounds too good to be true, the smart contract doesn't care about your feelings when it liquidates you.
+
+## Key Takeaways
+
+- **DeFi = financial services without intermediaries**, built on smart contracts
+- **Lending and borrowing** are the foundation — deposit crypto to earn, or borrow against collateral
+- **Overcollateralization** protects lenders because there are no credit checks
+- **Liquidation** happens automatically when your collateral value drops too low
+- **Yield comes from borrowers** — if you can't identify the source, you are the source
+- **TVL** measures how much capital is locked in DeFi protocols
+- **Flash loans** enable zero-collateral borrowing within a single transaction
+- **DeFi Summer 2020** was the breakout moment that proved the concept at scale
+- **The risks are real** — bugs, exploits, and rug pulls have cost billions
+
+## What's Next
+
+You now understand DeFi's banking layer — lending, borrowing, and earning yield. But there's a whole other side: **trading without an exchange**.
+
+In [Part 9](/blog/crypto-unlocked-09-dexs-liquidity-pools), we'll dive into **decentralized exchanges (DEXs)** and **liquidity pools**. How does Uniswap let you trade tokens without an order book? What are liquidity providers, and why do they sometimes lose money? And what the hell is an automated market maker?
+
+It's where DeFi gets really interesting. See you there.
