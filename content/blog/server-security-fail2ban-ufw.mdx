@@ -242,6 +242,11 @@ sudo ufw allow 80/tcp
 sudo ufw allow 443/tcp
 sudo ufw --force enable
 
+# Disable password auth (SSH keys only)
+sudo sed -i 's/^#*PasswordAuthentication.*/PasswordAuthentication no/' /etc/ssh/sshd_config
+sudo sed -i 's/^#*PubkeyAuthentication.*/PubkeyAuthentication yes/' /etc/ssh/sshd_config
+sudo systemctl restart ssh
+
 # Fix Clawdbot permissions
 chmod 700 ~/.clawdbot
 chmod 600 ~/.clawdbot/clawdbot.json 2>/dev/null
@@ -354,6 +359,8 @@ sudo systemctl restart sshd
 
 Now the only way in is with your private key. Brute-force attacks become completely pointless — they're trying to guess a password that doesn't exist.
 
+**This is the single most important security step you can take.** With password auth disabled, fail2ban becomes a backup — attackers can't get in regardless of how many attempts they make.
+
 ### Use `pass` for Secrets Management
 
 Don't store API keys and passwords in plaintext config files. Use [pass](https://www.passwordstore.org/) — the standard Unix password manager.
@@ -437,6 +444,20 @@ I looked at my logs after just one day running Clawdbot on a public VPS:
 This is normal. Every server with a public IP experiences this. The question isn't whether you'll be attacked — it's whether you're prepared.
 
 Five minutes of setup. Sleep better at night.
+
+## The Complete Security Stack
+
+After following this guide, your Clawdbot server has:
+
+- **SSH key authentication** — No passwords to brute-force
+- **Password auth disabled** — Even if they guess right, it won't work
+- **fail2ban** — 3 attempts → 30-day ban (backup layer)
+- **ufw firewall** — Only necessary ports exposed
+- **pass** — Secrets GPG-encrypted at rest
+- **Clawdbot pairing** — Strangers can't message your bot
+- **Proper permissions** — Config and credentials locked down
+
+That's defense in depth. Multiple layers, each one making the next attack harder.
 
 ---
 
