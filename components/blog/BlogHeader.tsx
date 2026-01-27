@@ -17,13 +17,30 @@ interface BlogHeaderProps {
 export default function BlogHeader({ post, viewCount }: BlogHeaderProps) {
   return (
     <header className="mb-12">
-      <Link
-        href="/blog"
-        className="inline-flex items-center gap-2 text-neutral-500 text-sm hover:text-white transition-colors mb-8"
-      >
-        <ArrowLeft className="w-4 h-4" />
-        Blog
-      </Link>
+      <div className="flex items-center justify-between mb-8">
+        <Link
+          href="/"
+          className="flex items-center gap-2 group"
+        >
+          <div className="w-8 h-8 rounded-lg overflow-hidden ring-2 ring-white/20 group-hover:ring-white/40 transition-all">
+            <Image
+              src="/assets/avatar.png"
+              alt="Jo V"
+              width={32}
+              height={32}
+              className="object-cover"
+            />
+          </div>
+          <span className="text-sm font-medium text-neutral-400 group-hover:text-white transition-colors">Jo V</span>
+        </Link>
+        <Link
+          href="/blog"
+          className="inline-flex items-center gap-2 text-neutral-500 text-sm hover:text-white transition-colors"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          Blog
+        </Link>
+      </div>
 
       <motion.div
         initial={{ opacity: 0, y: 20 }}
