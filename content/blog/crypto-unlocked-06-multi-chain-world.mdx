@@ -181,7 +181,28 @@ Think of app-chains like private roads. Public highways (general-purpose chains)
 
 With all these different chains, you need a way to move assets between them. That's what **bridges** do. Want to move your ETH from Ethereum to Arbitrum? You use a bridge. Want to move USDC from Ethereum to Avalanche? Bridge.
 
-![How a cross-chain bridge works — locking tokens on one chain, minting on another](/assets/blog/crypto-unlocked/cross-chain-bridge.png)
+```mermaid
+graph TD
+    U[You — want to move ETH to Arbitrum] --> D[Deposit ETH into bridge contract]
+    D --> L[ETH locked on Ethereum]
+    L --> V[Bridge verifies the deposit]
+    V --> M[Wrapped ETH minted on Arbitrum]
+    M --> R[You receive ETH on Arbitrum]
+
+    R --> B[Want to go back?]
+    B --> BU[Burn wrapped ETH on Arbitrum]
+    BU --> UL[Original ETH unlocked on Ethereum]
+
+    style U fill:#7c3aed,stroke:#a78bfa,color:#fff
+    style D fill:#0ea5e9,stroke:#38bdf8,color:#fff
+    style L fill:#f59e0b,stroke:#fbbf24,color:#000
+    style V fill:#0ea5e9,stroke:#38bdf8,color:#fff
+    style M fill:#10b981,stroke:#34d399,color:#fff
+    style R fill:#10b981,stroke:#34d399,color:#fff
+    style B fill:#8b5cf6,stroke:#a78bfa,color:#fff
+    style BU fill:#ef4444,stroke:#f87171,color:#fff
+    style UL fill:#10b981,stroke:#34d399,color:#fff
+```
 
 Here's how a basic bridge works:
 
