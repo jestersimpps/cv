@@ -33,13 +33,15 @@ More importantly, order books need someone to *run* the matching engine. That so
 
 ## The New Way: Automated Market Makers
 
-In 2018, a developer named Hayden Adams launched **Uniswap** and changed everything. Instead of matching buyers with sellers, Uniswap introduced the **Automated Market Maker (AMM)** — a smart contract that *is* the market.
+In November 2018, a former mechanical engineer named Hayden Adams launched **[Uniswap](https://uniswap.org/)** and changed everything — inspired by a [blog post by Vitalik Buterin](https://vitalik.eth.limo/general/2017/06/22/marketmakers.html) on automated market makers. Instead of matching buyers with sellers, Uniswap introduced the **Automated Market Maker (AMM)** — a smart contract that *is* the market.
 
 Here's the core idea: instead of an order book, you have a **liquidity pool**. It's a smart contract holding a pile of two tokens. Anyone can trade against that pile, and a simple math formula determines the price.
 
-That formula? **x × y = k**
+That formula? **x × y = k** (the [constant product formula](https://docs.uniswap.org/contracts/v2/concepts/protocol-overview/glossary#constant-product-formula))
 
 That's it. That's the revolution.
+
+![The AMM constant product curve — as you buy Token A, its price rises along the hyperbola while Token B gets cheaper](/assets/blog/crypto-unlocked-09/amm-curve.png)
 
 Let me break it down:
 
@@ -51,7 +53,7 @@ Say a pool has 10 ETH and 30,000 USDC. That means k = 300,000. If you want to bu
 
 > **The simple version:** The more of a token people buy from the pool, the more expensive it gets. The more they sell into the pool, the cheaper it gets. Supply and demand, enforced by math.
 
-No company. No employees. No downtime. Just a smart contract doing multiplication.
+No company. No employees. No downtime. Just a smart contract doing multiplication. (In practice, Uniswap applies a [0.30% fee](https://docs.uniswap.org/contracts/v2/concepts/protocol-overview/how-uniswap-works) to each trade which slightly increases *k* over time — that's how LPs get paid.)
 
 ## How Prices Actually Work
 
@@ -74,7 +76,7 @@ Wait — that's $3,333, not $3,000! The price moved *during your trade*. That's 
 
 So who puts the tokens in the pool? **Liquidity Providers (LPs)** — regular people like you and me.
 
-Here's the deal: you deposit an equal value of two tokens into a pool. In return, you earn a cut of every single trade that happens in that pool. On Uniswap, that's typically 0.3% of each swap, distributed proportionally to all LPs.
+Here's the deal: you deposit an equal value of two tokens into a pool. In return, you earn a cut of every single trade that happens in that pool. On [Uniswap v2](https://docs.uniswap.org/contracts/v2/overview), that's a flat 0.3% of each swap, distributed proportionally to all LPs. (Uniswap v3 and v4 offer [multiple fee tiers](https://docs.uniswap.org/concepts/protocol/fees) — 0.01%, 0.05%, 0.3%, and 1% — so pools can match their fee to the pair's volatility.)
 
 Think of it like owning a tiny piece of a currency exchange booth at the airport. Every time someone swaps euros for dollars, you get a slice. You're literally *being the house*.
 
@@ -84,7 +86,9 @@ When you deposit tokens, you receive **LP tokens** (sometimes called "receipt to
 
 ## The Catch: Impermanent Loss
 
-Here's the part nobody talks about until it's too late. **Impermanent loss** is the single most important concept for anyone thinking about providing liquidity.
+Here's the part nobody talks about until it's too late. **[Impermanent loss](https://www.youtube.com/watch?v=8XJ1MSTEuU0)** is the single most important concept for anyone thinking about providing liquidity.
+
+![Impermanent loss visualized — comparing a HODL strategy versus providing liquidity when prices diverge](/assets/blog/crypto-unlocked-09/impermanent-loss.png)
 
 Let me explain with a simple example:
 
@@ -104,7 +108,7 @@ It's called "impermanent" because if ETH goes back to $3,000, the loss disappear
 
 > **⚠️ The rule of thumb:** Impermanent loss hurts most when the two tokens in your pair diverge significantly in price. Pairs of correlated assets (like USDC/USDT or wETH/stETH) have much lower impermanent loss.
 
-The question every LP needs to answer: **Do the trading fees I earn outweigh my impermanent loss?** Sometimes yes, sometimes very much no.
+The question every LP needs to answer: **Do the trading fees I earn outweigh my impermanent loss?** Sometimes yes, sometimes very much no. (Tools like [dailydefi.org's IL calculator](https://dailydefi.org/tools/impermanent-loss-calculator/) can help you model different scenarios before you commit.)
 
 ## Concentrated Liquidity: The Uniswap v3 Upgrade
 
