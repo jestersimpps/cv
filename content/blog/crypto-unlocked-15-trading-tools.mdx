@@ -103,8 +103,8 @@ You end up paying more than you should have, and the bot walks away with the pro
 
 The good news? You can protect yourself:
 
-- **Flashbots Protect** — Instead of sending your transaction to the public mempool, Flashbots routes it through a private channel directly to block builders. Bots can't see what they can't find. Just add the Flashbots RPC to your wallet and your Ethereum transactions become invisible to sandwich bots.
-- **MEV Blocker** — Similar concept, backed by CoW Protocol. Sends transactions privately and even gives you a *rebate* if your transaction generates MEV — meaning you get paid instead of the bot.
+- **[Flashbots Protect](https://www.flashbots.net)** — Instead of sending your transaction to the public mempool, Flashbots routes it through a private channel directly to block builders. Bots can't see what they can't find. Just add the Flashbots RPC to your wallet and your Ethereum transactions become invisible to sandwich bots.
+- **[MEV Blocker](https://mevblocker.io)** — Similar concept, backed by CoW Protocol. Sends transactions privately and even gives you a *rebate* if your transaction generates MEV — meaning you get paid instead of the bot.
 - **Private mempools** — Many L2s like Arbitrum process transactions in a sequencer that doesn't have a traditional public mempool, reducing MEV by design.
 
 > **My strong opinion:** If you're swapping on Ethereum mainnet, use Flashbots Protect or MEV Blocker. There's literally no downside. You're just opting out of being exploited.
@@ -115,7 +115,7 @@ Traditional DEX trading works like this: you craft a specific transaction ("swap
 
 **Intent-based** trading flips this: you just state *what* you want ("I want to sell 1 ETH for the best possible amount of USDC") and let specialized solvers compete to fill your order in the best way possible.
 
-- **CowSwap** — Pioneered this model. Your trades are signed off-chain as "intents," then professional solvers batch them together and find optimal execution. Bonus: trades between CowSwap users can match directly (peer-to-peer) without touching a DEX at all, saving you gas and eliminating MEV.
+- **[CowSwap](https://swap.cow.fi)** — Pioneered this model. Your trades are signed off-chain as "intents," then professional solvers batch them together and find optimal execution. Bonus: trades between CowSwap users can match directly (peer-to-peer) without touching a DEX at all, saving you gas and eliminating MEV.
 - **UniswapX** — Uniswap's intent-based system. Dutch auctions where fillers compete to give you the best price. If no one fills your order, it falls back to on-chain execution.
 
 Intent-based trading is still relatively new, but it's clearly the direction things are heading. Better prices, gas savings, and built-in MEV protection — hard to argue with that.
