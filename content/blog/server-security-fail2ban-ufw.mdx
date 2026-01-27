@@ -4,7 +4,7 @@ description: "within 60 seconds of setting up fail2ban, it caught an active brut
 publishedAt: "2026-01-27"
 author: "Jo V"
 category: "DevOps"
-tags: ["Clawdbot", "Security", "Linux", "DevOps", "Server", "SSH"]
+tags: ["Clawdbot", "Security", "Linux", "DevOps", "Server", "SSH", "endlessh"]
 coverImage: "/assets/blog/server-security-fail2ban/cover.png"
 featured: false
 ---
@@ -44,31 +44,77 @@ An attacker who compromises your Clawdbot server gets access to your AI assistan
 
 Let's fix that.
 
-## Two Layers of Security
+## Step 1: SSH Key Authentication (Critical)
 
-You need both:
+This is the single most important security step. Password authentication is the weakest link. SSH keys are cryptographically secure and impossible to brute-force.
 
-**OS-Level Protection (this guide)**
-- fail2ban — Auto-bans brute-force attackers
-- ufw — Firewall that blocks everything by default
+**On your local machine**, generate a key pair:
 
-**Clawdbot-Level Protection (built-in)**
-- `clawdbot security audit` — Checks for misconfigurations
-- Workspace permissions — Protects session logs and credentials
-- Channel allowlists — Controls who can talk to your bot
+```bash
+ssh-keygen -t ed25519 -C "your_email@example.com"
+```
 
-We'll cover both.
+This creates two files:
+- `~/.ssh/id_ed25519` — Your private key (never share this)
+- `~/.ssh/id_ed25519.pub` — Your public key (goes on the server)
 
-## Part 1: OS-Level Hardening
+**Copy your public key to the server:**
 
-### Install fail2ban and ufw
+```bash
+ssh-copy-id user@your-server-ip
+```
+
+Or manually:
+
+```bash
+# On your local machine
+cat ~/.ssh/id_ed25519.pub
+
+# Copy the output, then on your server:
+echo "your-public-key-here" >> ~/.ssh/authorized_keys
+chmod 600 ~/.ssh/authorized_keys
+```
+
+**Test it works:**
+
+```bash
+ssh user@your-server-ip
+```
+
+If you get in without a password prompt, it's working.
+
+## Step 2: Disable Password Authentication
+
+Once SSH keys work, disable password authentication entirely:
+
+```bash
+sudo nano /etc/ssh/sshd_config
+```
+
+Find and change these lines:
+
+```
+PasswordAuthentication no
+PubkeyAuthentication yes
+ChallengeResponseAuthentication no
+```
+
+Restart SSH:
+
+```bash
+sudo systemctl restart sshd
+```
+
+Now the only way in is with your private key. Brute-force attacks become completely pointless — they're trying to guess a password that doesn't exist.
+
+## Step 3: Install fail2ban
+
+Even with SSH keys, we want fail2ban as a backup layer to keep logs clean and stop wasted resources.
 
 ```bash
 sudo apt update
-sudo apt install -y fail2ban ufw
+sudo apt install -y fail2ban
 ```
-
-### Configure fail2ban
 
 Create a local config:
 
@@ -103,7 +149,7 @@ Check if it's working:
 sudo fail2ban-client status sshd
 ```
 
-### Configure ufw
+## Step 4: Configure ufw Firewall
 
 ```bash
 # Default: block everything incoming
@@ -111,7 +157,7 @@ sudo ufw default deny incoming
 sudo ufw default allow outgoing
 
 # Allow only what Clawdbot needs
-sudo ufw allow 22/tcp    # SSH
+sudo ufw allow 22/tcp    # SSH (we'll change this later)
 sudo ufw allow 80/tcp    # HTTP (if using webhooks)
 sudo ufw allow 443/tcp   # HTTPS
 
@@ -125,9 +171,216 @@ Verify:
 sudo ufw status verbose
 ```
 
-That's it for OS-level. Now let's check Clawdbot itself.
+## Step 5: SSH Tarpit with endlessh (The Fun Part)
 
-## Part 2: Clawdbot Security Audit
+Here's where it gets interesting. We set this up today to prank a friend who said they'd try to hack us. The idea: move real SSH to port 2222, put endlessh on port 22. Bots connect to port 22 and get trapped in an infinitely slow banner that sends one random byte every 10 seconds. They never get a login prompt. Meanwhile, real SSH runs unbothered on port 2222.
+
+### What endlessh Does
+
+endlessh is an SSH tarpit. When a bot connects, it sends an SSH banner **infinitely slowly** — one random byte every 10 seconds. The SSH spec allows banners up to 255 characters, but it doesn't specify a minimum speed. Most bots will wait patiently for the full banner, consuming a connection slot and wasting their time.
+
+It's like digital quicksand for SSH bots.
+
+### Install endlessh
+
+```bash
+sudo apt install endlessh
+```
+
+### Move Real SSH to Port 2222
+
+On modern Ubuntu, SSH is managed by systemd sockets, so we need to override the socket config:
+
+```bash
+sudo mkdir -p /etc/systemd/system/ssh.socket.d/
+sudo tee /etc/systemd/system/ssh.socket.d/override.conf << 'EOF'
+[Socket]
+ListenStream=
+ListenStream=2222
+EOF
+```
+
+Reload and restart:
+
+```bash
+sudo systemctl daemon-reload
+sudo systemctl restart ssh.socket
+sudo systemctl restart ssh
+```
+
+Verify SSH is now on 2222:
+
+```bash
+ss -tlnp | grep :2222
+```
+
+### Configure endlessh for Port 22
+
+```bash
+sudo mkdir -p /etc/endlessh
+sudo tee /etc/endlessh/config << 'EOF'
+Port 22
+Delay 10000
+MaxLineLength 32
+MaxClients 4096
+LogLevel 1
+EOF
+```
+
+This configures:
+- **Port 22** — The standard SSH port (bots will find this)
+- **Delay 10000** — Send one byte every 10 seconds
+- **MaxClients 4096** — Handle lots of trapped bots
+- **LogLevel 1** — Log connections for entertainment
+
+### Fix the systemd Service
+
+endlessh might fail with a NAMESPACE error on modern systems. Create a service override:
+
+```bash
+sudo mkdir -p /etc/systemd/system/endlessh.service.d/
+sudo tee /etc/systemd/system/endlessh.service.d/override.conf << 'EOF'
+[Service]
+PrivateUsers=false
+EOF
+```
+
+### Start endlessh
+
+```bash
+sudo systemctl daemon-reload
+sudo systemctl enable endlessh
+sudo systemctl start endlessh
+```
+
+Check it's working:
+
+```bash
+sudo systemctl status endlessh
+ss -tlnp | grep :22
+```
+
+### Update ufw for New SSH Port
+
+```bash
+# Allow the new SSH port
+sudo ufw allow 2222/tcp
+
+# Remove the old SSH rule (port 22 is now the tarpit)
+sudo ufw delete allow 22/tcp
+```
+
+### Test the Tarpit
+
+From another machine, try connecting to port 22:
+
+```bash
+ssh user@your-server-ip -p 22
+```
+
+It should just hang there, sending one character every 10 seconds. After a while you'll see a super slow, garbled banner. Press Ctrl+C to escape.
+
+Now try the real SSH:
+
+```bash
+ssh user@your-server-ip -p 2222
+```
+
+Instant connection with your SSH key.
+
+### The Results
+
+Bots waste their time on port 22 while your real SSH runs unbothered on 2222. Your logs stay clean because failed attempts hit the tarpit, not your real SSH service. Watching `journalctl -f -u endlessh` is surprisingly entertaining — bots connecting and just... waiting.
+
+### How Effective Is It Really?
+
+[One researcher](https://github.com/bediger4000/ssh-tarpit-behavior) ran endlessh for months and collected data on trapped bots. The results are hilarious:
+
+- One bot held **416 concurrent connections** open at the same time — just kept opening new ones without closing the old
+- A single IP stayed connected for **690,172 seconds** — that's **8 days straight** — downloading 1.2MB of random garbage thinking it was an SSH banner
+- Some connections lasted **12,000+ seconds** (3.3 hours) before the bot gave up
+- The median trap time was 17 seconds (the "smart" bots with timeouts), but the mean was 119 seconds — dragged up by the dumb ones that wait forever
+
+The quality of underground scanning software varies immensely. Some bots have a 15-second timeout and move on. Others have **no timeout at all** — they'll sit there until the heat death of the universe waiting for a login prompt that never comes.
+
+And the best part: endlessh uses virtually zero resources. It's a single process handling thousands of connections with minimal CPU and memory. The bots are the ones burning resources, not you.
+
+### Monitor the Tarpit
+
+Watch bots get trapped in real time:
+
+```bash
+journalctl -f -u endlessh
+```
+
+Count current trapped connections:
+
+```bash
+ss -tn | grep :22 | grep ESTAB | wc -l
+```
+
+## Step 6: Change SSH Port (Brief)
+
+We already moved SSH to 2222 for the tarpit, but here's the general approach if you just want to change ports without endlessh:
+
+```bash
+# In /etc/ssh/sshd_config
+Port 2222
+```
+
+Update firewall:
+
+```bash
+sudo ufw allow 2222/tcp
+sudo ufw delete allow 22/tcp
+sudo systemctl restart sshd
+```
+
+Security through obscurity isn't real security, but it does reduce noise from random scans. Combined with SSH keys and fail2ban, it's effective.
+
+## Step 7: Secrets Management with pass
+
+Don't store API keys and passwords in plaintext config files. Use [pass](https://www.passwordstore.org/) — the standard Unix password manager.
+
+**Install it:**
+
+```bash
+sudo apt install pass gnupg
+```
+
+**Set it up:**
+
+```bash
+# Generate a GPG key (if you don't have one)
+gpg --gen-key
+
+# Initialize pass with your GPG key
+pass init "your-email@example.com"
+```
+
+**Store secrets:**
+
+```bash
+pass insert api/anthropic
+pass insert api/openai
+pass insert gmail/app-password
+```
+
+**Retrieve secrets in scripts:**
+
+```bash
+export ANTHROPIC_API_KEY=$(pass show api/anthropic)
+```
+
+**Why this matters:**
+- Secrets are GPG-encrypted at rest
+- Even if someone accesses your filesystem, they can't read the passwords without your GPG key
+- You can sync your password store via git (safely, since everything is encrypted)
+- Works great with Clawdbot — store your API keys and channel tokens securely
+
+Your `~/.password-store/` directory is encrypted. Your `~/.clawdbot/clawdbot.json` with plaintext tokens? Not so much.
+
+## Step 8: Clawdbot Security Audit
 
 Clawdbot has a built-in security scanner. Run it:
 
@@ -178,7 +431,7 @@ Know where your secrets live:
 
 All of these should be readable only by your user (not group/world).
 
-## Part 3: Channel Security
+## Step 9: Channel Security
 
 ### Lock Down DMs
 
@@ -210,242 +463,7 @@ Same for groups — use allowlists instead of open:
 
 The security audit will flag open policies.
 
-## The Complete 5-Minute Setup
-
-Copy-paste this entire block to harden a fresh Clawdbot server:
-
-```bash
-# Install security tools
-sudo apt update && sudo apt install -y fail2ban ufw
-
-# Configure fail2ban
-sudo tee /etc/fail2ban/jail.local << 'EOF'
-[sshd]
-enabled = true
-port = ssh
-filter = sshd
-logpath = /var/log/auth.log
-maxretry = 3
-bantime = 2592000
-findtime = 600
-EOF
-
-# Start fail2ban
-sudo systemctl enable fail2ban
-sudo systemctl restart fail2ban
-
-# Configure firewall
-sudo ufw default deny incoming
-sudo ufw default allow outgoing
-sudo ufw allow 22/tcp
-sudo ufw allow 80/tcp
-sudo ufw allow 443/tcp
-sudo ufw --force enable
-
-# Disable password auth (SSH keys only)
-sudo sed -i 's/^#*PasswordAuthentication.*/PasswordAuthentication no/' /etc/ssh/sshd_config
-sudo sed -i 's/^#*PubkeyAuthentication.*/PubkeyAuthentication yes/' /etc/ssh/sshd_config
-sudo systemctl restart ssh
-
-# Fix Clawdbot permissions
-chmod 700 ~/.clawdbot
-chmod 600 ~/.clawdbot/clawdbot.json 2>/dev/null
-
-# Run Clawdbot security audit
-clawdbot security audit --fix
-
-# Verify everything
-echo "=== fail2ban status ==="
-sudo fail2ban-client status sshd
-echo "=== ufw status ==="
-sudo ufw status verbose
-echo "=== Clawdbot security ==="
-clawdbot security audit
-```
-
-## What Attackers Actually Try
-
-From my server logs in just one hour:
-
-- **oracle** — Oracle DB default user
-- **postgres** — PostgreSQL default
-- **git** — GitLab/Gitea servers
-- **solana** — Crypto node operators (popular target)
-- **HwHiAiUser** — Huawei device default
-- **admin, root** — The classics
-- **ftpuser** — Legacy FTP
-
-They spray common usernames hoping something sticks. fail2ban stops them after 3 attempts.
-
-## Advanced: Additional Hardening
-
-### Change SSH Port
-
-Move from 22 to something random:
-
-```bash
-# In /etc/ssh/sshd_config
-Port 45678
-```
-
-Update firewall:
-
-```bash
-sudo ufw allow 45678/tcp
-sudo ufw delete allow 22/tcp
-sudo systemctl restart sshd
-```
-
-### Use SSH Key Authentication (Critical)
-
-Password authentication is the weakest link. SSH keys are cryptographically secure and impossible to brute-force.
-
-**On your local machine**, generate a key pair:
-
-```bash
-ssh-keygen -t ed25519 -C "your_email@example.com"
-```
-
-This creates two files:
-- `~/.ssh/id_ed25519` — Your private key (never share this)
-- `~/.ssh/id_ed25519.pub` — Your public key (goes on the server)
-
-**Copy your public key to the server:**
-
-```bash
-ssh-copy-id user@your-server-ip
-```
-
-Or manually:
-
-```bash
-# On your local machine
-cat ~/.ssh/id_ed25519.pub
-
-# Copy the output, then on your server:
-echo "your-public-key-here" >> ~/.ssh/authorized_keys
-chmod 600 ~/.ssh/authorized_keys
-```
-
-**Test it works:**
-
-```bash
-ssh user@your-server-ip
-```
-
-If you get in without a password prompt, it's working.
-
-### Disable Password Auth
-
-Once SSH keys work, disable password authentication entirely:
-
-```bash
-sudo nano /etc/ssh/sshd_config
-```
-
-Find and change these lines:
-
-```
-PasswordAuthentication no
-PubkeyAuthentication yes
-ChallengeResponseAuthentication no
-```
-
-Restart SSH:
-
-```bash
-sudo systemctl restart sshd
-```
-
-Now the only way in is with your private key. Brute-force attacks become completely pointless — they're trying to guess a password that doesn't exist.
-
-**This is the single most important security step you can take.** With password auth disabled, fail2ban becomes a backup — attackers can't get in regardless of how many attempts they make.
-
-### Use `pass` for Secrets Management
-
-Don't store API keys and passwords in plaintext config files. Use [pass](https://www.passwordstore.org/) — the standard Unix password manager.
-
-**Install it:**
-
-```bash
-sudo apt install pass gnupg
-```
-
-**Set it up:**
-
-```bash
-# Generate a GPG key (if you don't have one)
-gpg --gen-key
-
-# Initialize pass with your GPG key
-pass init "your-email@example.com"
-```
-
-**Store secrets:**
-
-```bash
-pass insert api/anthropic
-pass insert api/openai
-pass insert gmail/app-password
-```
-
-**Retrieve secrets in scripts:**
-
-```bash
-export ANTHROPIC_API_KEY=$(pass show api/anthropic)
-```
-
-**Why this matters:**
-- Secrets are GPG-encrypted at rest
-- Even if someone accesses your filesystem, they can't read the passwords without your GPG key
-- You can sync your password store via git (safely, since everything is encrypted)
-- Works great with Clawdbot — store your API keys and channel tokens securely
-
-Your `~/.password-store/` directory is encrypted. Your `~/.clawdbot/clawdbot.json` with plaintext tokens? Not so much.
-
-### Use Tailscale
-
-For maximum security, put Clawdbot behind [Tailscale](https://tailscale.com). Your Gateway becomes accessible only through your private mesh network — zero public exposure.
-
-Clawdbot has native Tailscale support:
-
-```bash
-clawdbot gateway --tailscale
-```
-
-## Monitor Ongoing Attacks
-
-Check who's been banned:
-
-```bash
-sudo fail2ban-client status sshd
-```
-
-Watch live bans:
-
-```bash
-sudo tail -f /var/log/fail2ban.log | grep Ban
-```
-
-Check recent SSH attempts:
-
-```bash
-journalctl -u ssh -n 50 | grep -E "Failed|Invalid"
-```
-
-## It's Not Paranoia
-
-I looked at my logs after just a few hours running Clawdbot on a public VPS:
-
-- 62 failed SSH attempts
-- 9 unique IPs banned
-- Attacks from 7 different countries
-
-This is normal. Every server with a public IP experiences this. The question isn't whether you'll be attacked — it's whether you're prepared.
-
-Five minutes of setup. Sleep better at night.
-
-## Report Attackers to AbuseIPDB
+## Step 10: Report Attackers to AbuseIPDB
 
 Blocking attackers locally is good. Getting them blacklisted globally is better.
 
@@ -476,16 +494,6 @@ curl -s https://api.abuseipdb.com/api/v2/report \
 
 Categories `18,22` = brute-force + SSH.
 
-### Check an IP's Reputation
-
-```bash
-curl -sG "https://api.abuseipdb.com/api/v2/check" \
-  -H "Key: $ABUSEIPDB_KEY" \
-  -H "Accept: application/json" \
-  --data-urlencode "ipAddress=2.57.122.209" \
-  -d "maxAgeInDays=90" | jq '.data | {score: .abuseConfidenceScore, reports: .totalReports, country: .countryCode, isp: .isp}'
-```
-
 ### Auto-Report with Clawdbot
 
 I built a [Clawdbot skill](https://github.com/jestersimpps/clawdbot-fail2ban-reporter) that auto-reports every new ban to AbuseIPDB. If you're running Clawdbot, install it:
@@ -503,19 +511,139 @@ sudo bash clawdbot-fail2ban-reporter/scripts/install.sh
 
 After setup, every fail2ban ban automatically reports to AbuseIPDB. Zero effort, maximum community impact.
 
-Here's what my server reported after just a few hours — 9 banned IPs from 7 countries:
+## Step 11: Monitor Ongoing Attacks
 
-- **2.57.122.209** — Netherlands (Unmanaged LTD)
-- **80.94.92.171** — Netherlands (Unmanaged LTD)
-- **92.118.39.95** — USA (Unmanaged LTD)
-- **103.253.21.190** — Vietnam (PSG JSC)
-- **150.5.129.10** — Hong Kong (Byteplus)
-- **202.79.29.108** — Cambodia (WiCAM)
-- **101.47.161.104** — Singapore (Great Wall)
-- **45.78.222.160** — Singapore (Byteplus)
-- **45.78.218.137** — Singapore (Byteplus)
+Check who's been banned:
 
-Same botnets hitting from multiple IPs — 3× Byteplus (Singapore/HK), 3× Unmanaged LTD (NL/US).
+```bash
+sudo fail2ban-client status sshd
+```
+
+Watch live bans:
+
+```bash
+sudo tail -f /var/log/fail2ban.log | grep Ban
+```
+
+Check recent SSH attempts:
+
+```bash
+journalctl -u ssh -n 50 | grep -E "Failed|Invalid"
+```
+
+Watch endlessh trap bots in real-time:
+
+```bash
+sudo journalctl -f -u endlessh
+```
+
+You'll see connections that just hang there. Each one is a bot wasting time instead of bothering your real SSH.
+
+## What Attackers Actually Try
+
+From my server logs in just one hour:
+
+- **oracle** — Oracle DB default user
+- **postgres** — PostgreSQL default
+- **git** — GitLab/Gitea servers
+- **solana** — Crypto node operators (popular target)
+- **HwHiAiUser** — Huawei device default
+- **admin, root** — The classics
+- **ftpuser** — Legacy FTP
+
+They spray common usernames hoping something sticks. fail2ban stops them after 3 attempts, but now they hit the tarpit first.
+
+## The Complete 5-Minute Setup
+
+Copy-paste this entire block to harden a fresh Clawdbot server:
+
+```bash
+# Install security tools
+sudo apt update && sudo apt install -y fail2ban ufw endlessh gnupg pass
+
+# Generate SSH key (run on your LOCAL machine)
+ssh-keygen -t ed25519 -C "your_email@example.com"
+ssh-copy-id user@your-server-ip
+
+# Disable password auth (ON THE SERVER)
+sudo sed -i 's/^#*PasswordAuthentication.*/PasswordAuthentication no/' /etc/ssh/sshd_config
+sudo sed -i 's/^#*PubkeyAuthentication.*/PubkeyAuthentication yes/' /etc/ssh/sshd_config
+
+# Move SSH to port 2222 for tarpit setup
+sudo mkdir -p /etc/systemd/system/ssh.socket.d/
+sudo tee /etc/systemd/system/ssh.socket.d/override.conf << 'EOF'
+[Socket]
+ListenStream=
+ListenStream=2222
+EOF
+
+# Configure endlessh tarpit on port 22
+sudo mkdir -p /etc/endlessh
+sudo tee /etc/endlessh/config << 'EOF'
+Port 22
+Delay 10000
+MaxLineLength 32
+MaxClients 4096
+LogLevel 1
+EOF
+
+# Fix endlessh systemd service
+sudo mkdir -p /etc/systemd/system/endlessh.service.d/
+sudo tee /etc/systemd/system/endlessh.service.d/override.conf << 'EOF'
+[Service]
+PrivateUsers=false
+EOF
+
+# Configure fail2ban
+sudo tee /etc/fail2ban/jail.local << 'EOF'
+[sshd]
+enabled = true
+port = ssh
+filter = sshd
+logpath = /var/log/auth.log
+maxretry = 3
+bantime = 2592000
+findtime = 600
+EOF
+
+# Configure firewall
+sudo ufw default deny incoming
+sudo ufw default allow outgoing
+sudo ufw allow 2222/tcp  # New SSH port
+sudo ufw allow 80/tcp    # HTTP
+sudo ufw allow 443/tcp   # HTTPS
+sudo ufw --force enable
+
+# Start everything
+sudo systemctl daemon-reload
+sudo systemctl restart ssh.socket ssh
+sudo systemctl enable --now fail2ban endlessh
+
+# Fix Clawdbot permissions
+chmod 700 ~/.clawdbot
+chmod 600 ~/.clawdbot/clawdbot.json 2>/dev/null
+
+# Run Clawdbot security audit
+clawdbot security audit --fix
+
+# Verify everything
+echo "=== SSH on port 2222 ==="
+ss -tlnp | grep :2222
+echo "=== endlessh tarpit on port 22 ==="
+ss -tlnp | grep :22
+echo "=== fail2ban status ==="
+sudo fail2ban-client status sshd
+echo "=== ufw status ==="
+sudo ufw status verbose
+echo "=== Clawdbot security ==="
+clawdbot security audit
+```
+
+**Important:** After running this, connect via SSH on the new port:
+
+```bash
+ssh user@your-server-ip -p 2222
+```
 
 ## The Complete Security Stack
 
@@ -523,6 +651,7 @@ After following this guide, your Clawdbot server has:
 
 - **SSH key authentication** — No passwords to brute-force
 - **Password auth disabled** — Even if they guess right, it won't work
+- **endlessh tarpit** — Bots waste time on port 22 while real SSH hides on 2222
 - **fail2ban** — 3 attempts → 30-day ban (backup layer)
 - **ufw firewall** — Only necessary ports exposed
 - **pass** — Secrets GPG-encrypted at rest
@@ -530,7 +659,9 @@ After following this guide, your Clawdbot server has:
 - **Proper permissions** — Config and credentials locked down
 - **AbuseIPDB reporting** — Attackers get blacklisted globally
 
-That's defense in depth. Multiple layers, each one making the next attack harder.
+That's defense in depth. Multiple layers, each one making the next attack harder. The tarpit is the cherry on top — instead of just blocking attackers, you're wasting their time and resources while keeping your real services hidden.
+
+It's not paranoia when every server with a public IP gets attacked within hours. Five minutes of setup. Sleep better at night.
 
 ---
 
