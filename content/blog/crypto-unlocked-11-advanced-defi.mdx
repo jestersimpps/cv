@@ -32,7 +32,21 @@ Here's how it typically works:
 
 Simple, right? In the 2020 "[DeFi Summer](https://www.coindesk.com/learn/what-is-defi/)," kicked off when [Compound Finance](https://compound.finance/) started distributing its COMP governance token to users in June 2020. Suddenly, people were earning **thousands of percent APY** by providing liquidity and lending. New protocols would launch, offer insane token rewards to attract liquidity, and farmers would pile in, harvest the rewards, dump the token, and move on to the next farm.
 
-![The yield farming cycle — deposit, earn, sell, redeposit](/assets/blog/crypto-unlocked-11/yield-farming-cycle.png)
+```mermaid
+graph TD
+    A[💰 Deposit Tokens] -->|provide to pool/vault| B[🏦 Protocol]
+    B -->|earns| C[📈 Yield + Reward Tokens]
+    C -->|sell rewards| D[💵 Take Profit]
+    D -->|reinvest| A
+    B -->|natural yield| E[✅ Interest / Fees]
+    C -->|compound| A
+
+    style A fill:#7c3aed,stroke:#a78bfa,color:#fff
+    style B fill:#0ea5e9,stroke:#38bdf8,color:#fff
+    style C fill:#f59e0b,stroke:#fbbf24,color:#000
+    style D fill:#10b981,stroke:#34d399,color:#fff
+    style E fill:#10b981,stroke:#34d399,color:#fff
+```
 
 > **💡 Key term:** APY (Annual Percentage Yield) includes compounding. APR (Annual Percentage Rate) doesn't. A 100% APR compounded daily is actually ~171% APY. Always check which one a protocol is showing you — some use APY to make numbers look bigger.
 

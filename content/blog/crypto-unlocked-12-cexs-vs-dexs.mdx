@@ -15,27 +15,32 @@ series:
 
 In November 2022, [FTX](https://en.wikipedia.org/wiki/FTX_(company)) was the third-largest crypto exchange on the planet by volume. Superbowl ads, celebrity endorsements, a founder valued at an estimated $16 billion. Nine days — from the first [CoinDesk exposé on November 2nd](https://www.coindesk.com/business/2022/11/02/divisions-in-sam-bankman-frieds-crypto-empire-blur-on-his-trading-titan-alameda-balance-sheet/) to the bankruptcy filing on November 11th — and it was over. Billions in customer funds — gone. Not hacked. Not exploited by some anonymous attacker. Just... taken. By the people running the exchange.
 
-![CEX vs DEX comparison](/assets/blog/crypto-unlocked-11-cex-vs-dex-comparison.png)
+```mermaid
+graph TD
+    A[👤 You] -->|create account & KYC| B[🏢 CEX]
+    B -->|deposit funds| C[💼 Exchange Wallet]
+    C -->|order book matching| D[📊 Trade Executes]
+    D -->|funds stay on exchange| C
+    C -->|you withdraw| E[🔑 Your Wallet]
+
+    style A fill:#7c3aed,stroke:#a78bfa,color:#fff
+    style B fill:#ef4444,stroke:#f87171,color:#fff
+    style C fill:#f59e0b,stroke:#fbbf24,color:#000
+    style D fill:#0ea5e9,stroke:#38bdf8,color:#fff
+    style E fill:#10b981,stroke:#34d399,color:#fff
+```
 
 ```mermaid
 graph TD
-    subgraph CEX Flow
-        UC[You] -->|deposit funds| EX[Exchange]
-        EX -->|matches order| EX
-        EX -->|trade executes| EX
-        EX -->|you withdraw| UC
-    end
+    A[👤 You] -->|connect wallet| B[🔗 Smart Contract]
+    B -->|swap via liquidity pool| C[🏊 AMM Pool]
+    C -->|tokens return instantly| D[🔑 Your Wallet]
+    A -.->|you keep your keys| D
 
-    subgraph DEX Flow
-        UD[You] -->|connect wallet| SC[Smart Contract]
-        SC -->|swap via pool| SC
-        SC -->|tokens return| UD
-    end
-
-    style UC fill:#7c3aed,stroke:#a78bfa,color:#fff
-    style UD fill:#7c3aed,stroke:#a78bfa,color:#fff
-    style EX fill:#ef4444,stroke:#f87171,color:#fff
-    style SC fill:#10b981,stroke:#34d399,color:#fff
+    style A fill:#7c3aed,stroke:#a78bfa,color:#fff
+    style B fill:#10b981,stroke:#34d399,color:#fff
+    style C fill:#0ea5e9,stroke:#38bdf8,color:#fff
+    style D fill:#10b981,stroke:#34d399,color:#fff
 ```
 
 If you ever needed a reason to understand the difference between centralized and decentralized exchanges, that's it.
@@ -80,7 +85,23 @@ FTX wasn't some shady back-alley exchange. It was endorsed by Tom Brady. It had 
 
 Behind the scenes, FTX was funneling customer deposits to its sister company [Alameda Research](https://en.wikipedia.org/wiki/Alameda_Research), which was using the money for risky trades and personal expenses. When the market turned and customers tried to withdraw, the money simply wasn't there.
 
-![FTX collapse timeline — from CoinDesk exposé to bankruptcy in 9 days](/assets/blog/crypto-unlocked-11-ftx-collapse-timeline.png)
+```mermaid
+graph TD
+    A[📰 Nov 2 — CoinDesk exposé reveals<br/>Alameda's FTT-heavy balance sheet] -->|panic begins| B[🔥 Nov 6 — Binance CEO CZ<br/>announces selling all FTT holdings]
+    B -->|bank run| C[🏃 Nov 7-8 — $6B in withdrawals<br/>in 72 hours, FTX halts withdrawals]
+    C -->|rescue attempt| D[🤝 Nov 8 — Binance signs LOI<br/>to acquire FTX]
+    D -->|due diligence| E[❌ Nov 9 — Binance walks away<br/>citing mishandled funds]
+    E -->|collapse| F[💀 Nov 11 — FTX files for<br/>Chapter 11 bankruptcy]
+    F -->|aftermath| G[⚖️ Nov 2023 — SBF convicted<br/>on all 7 fraud counts]
+
+    style A fill:#f59e0b,stroke:#fbbf24,color:#000
+    style B fill:#ef4444,stroke:#f87171,color:#fff
+    style C fill:#ef4444,stroke:#f87171,color:#fff
+    style D fill:#0ea5e9,stroke:#38bdf8,color:#fff
+    style E fill:#ef4444,stroke:#f87171,color:#fff
+    style F fill:#7c3aed,stroke:#a78bfa,color:#fff
+    style G fill:#10b981,stroke:#34d399,color:#fff
+```
 
 $8 billion in customer funds. Vanished. Federal prosecutors later called it ["one of the biggest financial frauds in American history."](https://www.justice.gov/usao-sdny/pr/united-states-attorney-announces-charges-against-ftx-founder-samuel-bankman-fried) In November 2023, [Sam Bankman-Fried was convicted](https://www.nytimes.com/2023/11/02/technology/sam-bankman-fried-fraud-trial-ftx.html) on all seven criminal counts of fraud and conspiracy.
 
