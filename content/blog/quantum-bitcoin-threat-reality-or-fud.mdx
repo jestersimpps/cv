@@ -46,7 +46,7 @@ Here's the attack scenario:
 4. Attacker double-spends your funds
 ```
 
-This is called the "transaction interception" attack. It's real in theory, but requires:
+This is called the "[transaction interception attack](https://bitcoinmagazine.com/technical/quantum-computing-and-bitcoin-security)." It's real in theory, but requires:
 
 - A quantum computer with **millions** of stable qubits
 - Error correction that doesn't exist yet
@@ -82,7 +82,7 @@ If you're using a modern wallet and following best practices (fresh address per 
 
 Here's where the FUD falls apart: **we're not close.**
 
-Google's Willow chip, announced in late 2024, has 105 qubits. It made headlines for solving a specific benchmark problem in 5 minutes that would take classical computers 10 septillion years.
+[Google's Willow chip](https://blog.google/technology/research/google-willow-quantum-chip/), announced in late 2024, has 105 qubits. It made headlines for solving a specific benchmark problem in 5 minutes that would take classical computers 10 septillion years.
 
 Impressive? Sure. Relevant to Bitcoin? Not really.
 
@@ -103,7 +103,7 @@ Bitcoin has time. And options.
 
 ### 1. Post-Quantum Cryptography
 
-NIST finalized its first post-quantum cryptographic standards in 2024. These include:
+[NIST finalized its first post-quantum cryptographic standards](https://www.nist.gov/news-events/news/2024/08/nist-releases-first-3-finalized-post-quantum-encryption-standards) in 2024. These include:
 
 - **CRYSTALS-Dilithium** — Digital signatures resistant to Shor's algorithm
 - **SPHINCS+** — Hash-based signatures (even more conservative)
@@ -153,6 +153,15 @@ The timeline is long. The solutions exist. The incentives work in Bitcoin's favo
 - NIST post-quantum standard adoption in other protocols
 
 If you see a 10,000-qubit quantum computer with stable error correction, then start worrying. Until then, the bigger risk to your Bitcoin is forgetting your seed phrase.
+
+---
+
+## Sources & Further Reading
+
+- [Google's Willow Quantum Chip Announcement](https://blog.google/technology/research/google-willow-quantum-chip/) — The 105-qubit chip that sparked recent headlines
+- [NIST Post-Quantum Cryptography Standards](https://www.nist.gov/news-events/news/2024/08/nist-releases-first-3-finalized-post-quantum-encryption-standards) — The official quantum-resistant encryption standards
+- [Bitcoin Magazine: Quantum Computing and Bitcoin Security](https://bitcoinmagazine.com/technical/quantum-computing-and-bitcoin-security) — Technical deep-dive on attack vectors
+- [RAND: When Quantum Computers Break Encryption](https://www.rand.org/pubs/commentary/2023/09/when-a-quantum-computer-is-able-to-break-our-encryption.html) — Timeline estimates from security researchers
 
 ---
 
