@@ -354,6 +354,48 @@ sudo systemctl restart sshd
 
 Now the only way in is with your private key. Brute-force attacks become completely pointless — they're trying to guess a password that doesn't exist.
 
+### Use `pass` for Secrets Management
+
+Don't store API keys and passwords in plaintext config files. Use [pass](https://www.passwordstore.org/) — the standard Unix password manager.
+
+**Install it:**
+
+```bash
+sudo apt install pass gnupg
+```
+
+**Set it up:**
+
+```bash
+# Generate a GPG key (if you don't have one)
+gpg --gen-key
+
+# Initialize pass with your GPG key
+pass init "your-email@example.com"
+```
+
+**Store secrets:**
+
+```bash
+pass insert api/anthropic
+pass insert api/openai
+pass insert gmail/app-password
+```
+
+**Retrieve secrets in scripts:**
+
+```bash
+export ANTHROPIC_API_KEY=$(pass show api/anthropic)
+```
+
+**Why this matters:**
+- Secrets are GPG-encrypted at rest
+- Even if someone accesses your filesystem, they can't read the passwords without your GPG key
+- You can sync your password store via git (safely, since everything is encrypted)
+- Works great with Clawdbot — store your API keys and channel tokens securely
+
+Your `~/.password-store/` directory is encrypted. Your `~/.clawdbot/clawdbot.json` with plaintext tokens? Not so much.
+
 ### Use Tailscale
 
 For maximum security, put Clawdbot behind [Tailscale](https://tailscale.com). Your Gateway becomes accessible only through your private mesh network — zero public exposure.
