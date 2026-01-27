@@ -29,7 +29,7 @@ Then fail2ban kicked in:
 2026-01-27 02:50:54 NOTICE [sshd] Ban 217.154.38.135
 ```
 
-Done. 24-hour ban. If you're running Clawdbot on a VPS, you need this.
+Done. 30-day ban. If you're running Clawdbot on a VPS, you need this.
 
 ## Why Clawdbot Servers Are Targets
 
@@ -80,14 +80,14 @@ port = ssh
 filter = sshd
 logpath = /var/log/auth.log
 maxretry = 3
-bantime = 86400
+bantime = 2592000
 findtime = 600
 EOF
 ```
 
 What this does:
 - **maxretry = 3** — Three failed attempts = banned
-- **bantime = 86400** — 24-hour ban
+- **bantime = 2592000** — 30-day ban (if you use SSH keys, any failed attempt is definitely an attacker)
 - **findtime = 600** — Attempts counted within 10-minute window
 
 Start it:
@@ -226,7 +226,7 @@ port = ssh
 filter = sshd
 logpath = /var/log/auth.log
 maxretry = 3
-bantime = 86400
+bantime = 2592000
 findtime = 600
 EOF
 
@@ -291,14 +291,68 @@ sudo ufw delete allow 22/tcp
 sudo systemctl restart sshd
 ```
 
-### Disable Password Auth
+### Use SSH Key Authentication (Critical)
 
-If you use SSH keys (you should):
+Password authentication is the weakest link. SSH keys are cryptographically secure and impossible to brute-force.
+
+**On your local machine**, generate a key pair:
 
 ```bash
-# In /etc/ssh/sshd_config
-PasswordAuthentication no
+ssh-keygen -t ed25519 -C "your_email@example.com"
 ```
+
+This creates two files:
+- `~/.ssh/id_ed25519` — Your private key (never share this)
+- `~/.ssh/id_ed25519.pub` — Your public key (goes on the server)
+
+**Copy your public key to the server:**
+
+```bash
+ssh-copy-id user@your-server-ip
+```
+
+Or manually:
+
+```bash
+# On your local machine
+cat ~/.ssh/id_ed25519.pub
+
+# Copy the output, then on your server:
+echo "your-public-key-here" >> ~/.ssh/authorized_keys
+chmod 600 ~/.ssh/authorized_keys
+```
+
+**Test it works:**
+
+```bash
+ssh user@your-server-ip
+```
+
+If you get in without a password prompt, it's working.
+
+### Disable Password Auth
+
+Once SSH keys work, disable password authentication entirely:
+
+```bash
+sudo nano /etc/ssh/sshd_config
+```
+
+Find and change these lines:
+
+```
+PasswordAuthentication no
+PubkeyAuthentication yes
+ChallengeResponseAuthentication no
+```
+
+Restart SSH:
+
+```bash
+sudo systemctl restart sshd
+```
+
+Now the only way in is with your private key. Brute-force attacks become completely pointless — they're trying to guess a password that doesn't exist.
 
 ### Use Tailscale
 
