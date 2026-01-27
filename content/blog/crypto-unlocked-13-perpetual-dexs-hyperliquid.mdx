@@ -15,9 +15,11 @@ series:
 
 What if I told you there's a type of crypto trading that does more daily volume than all of DeFi's lending, swapping, and yield farming _combined_? And that it used to be exclusively controlled by centralized exchanges — until a team with zero VC funding built an entire blockchain from scratch just to change that?
 
-Welcome to the world of perpetual futures. This is where serious money moves, where traders make (and lose) fortunes in minutes, and where one of crypto's most impressive technical achievements — Hyperliquid — is quietly eating Binance's lunch.
+Welcome to the world of perpetual futures. This is where serious money moves, where traders make (and lose) fortunes in minutes, and where one of crypto's most impressive technical achievements — [Hyperliquid](https://app.hyperliquid.xyz) — is quietly eating Binance's lunch.
 
 Buckle up. This is a big one.
+
+![A perpetual futures trading interface — the kind of professional-grade UI that decentralized perp DEXs now offer](/assets/blog/crypto-unlocked-13/perp-trading-interface.png)
 
 ## What Are Perpetual Futures?
 
@@ -68,7 +70,7 @@ If perps are so risky, why do they dominate crypto trading volume? A few reasons
 
 For years, this was all happening on centralized exchanges. Binance, Bybit, OKX — they processed billions in perp volume daily. But they had a problem: you had to trust them with your money. And as FTX proved, that trust can be catastrophically misplaced.
 
-Enter decentralized perp DEXs. Enter **Hyperliquid**.
+Enter decentralized perp DEXs. Enter **[Hyperliquid](https://app.hyperliquid.xyz)**.
 
 ## Hyperliquid: The Exchange That Built Its Own Blockchain
 
@@ -82,7 +84,7 @@ They wanted to build a fully on-chain order book — every order, every cancella
 
 So they built one. From scratch.
 
-**HyperBFT** is Hyperliquid's custom Layer 1 consensus mechanism, inspired by Meta's HotStuff protocol. It's optimized for one thing: being the fastest possible settlement layer for a trading exchange.
+**[HyperBFT](https://hyperliquid.gitbook.io/hyperliquid-docs)** is Hyperliquid's custom Layer 1 consensus mechanism, inspired by [Meta's HotStuff protocol](https://research.facebook.com/publications/hotstuff-bft-consensus-with-linearity-and-responsiveness/) and its successors. It's optimized for one thing: being the fastest possible settlement layer for a trading exchange. The L1 currently supports up to **200,000 orders per second** with sub-second block finality — and throughput is constantly improving as the node software is further optimized.
 
 The result? An order book that runs entirely on-chain with the speed of a CEX and the transparency of a blockchain. Every trade is verifiable. No hidden market makers. No exchange trading against its own users. No "we swear we didn't see your stop-loss and hunt it."
 
@@ -106,19 +108,21 @@ Why does this matter? Because in crypto, VC-funded projects have a nasty habit o
 
 ### The $HYPE Airdrop
 
-In November 2024, Hyperliquid executed one of the largest and most celebrated airdrops in crypto history. They distributed **31% of the total HYPE token supply** — over 310 million tokens — to early users of the platform.
+On November 29, 2024, Hyperliquid executed one of the largest and most celebrated airdrops in crypto history. They distributed **31% of the total HYPE token supply** — 310 million tokens out of a 1 billion total supply — to early users of the platform. The remaining allocation reserved 38.888% for future emissions and community rewards, and 30.112% for team and contributors (with a vesting schedule).
 
 No insider allocation games. No tiered structures favoring whales. People who had been actively trading on the platform received life-changing amounts of tokens. Some early adopters received hundreds of thousands of dollars worth of HYPE.
 
-The token launched at around $2 and quickly ripped past $30 within weeks. The community went absolutely feral (in the best way). To this day, HYPE holders are some of the most loyal and vocal in all of crypto — because the team earned that loyalty by putting users first.
+The token launched at around $2 and quickly ripped past $30 within weeks. The community went absolutely feral (in the best way). To this day, [HYPE holders](https://coinmarketcap.com/currencies/hyperliquid/) are some of the most loyal and vocal in all of crypto — because the team earned that loyalty by putting users first. The protocol also uses trading fee revenue to conduct [ongoing HYPE buybacks](https://www.dlnews.com/articles/defi/hyperliquid-hype-token-buyback-1bn-but-is-it-sustainable/) through its Assistance Fund, creating constant buy pressure.
 
 > **💡 Note:** The HYPE airdrop became the gold standard for how to launch a token. Fair distribution, rewarding actual users, no VC dumping. Every project since gets compared to it.
 
 ### HyperEVM: From Exchange to Ecosystem
 
-Hyperliquid started as a perps exchange, but the team had bigger plans. With the launch of **HyperEVM** — a general-purpose EVM (Ethereum Virtual Machine) compatible execution environment — Hyperliquid became a full-fledged blockchain ecosystem.
+Hyperliquid started as a perps exchange, but the team had bigger plans. With the launch of **[HyperEVM](https://hyperliquid.gitbook.io/hyperliquid-docs/hyperevm)** in February 2025 — a general-purpose EVM (Ethereum Virtual Machine) compatible execution environment — Hyperliquid became a full-fledged blockchain ecosystem.
 
-This means developers can now build any type of DeFi application on Hyperliquid: lending protocols, stablecoins, NFT marketplaces, whatever. All of these apps can natively interact with the Hyperliquid order book and the liquidity it provides.
+Crucially, HyperEVM is _not_ a separate chain. It runs under the same HyperBFT consensus as HyperCore (the order book layer), meaning EVM smart contracts can directly read prices from and send orders to the native spot and perp order books. A lending protocol can liquidate positions through HyperCore's order books in just a few lines of Solidity code. This tight integration is a massive architectural advantage.
+
+This means developers can now build any type of DeFi application on Hyperliquid: lending protocols, stablecoins, NFT marketplaces, whatever. All of these apps can natively interact with the Hyperliquid order book and the liquidity it provides. You can explore the growing ecosystem at [HypurrCo](https://www.hypurr.co/ecosystem-projects) or [HL Eco](https://hl.eco/projects).
 
 It's an ambitious play: build the best exchange first, attract liquidity, then expand into an entire financial ecosystem anchored by that liquidity. Think of it like Amazon starting with books and expanding to... everything.
 

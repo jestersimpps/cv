@@ -115,17 +115,21 @@ Poke around. Look at your swap transaction on Etherscan. See the gas fee, the co
 
 Now that you're up and running, let's lock things down.
 
+![Crypto security checklist](/assets/blog/crypto-unlocked-19/security-checklist.png)
+
 **Non-negotiable security basics:**
 
-- **Hardware wallet for serious money** — if you're holding more than you'd carry in your physical wallet, get a Ledger or Trezor. These keep your private keys offline, making them nearly impossible to hack remotely. ~$70-$150.
+- **Hardware wallet for serious money** — if you're holding more than you'd carry in your physical wallet, get a [Ledger](https://www.ledger.com) or [Trezor](https://trezor.io). These keep your private keys offline, making them nearly impossible to hack remotely. ~$70-$150.
 - **2FA on everything** — enable two-factor authentication on every exchange, every email, every account. Use an authenticator app (Google Authenticator, Authy), **not SMS** — SIM swap attacks are real.
 - **Separate email for crypto** — create a dedicated email address for your exchange accounts and crypto services. If your main email gets compromised, your crypto accounts are still isolated.
-- **Password manager** — unique, strong passwords for everything. Bitwarden is free and excellent.
+- **Password manager** — unique, strong passwords for everything. [Bitwarden](https://bitwarden.com) is free and excellent.
 - **Bookmark your sites** — always access exchanges and DeFi apps from bookmarks, never from Google search results (scammers buy ads for fake sites).
 
 ## The Scam Landscape
 
 Here's the uncomfortable truth: crypto is full of scammers. Not because crypto is bad — because it involves money, and money attracts predators. Here's what to watch for:
+
+![How to spot phishing: legitimate vs fake crypto sites](/assets/blog/crypto-unlocked-19/phishing-warning.png)
 
 **Phishing sites** — fake versions of real websites. `app.uniswap.org` vs `app-uniswap.org` vs `uniswap-app.com`. One is real. The others will drain your wallet. Always check the URL. Always use bookmarks.
 
@@ -135,7 +139,9 @@ Here's the uncomfortable truth: crypto is full of scammers. Not because crypto i
 
 **Twitter/X impersonators** — fake accounts mimicking real projects or influencers, posting "send 1 ETH, get 2 back" or linking to malicious sites. Elon Musk is not doubling your Bitcoin. Vitalik is not giving away ETH.
 
-**Approval exploits** — when you use a DEX, you often approve it to spend your tokens. Malicious contracts can ask for unlimited approval, then drain your wallet later. Always check what you're approving.
+**"Pig butchering" romance scams** — long-con scams where someone builds a relationship with you (often on dating apps or social media), then gradually convinces you to "invest" in a fake crypto platform. These are sophisticated and emotionally devastating. If someone you've never met in person is giving you crypto investment advice, it's a scam. The [FBI's IC3](https://www.ic3.gov) tracks these — they accounted for billions in losses in recent years.
+
+**Approval exploits** — when you use a DEX, you often approve it to spend your tokens. Malicious contracts can ask for unlimited approval, then drain your wallet later. Always check what you're approving. Note: even a hardware wallet won't protect you here — approvals don't require your private key to be stolen, they use permissions you already granted.
 
 ## Revoke Approvals: Clean Up After Yourself
 
@@ -144,10 +150,12 @@ Every time you approve a smart contract to spend your tokens, that permission st
 **Use [revoke.cash](https://revoke.cash):**
 
 1. Connect your wallet
-2. See all your active token approvals
+2. See all your active token approvals across over 100 supported networks
 3. Revoke any you don't actively need
 
 Make this a monthly habit. It costs a small gas fee per revocation, but it's worth it. Think of it as changing your passwords regularly, but for smart contract permissions.
+
+> **Pro tip:** Install the [Revoke.cash browser extension](https://revoke.cash/extension) — it warns you *before* you sign a potentially harmful approval, acting as a real-time safety net against phishing sites. Prevention beats cleanup. Also worth noting: disconnecting your wallet from a dApp is **not** the same as revoking approvals. Disconnecting only removes the site's ability to see your address — the spending permissions remain active until explicitly revoked.
 
 ## Operational Security (OpSec)
 
@@ -165,7 +173,7 @@ I know this isn't the fun part, but ignoring it won't make it go away.
 **In most countries, crypto gains are taxable.** The specifics vary, but the general principle is universal: if you buy crypto, it goes up in value, and you sell or swap it — you owe taxes on the gain.
 
 - **Every swap is a taxable event** in most jurisdictions. Swapping ETH for USDC? That's a sale of ETH.
-- **Keep records from day one.** Export your transaction history from exchanges. Use tools like Koinly, CoinTracker, or TokenTax to track everything automatically.
+- **Keep records from day one.** Export your transaction history from exchanges. Use tools like [Koinly](https://koinly.io), [CoinTracker](https://www.cointracker.io), or [TokenTax](https://tokentax.co) to track everything automatically.
 - **Don't wait until tax season** to figure this out. Retroactively reconstructing a year of DeFi transactions across five chains is a nightmare I wouldn't wish on anyone.
 
 > **Tip:** Connect your wallets and exchange accounts to a crypto tax tool *now*, while you have a clean start. Future you will be grateful.
