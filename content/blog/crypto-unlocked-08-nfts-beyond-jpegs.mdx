@@ -13,7 +13,7 @@ series:
   total: 21
 ---
 
-In March 2021, a digital artist named Mike Winkelmann — better known as Beeple — sold a single JPEG file at Christie's auction house for **$69.3 million**. The art world lost its mind. Twitter lost its mind. Your uncle who barely uses email suddenly had opinions about blockchain. And just like that, three letters entered the global vocabulary: NFT.
+In March 2021, a digital artist named Mike Winkelmann — better known as Beeple — sold a single JPEG file at [Christie's auction house](https://www.christies.com/features/monumental-collage-by-beeple-is-first-purely-digital-artwork-nft-to-come-to-auction-11510-7.aspx) for **$69.3 million**. The art world lost its mind. Twitter lost its mind. Your uncle who barely uses email suddenly had opinions about blockchain. And just like that, three letters entered the global vocabulary: NFT.
 
 Two years later, the floor prices of most NFT collections had collapsed over 90%. People were holding digital apes worth less than the gas fees they paid to mint them. The obituaries were written. "NFTs are dead," declared approximately everyone.
 
@@ -30,6 +30,8 @@ Let's start with the word nobody can pronounce at dinner parties.
 An **NFT (Non-Fungible Token)** is simply a unique digital record on a blockchain that proves you own a specific thing. That "thing" could be an image, a music file, a game item, a domain name, a deed to property, or a ticket to an event. The token itself doesn't *contain* the thing — it's more like a certificate of authenticity that points to it.
 
 > **Key insight:** NFTs aren't a type of art. They're a type of *ownership*. The art bubble was just the first (loudest) application.
+
+![A futuristic digital art gallery showcasing NFT artworks with neon frames and holographic displays](/assets/blog/crypto-unlocked-08/nft-digital-gallery.png)
 
 ## How NFTs Work Under the Hood
 
@@ -57,13 +59,44 @@ Instead, most NFTs point to off-chain storage:
 
 A small number of projects store everything on-chain (like [Art Blocks](https://www.artblocks.io/) generative art, which stores the code to regenerate the artwork directly on Ethereum). These are genuinely permanent but rare.
 
+```mermaid
+graph TD
+    A[🎨 Creator Mints NFT] --> B[Smart Contract Deployed]
+    B --> C[Token ID + Metadata URI]
+    C --> D{Where is metadata stored?}
+    D -->|Decentralized| E[IPFS / Arweave]
+    D -->|Centralized| F[Web Server / AWS]
+    D -->|On-chain| G[Stored in Contract]
+    E --> H[Buyer Purchases on Marketplace]
+    F --> H
+    G --> H
+    H --> I[Ownership Recorded On-Chain]
+    I --> J{Resale?}
+    J -->|Yes| K[Royalty to Creator]
+    K --> H
+    J -->|No| L[Buyer Holds NFT]
+
+    style A fill:#7c3aed,stroke:#a78bfa,color:#fff
+    style B fill:#0ea5e9,stroke:#7dd3fc,color:#fff
+    style C fill:#0ea5e9,stroke:#7dd3fc,color:#fff
+    style D fill:#8b5cf6,stroke:#a78bfa,color:#fff
+    style E fill:#10b981,stroke:#6ee7b7,color:#fff
+    style F fill:#ef4444,stroke:#fca5a5,color:#fff
+    style G fill:#10b981,stroke:#6ee7b7,color:#fff
+    style H fill:#0ea5e9,stroke:#7dd3fc,color:#fff
+    style I fill:#10b981,stroke:#6ee7b7,color:#fff
+    style J fill:#8b5cf6,stroke:#a78bfa,color:#fff
+    style K fill:#f59e0b,stroke:#fcd34d,color:#fff
+    style L fill:#10b981,stroke:#6ee7b7,color:#fff
+```
+
 ## The 2021 Boom: Digital Gold Rush
 
 To understand NFTs today, you have to understand what happened in 2021. It was a perfect storm:
 
 - **Beeple's $69.3M sale** at Christie's legitimized NFTs overnight. Traditional art world meets crypto — front page everywhere.
-- **[CryptoPunks](https://www.larvalabs.com/cryptopunks)** — 10,000 pixel-art characters originally given away for free in 2017 — started selling for millions. Visa bought one. Jay-Z used one as his profile picture.
-- **[Bored Ape Yacht Club](https://boredapeyachtclub.com/)** (BAYC) launched in April 2021 at 0.08 ETH (~$200) per ape. By the end of the year, floor prices hit 100+ ETH (~$300,000+). Celebrities from Eminem to Steph Curry bought in. The "club" aspect — exclusive Discord access, commercial rights to your ape — added a layer of community and identity.
+- **[CryptoPunks](https://cryptopunks.app/)** — 10,000 pixel-art characters originally given away for free in 2017 — started selling for millions. Visa bought one. Jay-Z used one as his profile picture. (Now owned by [Yuga Labs](https://yuga.com/), which acquired the IP from Larva Labs in 2022.)
+- **[Bored Ape Yacht Club](https://boredapeyachtclub.com/)** (BAYC) launched on April 30, 2021 at 0.08 ETH (~$190) per ape — selling out in 12 hours. By early 2022, floor prices hit 100+ ETH (~$300,000+). Celebrities from Justin Bieber to Snoop Dogg bought in. The "club" aspect — exclusive Discord access, commercial rights to your ape — added a layer of community and identity. By 2024, floor prices had dropped roughly 90% from their peak.
 - **NBA Top Shot**, **Axie Infinity**, **Art Blocks** — the space exploded in every direction. Monthly NFT trading volume hit $5 billion+ in January 2022.
 
 Money was flowing. FOMO was raging. Everyone with a Photoshop license launched a collection. Most were derivative garbage. But hey, number go up.
@@ -87,8 +120,8 @@ What happened? Everything you'd expect:
 
 Where you buy and sell NFTs matters — and the marketplace landscape has been a bloodbath.
 
-- **[OpenSea](https://opensea.io/):** The original dominant marketplace. Founded in 2017, it rode the 2021 wave to a $13.3 billion valuation. But it got complacent and slow to innovate.
-- **[Blur](https://blur.io/):** Launched in late 2022 and ate OpenSea's lunch almost overnight. Blur targeted pro traders with faster execution, zero fees, and an aggressive token airdrop campaign. By early 2023, it had overtaken OpenSea in volume.
+- **[OpenSea](https://opensea.io/):** The original dominant marketplace. Founded in 2017, it rode the 2021 wave to a [$13.3 billion valuation in January 2022](https://techcrunch.com/2022/01/04/opensea-raises-300-million-at-13-3-billion-valuation/). But it got complacent and slow to innovate — daily volume cratered 99% from its May 2022 peak by late that year.
+- **[Blur](https://blur.io/):** Launched in October 2022 and ate OpenSea's lunch almost overnight. Blur targeted pro traders with faster execution, zero fees, and an aggressive token airdrop campaign. By early 2023, it had overtaken OpenSea in volume.
 - **[Magic Eden](https://magiceden.io/):** Started as the top Solana marketplace, then expanded to Ethereum, Bitcoin Ordinals, and other chains. Now one of the biggest cross-chain NFT platforms.
 - **[Tensor](https://tensor.trade/):** Solana's pro-trading NFT platform, essentially the Blur of Solana. Fast, data-rich, and popular with active traders.
 
@@ -100,13 +133,17 @@ It's a genuine tension. Enforced royalties are great for creators but can feel l
 
 Here's where NFTs get interesting again. Forget the monkeys. The technology — a verifiable, unique digital token proving ownership — is genuinely useful for a lot of things:
 
+![NFT utility beyond art — tickets, gaming items, domain names, and credentials flowing from a blockchain hub](/assets/blog/crypto-unlocked-08/nft-utility-web.png)
+
 ### 🎮 Gaming
 
 Imagine actually *owning* your in-game items instead of renting them from a game company that can ban your account or shut down servers.
 
 - **[Immutable X](https://www.immutable.com/):** An Ethereum layer-2 built specifically for gaming NFTs. Zero gas fees for trading. Powers games like **[Gods Unchained](https://godsunchained.com/)** (a trading card game where you actually own your cards) and **[Illuvium](https://illuvium.io/)**.
-- **[Ronin](https://roninchain.com/):** The chain behind Axie Infinity. Despite a $625 million hack in 2022, the gaming ecosystem continues to develop.
+- **[Ronin](https://roninchain.com/):** The chain behind Axie Infinity. Despite a [$620 million hack in March 2022](https://www.bbc.com/news/technology-60933174) — attributed to North Korea's Lazarus Group — the gaming ecosystem continues to develop.
 - The promise: you buy a sword in one game, use it in another, sell it when you're done. We're not there yet, but the infrastructure is being built.
+
+![Gaming NFT items — legendary weapons, trading cards, and collectible creatures in a magical inventory interface](/assets/blog/crypto-unlocked-08/nft-gaming-items.png)
 
 ### 🎵 Music
 
@@ -119,12 +156,12 @@ Artists have been screwed by the music industry forever. NFTs offer a way to sel
 
 Paper tickets get counterfeited. Digital tickets get scalped. NFT tickets solve both problems.
 
-- **[GET Protocol](https://www.get-protocol.io/):** Has processed millions of NFT tickets for real events. The ticket is an NFT — verifiable, non-duplicable, and programmable. The artist can even earn a cut of resale.
+- **[GET Protocol](https://onopen.xyz/)** (now the OPEN Ticketing Ecosystem): Has processed millions of NFT tickets for real events. The ticket is an NFT — verifiable, non-duplicable, and programmable. The artist can even earn a cut of resale.
 - Every major ticketing company is exploring this. [Ticketmaster has experimented](https://business.ticketmaster.com/) with token-gated experiences. It's a matter of when, not if.
 
 ### 🌐 Domain Names
 
-- **[ENS (Ethereum Name Service)](https://ens.domains/):** Turns your wallet address (0x7a3B...4f2e) into something human-readable like `yourname.eth`. These are NFTs you own and control. Vitalik Buterin uses `vitalik.eth`.
+- **[ENS (Ethereum Name Service)](https://ens.domains/):** Turns your wallet address (0x7a3B...4f2e) into something human-readable like `yourname.eth`. These are NFTs you own and control — with millions of names registered to date. Vitalik Buterin uses `vitalik.eth`.
 - **[Unstoppable Domains](https://unstoppabledomains.com/):** Similar concept with `.crypto`, `.nft`, `.wallet` domains. No renewal fees — buy once, own forever.
 
 ### 🏠 Real Estate
