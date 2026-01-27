@@ -503,21 +503,19 @@ sudo bash clawdbot-fail2ban-reporter/scripts/install.sh
 
 After setup, every fail2ban ban automatically reports to AbuseIPDB. Zero effort, maximum community impact.
 
-Here's what my server reported after just a few hours:
+Here's what my server reported after just a few hours — 9 banned IPs from 7 countries:
 
-| IP | Country | ISP |
-|---|---|---|
-| 2.57.122.209 | 🇳🇱 Netherlands | Unmanaged LTD |
-| 80.94.92.171 | 🇳🇱 Netherlands | Unmanaged LTD |
-| 92.118.39.95 | 🇺🇸 USA | Unmanaged LTD |
-| 103.253.21.190 | 🇻🇳 Vietnam | PSG JSC |
-| 150.5.129.10 | 🇭🇰 Hong Kong | Byteplus |
-| 202.79.29.108 | 🇰🇭 Cambodia | WiCAM |
-| 101.47.161.104 | 🇸🇬 Singapore | Great Wall |
-| 45.78.222.160 | 🇸🇬 Singapore | Byteplus |
-| 45.78.218.137 | 🇸🇬 Singapore | Byteplus |
+- **2.57.122.209** — Netherlands (Unmanaged LTD)
+- **80.94.92.171** — Netherlands (Unmanaged LTD)
+- **92.118.39.95** — USA (Unmanaged LTD)
+- **103.253.21.190** — Vietnam (PSG JSC)
+- **150.5.129.10** — Hong Kong (Byteplus)
+- **202.79.29.108** — Cambodia (WiCAM)
+- **101.47.161.104** — Singapore (Great Wall)
+- **45.78.222.160** — Singapore (Byteplus)
+- **45.78.218.137** — Singapore (Byteplus)
 
-Patterns: 3× Byteplus (Singapore/HK), 3× Unmanaged LTD (NL/US) — same botnets hitting from multiple IPs.
+Same botnets hitting from multiple IPs — 3× Byteplus (Singapore/HK), 3× Unmanaged LTD (NL/US).
 
 ## The Complete Security Stack
 
