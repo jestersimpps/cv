@@ -1,0 +1,260 @@
+---
+title: "Your Server Is Under Attack Right Now (Here's How to Stop It)"
+description: "within minutes of setting up fail2ban, it caught an active brute-force attack. here's exactly how to lock down your linux server."
+publishedAt: "2026-01-27"
+author: "Jo V"
+category: "DevOps"
+tags: ["Security", "Linux", "DevOps", "Server", "SSH"]
+coverImage: "/assets/blog/server-security-fail2ban/cover.png"
+featured: false
+---
+
+I set up fail2ban on my server tonight. Within 60 seconds, it banned its first attacker.
+
+Not a test. Not a simulation. An actual bot was actively trying to brute-force my SSH while I was configuring the firewall.
+
+```
+Jan 27 02:46:55 sshd: Invalid user oracle from 217.154.38.135
+Jan 27 02:47:25 sshd: Invalid user main from 217.154.38.135
+Jan 27 02:47:56 sshd: Invalid user HwHiAiUser from 217.154.38.135
+Jan 27 02:48:26 sshd: Invalid user guest from 217.154.38.135
+Jan 27 02:48:57 sshd: Invalid user git from 217.154.38.135
+```
+
+Every 30 seconds. Different usernames. Automated. Relentless.
+
+Then fail2ban kicked in:
+
+```
+2026-01-27 02:50:54 NOTICE [sshd] Ban 217.154.38.135
+```
+
+Done. 24-hour ban. Move along, bot.
+
+## The Reality of Running a Public Server
+
+If you have a server with a public IP, you're being attacked right now. Not maybe. Not sometimes. Right now.
+
+SSH brute-force attacks are constant background noise on the internet. Botnets scan IP ranges looking for:
+
+- Default credentials (admin/admin, root/root)
+- Common usernames (oracle, postgres, git, ubuntu)
+- Weak passwords
+
+They don't care who you are. They're just spraying the entire IPv4 space hoping something sticks.
+
+Most developers ignore this because "I use SSH keys" or "my password is strong." That's not wrong, but it misses the point:
+
+- Every failed attempt is logged, filling your disk
+- Every connection consumes resources
+- Eventually, one of these bots might get lucky
+- Your IP could end up in a botnet's "responsive" list
+
+## The Two-Tool Solution
+
+You need two things:
+
+**fail2ban** — Watches logs for failed login attempts, auto-bans repeat offenders
+
+**ufw** — Simple firewall that blocks everything except what you explicitly allow
+
+Together, they take about 5 minutes to set up and will block 99% of automated attacks.
+
+## Setting Up fail2ban
+
+Install it:
+
+```bash
+sudo apt update
+sudo apt install fail2ban
+```
+
+Create a local config (never edit the main config directly):
+
+```bash
+sudo nano /etc/fail2ban/jail.local
+```
+
+Add this:
+
+```ini
+[sshd]
+enabled = true
+port = ssh
+filter = sshd
+logpath = /var/log/auth.log
+maxretry = 3
+bantime = 86400
+findtime = 600
+```
+
+What this does:
+
+- **maxretry = 3** — Three strikes and you're out
+- **bantime = 86400** — Banned for 24 hours (in seconds)
+- **findtime = 600** — Attempts must happen within 10 minutes to count
+
+Start it:
+
+```bash
+sudo systemctl enable fail2ban
+sudo systemctl start fail2ban
+```
+
+Check status:
+
+```bash
+sudo fail2ban-client status sshd
+```
+
+You'll see something like:
+
+```
+Status for the jail: sshd
+|- Filter
+|  |- Currently failed: 1
+|  |- Total failed: 47
+|  `- Journal matches: _SYSTEMD_UNIT=sshd.service
+`- Actions
+   |- Currently banned: 3
+   |- Total banned: 12
+   `- Banned IP list: 217.154.38.135 2.57.122.209 195.142.106.177
+```
+
+## Setting Up ufw
+
+Install and configure:
+
+```bash
+sudo apt install ufw
+
+# Default: block everything incoming
+sudo ufw default deny incoming
+sudo ufw default allow outgoing
+
+# Allow only what you need
+sudo ufw allow 22/tcp   # SSH
+sudo ufw allow 80/tcp   # HTTP (if running web server)
+sudo ufw allow 443/tcp  # HTTPS (if running web server)
+
+# Enable it
+sudo ufw enable
+```
+
+Check status:
+
+```bash
+sudo ufw status verbose
+```
+
+Output:
+
+```
+Status: active
+Default: deny (incoming), allow (outgoing)
+
+To                         Action      From
+--                         ------      ----
+22/tcp                     ALLOW IN    Anywhere
+80/tcp                     ALLOW IN    Anywhere
+443/tcp                    ALLOW IN    Anywhere
+```
+
+Everything else? Blocked. Database ports, random services, anything you forgot to close — all invisible to the outside world.
+
+## What Attackers Try
+
+Looking at my logs from just the past hour:
+
+- **oracle** — Hoping for an Oracle DB with default creds
+- **postgres** — PostgreSQL default user
+- **git** — GitLab/Gitea servers
+- **solana** — Crypto nodes (popular target lately)
+- **HwHiAiUser** — Huawei device default user
+- **admin** — The classic
+- **ftpuser** — Legacy FTP servers
+- **ubuntu** — Default cloud VM user
+
+These aren't sophisticated attacks. They're spray-and-pray. But if you're running an old system with weak defaults, one of these will eventually hit.
+
+## Beyond the Basics
+
+Once you have fail2ban and ufw running, consider:
+
+**Change SSH port** — Moving from 22 to something random (like 2222 or 45678) eliminates 90% of automated scans
+
+```bash
+# In /etc/ssh/sshd_config
+Port 45678
+```
+
+Don't forget to update ufw:
+
+```bash
+sudo ufw allow 45678/tcp
+sudo ufw delete allow 22/tcp
+```
+
+**Disable password auth entirely** — If you use SSH keys (you should), turn off passwords:
+
+```bash
+# In /etc/ssh/sshd_config
+PasswordAuthentication no
+```
+
+**Use Tailscale** — For private services, put them behind a WireGuard mesh network. No public exposure at all.
+
+## The 5-Minute Security Upgrade
+
+Here's the complete setup, copy-paste ready:
+
+```bash
+# Install
+sudo apt update && sudo apt install -y fail2ban ufw
+
+# Configure fail2ban
+sudo tee /etc/fail2ban/jail.local << 'EOF'
+[sshd]
+enabled = true
+port = ssh
+filter = sshd
+logpath = /var/log/auth.log
+maxretry = 3
+bantime = 86400
+findtime = 600
+EOF
+
+# Start fail2ban
+sudo systemctl enable fail2ban
+sudo systemctl restart fail2ban
+
+# Configure ufw
+sudo ufw default deny incoming
+sudo ufw default allow outgoing
+sudo ufw allow 22/tcp
+sudo ufw allow 80/tcp
+sudo ufw allow 443/tcp
+sudo ufw --force enable
+
+# Verify
+sudo fail2ban-client status sshd
+sudo ufw status verbose
+```
+
+Run that on any Ubuntu/Debian server and you're protected in under a minute.
+
+## It's Not Paranoia If They're Actually Attacking
+
+I used to think server security was overkill for small projects. "Who cares about my little VPS?"
+
+Then I looked at the logs.
+
+Hundreds of attack attempts per day. Automated. Persistent. From IPs all over the world.
+
+These bots don't know you're not important. They'll try to crack your server just as hard as they'd try to crack a bank. The only difference is what they do after they get in.
+
+Five minutes of setup. Sleep better at night.
+
+---
+
+*Now if you'll excuse me, I need to go check how many IPs fail2ban caught while I was writing this post.*
