@@ -1,0 +1,154 @@
+---
+title: "Crypto Unlocked Part 14: Options & Advanced Trading"
+description: "Calls, puts, and exotic instruments — on-chain options trading is still early but growing fast. Here's what you need to know."
+publishedAt: "2026-01-27"
+author: "Jo Vinkenroye"
+category: "Tutorials"
+tags: ["Crypto", "Options", "Trading", "DeFi", "Beginners"]
+coverImage: "/assets/blog/crypto-unlocked-cover.png"
+series:
+  id: "crypto-unlocked"
+  title: "Crypto Unlocked"
+  part: 14
+  total: 20
+---
+
+You've learned to swap tokens, provide liquidity, lend, borrow, and even trade perpetuals with leverage. But there's one more level to the trading game that most crypto beginners never touch — and honestly, most traditional investors don't either.
+
+**Options.**
+
+The word alone makes people's eyes glaze over. Strike prices, premiums, Greeks — it sounds like a finance PhD entrance exam. But here's the thing: options are actually one of the most *useful* financial tools ever invented. They let you bet on prices going up, going down, or staying flat — all while knowing your maximum possible loss *before* you enter the trade.
+
+Let's break it down.
+
+## Options 101: Insurance You Can Trade
+
+Forget the textbook definitions for a second. Think about car insurance.
+
+You pay a monthly **premium** to your insurance company. If nothing bad happens, you lose that premium — gone. But if you crash your car, the insurance kicks in and covers the damage. You paid a small, known cost to protect against a big, unknown loss.
+
+**Options work the exact same way.**
+
+A **call option** gives you the right (but not the obligation) to *buy* an asset at a specific price before a specific date. You'd buy a call if you think the price is going up.
+
+A **put option** gives you the right to *sell* at a specific price before a specific date. You'd buy a put if you think the price is going down — or if you want to protect a position you already hold.
+
+That's it. Calls = bullish bets. Puts = bearish bets (or insurance).
+
+## The Key Terms (No Jargon Left Behind)
+
+Let's say ETH is trading at $3,000 and you buy a call option. Here are the moving parts:
+
+- **Strike price** — The price at which you can buy (or sell). If your call has a $3,500 strike, you have the right to buy ETH at $3,500 no matter where the market goes.
+- **Premium** — What you pay for the option. Think of it as the ticket price. If the premium is $100, that's your maximum loss if the trade doesn't work out.
+- **Expiry** — The deadline. After this date, the option is worthless. Options are time-limited by design.
+- **In the money (ITM)** — Your option has value right now. For a call, that means the market price is *above* the strike.
+- **Out of the money (OTM)** — Your option has no intrinsic value yet. The market hasn't reached your strike price.
+
+> 💡 **The beauty of buying options:** your downside is capped at the premium you paid. If ETH crashes to $1,000 after you bought that $3,500 call, you only lose the $100 premium. Compare that to being leveraged long and getting liquidated for everything.
+
+## Why Would Anyone Trade Options?
+
+Three main reasons:
+
+**1. Hedging (insurance)**
+You hold 10 ETH and you're worried about a crash. Instead of selling, you buy put options. If ETH drops, your puts increase in value, offsetting your losses. If ETH goes up, you only lose the premium — a small price for peace of mind.
+
+**2. Income generation**
+You can *sell* options (called "writing") to collect premiums. If you own ETH and sell calls against it (a "covered call"), you earn income as long as the price stays below the strike. It's like renting out your crypto.
+
+**3. Leveraged bets with capped downside**
+Options give you asymmetric upside. A $100 premium on a call option could turn into $1,000+ if the price rockets past your strike. Your maximum loss? That same $100. No liquidation, no margin calls. You know the worst case before you click "buy."
+
+> ⚠️ **Important caveat:** *Selling* options is a completely different risk profile. Buyers have capped losses; sellers can face theoretically unlimited losses. If you're a beginner, stick to buying options until you deeply understand the mechanics.
+
+## On-Chain Options: The Platforms
+
+In traditional finance, options trade on regulated exchanges like the CBOE. In crypto, most options volume still happens on centralized exchanges — **Deribit** dominates with something like 85%+ of all crypto options volume. It's the undisputed king.
+
+But DeFi is catching up. Here are the protocols pushing options on-chain:
+
+- **Aevo** — Started as a layer-2 options exchange (built on Optimism). Clean interface, order book model, feels close to a CEX experience but runs on-chain settlement. They've expanded into perpetuals too.
+- **Lyra** — One of the OG DeFi options protocols, originally on Optimism. Uses an automated market maker (AMM) for options pricing instead of an order book. Think Uniswap but for options contracts.
+- **Premia** — Multi-chain options protocol with a slick UI. Lets you buy and sell options on various assets. They've iterated through multiple versions to improve capital efficiency.
+- **Hegic** — A simpler approach to on-chain options. You pick your asset, direction, amount, and timeframe. The protocol handles the rest. Good for people who find traditional options interfaces overwhelming.
+
+### Panoptic: The Wild Card
+
+This one deserves its own mention because it's genuinely innovative.
+
+**Panoptic** builds options on top of Uniswap V3 liquidity positions. Here's the insight: when you provide concentrated liquidity on Uniswap V3, you're already taking on a payoff profile that looks remarkably like selling options. Panoptic formalizes this.
+
+Instead of creating separate options markets, Panoptic lets traders buy and sell options that are directly derived from Uniswap LP positions. LPs effectively become options sellers, and traders can buy those options without anyone having to write a traditional options contract.
+
+It's clever because it solves one of the biggest problems in DeFi options: **liquidity**. Instead of bootstrapping a new market from scratch, Panoptic piggybacks on Uniswap's existing deep liquidity.
+
+> 🧠 **Why this matters:** Most DeFi options protocols struggle with thin liquidity — wide spreads, bad fills, not enough counterparties. By connecting to Uniswap's liquidity, Panoptic sidesteps this cold-start problem entirely.
+
+## Structured Products: Options on Autopilot
+
+Not everyone wants to manually pick strikes and expiries. That's where **DeFi Options Vaults (DOVs)** come in.
+
+DOVs are structured products — essentially smart contract vaults that automatically execute options strategies on your behalf. You deposit your crypto, the vault sells options (usually covered calls or cash-secured puts), collects the premiums, and distributes the yield back to depositors.
+
+**How a typical covered call vault works:**
+
+1. You deposit ETH into the vault
+2. Every week (or some interval), the vault sells call options with a strike price above the current market price
+3. If ETH stays below the strike, the options expire worthless and the vault keeps the premium → that's your yield
+4. If ETH rockets past the strike, you miss the upside above that level — that's the tradeoff
+
+**Ribbon Finance** was the pioneer here before winding down. **Thetanuts** and **Cega** have carried the torch. These vaults were hugely popular during calmer markets when premiums were juicy and prices weren't making violent moves.
+
+The catch? DOVs got wrecked during volatile periods. When prices blew past strike prices, vault depositors missed massive upside. And during crashes, the underlying assets lost value faster than premiums could compensate. They work best in sideways or gently trending markets.
+
+## Prediction Markets: Betting on Reality
+
+While not technically options, **prediction markets** deserve a spot here because they're derivatives on real-world outcomes — and they've exploded in popularity.
+
+- **Polymarket** — The breakout star. Lets you bet on anything from election outcomes to "Will Bitcoin hit $100K by December?" Binary outcomes, priced between $0 and $1. If you're right, you get $1 per share. If wrong, you get $0. Simple, addictive, and surprisingly informative as a signal for what the market actually believes.
+- **Drift** — A Solana-based exchange that offers prediction-style markets alongside perpetuals. Betting on crypto events and broader outcomes.
+
+Prediction markets are fascinating because they turn crowd wisdom into prices. When Polymarket shows a candidate at 65%, that's the market's collective bet — and historically, these markets have been *more accurate* than polls and pundits.
+
+> 🔮 **Hot take:** Prediction markets might be DeFi's best mainstream product. People who'd never touch a perpetual contract will happily bet $50 on an election outcome. It's financial infrastructure disguised as a betting app.
+
+## The Reality Check: Why Options Are Harder On-Chain
+
+Let's be honest about where things stand.
+
+**Deribit still dominates.** The vast majority of crypto options volume happens on this single centralized exchange. Why? Because options are complex instruments that need:
+
+- **Deep liquidity** across many different strikes and expiries (options have way more individual markets than spot or perps)
+- **Fast execution** — timing matters when prices move
+- **Sophisticated market makers** who continuously quote prices
+- **Low fees** — options premiums can be small, so fees need to be proportionally tiny
+
+On-chain environments struggle with all of these. Even on fast L2s, the latency and gas costs create friction. And liquidity fragmentation is brutal — each strike/expiry combination needs its own pool of liquidity.
+
+**The complexity gap is real:**
+
+- Spot trading? One market, one price. Easy.
+- Perpetuals? One market per asset, just with leverage. Manageable.
+- Options? Dozens of strikes × multiple expiry dates × calls AND puts = hundreds of individual markets *per asset*. That's a liquidity nightmare.
+
+This is why most DeFi options protocols have modest volumes compared to spot DEXs or even on-chain perps. The infrastructure is improving — better L2s, smarter AMM designs, intent-based architectures — but we're still early.
+
+**That said, "still early" in crypto often means "about to get interesting."** The protocols building now are laying the groundwork. When the infrastructure catches up (faster chains, cheaper transactions, better market-making tools), on-chain options could explode.
+
+## Key Takeaways
+
+- **Options = insurance contracts you can trade.** Calls for upside bets, puts for downside protection.
+- **Your maximum loss when buying options is the premium.** No liquidation surprises.
+- **On-chain options exist** (Aevo, Lyra, Premia, Hegic, Panoptic) but most volume is still on Deribit (centralized).
+- **DOVs automate options strategies** but come with tradeoffs — especially during volatile markets.
+- **Prediction markets** (Polymarket) are derivatives on real-world events and might be DeFi's best gateway drug.
+- **The on-chain options space is still early.** Liquidity fragmentation and complexity make it harder than spot or perps. But it's getting better fast.
+
+> 🎯 **Bottom line:** You don't *need* to trade options. Most people do fine with spot and maybe some perps. But understanding options gives you a mental framework for thinking about risk, probability, and asymmetry that makes you a better investor overall — even if you never buy a single contract.
+
+## What's Next?
+
+You've now got the full toolkit: spot, lending, leverage, perps, options. But how do you actually *use* all this without losing your mind? In **Part 15**, we'll cover **trading tools and dashboards** — the apps, aggregators, and analytics platforms that help you track positions, find opportunities, and avoid getting rekt across all these protocols.
+
+Because having the tools is one thing. Knowing where to look is everything.
