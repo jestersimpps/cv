@@ -26,6 +26,12 @@ const highlights: Experience[] = [
     image: '/assets/projects/kaimeleon.png',
   },
   {
+    title: 'Co-founder',
+    company: 'Global Pet Sitter',
+    period: '2024 - Present',
+    image: '/assets/projects/globalpetsitter.png',
+  },
+  {
     title: 'Founder',
     company: 'Smallshop',
     period: '2024 - Present',
