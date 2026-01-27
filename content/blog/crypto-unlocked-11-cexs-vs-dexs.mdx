@@ -55,11 +55,13 @@ Which brings us to the elephant in the room.
 
 ## The FTX Collapse: A Masterclass in Counterparty Risk
 
-FTX wasn't some shady back-alley exchange. It was endorsed by Tom Brady. It had its name on an NBA arena. Institutional investors poured billions into it. It was "the responsible one" — the exchange that talked about regulation and compliance.
+FTX wasn't some shady back-alley exchange. It was endorsed by Tom Brady. It had its name on an NBA arena. Institutional investors — including [Sequoia Capital](https://en.wikipedia.org/wiki/Sequoia_Capital) and SoftBank — poured billions into it. It was "the responsible one" — the exchange that talked about regulation and compliance.
 
-Behind the scenes, FTX was funneling customer deposits to its sister company Alameda Research, which was using the money for risky trades and personal expenses. When the market turned and customers tried to withdraw, the money simply wasn't there.
+Behind the scenes, FTX was funneling customer deposits to its sister company [Alameda Research](https://en.wikipedia.org/wiki/Alameda_Research), which was using the money for risky trades and personal expenses. When the market turned and customers tried to withdraw, the money simply wasn't there.
 
-$8 billion in customer funds. Vanished.
+![FTX collapse timeline — from CoinDesk exposé to bankruptcy in 9 days](/assets/blog/crypto-unlocked-11-ftx-collapse-timeline.png)
+
+$8 billion in customer funds. Vanished. Federal prosecutors later called it ["one of the biggest financial frauds in American history."](https://www.justice.gov/usao-sdny/pr/united-states-attorney-announces-charges-against-ftx-founder-samuel-bankman-fried) In November 2023, [Sam Bankman-Fried was convicted](https://www.nytimes.com/2023/11/02/technology/sam-bankman-fried-fraud-trial-ftx.html) on all seven criminal counts of fraud and conspiracy.
 
 > **The lesson:** Counterparty risk is real. When you trust a third party with your money, you're exposed to everything they do with it — including things they'll never tell you about.
 
@@ -67,7 +69,7 @@ The FTX collapse didn't happen because of a smart contract bug or a blockchain f
 
 ## Proof of Reserves: Trust, but Verify?
 
-After FTX imploded, surviving exchanges scrambled to prove they weren't doing the same thing. The result: **Proof of Reserves (PoR)**.
+After FTX imploded, surviving exchanges scrambled to prove they weren't doing the same thing. The result: **[Proof of Reserves (PoR)](https://niccarter.info/proof-of-reserves/)**.
 
 The idea is simple — an exchange publishes cryptographic proof that they hold enough assets to cover all customer deposits. Some use Merkle trees (a data structure that lets you verify your account is included without revealing everyone else's). Others hire third-party auditors.
 
@@ -87,7 +89,7 @@ A decentralized exchange (DEX) is a platform where you trade crypto directly wit
 
 Instead of a company matching orders, a DEX runs on smart contracts — code deployed on a blockchain that executes trades automatically. You connect your wallet, approve a transaction, and the swap happens on-chain. Your crypto goes directly from your wallet to the other person's wallet (or to a liquidity pool — more on that in a second).
 
-Popular DEXs include Uniswap (Ethereum), PancakeSwap (BNB Chain), and Jupiter (Solana).
+Popular DEXs include [Uniswap](https://uniswap.org/) (Ethereum), [PancakeSwap](https://pancakeswap.finance/) (BNB Chain), and [Jupiter](https://jup.ag/) (Solana). You can track DEX volume across all chains on [DefiLlama](https://defillama.com/dexs).
 
 The key difference: **you never give up custody of your funds.** Your crypto stays in your wallet until the exact moment a trade executes. There's no deposit step. There's no balance on someone else's server. There's no FTX scenario possible because there's no FTX.
 
@@ -99,7 +101,7 @@ Not all DEXs work the same way. There are two main flavors:
 
 These work like traditional exchanges — buyers post bids, sellers post asks, and the system matches them. The difference is the order book lives on-chain (or in a hybrid on/off-chain setup).
 
-Examples: dYdX, Serum (now OpenBook on Solana).
+Examples: [dYdX](https://dydx.exchange/), Serum (now [OpenBook](https://openbookdex.com/) on Solana).
 
 The advantage is precise pricing and familiar trading mechanics. The downside is that on-chain order books are expensive and slow on networks like Ethereum, which is why they tend to live on faster chains.
 
@@ -121,14 +123,14 @@ Let's be honest: using a DEX for the first time is harder than using Coinbase.
 
 On a CEX, you sign up with an email, deposit money, and click "Buy." On a DEX, you need to:
 
-1. Already have a self-custody wallet (MetaMask, Phantom, etc.)
+1. Already have a self-custody wallet ([MetaMask](https://metamask.io/), [Phantom](https://phantom.app/), etc.)
 2. Already have crypto in that wallet to trade with (and to pay gas fees)
 3. Understand which network you're on
 4. Approve token spending permissions
 5. Watch out for slippage, front-running, and MEV
 6. Accept that there's no customer support if you send tokens to the wrong address
 
-The gap is shrinking — wallet UX is improving, and DEX aggregators like 1inch find you the best prices automatically. But we're not at "grandma can use it" territory yet.
+The gap is shrinking — wallet UX is improving, and DEX aggregators like [1inch](https://1inch.io/) find you the best prices automatically. But we're not at "grandma can use it" territory yet.
 
 For total beginners, CEXs remain the on-ramp. And that's okay. You can start with a CEX and graduate to DEXs as you get comfortable.
 
@@ -171,7 +173,7 @@ The industry is converging. Both sides are borrowing from each other:
 - **CEXs are adding Proof of Reserves** and on-chain transparency
 - **DEXs are improving UX** with better interfaces, gasless transactions, and fiat on-ramps
 - **Hybrid models** are emerging — platforms that offer CEX-like simplicity with non-custodial wallets under the hood
-- **Account abstraction** (ERC-4337 and beyond) is blurring the line between custodial and self-custody, making wallet management invisible to users
+- **[Account abstraction](https://eips.ethereum.org/EIPS/eip-4337)** (ERC-4337 and beyond) is blurring the line between custodial and self-custody, making wallet management invisible to users
 
 We're heading toward a world where the average user won't even know — or care — whether they're using a CEX or a DEX. The trade will just work, and custody will default to self-custody without requiring a PhD in key management.
 

@@ -15,28 +15,30 @@ series:
 
 You walk into a farmers' market. There's no Walmart greeter, no checkout lane, no corporate HQ deciding what goes on the shelves. Farmers show up, set prices, buyers browse, and deals happen peer-to-peer. That's a decentralized exchange — a **DEX** — but for crypto. No sign-ups, no KYC, no one holding your funds. Just you, your wallet, and a smart contract acting as the world's most transparent middleman.
 
-In [Part 11](/blog/crypto-unlocked-11-defi-intro) we covered DeFi fundamentals. Now let's zoom into where most of DeFi's action actually happens: **spot DEXs** — the places where you swap one token for another, right now, at market price. There are dozens of them across every chain, each with a different twist. Let's tour the heavyweights.
+In [Part 11](/blog/crypto-unlocked-11-cexs-vs-dexs) we covered the differences between centralized and decentralized exchanges. Now let's zoom into where most of DeFi's action actually happens: **spot DEXs** — the places where you swap one token for another, right now, at market price. There are dozens of them across every chain, each with a different twist. Let's tour the heavyweights.
+
+![How an Automated Market Maker (AMM) works — liquidity pools replace traditional order books](/assets/blog/crypto-unlocked-12/amm-explainer.png)
 
 ## Uniswap — The OG That Changed Everything
 
-If one project kicked off the DEX revolution, it's **Uniswap**. Launched in 2018 on Ethereum, it proved you don't need an order book to run an exchange. Instead, it introduced the **Automated Market Maker (AMM)** — a formula (x × y = k) that lets liquidity pools set prices automatically based on supply and demand.
+If one project kicked off the DEX revolution, it's [**Uniswap**](https://uniswap.org). Launched in 2018 on Ethereum, it proved you don't need an order book to run an exchange. Instead, it introduced the **Automated Market Maker (AMM)** — a formula (x × y = k) that lets liquidity pools set prices automatically based on supply and demand.
 
 Here's the quick evolution:
 
 - **V2 (2020):** The classic. Any ERC-20 token pair, simple 50/50 liquidity pools. Worked beautifully but was capital-inefficient — your liquidity was spread across every possible price, even ones that would never get hit.
 - **V3 (2021):** Introduced **concentrated liquidity**. Instead of spreading money across the entire price range, LPs (liquidity providers) choose a specific range. Think of it like a street musician choosing to play in the busy square instead of an empty alley — same effort, way more tips.
-- **V4 (2024):** Added **hooks** — customizable plugins that let developers bolt new logic onto pools. Custom fee structures, on-chain limit orders, dynamic fees that adjust with volatility. It turned Uniswap from a DEX into a DEX *platform*.
-- **Unichain (2025):** Uniswap's own Layer 2 chain, purpose-built for trading. Faster blocks, cheaper fees, MEV protection baked in. The DEX got its own country.
+- **V4 (2025):** Added [**hooks**](https://docs.uniswap.org/contracts/v4/overview) — customizable plugins that let developers bolt new logic onto pools. Custom fee structures, on-chain limit orders, dynamic fees that adjust with volatility, custom oracle logic, and even entirely custom pricing curves. A new **singleton design** puts all pools in one contract for massive gas savings, and **flash accounting** (via EIP-1153 transient storage) nets token transfers so you only pay the final balance. It turned Uniswap from a DEX into a DEX *platform*.
+- **[Unichain](https://unichain.org) (2025):** Uniswap's own Layer 2 chain, built on the **OP Stack** (Optimism Superchain) and purpose-built for DeFi. 200ms sub-blocks (10× faster than most L2s), executed inside a TEE (Trusted Execution Environment) for MEV protection, with 65% of sequencer revenue committed back to validators. The DEX got its own country.
 
 > 💡 **Beginner tip:** Uniswap is the default choice on Ethereum and most EVM chains. If you're swapping tokens on Ethereum, Arbitrum, Polygon, or Base — start here. The interface at [app.uniswap.org](https://app.uniswap.org) is clean and battle-tested.
 
 ## Jupiter — Solana's Swiss Army Knife
 
-If Uniswap is the king of Ethereum DEXs, **Jupiter** is the emperor of Solana. But Jupiter isn't really a DEX itself — it's an **aggregator** that routes your trade across *every* Solana DEX to find the best price. Think of it as a travel search engine that checks every airline for the cheapest flight.
+If Uniswap is the king of Ethereum DEXs, [**Jupiter**](https://jup.ag) is the emperor of Solana. But Jupiter isn't really a DEX itself — it's an **aggregator** that routes your trade across *every* Solana DEX to find the best price. Think of it as a travel search engine that checks every airline for the cheapest flight.
 
 What makes Jupiter special:
 
-- **Smart routing:** Your swap might hop through Raydium, Orca, and three other pools in a single transaction to minimize slippage. You don't see any of that complexity — you just get a better price.
+- **Smart routing:** Powered by Jupiter's **Juno Liquidity Engine**, your swap might hop through Raydium, Orca, and three other pools in a single transaction to minimize slippage. Ultra Swap even simulates *executed* prices (not just quotes) to pick the route with the least real-world slippage. You don't see any of that complexity — you just get a better price.
 - **Limit orders:** Set a target price and Jupiter fills it when the market gets there. No more staring at charts.
 - **DCA (Dollar-Cost Averaging):** Automatically buy a token in chunks over time. Set it and forget it.
 - **JLP (Jupiter Liquidity Pool):** A basket of assets (SOL, ETH, BTC, stablecoins) that earns fees from Jupiter's perpetual trading platform. It's like an index fund that also earns trading fees.
@@ -45,7 +47,7 @@ What makes Jupiter special:
 
 ## Curve — The Stableswap Specialist
 
-Need to swap USDC for USDT? Or one type of wrapped Bitcoin for another? **Curve** is your place. While Uniswap uses a general-purpose formula, Curve built a custom bonding curve optimized for assets that *should* trade near the same price — stablecoins, wrapped versions of the same asset, and liquid staking tokens.
+Need to swap USDC for USDT? Or one type of wrapped Bitcoin for another? [**Curve**](https://curve.finance) is your place. While Uniswap uses a general-purpose formula, Curve built a custom bonding curve optimized for assets that *should* trade near the same price — stablecoins, wrapped versions of the same asset, and liquid staking tokens.
 
 The result? **Dramatically lower slippage** on stable-pair swaps. On Uniswap, swapping $1M of USDC→USDT might cost you in slippage. On Curve, that same trade barely moves the needle.
 

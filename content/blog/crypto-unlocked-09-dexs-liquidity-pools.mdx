@@ -112,13 +112,15 @@ The question every LP needs to answer: **Do the trading fees I earn outweigh my 
 
 ## Concentrated Liquidity: The Uniswap v3 Upgrade
 
-Classic AMMs spread your liquidity across all possible prices — from $0 to infinity. That's wildly inefficient. Most of your capital sits in price ranges that will never be used.
+Classic AMMs spread your liquidity across all possible prices — from $0 to infinity. That's wildly inefficient. Most of your capital sits in price ranges that will never be used. (Uniswap's own data showed the v2 DAI/USDC pair utilized only [~0.50% of its capital](https://docs.uniswap.org/concepts/protocol/concentrated-liquidity) for trades in the $0.99–$1.01 range where virtually all volume occurred.)
 
-**Uniswap v3** introduced **concentrated liquidity**: you choose the price range where you want to provide liquidity.
+**[Uniswap v3](https://docs.uniswap.org/concepts/protocol/concentrated-liquidity)** introduced **concentrated liquidity**: you choose the price range where you want to provide liquidity.
+
+![Concentrated liquidity vs full-range — v3 lets you focus capital where trades actually happen instead of spreading it from zero to infinity](/assets/blog/crypto-unlocked-09/concentrated-liquidity.png)
 
 For example, instead of covering ETH from $0 to $∞, you could say: "I'll provide liquidity for ETH between $2,500 and $3,500." Your capital is now concentrated in that range, earning *way* more fees per dollar deployed.
 
-The tradeoff? If the price moves outside your range, your position stops earning fees entirely and you're left holding 100% of the less valuable token. It's more capital efficient but requires active management.
+The tradeoff? If the price moves outside your range, your position stops earning fees entirely and you're left holding 100% of the less valuable token. It's more capital efficient but requires active management. (Note: [Uniswap v4](https://docs.uniswap.org/contracts/v4/overview), launched in January 2025, keeps concentrated liquidity but adds a "hooks" system that lets developers customize pool behavior — auto-rebalancing, dynamic fees, and more.)
 
 > **Think of it like this:** Classic AMM = a fishing net spread across the entire ocean. Concentrated liquidity = fishing where the fish actually are. More efficient, but you need to know where to cast.
 
@@ -126,7 +128,7 @@ The tradeoff? If the price moves outside your range, your position stops earning
 
 Here's what it actually looks like to become an LP:
 
-1. **Choose your DEX** — Uniswap (Ethereum), Raydium (Solana), PancakeSwap (BNB Chain), etc.
+1. **Choose your DEX** — [Uniswap](https://app.uniswap.org/) (Ethereum), [Raydium](https://raydium.io/) (Solana), [PancakeSwap](https://pancakeswap.finance/) (BNB Chain), etc.
 2. **Connect your wallet** — MetaMask, Phantom, whatever fits your chain
 3. **Pick a pool** — Usually sorted by trading volume and fee tier
 4. **Deposit tokens** — You need equal *value* of both tokens (not equal amounts). If ETH is $3,000, you'd deposit 1 ETH + 3,000 USDC
@@ -154,12 +156,12 @@ Most DEX interfaces let you set a **slippage tolerance** — say 0.5% or 1%. If 
 
 The AMM landscape is massive and multi-chain. Here are the ones that matter:
 
-- **Uniswap** — The OG. Ethereum mainnet + L2s (Arbitrum, Optimism, Base). The gold standard
-- **Curve Finance** — Specialized in stablecoin and pegged-asset swaps. Extremely low slippage for similar-value tokens
-- **PancakeSwap** — The biggest DEX on BNB Chain. Lower fees, sometimes shadier tokens
-- **Raydium** — Leading AMM on Solana. Fast, cheap, integrated with Serum's order book
-- **Orca** — Another Solana favorite. Clean UX, concentrated liquidity via "Whirlpools"
-- **Aerodrome** — The dominant DEX on Base (Coinbase's L2). A Velodrome fork that's become the liquidity hub for the Base ecosystem
+- **[Uniswap](https://uniswap.org/)** — The OG. Ethereum mainnet + L2s (Arbitrum, Optimism, Base). The gold standard
+- **[Curve Finance](https://curve.fi/)** — Specialized in stablecoin and pegged-asset swaps. Uses a modified bonding curve ([StableSwap invariant](https://curve.fi/whitepaper)) for extremely low slippage on similar-value tokens
+- **[PancakeSwap](https://pancakeswap.finance/)** — The biggest DEX on BNB Chain. Lower fees, sometimes shadier tokens
+- **[Raydium](https://raydium.io/)** — Leading AMM on Solana. Fast, cheap, integrated with [OpenBook](https://www.openbook-solana.com/)'s on-chain order book (the community successor to Serum after FTX's collapse)
+- **[Orca](https://www.orca.so/)** — Another Solana favorite. Clean UX, concentrated liquidity via "Whirlpools"
+- **[Aerodrome](https://aerodrome.finance/)** — The dominant DEX on Base (Coinbase's L2). A Velodrome fork that's become the liquidity hub for the Base ecosystem
 
 Each chain tends to have a dominant DEX. When you're on that chain, that's usually where you'll find the deepest liquidity and best prices.
 

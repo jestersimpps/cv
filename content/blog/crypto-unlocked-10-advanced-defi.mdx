@@ -80,7 +80,9 @@ Remember staking from earlier in this series? You lock up your ETH (or SOL, or o
 
 Liquid staking solves this elegantly.
 
-When you stake ETH through **Lido**, you receive **stETH** (staked ETH) — a token that represents your staked ETH plus the staking rewards it's accumulating. You still earn the ~3-4% staking yield, but now you can *also* use stETH in DeFi:
+When you stake ETH through **[Lido](https://lido.fi/)**, you receive **stETH** (staked ETH) — a token that represents your staked ETH plus the staking rewards it's accumulating. You still earn the ~3-4% staking yield, but now you can *also* use stETH in DeFi:
+
+![Liquid staking flow — stake ETH, receive stETH, use across DeFi](/assets/blog/crypto-unlocked-10/liquid-staking-flow.png)
 
 - Use stETH as collateral to borrow on Aave
 - Provide stETH liquidity on Curve
@@ -89,23 +91,23 @@ When you stake ETH through **Lido**, you receive **stETH** (staked ETH) — a to
 It's like getting a receipt for your deposit at the bank, except that receipt is itself money you can spend and invest.
 
 Other major liquid staking protocols:
-- **Rocket Pool (rETH)** — more decentralized than Lido, anyone can run a node
-- **Jito (jitoSOL)** — liquid staking for Solana, with MEV rewards baked in
-- **Marinade (mSOL)** — another popular Solana liquid staking option
+- **[Rocket Pool](https://rocketpool.net/) (rETH)** — more decentralized than Lido, anyone can run a node
+- **[Jito](https://www.jito.network/) (jitoSOL)** — liquid staking for Solana, with MEV rewards baked in
+- **[Marinade](https://marinade.finance/) (mSOL)** — another popular Solana liquid staking option
 
 > **⚠️ Risk alert:** Liquid staking tokens should trade at roughly 1:1 with the underlying asset, but they can depeg during market stress. In June 2022, stETH traded at a ~5% discount to ETH as panic sellers dumped it. If you're borrowing against your liquid staking token, a depeg can trigger liquidation.
 
 ## Restaking: Staking Your Staked ETH (Yes, Really)
 
-Just when you thought stacking yield couldn't get any more recursive, along came **EigenLayer** with restaking.
+Just when you thought stacking yield couldn't get any more recursive, along came **[EigenLayer](https://app.eigenlayer.xyz/)** with restaking.
 
 Here's the idea: your staked ETH (via stETH or native staking) is already securing Ethereum. EigenLayer lets you *restake* that same ETH to simultaneously secure other protocols and services — oracles, bridges, data availability layers — earning additional rewards on top of your staking yield.
 
 Think of it as your security deposit for an apartment also being used to guarantee your gym membership. Same capital, multiple jobs, multiple rewards.
 
 The ecosystem that's grown around this is wild:
-- **EigenLayer** — the restaking protocol itself
-- **Liquid restaking tokens (LRTs)** — tokens like eETH (from EtherFi) or pufETH (from Puffer) that represent your restaked position
+- **[EigenLayer](https://docs.eigenlayer.xyz/)** — the restaking protocol itself
+- **Liquid restaking tokens (LRTs)** — tokens like eETH (from [EtherFi](https://www.ether.fi/)) or pufETH (from [Puffer](https://www.puffer.fi/)) that represent your restaked position
 - **AVSs (Actively Validated Services)** — the protocols being secured by restaked ETH
 
 It's yield on yield on yield. And yes, it also means risk on risk on risk. Each layer adds smart contract risk, slashing risk (your ETH can be penalized if an AVS misbehaves), and complexity risk. The matryoshka doll of DeFi.
@@ -114,9 +116,9 @@ It's yield on yield on yield. And yes, it also means risk on risk on risk. Each 
 
 Not everyone wants to manually harvest rewards, swap tokens, and redeposit every day. That's where vaults come in.
 
-**Yearn Finance** pioneered the concept: you deposit tokens into a vault, and Yearn's strategies automatically farm the best yields, compound your returns, and optimize gas costs by batching transactions across all vault users.
+**[Yearn Finance](https://yearn.fi/)** pioneered the concept: you deposit tokens into a vault, and Yearn's strategies automatically farm the best yields, compound your returns, and optimize gas costs by batching transactions across all vault users.
 
-**Beefy Finance** does something similar across multiple blockchains — Ethereum, Polygon, Arbitrum, BSC, you name it.
+**[Beefy Finance](https://beefy.com/)** does something similar across multiple blockchains — Ethereum, Polygon, Arbitrum, BSC, you name it.
 
 The value proposition is simple:
 - **Without a vault:** You deposit into a farm, manually claim rewards every few days, swap them back, redeposit, pay gas each time
@@ -130,11 +132,13 @@ Vaults charge a fee (usually a percentage of the yield), but for most people, th
 
 This one's a rabbit hole within a rabbit hole, but it's one of the most fascinating episodes in DeFi history.
 
-**Curve Finance** is a DEX optimized for stablecoins and similar assets. It has its own token, CRV. If you lock your CRV tokens for up to 4 years, you get **veCRV** (vote-escrowed CRV), which lets you vote on which liquidity pools get the highest CRV rewards.
+**[Curve Finance](https://curve.fi/)** is a DEX optimized for stablecoins and similar assets. It has its own token, CRV. If you lock your CRV tokens for up to 4 years, you get **veCRV** (vote-escrowed CRV), which lets you vote on which liquidity pools get the highest CRV rewards.
+
+![The Curve Wars — protocols battling for control of CRV emissions](/assets/blog/crypto-unlocked-10/curve-wars-battle.png)
 
 Here's where it gets spicy: if you're a protocol and you want people to provide liquidity for *your* token on Curve, you want those CRV rewards directed to your pool. So protocols started **bribing** veCRV holders to vote for their pools.
 
-Then **Convex Finance** entered the chat. Convex aggregates CRV from many users, locks it all as veCRV, and lets Convex token holders (vlCVX) control those votes. Suddenly, controlling Convex meant controlling Curve's reward emissions — which meant controlling where billions of dollars in liquidity flowed.
+Then **[Convex Finance](https://www.convexfinance.com/)** entered the chat. Convex aggregates CRV from many users, locks it all as veCRV, and lets Convex token holders (vlCVX) control those votes. Suddenly, controlling Convex meant controlling Curve's reward emissions — which meant controlling where billions of dollars in liquidity flowed.
 
 Protocols were spending millions to acquire CVX tokens. It became a full-on arms race — the "Curve Wars."
 
@@ -151,7 +155,7 @@ If a protocol is offering 10,000% APY, ask yourself: what business on Earth gene
 In late 2021, **OlympusDAO** popularized the (3,3) meme — the idea that if everyone stakes and nobody sells, everyone wins. Dozens of copycat protocols launched on every chain, each promising even higher staking APYs. Most went to zero within weeks. The game theory only works when new money keeps entering. When it stops, the music stops.
 
 **🚩 Anchor Protocol**
-The most devastating example. Anchor, on the Terra/Luna blockchain, offered a "stable" 20% yield on UST (an algorithmic stablecoin). Billions of dollars poured in. Where did the 20% come from? Mostly from reserves that were being depleted. When the reserves ran out and confidence wavered, UST depegged, Luna hyperinflated, and **$40+ billion was wiped out** in days. People lost their life savings.
+The most devastating example. [Anchor Protocol](https://en.wikipedia.org/wiki/Terra_(blockchain)), on the Terra/Luna blockchain, offered a "stable" ~19.5% yield on UST (an algorithmic stablecoin). Billions of dollars poured in. Where did the yield come from? Mostly from reserves that were being steadily depleted. When the reserves ran out and confidence wavered in May 2022, UST depegged, Luna hyperinflated, and [**~$45 billion in market cap was wiped out**](https://en.wikipedia.org/wiki/Terra_(blockchain)) in a single week. People lost their life savings. Terraform Labs later [filed for bankruptcy](https://www.reuters.com/technology/terraform-labs-files-chapter-11-bankruptcy-protection-2024-01-22/) in January 2024.
 
 > **⚠️ The golden rule:** If you can't explain where the yield comes from in one sentence using real-world economics, don't put your money in it. "Revenue from trading fees" is a real answer. "Staking rewards from the protocol token" is a circular answer.
 
