@@ -113,7 +113,31 @@ You can track L2 ecosystem health, TVL, and risk assessments on [L2Beat](https:/
 
 There are two main flavors of L2 rollups:
 
-![Optimistic vs ZK Rollups — two approaches to Layer 2 scaling](/assets/blog/crypto-unlocked/l2-rollup-comparison.png)
+```mermaid
+graph TD
+    subgraph Optimistic Rollups
+        OT[Transactions batched on L2] --> OA[Assume valid — post to L1]
+        OA --> OC{Challenged?}
+        OC -->|No — 7 days pass| OF[Finalized on Ethereum]
+        OC -->|Yes — fraud proof| OR[Rolled back]
+    end
+
+    subgraph ZK Rollups
+        ZT[Transactions batched on L2] --> ZP[Generate ZK proof]
+        ZP --> ZV[Proof verified on L1]
+        ZV --> ZF[Finalized on Ethereum]
+    end
+
+    style OT fill:#0ea5e9,stroke:#38bdf8,color:#fff
+    style OA fill:#f59e0b,stroke:#fbbf24,color:#000
+    style OC fill:#8b5cf6,stroke:#a78bfa,color:#fff
+    style OF fill:#10b981,stroke:#34d399,color:#fff
+    style OR fill:#ef4444,stroke:#f87171,color:#fff
+    style ZT fill:#0ea5e9,stroke:#38bdf8,color:#fff
+    style ZP fill:#7c3aed,stroke:#a78bfa,color:#fff
+    style ZV fill:#f59e0b,stroke:#fbbf24,color:#000
+    style ZF fill:#10b981,stroke:#34d399,color:#fff
+```
 
 ### Optimistic Rollups: Trust, But Verify
 
