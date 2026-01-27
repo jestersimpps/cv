@@ -23,7 +23,9 @@ In this part, we're going to untangle the multi-chain world. Layer 1s, Layer 2s,
 
 ## The Blockchain Trilemma: Pick Two
 
-Before we look at specific chains, you need to understand *why* there are so many. It comes down to a concept called the **blockchain trilemma**, popularized by Ethereum co-founder Vitalik Buterin.
+Before we look at specific chains, you need to understand *why* there are so many. It comes down to a concept called the **[blockchain trilemma](https://vitalik.eth.limo/general/2021/04/07/sharding.html)**, popularized by Ethereum co-founder Vitalik Buterin.
+
+![The Blockchain Trilemma — Decentralization, Security, Scalability: pick two](/assets/blog/crypto-unlocked/blockchain-trilemma.png)
 
 Every blockchain tries to achieve three things:
 
@@ -34,7 +36,7 @@ Every blockchain tries to achieve three things:
 Here's the catch: **you can only optimize for two out of three.** It's like the old project management joke — fast, cheap, or good: pick two.
 
 - **Ethereum** prioritizes decentralization and security. Result? It's slow and expensive during high demand.
-- **Solana** prioritizes security and scalability. Result? Fewer validators, meaning it's more centralized (and has had several outages).
+- **[Solana](https://solana.com/)** prioritizes security and scalability. Result? Fewer validators, meaning it's more centralized (and has had several outages).
 - **BNB Chain** prioritizes scalability and security. Result? Only 21 validators — basically a corporate blockchain wearing a decentralization costume.
 
 None of these are "wrong." They're just different tradeoffs for different use cases. And that's exactly why we have a multi-chain world.
@@ -51,13 +53,13 @@ Avalanche takes an interesting approach: instead of forcing everyone onto one ch
 
 Think of it like franchise restaurants. They all share the Avalanche brand and infrastructure, but each location can customize its menu.
 
-### Cosmos (The Internet of Blockchains)
+### [Cosmos](https://cosmos.network/) (The Internet of Blockchains)
 
-Cosmos doesn't even try to be one chain. Its whole philosophy is: "Every application should have its own blockchain." These are called **app-chains**, and they communicate with each other through a protocol called **IBC** (Inter-Blockchain Communication).
+Cosmos doesn't even try to be one chain. Its whole philosophy is: "Every application should have its own blockchain." These are called **app-chains**, and they communicate with each other through a protocol called **[IBC](https://ibcprotocol.dev/)** (Inter-Blockchain Communication).
 
 If Avalanche is a franchise, Cosmos is more like the European Union — sovereign nations that agreed on shared trade protocols so goods (tokens) can flow freely between them.
 
-### Polkadot (Parachains)
+### [Polkadot](https://polkadot.com/) (Parachains)
 
 Polkadot uses a central **Relay Chain** that provides shared security to connected chains called **parachains**. Each parachain can be customized for a specific purpose, but they all benefit from the Relay Chain's security.
 
@@ -77,7 +79,11 @@ That's exactly what **Layer 2s** (L2s) do. They process transactions off Ethereu
 
 Imagine Ethereum is a busy courthouse. Every transaction is a legal case that needs to go through the full court process — expensive and slow. Layer 2s are like arbitration services. They handle the disputes quickly and cheaply, but the final ruling is still backed by the authority of the courthouse.
 
+You can track L2 ecosystem health, TVL, and risk assessments on [L2Beat](https://l2beat.com/scaling/summary) — the go-to dashboard for Layer 2 data.
+
 There are two main flavors of L2 rollups:
+
+![Optimistic vs ZK Rollups — two approaches to Layer 2 scaling](/assets/blog/crypto-unlocked/l2-rollup-comparison.png)
 
 ### Optimistic Rollups: Trust, But Verify
 
@@ -85,9 +91,9 @@ Optimistic rollups **assume transactions are valid** (hence "optimistic") and on
 
 The major optimistic rollups:
 
-- **Arbitrum** — The biggest L2 by total value locked. Huge DeFi ecosystem. If you're using DeFi on a budget, you're probably on Arbitrum.
-- **Optimism** — Pioneer of the optimistic rollup design. Runs the "Superchain" vision where multiple chains share its technology.
-- **Base** — Built by Coinbase using Optimism's technology. It's become the go-to chain for consumer apps, onboarding millions of users who may not even realize they're using crypto infrastructure.
+- **[Arbitrum](https://arbitrum.io/)** — The biggest L2 by total value locked. Huge DeFi ecosystem. If you're using DeFi on a budget, you're probably on Arbitrum.
+- **[Optimism](https://www.optimism.io/)** — Pioneer of the optimistic rollup design. Runs the "[Superchain](https://www.optimism.io/superchain)" vision where multiple chains share its technology.
+- **[Base](https://base.org/)** — Built by Coinbase using Optimism's technology. It's become the go-to chain for consumer apps, onboarding millions of users who may not even realize they're using crypto infrastructure.
 
 > **Tip:** When you withdraw from an optimistic rollup back to Ethereum, that 7-day challenge period applies to you. Your funds will be locked for about a week. Plan accordingly, or use a third-party bridge for faster (but slightly more expensive) exits.
 
@@ -99,9 +105,9 @@ It's like the difference between an exam where the teacher spot-checks random an
 
 The major ZK rollups:
 
-- **zkSync** — One of the earliest ZK rollups to launch. Focuses on low fees and developer tooling.
-- **StarkNet** — Uses a different type of proof called STARKs (vs. SNARKs used by others). More complex but potentially more future-proof and doesn't require a trusted setup ceremony.
-- **Scroll** — Aims to be the most Ethereum-compatible ZK rollup, making it easy for developers to port existing Ethereum apps.
+- **[zkSync](https://zksync.io/)** — One of the earliest ZK rollups to launch. Focuses on low fees and developer tooling.
+- **[StarkNet](https://www.starknet.io/)** — Uses a different type of proof called STARKs (vs. SNARKs used by others). More complex but potentially more future-proof and doesn't require a trusted setup ceremony.
+- **[Scroll](https://scroll.io/)** — Aims to be the most Ethereum-compatible ZK rollup, making it easy for developers to port existing Ethereum apps.
 
 **So which is better — Optimistic or ZK?**
 
@@ -121,6 +127,8 @@ Think of app-chains like private roads. Public highways (general-purpose chains)
 
 With all these different chains, you need a way to move assets between them. That's what **bridges** do. Want to move your ETH from Ethereum to Arbitrum? You use a bridge. Want to move USDC from Ethereum to Avalanche? Bridge.
 
+![How a cross-chain bridge works — locking tokens on one chain, minting on another](/assets/blog/crypto-unlocked/cross-chain-bridge.png)
+
 Here's how a basic bridge works:
 
 1. You deposit tokens into a smart contract on Chain A
@@ -130,7 +138,7 @@ Here's how a basic bridge works:
 
 Simple in theory. Terrifying in practice.
 
-> ⚠️ **Warning:** Bridges are the single biggest point of failure in the multi-chain world. Over **$2.5 billion** has been stolen from bridge hacks. The Ronin bridge hack alone lost $625 million. The Wormhole hack: $320 million. The Nomad hack: $190 million.
+> ⚠️ **Warning:** Bridges are the single biggest point of failure in the multi-chain world. Over **$2.5 billion** has been stolen from bridge hacks. The [Ronin bridge hack](https://rekt.news/ronin-rekt/) alone lost $624 million. The [Wormhole hack](https://rekt.news/wormhole-rekt/): $326 million. The [Nomad hack](https://rekt.news/nomad-rekt/): $190 million.
 
 Why are bridges so risky? Because they're essentially giant honeypots. A bridge holds millions (sometimes billions) of dollars in locked assets, and if a hacker can trick the bridge into releasing those funds, it's game over. You're also trusting the bridge's validators or smart contracts to be bulletproof — and history says they often aren't.
 
@@ -152,7 +160,7 @@ Projects working on this include:
 - **Particle Network** — universal accounts that work across chains
 - **Socket / Bungee** — aggregates bridges and DEXs across chains
 - **Near's chain signatures** — control accounts on any chain from one Near account
-- **ERC-4337 (Account Abstraction)** — not chain abstraction exactly, but a building block that makes smart wallets possible
+- **[ERC-4337](https://eips.ethereum.org/EIPS/eip-4337) (Account Abstraction)** — not chain abstraction exactly, but a building block that makes smart wallets possible
 
 We're not fully there yet, but it's getting closer. Base is a great example of partial success — millions of people use apps built on Base without ever knowing (or caring) that they're on an Ethereum L2.
 

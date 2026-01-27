@@ -13,9 +13,9 @@ series:
   total: 20
 ---
 
-On May 22, 2010, a programmer named Laszlo Hanyecz paid 10,000 Bitcoin for two Papa John's pizzas. At the time, that seemed like a reasonable deal—those coins were basically worthless internet tokens. Today, those same 10,000 BTC are worth over **one billion dollars.** That's roughly $500 million per pizza.
+On May 22, 2010, a programmer named [Laszlo Hanyecz](https://en.wikipedia.org/wiki/Laszlo_Hanyecz) paid 10,000 Bitcoin for two Papa John's pizzas. At the time, that seemed like a reasonable deal—those coins were worth about $40 total. Today, those same 10,000 BTC are worth **hundreds of millions of dollars** — and briefly topped **one billion** when Bitcoin crossed $100K in late 2024. That's the most expensive pizza order in human history.
 
-Every year, the crypto community celebrates May 22nd as "Bitcoin Pizza Day"—part joke, part monument to how far this thing has come. But here's the thing most people miss about that story: **it proved Bitcoin actually worked as money.** Someone offered it, someone accepted it, value transferred from one person to another without a bank in sight.
+Every year, the crypto community celebrates May 22nd as ["Bitcoin Pizza Day"](https://en.wikipedia.org/wiki/History_of_bitcoin#2010)—part joke, part monument to how far this thing has come. But here's the thing most people miss about that story: **it proved Bitcoin actually worked as money.** Someone offered it, someone accepted it, value transferred from one person to another without a bank in sight.
 
 In Part 1, we covered *why* crypto exists—the broken trust, the bailouts, the 2008 meltdown. Now let's get into the *how*. How does Bitcoin actually work? What are miners doing? Why does everyone keep talking about "the halving"? And why do some very serious people call it digital gold?
 
@@ -46,7 +46,7 @@ Imagine a notebook where every transaction ever made is written down in order. E
 Now imagine there are **thousands** of copies of this notebook, spread across computers all over the world. They all contain the exact same information. If someone tries to forge an entry in their copy, every other copy says "nope, that doesn't match." The lie gets rejected immediately.
 
 That's the blockchain:
-- **Transparent** — anyone can read it. Right now. Go to [mempool.space](https://mempool.space) and you can see every Bitcoin transaction happening in real-time
+- **Transparent** — anyone can read it. Right now. Go to [mempool.space](https://mempool.space) or [blockstream.info](https://blockstream.info) and you can see every Bitcoin transaction happening in real-time
 - **Immutable** — once a transaction is recorded, it can't be changed or deleted
 - **Distributed** — no single company or server controls it. Thousands of independent computers (called "nodes") all maintain their own copy
 - **Trustless** — you don't need to trust any single participant because *everyone* is watching everyone else
@@ -71,9 +71,12 @@ When a miner "solves" the puzzle (finds a valid number), they broadcast their bl
 
 This is the *only* way new Bitcoin enters existence. There's no central bank printing it. No company issuing it. It's created through work—raw, verifiable, computational work.
 
+![Bitcoin mining farm — rows of specialized ASIC miners in a data center](https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Hut_8_Medicine_Hat_box_1.jpg/1280px-Hut_8_Medicine_Hat_box_1.jpg)
+*A Bitcoin mining facility in Medicine Hat, Alberta. Each container houses hundreds of specialized ASIC miners.*
+
 ## Proof of Work — Why It's Energy-Intensive and Why That Matters
 
-That dice-rolling competition? It's called **Proof of Work (PoW)**, and it's the most controversial aspect of Bitcoin.
+That dice-rolling competition? It's called **[Proof of Work (PoW)](https://en.wikipedia.org/wiki/Proof_of_work)**, and it's the most controversial aspect of Bitcoin.
 
 Here's why it exists: **you need skin in the game.** If adding blocks to the blockchain were free and easy, anyone could spam fake blocks, try to rewrite history, or double-spend their coins. Proof of Work makes cheating insanely expensive. To fake a transaction, you'd need to control more than 50% of all the computing power in the network—which, at Bitcoin's scale, would cost billions of dollars in hardware and electricity.
 
@@ -87,14 +90,14 @@ Is there room for improvement? Absolutely. And other cryptocurrencies (like Ethe
 
 ## The Halving: Bitcoin's Built-In Scarcity Engine
 
-Every four years (roughly every 210,000 blocks), something remarkable happens: **the reward miners get for each block is cut in half.** This is called "the halving," and it's one of the most elegant mechanisms in all of economics.
+Every four years (roughly every 210,000 blocks), something remarkable happens: **the reward miners get for each block is cut in half.** This is called ["the halving,"](https://www.bitcoinblockhalf.com/) and it's one of the most elegant mechanisms in all of economics.
 
 Here's the timeline:
 - **2009:** Mining reward = 50 BTC per block
-- **2012:** First halving → 25 BTC
-- **2016:** Second halving → 12.5 BTC
-- **2020:** Third halving → 6.25 BTC
-- **2024:** Fourth halving → 3.125 BTC
+- **November 2012:** First halving → 25 BTC
+- **July 2016:** Second halving → 12.5 BTC
+- **May 2020:** Third halving → 6.25 BTC
+- **April 2024:** Fourth halving → 3.125 BTC
 - **~2028:** Fifth halving → 1.5625 BTC
 - **~2140:** Final Bitcoin mined. Reward = 0 BTC
 
@@ -102,7 +105,10 @@ See what's happening? The supply of new Bitcoin entering the market **keeps shri
 
 Historically, each halving has preceded a significant bull run. Not immediately—usually 6-18 months later. Past performance isn't a guarantee, obviously. But the economic logic is sound: **if supply decreases while demand stays the same or increases, price goes up.** That's not crypto magic—that's Econ 101.
 
-The next halving is expected around **April 2028**. Mark your calendar. Or don't—the crypto community will not let you forget about it.
+The next halving is expected around **April 2028**. Mark your calendar. Or don't—the crypto community will not let you forget about it. You can track the countdown live at [bitcoinblockhalf.com](https://www.bitcoinblockhalf.com/).
+
+![Bitcoin halving schedule showing the decreasing block reward over time](https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Bitcoin_Inflation_vs_Time.png/1280px-Bitcoin_Inflation_vs_Time.png)
+*Bitcoin's inflation rate drops with each halving, approaching zero as the 21 million cap nears.*
 
 ## 21 Million: The Hardest Money Ever Created
 
@@ -113,7 +119,7 @@ Here's where Bitcoin gets truly interesting from a monetary perspective.
 Compare that to fiat money:
 
 - The US Federal Reserve created **$4.6 trillion** in 2020 alone in response to COVID
-- The M2 money supply (a measure of all dollars in existence) has roughly **tripled** since 2000
+- The [M2 money supply](https://fred.stlouisfed.org/series/M2SL) (a measure of all dollars in existence) has roughly **quadrupled** since 2000
 - Every major central bank in the world has the ability to print unlimited currency whenever they decide it's necessary
 
 When governments print money, your existing money buys less. That $100 in your savings account from 2020 buys roughly $80 worth of stuff today. You didn't spend it. You didn't lose it. The government just made more of it, diluting yours like adding water to wine.

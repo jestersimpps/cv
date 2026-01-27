@@ -31,9 +31,9 @@ USDC? That's a token on Ethereum (and other chains). Shiba Inu? Token. Uniswap's
 
 ## ERC-20: The Standard That Launched a Thousand Tokens
 
-Back in 2015, a developer named Fabian Vogelsteller proposed a simple idea: what if all tokens on Ethereum followed the same basic rules? What if every token could be sent, received, and checked the same way?
+Back in November 2015, a developer named [Fabian Vogelsteller](https://github.com/frozeman) (with input from Vitalik Buterin) proposed a simple idea: what if all tokens on Ethereum followed the same basic rules? What if every token could be sent, received, and checked the same way?
 
-That proposal became **ERC-20** (Ethereum Request for Comments #20), and it changed everything.
+That proposal became **[ERC-20](https://eips.ethereum.org/EIPS/eip-20)** (Ethereum Request for Comments #20), and it changed everything.
 
 Before ERC-20, every token was a snowflake — unique code, unique behavior, a nightmare for wallets and exchanges to support. ERC-20 said: "Here's a template. Your token must be able to do these things":
 
@@ -46,6 +46,8 @@ That's basically it. A shared interface. And because every ERC-20 token speaks t
 
 This standard is what powered the ICO (Initial Coin Offering) boom of 2017. Suddenly, anyone could create a token in an afternoon and raise millions. Some projects were legitimate. Many were not. But the standard itself was — and remains — brilliant engineering.
 
+![Ethereum Token Standards — ERC-20, ERC-721, and ERC-1155 compared](/assets/blog/crypto-unlocked/token-standards-overview.svg)
+
 ## Stablecoins: The Dollar, But On-Chain
 
 If you've ever looked at crypto prices and thought "I want off this roller coaster for a bit," stablecoins are your exit ramp. They're tokens designed to maintain a stable value, usually pegged to $1 USD.
@@ -54,14 +56,14 @@ But not all stablecoins are created equal. How they *maintain* that peg is where
 
 ### Fiat-Backed (Centralized)
 
-**USDC** (Circle) and **USDT** (Tether) are the big two. The idea is simple: for every token in circulation, there's a real dollar (or equivalent) sitting in a bank account somewhere. You want to redeem your USDC for actual dollars? Circle says "sure, here you go."
+**[USDC](https://www.circle.com/usdc)** (Circle) and **[USDT](https://tether.to/)** (Tether) are the big two. The idea is simple: for every token in circulation, there's a real dollar (or equivalent) sitting in a bank account somewhere. You want to redeem your USDC for actual dollars? Circle says "sure, here you go."
 
 - **USDC:** Transparent, audited regularly, the "good boy" of stablecoins
-- **USDT:** Larger market cap, murkier reserves, perpetually controversial — but stubbornly dominant
+- **USDT:** Larger market cap (~$140B+), murkier reserves, perpetually controversial — but stubbornly dominant. You can track stablecoin market caps in real time on [DefiLlama](https://defillama.com/stablecoins).
 
 ### Crypto-Collateralized (Decentralized)
 
-**DAI** (MakerDAO) takes a different approach. There's no bank account. Instead, users lock up *more* crypto than the DAI they mint. Want to create 100 DAI? You might need to lock up $150 worth of ETH as collateral. If your collateral drops in value, the system liquidates it automatically.
+**[DAI](https://makerdao.com/)** (MakerDAO, now rebranded as Sky) takes a different approach. There's no bank account. Instead, users lock up *more* crypto than the DAI they mint. Want to create 100 DAI? You might need to lock up $150 worth of ETH as collateral. If your collateral drops in value, the system liquidates it automatically.
 
 It's more complex, but it's truly decentralized. No company can freeze your DAI.
 
@@ -69,9 +71,11 @@ It's more complex, but it's truly decentralized. No company can freeze your DAI.
 
 And then there's the algorithmic approach, where code alone tries to maintain the peg using supply-and-demand mechanics. No reserves. No collateral. Just math and incentives.
 
-This is what **Terra/UST** tried. For a while, it worked. UST held its peg, and its companion token LUNA soared to $100+. Then in May 2022, it didn't work. UST lost its peg, LUNA entered a death spiral, and **$40 billion evaporated in a week**. People lost their life savings. Some lost more than that.
+This is what **[Terra/UST](https://en.wikipedia.org/wiki/Terra_(blockchain))** tried. For a while, it worked. UST held its peg — helped by the [Anchor Protocol](https://en.wikipedia.org/wiki/Terra_(blockchain)#Anchor_Protocol) offering ~19.5% yields — and its companion token LUNA soared to an all-time high of $119.51. Then on May 9, 2022, it didn't work. UST lost its peg, LUNA entered a death spiral, and **~$45 billion in market cap evaporated in a week**. People lost their life savings. Some lost more than that. Terraform Labs [filed for bankruptcy](https://en.wikipedia.org/wiki/Terra_(blockchain)) in January 2024, and founder Do Kwon was later extradited to face fraud charges.
 
 > **The lesson:** When someone promises you a "stable" asset backed by nothing but an algorithm and vibes, be extremely skeptical. If the peg mechanism relies on confidence alone, it only works until it doesn't.
+
+![Stablecoin approaches compared — fiat-backed, crypto-collateralized, and algorithmic](/assets/blog/crypto-unlocked/stablecoin-types.svg)
 
 ## NFTs: More Than JPEGs (No, Really)
 
@@ -81,20 +85,20 @@ Let's start with **fungible** vs. **non-fungible**. A dollar bill is fungible: y
 
 ERC-20 tokens are fungible — one USDC equals any other USDC. NFTs use different standards:
 
-- **ERC-721:** Each token is unique. One token = one distinct item. This is what CryptoPunks and Bored Apes use.
-- **ERC-1155:** A hybrid. Can handle both fungible and non-fungible tokens in one contract. Great for games where you might have unique legendary swords *and* stacks of identical health potions.
+- **[ERC-721](https://eips.ethereum.org/EIPS/eip-721):** Each token is unique. One token = one distinct item. This is what CryptoPunks and Bored Apes use.
+- **[ERC-1155](https://eips.ethereum.org/EIPS/eip-1155):** A hybrid. Can handle both fungible and non-fungible tokens in one contract. Great for games where you might have unique legendary swords *and* stacks of identical health potions.
 
 ### Beyond the JPEG
 
 Yes, the 2021 NFT mania was largely about profile pictures and speculation. But the *technology* of provable digital ownership is genuinely powerful:
 
 - **Event tickets** that can't be counterfeited and can carry royalty rules for resale
-- **Domain names** (ENS gives you a .eth name that *is* an NFT)
+- **Domain names** ([ENS](https://ens.domains/) gives you a .eth name that *is* an NFT)
 - **Music and art** with programmable royalties — the artist earns on every resale, forever
 - **Gaming items** that you actually own and can trade outside the game
 - **Real-world assets** — deeds, certificates, identity documents
 
-The JPEGs were the first experiment. They were also the loudest and dumbest. But NFTs as a concept aren't going away — they're just finding their actual use cases.
+The JPEGs were the first experiment. They were also the loudest and dumbest. But NFTs as a concept aren't going away — they're just finding their actual use cases. Marketplaces like [OpenSea](https://opensea.io/) made trading them accessible to anyone with a wallet.
 
 ## Memecoins: The Casino Is Open
 
@@ -104,7 +108,7 @@ Let's talk about the elephant — or rather, the dog — in the room.
 
 Memecoins have no utility, no technology, no roadmap. They have *culture*. They have *community*. And they have the raw, unfiltered energy of people who'd rather gamble on a cartoon frog than buy index funds.
 
-Platforms like **pump.fun** on Solana made it possible to launch a memecoin in under a minute for a few dollars. This spawned an explosion of token launches — thousands per day — most going to zero within hours, a few making early buyers absurdly rich.
+Platforms like **[pump.fun](https://pump.fun/)** on Solana made it possible to launch a memecoin in under a minute for a few dollars. This spawned an explosion of token launches — thousands per day — most going to zero within hours, a few making early buyers absurdly rich.
 
 > **Real talk:** Memecoins are gambling. Some people win big. Most people lose. If you play this game, only use money you genuinely don't care about losing. The house — meaning the early insiders — almost always wins.
 
@@ -134,7 +138,7 @@ Not all token launches look the same:
 
 - **Fair launch:** No pre-mine, no insider allocations. Everyone gets in at the same time. Bitcoin is the original fair launch. In practice, truly fair launches are rare.
 - **Presale / ICO / IDO:** Early investors buy tokens before public launch, usually at a discount. The project raises funds to build. The risk? Those early investors often dump on retail the moment trading opens.
-- **Airdrops:** Free tokens distributed to early users of a protocol. Uniswap's UNI airdrop gave ~$1,500 worth of tokens to anyone who'd used the platform. These can be life-changing — or worthless.
+- **Airdrops:** Free tokens distributed to early users of a protocol. [Uniswap's UNI airdrop](https://uniswap.org/) gave ~$1,500 worth of tokens to anyone who'd used the platform. These can be life-changing — or worthless.
 
 > **Tip:** When evaluating any token launch, check the **token distribution**. If 50% of the supply goes to the team and insiders, you're the exit liquidity. Look at vesting schedules, total supply, and who holds the biggest bags.
 
@@ -142,9 +146,9 @@ Not all token launches look the same:
 
 This is the million-dollar question. A token is just code. What makes one worth $0.000001 and another worth $1,000?
 
-**Utility.** Does the token *do* something? ETH pays for gas. LINK pays Chainlink oracle operators. Tokens with real demand from real usage have a floor.
+**Utility.** Does the token *do* something? ETH pays for gas. LINK pays [Chainlink](https://chain.link/) oracle operators. Tokens with real demand from real usage have a floor.
 
-**Governance.** Some tokens let you vote on protocol decisions. UNI holders govern Uniswap. If the protocol controls billions in value, having a say in its direction is worth something.
+**Governance.** Some tokens let you vote on protocol decisions. UNI holders govern [Uniswap](https://app.uniswap.org/). If the protocol controls billions in value, having a say in its direction is worth something.
 
 **Speculation.** Let's be honest — most token value is driven by people betting the price will go up. There's nothing inherently wrong with this (stocks work similarly), but speculation without substance is a house of cards.
 

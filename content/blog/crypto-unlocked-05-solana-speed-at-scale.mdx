@@ -13,7 +13,7 @@ series:
   total: 20
 ---
 
-Imagine you're at a toll booth. One lane. Thousands of cars. Every driver has to stop, pay, get a receipt, and wait for the barrier to lift before the next car can go. That's Ethereum — secure, reliable, but slow. Now imagine a highway with thousands of lanes, cars flying through at 200 mph, paying tolls wirelessly without ever slowing down. That's the promise of Solana.
+Imagine you're at a toll booth. One lane. Thousands of cars. Every driver has to stop, pay, get a receipt, and wait for the barrier to lift before the next car can go. That's Ethereum — secure, reliable, but slow. Now imagine a highway with thousands of lanes, cars flying through at 200 mph, paying tolls wirelessly without ever slowing down. That's the promise of [Solana](https://solana.com).
 
 In [Part 4](/blog/crypto-unlocked-04-ethereum-world-computer), we explored Ethereum and why it's the backbone of decentralized applications. But we also touched on its Achilles' heel: speed and cost. Ethereum handles about 15 transactions per second (TPS). Visa handles around 65,000. For crypto to go mainstream, *something* had to bridge that gap.
 
@@ -29,6 +29,8 @@ Solana's bet was different. What if you could get all three — but lean *hard* 
 
 The result: Solana can handle **thousands of transactions per second** with finality in about 400 milliseconds. Fees? Usually a fraction of a cent. We're talking $0.00025 per transaction.
 
+![TPS comparison across major blockchains](/assets/blog/crypto-unlocked-05/tps-comparison.png)
+
 Let that sink in. On Ethereum, a token swap might cost you $5-50. On Solana, it costs less than a thousandth of a penny.
 
 ## Proof of History: Solana's Secret Sauce
@@ -41,7 +43,9 @@ Solana's innovation is called **Proof of History (PoH)**. Think of it like this:
 
 That's PoH in a nutshell. It's a cryptographic clock — a verifiable sequence of hashes that proves that time has passed between events. Validators don't need to talk to each other to agree on *when* things happened. The timestamps are baked right into the data.
 
-This alone doesn't make Solana fast. It's one of **eight innovations** working together (including Tower BFT for consensus, Gulf Stream for transaction forwarding, and Turbine for block propagation). But PoH is the foundation that makes everything else possible.
+![How Proof of History creates a verifiable timeline](/assets/blog/crypto-unlocked-05/proof-of-history.png)
+
+This alone doesn't make Solana fast. It's one of **eight innovations** working together (including [Tower BFT](https://solana.com/developers) for consensus, Gulf Stream for transaction forwarding, and Turbine for block propagation). But PoH is the foundation that makes everything else possible.
 
 > **Beginner tip:** You don't need to understand the technical details of PoH to use Solana. Just know that it's the reason transactions feel instant and cost almost nothing. The engineering is doing the heavy lifting so you don't have to think about it.
 
@@ -61,18 +65,20 @@ This isn't just a nice-to-have. It unlocks entirely new categories of applicatio
 
 Solana has attracted a massive ecosystem. Here are the heavy hitters:
 
-- **Jupiter** — The go-to swap aggregator. Think of it as Solana's Google for finding the best token prices. It routes your trade across multiple exchanges to get you the best deal. Jupiter has become *the* DeFi hub on Solana.
-- **Raydium** — One of the first major decentralized exchanges (DEXs) on Solana. It pioneered the AMM (automated market maker) model on the chain and remains a cornerstone of Solana DeFi.
-- **Marinade Finance** — Liquid staking for SOL. Stake your SOL, get mSOL in return, and keep using that mSOL in DeFi while earning staking rewards. Best of both worlds.
-- **Jito** — MEV (maximal extractable value) infrastructure and liquid staking. More advanced, but important for how the network's economics work under the hood.
-- **Tensor** — The leading NFT marketplace on Solana. Fast, trader-friendly, with real-time floor price tracking and instant listings.
-- **Magic Eden** — Started on Solana, expanded to other chains. One of the biggest NFT marketplaces in crypto.
+- **[Jupiter](https://jup.ag)** — The go-to swap aggregator, self-described as "The DeFi Superapp." Think of it as Solana's Google for finding the best token prices. It routes your trade across multiple exchanges to get you the best deal. Jupiter has become *the* DeFi hub on Solana.
+- **[Raydium](https://raydium.io)** — One of the first major decentralized exchanges (DEXs) on Solana. It pioneered the AMM (automated market maker) model on the chain and remains a cornerstone of Solana DeFi.
+- **[Marinade Finance](https://marinade.finance)** — Liquid staking for SOL. Stake your SOL, get mSOL in return, and keep using that mSOL in DeFi while earning staking rewards. Best of both worlds.
+- **[Jito](https://www.jito.network)** — MEV (maximal extractable value) infrastructure and liquid staking. More advanced, but important for how the network's economics work under the hood.
+- **[Tensor](https://tensor.trade)** — The leading NFT marketplace on Solana. Fast, trader-friendly, with real-time floor price tracking and instant listings.
+- **[Magic Eden](https://magiceden.io)** — Started on Solana, expanded to other chains. One of the biggest NFT marketplaces in crypto.
+
+![The Solana ecosystem](/assets/blog/crypto-unlocked-05/solana-ecosystem.png)
 
 And hundreds more — from gaming studios to payment processors to social platforms like the decentralized Twitter alternatives being built on Solana's infrastructure.
 
 ## The Saga Phone and Going Mobile-First
 
-In 2023, Solana did something no other blockchain had seriously attempted: they shipped a phone. The **Saga** was an Android device with a built-in crypto wallet, a seed vault for secure key storage, and a dApp store.
+In April 2023, [Solana Mobile](https://solanamobile.com) — a subsidiary of Solana Labs — did something no other blockchain had seriously attempted: they shipped a phone. The **Saga** was an Android device with a built-in crypto wallet, a seed vault for secure key storage, and a dApp store.
 
 The first Saga was... a tough sell at $1,000. Sales were slow. Critics called it a gimmick. Then a massive BONK airdrop to Saga holders made the phone worth more than its retail price overnight, and suddenly they were selling on eBay for $2,000+.
 
@@ -84,9 +90,9 @@ Whether or not Solana's phone strategy succeeds, the thinking behind it is sound
 
 Let's address the elephant in the room. Solana's history isn't all speed records and smooth sailing.
 
-**The outages.** Between 2022 and early 2023, Solana experienced multiple network outages — full stops where the chain just... didn't work. Some lasted hours. For a chain marketing itself as the future of high-speed finance, going offline is about the worst look possible. The causes varied (bot spam, consensus bugs, validator issues), but the pattern was concerning.
+**The outages.** Between September 2021 and late 2022, Solana experienced multiple network outages — full stops where the chain just... didn't work. The first major one in September 2021 lasted 17 hours after a transaction surge caused the network to fork. In 2022, there were at least three more: a seven-hour bot-induced shutdown in May, a four-and-a-half-hour bug-related outage later that month, and a six-hour consensus bug in October. For a chain marketing itself as the future of high-speed finance, going offline is about the worst look possible.
 
-**The FTX connection.** Sam Bankman-Fried's FTX and Alameda Research were massive Solana backers. They held billions in SOL. When FTX collapsed in November 2022, it dragged SOL's price from ~$35 down to under $10. The entire ecosystem was painted with the FTX brush. Many wrote Solana's obituary.
+**The FTX connection.** Sam Bankman-Fried's [FTX](https://en.wikipedia.org/wiki/FTX) and Alameda Research were massive Solana backers. FTX alone held $982 million in SOL tokens, and it was Alameda's second-largest holding. When FTX collapsed in November 2022, SOL's price dropped 40% in a single day, eventually sliding from ~$35 to under $10. The entire ecosystem was painted with the FTX brush. Many wrote Solana's obituary.
 
 **The comeback.** And yet, here we are. SOL recovered and then some. The network stabilized — outages became rare, then almost nonexistent. The developer community didn't leave. New projects kept launching. The FTX estate's SOL holdings were gradually sold without crashing the market. And Solana emerged from the bear market arguably *stronger* than it went in.
 
@@ -102,9 +108,9 @@ SOL is Solana's native token. Here's what you need to know:
 - **Burn mechanism:** 50% of all transaction fees are burned (destroyed), creating some deflationary pressure
 - **Use cases:** Pay transaction fees, stake for network security, governance participation
 
-Staking SOL is straightforward. You can delegate to a validator directly through wallets like Phantom or Solflare. Or use liquid staking (Marinade, Jito) to keep your SOL productive while it's staked.
+Staking SOL is straightforward. You can delegate to a validator directly through wallets like [Phantom](https://phantom.app) or [Solflare](https://solflare.com). Or use liquid staking ([Marinade](https://marinade.finance), [Jito](https://www.jito.network)) to keep your SOL productive while it's staked.
 
-> **Beginner tip:** If you're holding SOL and not staking it, you're leaving money on the table. Liquid staking through Marinade or Jito lets you earn staking rewards *and* use your staked SOL in DeFi simultaneously.
+> **Beginner tip:** If you're holding SOL and not staking it, you're leaving money on the table. Liquid staking through [Marinade](https://marinade.finance) or [Jito](https://www.jito.network) lets you earn staking rewards *and* use your staked SOL in DeFi simultaneously.
 
 ## Solana vs Ethereum: Different Beasts, Different Tradeoffs
 
@@ -129,7 +135,7 @@ The future isn't one chain to rule them all. It's horses for courses.
 
 ## The Memecoin Explosion: Pump.fun and the Solana Casino
 
-No honest Solana article can skip this. In 2024, Solana became ground zero for the memecoin explosion, largely thanks to **pump.fun** — a platform that let anyone launch a token in seconds with minimal cost.
+No honest Solana article can skip this. In 2024, Solana became ground zero for the memecoin explosion, largely thanks to **[pump.fun](https://pump.fun)** — a platform that let anyone launch a token in seconds with minimal cost. The trend reached a fever pitch in January 2025 when US President Donald Trump launched his own [$TRUMP memecoin](https://en.wikipedia.org/wiki/$TRUMP) on Solana, briefly pushing SOL to a new all-time high of $294.
 
 The result was absolute chaos. Thousands of tokens launched daily. Some made people rich overnight. Most went to zero in hours. Dog coins, cat coins, political coins, coins based on typos — if you could think of it, someone already launched it.
 
