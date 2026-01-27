@@ -173,7 +173,7 @@ sudo ufw status verbose
 
 ## Step 5: SSH Tarpit with endlessh (The Fun Part)
 
-Here's where it gets interesting. We set this up today to prank a friend who said they'd try to hack us. The idea: move real SSH to port 2222, put endlessh on port 22. Bots connect to port 22 and get trapped in an infinitely slow banner that sends one random byte every 10 seconds. They never get a login prompt. Meanwhile, real SSH runs unbothered on port 2222.
+Here's where it gets interesting. The idea: move real SSH to a non-standard port, put endlessh on port 22. Bots connect to port 22 and get trapped in an infinitely slow banner that sends one random byte every 10 seconds. They never get a login prompt. Meanwhile, real SSH runs unbothered on a different port.
 
 ### What endlessh Does
 
