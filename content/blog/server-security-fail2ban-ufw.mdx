@@ -437,13 +437,87 @@ journalctl -u ssh -n 50 | grep -E "Failed|Invalid"
 
 I looked at my logs after just a few hours running Clawdbot on a public VPS:
 
-- 17 failed SSH attempts
-- 3 unique IPs banned
-- Attacks from 3 different countries (Netherlands, US, Vietnam)
+- 62 failed SSH attempts
+- 9 unique IPs banned
+- Attacks from 7 different countries
 
 This is normal. Every server with a public IP experiences this. The question isn't whether you'll be attacked — it's whether you're prepared.
 
 Five minutes of setup. Sleep better at night.
+
+## Report Attackers to AbuseIPDB
+
+Blocking attackers locally is good. Getting them blacklisted globally is better.
+
+[AbuseIPDB](https://www.abuseipdb.com) is a community database of abusive IPs. When you report an attacker, every other server using their blocklist benefits. It's collective defense.
+
+### Get a Free API Key
+
+Sign up at [abuseipdb.com](https://www.abuseipdb.com/account/api) — the free tier allows 1000 reports/day.
+
+Store it securely:
+
+```bash
+pass insert abuseipdb/api-key
+```
+
+### Report a Banned IP
+
+```bash
+ABUSEIPDB_KEY=$(pass show abuseipdb/api-key)
+
+curl -s https://api.abuseipdb.com/api/v2/report \
+  -H "Key: $ABUSEIPDB_KEY" \
+  -H "Accept: application/json" \
+  --data-urlencode "ip=2.57.122.209" \
+  -d "categories=18,22" \
+  --data-urlencode "comment=SSH brute-force (fail2ban auto-ban)"
+```
+
+Categories `18,22` = brute-force + SSH.
+
+### Check an IP's Reputation
+
+```bash
+curl -sG "https://api.abuseipdb.com/api/v2/check" \
+  -H "Key: $ABUSEIPDB_KEY" \
+  -H "Accept: application/json" \
+  --data-urlencode "ipAddress=2.57.122.209" \
+  -d "maxAgeInDays=90" | jq '.data | {score: .abuseConfidenceScore, reports: .totalReports, country: .countryCode, isp: .isp}'
+```
+
+### Auto-Report with Clawdbot
+
+I built a [Clawdbot skill](https://github.com/jestersimpps/clawdbot-fail2ban-reporter) that auto-reports every new ban to AbuseIPDB. If you're running Clawdbot, install it:
+
+```bash
+clawdhub install fail2ban-reporter
+```
+
+Or grab it from GitHub:
+
+```bash
+git clone https://github.com/jestersimpps/clawdbot-fail2ban-reporter.git
+sudo bash clawdbot-fail2ban-reporter/scripts/install.sh
+```
+
+After setup, every fail2ban ban automatically reports to AbuseIPDB. Zero effort, maximum community impact.
+
+Here's what my server reported after just a few hours:
+
+| IP | Country | ISP |
+|---|---|---|
+| 2.57.122.209 | 🇳🇱 Netherlands | Unmanaged LTD |
+| 80.94.92.171 | 🇳🇱 Netherlands | Unmanaged LTD |
+| 92.118.39.95 | 🇺🇸 USA | Unmanaged LTD |
+| 103.253.21.190 | 🇻🇳 Vietnam | PSG JSC |
+| 150.5.129.10 | 🇭🇰 Hong Kong | Byteplus |
+| 202.79.29.108 | 🇰🇭 Cambodia | WiCAM |
+| 101.47.161.104 | 🇸🇬 Singapore | Great Wall |
+| 45.78.222.160 | 🇸🇬 Singapore | Byteplus |
+| 45.78.218.137 | 🇸🇬 Singapore | Byteplus |
+
+Patterns: 3× Byteplus (Singapore/HK), 3× Unmanaged LTD (NL/US) — same botnets hitting from multiple IPs.
 
 ## The Complete Security Stack
 
@@ -456,6 +530,7 @@ After following this guide, your Clawdbot server has:
 - **pass** — Secrets GPG-encrypted at rest
 - **Clawdbot pairing** — Strangers can't message your bot
 - **Proper permissions** — Config and credentials locked down
+- **AbuseIPDB reporting** — Attackers get blacklisted globally
 
 That's defense in depth. Multiple layers, each one making the next attack harder.
 
