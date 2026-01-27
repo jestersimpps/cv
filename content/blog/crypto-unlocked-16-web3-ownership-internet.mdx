@@ -73,7 +73,7 @@ DAO governance typically follows this pattern:
 
 1. **Someone writes a proposal** — "Let's spend $500K from the treasury to fund developer grants"
 2. **Community discusses it** — Usually on a forum (Discourse, Commonwealth) before it goes to a vote
-3. **Token holders vote** — One token usually equals one vote. Voting happens on-chain or through snapshot voting (off-chain but verifiable)
+3. **Token holders vote** — One token usually equals one vote. Voting happens on-chain or through [Snapshot](https://snapshot.org) voting (off-chain but verifiable)
 4. **If it passes, code executes** — Smart contracts can automatically release funds, change parameters, or trigger actions
 
 There's also **delegation** — you can delegate your voting power to someone you trust, similar to representative democracy. Don't have time to read every proposal? Delegate to a community member who does.
@@ -103,14 +103,14 @@ Projects are experimenting with **soulbound tokens** — non-transferable NFTs t
 
 If platforms own your social graph, the obvious Web3 answer is: build social networks where users own their accounts, followers, and content.
 
-**Farcaster** is the most interesting attempt so far. It's a decentralized social protocol (think: decentralized Twitter) where:
+**[Farcaster](https://farcaster.xyz)** is the most interesting attempt so far. It's a decentralized social protocol (think: decentralized Twitter) where:
 
 - Your identity is tied to your wallet, not an email address
 - Your social graph lives on a decentralized network, not a company's server
-- Any developer can build a client (app) on top of the protocol
+- Any developer can build a client (app) on top of the protocol — the most popular being [Warpcast](https://warpcast.com)
 - If you don't like one app, switch to another — your followers come with you
 
-**Lens Protocol** takes a similar approach, turning your social profile into an NFT you own. Your followers, posts, and interactions are all on-chain assets under your control.
+**[Lens Protocol](https://lens.xyz)** has evolved from a social graph into a full SocialFi platform — a dedicated chain (built on ZKSync and Avail) with social primitives baked in. Accounts, usernames, graphs, feeds, and groups are all on-chain building blocks that any developer can plug into. Users get gasless transactions settled in GHO, and can switch between apps while keeping their data portable.
 
 These platforms are still early and niche. But the idea is powerful: **what if switching social networks was as easy as switching email clients?** Your data stays yours; the apps just provide different interfaces.
 
@@ -120,9 +120,9 @@ Here's a dirty secret of early Web3: a lot of NFT artwork and dApp data still li
 
 That's where decentralized storage comes in:
 
-- **IPFS (InterPlanetary File System)** — A peer-to-peer network where files are addressed by their content hash, not their location. Instead of "this file lives at amazon.com/server5/image.jpg," it's "this file has fingerprint QmX7b3...". Anyone hosting a copy can serve it.
-- **Arweave** — Permanent storage. You pay once, and your data is stored forever (in theory) across a decentralized network. Think of it as the Internet Archive, but trustless.
-- **Filecoin** — A marketplace for storage. People with spare hard drive space rent it out; people who need storage pay for it. Supply and demand for data hosting.
+- **[IPFS (InterPlanetary File System)](https://ipfs.tech)** — A peer-to-peer network where files are addressed by their content hash, not their location. Instead of "this file lives at amazon.com/server5/image.jpg," it's "this file has fingerprint QmX7b3...". Anyone hosting a copy can serve it. Data is open, verifiable, and resilient — if one node goes offline, others can still serve the content.
+- **[Arweave](https://www.arweave.org)** — Permanent storage. You pay once, and your data is stored forever (in theory) across a decentralized network. As the project describes itself: "like Bitcoin, but for data." Think of it as the Internet Archive, but trustless.
+- **[Filecoin](https://filecoin.io)** — A marketplace for storage. People with spare hard drive space rent it out; people who need storage pay for it. Supply and demand for data hosting.
 
 These aren't just crypto curiosities. If Web3 is about ownership, you need somewhere to store what you own that isn't controlled by Amazon, Google, or Microsoft.
 
