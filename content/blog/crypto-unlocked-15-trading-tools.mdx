@@ -31,7 +31,7 @@ The big names:
 - **ParaSwap** — Another strong EVM aggregator with competitive rates and a clean interface.
 
 ```mermaid
-graph LR
+graph TD
     U[You] -->|want to swap| AGG[DEX Aggregator]
     AGG -->|checks prices| UNI[Uniswap]
     AGG -->|checks prices| CURVE[Curve]
@@ -40,13 +40,13 @@ graph LR
     AGG -->|routes optimal path| BEST[Best Price Execution]
     BEST -->|tokens delivered| U
 
-    style U fill:#f59e0b,stroke:#d97706,color:#000
-    style AGG fill:#7c3aed,stroke:#5b21b6,color:#fff
-    style UNI fill:#1e40af,stroke:#1e3a8a,color:#fff
-    style CURVE fill:#1e40af,stroke:#1e3a8a,color:#fff
-    style SUSHI fill:#1e40af,stroke:#1e3a8a,color:#fff
-    style BAL fill:#1e40af,stroke:#1e3a8a,color:#fff
-    style BEST fill:#059669,stroke:#047857,color:#fff
+    style U fill:#7c3aed,stroke:#a78bfa,color:#fff
+    style AGG fill:#0ea5e9,stroke:#38bdf8,color:#fff
+    style UNI fill:#f59e0b,stroke:#fbbf24,color:#000
+    style CURVE fill:#f59e0b,stroke:#fbbf24,color:#000
+    style SUSHI fill:#f59e0b,stroke:#fbbf24,color:#000
+    style BAL fill:#f59e0b,stroke:#fbbf24,color:#000
+    style BEST fill:#10b981,stroke:#34d399,color:#fff
 ```
 
 ![How a DEX aggregator routes your swap across multiple exchanges for the best price](/assets/blog/crypto-unlocked-15/aggregator-routing.png)

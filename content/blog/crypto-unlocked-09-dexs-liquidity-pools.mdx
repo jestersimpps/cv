@@ -44,17 +44,17 @@ That's it. That's the revolution.
 ![The AMM constant product curve — as you buy Token A, its price rises along the hyperbola while Token B gets cheaper](/assets/blog/crypto-unlocked-09/amm-curve.png)
 
 ```mermaid
-graph LR
+graph TD
     T[Trader] -->|sends Token A + fee| LP[Liquidity Pool]
     LP -->|returns Token B| T
     PR[Liquidity Provider] -->|deposits A + B| LP
     LP -->|LP tokens + fees| PR
     LP -->|x × y = k| PRICE[Price adjusts automatically]
 
-    style T fill:#f59e0b,stroke:#d97706,color:#000
-    style LP fill:#7c3aed,stroke:#5b21b6,color:#fff
-    style PR fill:#059669,stroke:#047857,color:#fff
-    style PRICE fill:#1e40af,stroke:#1e3a8a,color:#fff
+    style T fill:#7c3aed,stroke:#a78bfa,color:#fff
+    style LP fill:#0ea5e9,stroke:#38bdf8,color:#fff
+    style PR fill:#10b981,stroke:#34d399,color:#fff
+    style PRICE fill:#f59e0b,stroke:#fbbf24,color:#000
 ```
 
 Let me break it down:

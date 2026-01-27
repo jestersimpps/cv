@@ -28,7 +28,7 @@ Forget everything you think you know about digital payments. Bitcoin doesn't wor
 Here's how it works in plain English:
 
 ```mermaid
-graph LR
+graph TD
     A[Sender Wallet] -->|sign with private key| B[Broadcast Transaction]
     B --> C[Bitcoin Network]
     C -->|nodes verify| D{Valid?}
@@ -37,12 +37,14 @@ graph LR
     F --> G[Receiver gets BTC]
     D -->|no| H[Rejected]
 
-    style A fill:#f59e0b,stroke:#d97706,color:#000
-    style C fill:#7c3aed,stroke:#5b21b6,color:#fff
-    style E fill:#059669,stroke:#047857,color:#fff
-    style F fill:#1e40af,stroke:#1e3a8a,color:#fff
-    style G fill:#f59e0b,stroke:#d97706,color:#000
-    style H fill:#dc2626,stroke:#991b1b,color:#fff
+    style A fill:#7c3aed,stroke:#a78bfa,color:#fff
+    style B fill:#0ea5e9,stroke:#38bdf8,color:#fff
+    style C fill:#7c3aed,stroke:#a78bfa,color:#fff
+    style D fill:#8b5cf6,stroke:#a78bfa,color:#fff
+    style E fill:#0ea5e9,stroke:#38bdf8,color:#fff
+    style F fill:#10b981,stroke:#34d399,color:#fff
+    style G fill:#10b981,stroke:#34d399,color:#fff
+    style H fill:#ef4444,stroke:#f87171,color:#fff
 ```
 
 **You have a wallet.** Think of it as a lockbox with two keys. One key is public—it's basically your address, like an email address anyone can send Bitcoin to. The other key is private—it's the password that proves you own what's in the lockbox. **Never share your private key.** Ever. We'll drill into this in Part 3.

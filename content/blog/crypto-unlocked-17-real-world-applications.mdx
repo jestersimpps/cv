@@ -32,7 +32,7 @@ Why does this matter?
 - **Global access.** A farmer in Nigeria can invest in US Treasury bonds without a Goldman Sachs account.
 
 ```mermaid
-graph LR
+graph TD
     RA[Real-World Asset] -->|legal wrapper| SPV[Special Purpose Vehicle]
     SPV -->|tokenize| SC[Smart Contract]
     SC -->|mint| TK[On-Chain Tokens]
@@ -40,12 +40,12 @@ graph LR
     TK -->|fractional ownership| INV[Global Investors]
     INV -->|yields / dividends| SC
 
-    style RA fill:#f59e0b,stroke:#d97706,color:#000
-    style SPV fill:#1e40af,stroke:#1e3a8a,color:#fff
-    style SC fill:#7c3aed,stroke:#5b21b6,color:#fff
-    style TK fill:#059669,stroke:#047857,color:#fff
-    style DEX fill:#059669,stroke:#047857,color:#fff
-    style INV fill:#f59e0b,stroke:#d97706,color:#000
+    style RA fill:#7c3aed,stroke:#a78bfa,color:#fff
+    style SPV fill:#0ea5e9,stroke:#38bdf8,color:#fff
+    style SC fill:#0ea5e9,stroke:#38bdf8,color:#fff
+    style TK fill:#10b981,stroke:#34d399,color:#fff
+    style DEX fill:#10b981,stroke:#34d399,color:#fff
+    style INV fill:#f59e0b,stroke:#fbbf24,color:#000
 ```
 
 ![RWA tokenization: traditional assets flow through blockchain to become accessible digital tokens](/assets/blog/crypto-unlocked-17/rwa-tokenization-flow.png)

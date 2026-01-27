@@ -79,7 +79,7 @@ Remember staking from earlier in this series? You lock up your ETH (or SOL, or o
 Liquid staking solves this elegantly.
 
 ```mermaid
-graph LR
+graph TD
     A[ETH] -->|stake via Lido| B[stETH]
     B -->|use as collateral| C[Aave / Lending]
     B -->|provide liquidity| D[Curve / DEX]
@@ -88,12 +88,12 @@ graph LR
     A -->|staking rewards ~3-4%| B
     E -->|additional yield| A
 
-    style A fill:#1e40af,stroke:#1e3a8a,color:#fff
-    style B fill:#7c3aed,stroke:#5b21b6,color:#fff
-    style C fill:#059669,stroke:#047857,color:#fff
-    style D fill:#059669,stroke:#047857,color:#fff
-    style E fill:#f59e0b,stroke:#d97706,color:#000
-    style F fill:#059669,stroke:#047857,color:#fff
+    style A fill:#7c3aed,stroke:#a78bfa,color:#fff
+    style B fill:#0ea5e9,stroke:#38bdf8,color:#fff
+    style C fill:#10b981,stroke:#34d399,color:#fff
+    style D fill:#10b981,stroke:#34d399,color:#fff
+    style E fill:#f59e0b,stroke:#fbbf24,color:#000
+    style F fill:#10b981,stroke:#34d399,color:#fff
 ```
 
 When you stake ETH through **[Lido](https://lido.fi/)**, you receive **stETH** (staked ETH) — a token that represents your staked ETH plus the staking rewards it's accumulating. You still earn the ~3-4% staking yield, but now you can *also* use stETH in DeFi:
