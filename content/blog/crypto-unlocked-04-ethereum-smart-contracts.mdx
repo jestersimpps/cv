@@ -47,6 +47,24 @@ Think of a vending machine:
 
 No cashier. No negotiation. No trust required. The rules are the rules, and the machine enforces them.
 
+```mermaid
+graph TD
+    U[User] -->|sends transaction + ETH| SC[Smart Contract]
+    SC -->|checks conditions| D{Conditions Met?}
+    D -->|yes| E[Execute Action]
+    D -->|no| R[Revert / Return Funds]
+    E --> BC[Record on Blockchain]
+    BC --> O[Outcome delivered]
+
+    style U fill:#f59e0b,stroke:#d97706,color:#000
+    style SC fill:#7c3aed,stroke:#5b21b6,color:#fff
+    style D fill:#1e40af,stroke:#1e3a8a,color:#fff
+    style E fill:#059669,stroke:#047857,color:#fff
+    style R fill:#dc2626,stroke:#991b1b,color:#fff
+    style BC fill:#1e40af,stroke:#1e3a8a,color:#fff
+    style O fill:#059669,stroke:#047857,color:#fff
+```
+
 Smart contracts work exactly the same way, except instead of candy bars, they handle money, tokens, property rights, votes, insurance payouts — really anything you can express as logic.
 
 > **The "smart" in smart contracts doesn't mean AI-smart.** It means self-executing. The contract does exactly what it's programmed to do, every single time, without anyone being able to tamper with it. That's the magic.

@@ -54,6 +54,28 @@ Let's demystify the jargon:
 - **Margin** = the collateral you put up. It's your "skin in the game" that backs the leveraged position.
 - **Liquidation** = when the market moves against you enough that your margin is wiped out. The protocol force-closes your position. Your money is gone. It happens fast.
 
+```mermaid
+graph TD
+    T[Trader] -->|deposits margin| P[Perp Protocol]
+    T -->|opens position| LONG[Long — bet price up]
+    T -->|opens position| SHORT[Short — bet price down]
+    LONG -->|price rises| WIN1[Profit]
+    LONG -->|price drops| LIQ1[Liquidation Risk]
+    SHORT -->|price drops| WIN2[Profit]
+    SHORT -->|price rises| LIQ2[Liquidation Risk]
+    FR[Funding Rate] -->|longs pay shorts or vice versa| P
+
+    style T fill:#f59e0b,stroke:#d97706,color:#000
+    style P fill:#7c3aed,stroke:#5b21b6,color:#fff
+    style LONG fill:#059669,stroke:#047857,color:#fff
+    style SHORT fill:#dc2626,stroke:#991b1b,color:#fff
+    style WIN1 fill:#059669,stroke:#047857,color:#fff
+    style WIN2 fill:#059669,stroke:#047857,color:#fff
+    style LIQ1 fill:#dc2626,stroke:#991b1b,color:#fff
+    style LIQ2 fill:#dc2626,stroke:#991b1b,color:#fff
+    style FR fill:#1e40af,stroke:#1e3a8a,color:#fff
+```
+
 Think of leverage like driving speed. 2x leverage is cruising at 60mph — reasonable, manageable. 10x is 300mph — exhilarating until something goes wrong. 50x or 100x? You're strapping yourself to a rocket. Most rockets explode.
 
 > **⚠️ Reality check:** The vast majority of leveraged traders lose money. Exchanges make a fortune from liquidations. If you're a beginner, watch and learn before you touch leverage. And if you do, start at 2-3x max. Seriously.
@@ -192,16 +214,14 @@ This doesn't mean CEXs are dying. Binance and Bybit still dominate total volume.
 
 ## Quick Reference: Perp DEX Comparison
 
-| Platform | Chain | Model | Standout Feature |
-|---|---|---|---|
-| **Hyperliquid** | Own L1 (HyperBFT) | On-chain order book | CEX speed, no VCs, massive airdrop |
-| **dYdX** | Own chain (Cosmos) | Order book | OG perp DEX, battle-tested |
-| **GMX** | Arbitrum / Avalanche | GM Pools (oracle-based) | Real yield to LPs |
-| **Vertex** | Arbitrum | Hybrid CLOB + AMM | Cross-margin everything |
-| **Drift** | Solana | Order book | Fast Solana-native perps |
-| **Jupiter Perps** | Solana | JLP pool | Massive Solana user base |
-| **gTrade** | Arbitrum / Polygon | Oracle-based | Forex, stocks, commodities (290+ pairs) |
-| **Synthetix** | Ethereum Mainnet | Synthetic | Multicollateral margin, L1 custody |
+- **Hyperliquid** — Own L1 (HyperBFT) · On-chain order book · CEX speed, no VCs, massive airdrop
+- **dYdX** — Own chain (Cosmos) · Order book · OG perp DEX, battle-tested
+- **GMX** — Arbitrum / Avalanche · GM Pools (oracle-based) · Real yield to LPs
+- **Vertex** — Arbitrum · Hybrid CLOB + AMM · Cross-margin everything
+- **Drift** — Solana · Order book · Fast Solana-native perps
+- **Jupiter Perps** — Solana · JLP pool · Massive Solana user base
+- **gTrade** — Arbitrum / Polygon · Oracle-based · Forex, stocks, commodities (290+ pairs)
+- **Synthetix** — Ethereum Mainnet · Synthetic · Multicollateral margin, L1 custody
 
 ## Key Takeaways
 

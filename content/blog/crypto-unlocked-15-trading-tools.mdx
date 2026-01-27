@@ -30,6 +30,25 @@ The big names:
 - **[CowSwap](https://swap.cow.fi)** — Uses a unique "batch auction" model that groups trades together. This gives you MEV protection built-in (more on MEV soon — it's important).
 - **ParaSwap** — Another strong EVM aggregator with competitive rates and a clean interface.
 
+```mermaid
+graph LR
+    U[You] -->|want to swap| AGG[DEX Aggregator]
+    AGG -->|checks prices| UNI[Uniswap]
+    AGG -->|checks prices| CURVE[Curve]
+    AGG -->|checks prices| SUSHI[SushiSwap]
+    AGG -->|checks prices| BAL[Balancer]
+    AGG -->|routes optimal path| BEST[Best Price Execution]
+    BEST -->|tokens delivered| U
+
+    style U fill:#f59e0b,stroke:#d97706,color:#000
+    style AGG fill:#7c3aed,stroke:#5b21b6,color:#fff
+    style UNI fill:#1e40af,stroke:#1e3a8a,color:#fff
+    style CURVE fill:#1e40af,stroke:#1e3a8a,color:#fff
+    style SUSHI fill:#1e40af,stroke:#1e3a8a,color:#fff
+    style BAL fill:#1e40af,stroke:#1e3a8a,color:#fff
+    style BEST fill:#059669,stroke:#047857,color:#fff
+```
+
 ![How a DEX aggregator routes your swap across multiple exchanges for the best price](/assets/blog/crypto-unlocked-15/aggregator-routing.png)
 
 > **Pro tip:** Always use an aggregator instead of going directly to a single DEX. The price difference can be 0.5–2% on larger trades. That's free money you're leaving on the table otherwise.

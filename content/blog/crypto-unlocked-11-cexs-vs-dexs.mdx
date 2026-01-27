@@ -17,6 +17,27 @@ In November 2022, [FTX](https://en.wikipedia.org/wiki/FTX_(company)) was the thi
 
 ![CEX vs DEX comparison](/assets/blog/crypto-unlocked-11-cex-vs-dex-comparison.png)
 
+```mermaid
+graph TD
+    subgraph CEX Flow
+        UC[You] -->|deposit funds| EX[Exchange]
+        EX -->|matches order| EX
+        EX -->|trade executes| EX
+        EX -->|you withdraw| UC
+    end
+
+    subgraph DEX Flow
+        UD[You] -->|connect wallet| SC[Smart Contract]
+        SC -->|swap via pool| SC
+        SC -->|tokens return| UD
+    end
+
+    style EX fill:#dc2626,stroke:#991b1b,color:#fff
+    style SC fill:#059669,stroke:#047857,color:#fff
+    style UC fill:#1e40af,stroke:#1e3a8a,color:#fff
+    style UD fill:#1e40af,stroke:#1e3a8a,color:#fff
+```
+
 If you ever needed a reason to understand the difference between centralized and decentralized exchanges, that's it.
 
 ## What Is a Centralized Exchange?
@@ -156,13 +177,19 @@ This isn't about "hiding something." For billions of people worldwide, permissio
 
 This isn't an either/or decision. Smart crypto users use both:
 
-| **Use a CEX when:** | **Use a DEX when:** |
-|---|---|
-| Buying crypto with fiat (bank transfer, card) | Trading tokens not listed on CEXs |
-| You want simple UI and customer support | You want to maintain self-custody |
-| Trading high-volume pairs with tight spreads | Participating in DeFi (yield farming, LPs) |
-| You need advanced order types (stops, limits) | You value privacy and permissionless access |
-| You're just getting started | You don't trust third parties with your funds |
+**Use a CEX when:**
+- Buying crypto with fiat (bank transfer, card)
+- You want simple UI and customer support
+- Trading high-volume pairs with tight spreads
+- You need advanced order types (stops, limits)
+- You're just getting started
+
+**Use a DEX when:**
+- Trading tokens not listed on CEXs
+- You want to maintain self-custody
+- Participating in DeFi (yield farming, LPs)
+- You value privacy and permissionless access
+- You don't trust third parties with your funds
 
 The pragmatic approach: **use a CEX as an on-ramp** (convert fiat to crypto), then **transfer to your own wallet** and use DEXs for everything else. Best of both worlds.
 

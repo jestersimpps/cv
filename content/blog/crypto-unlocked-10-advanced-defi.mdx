@@ -61,12 +61,10 @@ There are only two answers:
 
 Here's how to spot the difference:
 
-| | Real Yield | Emissions |
-|---|---|---|
-| **Source** | Trading fees, interest, liquidations | Newly minted protocol tokens |
-| **Sustainable?** | Yes, if users keep using the protocol | No, eventually rewards must decrease |
-| **Examples** | GMX (fee sharing), Aave (interest income) | Most farm tokens in 2020-2021 |
-| **Red flag** | Low but steady APY (5-20%) | Sky-high APY (500%+) that drops fast |
+- **Source** — Real Yield: Trading fees, interest, liquidations · Emissions: Newly minted protocol tokens
+- **Sustainable?** — Real Yield: Yes, if users keep using the protocol · Emissions: No, eventually rewards must decrease
+- **Examples** — Real Yield: GMX (fee sharing), Aave (interest income) · Emissions: Most farm tokens in 2020-2021
+- **Red flag** — Real Yield: Low but steady APY (5-20%) · Emissions: Sky-high APY (500%+) that drops fast
 
 **[GMX](https://gmx.io/)** is the poster child of real yield. It's a decentralized perpetual exchange. Traders pay fees to trade. Those fees get distributed to GMX stakers and liquidity providers. The yield comes from actual economic activity — people trading.
 
@@ -79,6 +77,24 @@ Here's how to spot the difference:
 Remember staking from earlier in this series? You lock up your ETH (or SOL, or other proof-of-stake tokens) to help secure the network, and you earn rewards. The problem? Your capital is locked. You can't do anything else with it.
 
 Liquid staking solves this elegantly.
+
+```mermaid
+graph LR
+    A[ETH] -->|stake via Lido| B[stETH]
+    B -->|use as collateral| C[Aave / Lending]
+    B -->|provide liquidity| D[Curve / DEX]
+    B -->|restake via EigenLayer| E[eETH / LRT]
+    E -->|secure other protocols| F[AVS Rewards]
+    A -->|staking rewards ~3-4%| B
+    E -->|additional yield| A
+
+    style A fill:#1e40af,stroke:#1e3a8a,color:#fff
+    style B fill:#7c3aed,stroke:#5b21b6,color:#fff
+    style C fill:#059669,stroke:#047857,color:#fff
+    style D fill:#059669,stroke:#047857,color:#fff
+    style E fill:#f59e0b,stroke:#d97706,color:#000
+    style F fill:#059669,stroke:#047857,color:#fff
+```
 
 When you stake ETH through **[Lido](https://lido.fi/)**, you receive **stETH** (staked ETH) — a token that represents your staked ETH plus the staking rewards it's accumulating. You still earn the ~3-4% staking yield, but now you can *also* use stETH in DeFi:
 

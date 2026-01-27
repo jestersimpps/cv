@@ -31,6 +31,23 @@ Why does this matter?
 - **Instant settlement.** Traditional stock trades take T+1 (one business day) to settle. On-chain? Minutes.
 - **Global access.** A farmer in Nigeria can invest in US Treasury bonds without a Goldman Sachs account.
 
+```mermaid
+graph LR
+    RA[Real-World Asset] -->|legal wrapper| SPV[Special Purpose Vehicle]
+    SPV -->|tokenize| SC[Smart Contract]
+    SC -->|mint| TK[On-Chain Tokens]
+    TK -->|trade 24/7| DEX[DEX / Marketplace]
+    TK -->|fractional ownership| INV[Global Investors]
+    INV -->|yields / dividends| SC
+
+    style RA fill:#f59e0b,stroke:#d97706,color:#000
+    style SPV fill:#1e40af,stroke:#1e3a8a,color:#fff
+    style SC fill:#7c3aed,stroke:#5b21b6,color:#fff
+    style TK fill:#059669,stroke:#047857,color:#fff
+    style DEX fill:#059669,stroke:#047857,color:#fff
+    style INV fill:#f59e0b,stroke:#d97706,color:#000
+```
+
 ![RWA tokenization: traditional assets flow through blockchain to become accessible digital tokens](/assets/blog/crypto-unlocked-17/rwa-tokenization-flow.png)
 
 The biggest signal that this is real? **BlackRock** — the world's largest asset manager with over $10 trillion under management — launched [BUIDL](https://securitize.io/buidl), a tokenized US Treasury fund on Ethereum in March 2024. It quickly became the largest tokenized fund, surpassing $500 million in assets within months. When Larry Fink goes on CNBC and calls tokenization "the next generation for markets," you pay attention. This isn't crypto people talking to crypto people anymore. This is Wall Street rebuilding its plumbing.

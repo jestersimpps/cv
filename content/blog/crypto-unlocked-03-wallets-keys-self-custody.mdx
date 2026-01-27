@@ -59,6 +59,30 @@ This means:
 
 ![Hot wallets (software on your phone) vs. cold wallets (hardware devices that stay offline)](/assets/blog/crypto-unlocked/hot-vs-cold-wallets.png)
 
+```mermaid
+graph TD
+    W[Crypto Wallets] --> CU[Custodial]
+    W --> NC[Non-Custodial]
+    NC --> HO[Hot Wallets]
+    NC --> CO[Cold Wallets]
+    HO --> MM[MetaMask]
+    HO --> RB[Rabby]
+    HO --> PH[Phantom]
+    CO --> LE[Ledger]
+    CO --> TR[Trezor]
+    CU --> EX[Exchanges]
+    EX --> CB[Coinbase]
+    EX --> BN[Binance]
+    EX --> KR[Kraken]
+
+    style W fill:#7c3aed,stroke:#5b21b6,color:#fff
+    style CU fill:#dc2626,stroke:#991b1b,color:#fff
+    style NC fill:#059669,stroke:#047857,color:#fff
+    style HO fill:#f59e0b,stroke:#d97706,color:#000
+    style CO fill:#1e40af,stroke:#1e3a8a,color:#fff
+    style EX fill:#dc2626,stroke:#991b1b,color:#fff
+```
+
 Wallets come in two flavors, and understanding the difference matters:
 
 ### Hot Wallets (Software Wallets)
@@ -112,13 +136,11 @@ The people who had moved their crypto to their own wallets? They were fine. Comp
 
 Let me make this crystal clear:
 
-| | **Custodial** (Exchange) | **Non-Custodial** (Your Wallet) |
-|---|---|---|
-| Who holds the keys? | The exchange | You |
-| Can you be frozen out? | Yes | No |
-| Recovery if you lose access? | Customer support | Seed phrase only |
-| Risk | Exchange hack, fraud, bankruptcy | Losing your seed phrase, personal security |
-| Example | Coinbase, Binance, Kraken | MetaMask, Ledger, Phantom |
+- **Who holds the keys?** — Custodial: The exchange · Non-Custodial: You
+- **Can you be frozen out?** — Custodial: Yes · Non-Custodial: No
+- **Recovery if you lose access?** — Custodial: Customer support · Non-Custodial: Seed phrase only
+- **Risk** — Custodial: Exchange hack, fraud, bankruptcy · Non-Custodial: Losing your seed phrase, personal security
+- **Example** — Custodial: Coinbase, Binance, Kraken · Non-Custodial: MetaMask, Ledger, Phantom
 
 Neither approach is inherently "wrong." Keeping some crypto on a reputable exchange is fine, especially if you're actively trading. But for long-term holdings — for anything you'd be devastated to lose — self-custody is the way.
 

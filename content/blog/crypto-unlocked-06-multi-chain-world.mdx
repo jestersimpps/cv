@@ -79,6 +79,36 @@ That's exactly what **Layer 2s** (L2s) do. They process transactions off Ethereu
 
 Imagine Ethereum is a busy courthouse. Every transaction is a legal case that needs to go through the full court process — expensive and slow. Layer 2s are like arbitration services. They handle the disputes quickly and cheaply, but the final ruling is still backed by the authority of the courthouse.
 
+```mermaid
+graph TD
+    ETH[Ethereum L1 — Settlement & Security]
+    ETH --> ARB[Arbitrum]
+    ETH --> OP[Optimism]
+    ETH --> BASE[Base]
+    ETH --> ZKS[zkSync]
+    ETH --> STARK[StarkNet]
+
+    ARB -->|posts proofs| ETH
+    OP -->|posts proofs| ETH
+    BASE -->|posts proofs| ETH
+    ZKS -->|posts proofs| ETH
+    STARK -->|posts proofs| ETH
+
+    SOL[Solana L1]
+    AVAX[Avalanche L1]
+    COSMOS[Cosmos L1]
+
+    style ETH fill:#7c3aed,stroke:#5b21b6,color:#fff
+    style ARB fill:#1e40af,stroke:#1e3a8a,color:#fff
+    style OP fill:#dc2626,stroke:#991b1b,color:#fff
+    style BASE fill:#1e40af,stroke:#1e3a8a,color:#fff
+    style ZKS fill:#059669,stroke:#047857,color:#fff
+    style STARK fill:#059669,stroke:#047857,color:#fff
+    style SOL fill:#9333ea,stroke:#7e22ce,color:#fff
+    style AVAX fill:#dc2626,stroke:#991b1b,color:#fff
+    style COSMOS fill:#1e40af,stroke:#1e3a8a,color:#fff
+```
+
 You can track L2 ecosystem health, TVL, and risk assessments on [L2Beat](https://l2beat.com/scaling/summary) — the go-to dashboard for Layer 2 data.
 
 There are two main flavors of L2 rollups:

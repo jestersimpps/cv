@@ -47,6 +47,21 @@ The killer app of DeFi is surprisingly boring: lending and borrowing. The same t
 
 Here's how it works on platforms like **[Aave](https://aave.com)** or **[Compound](https://compound.finance)**:
 
+```mermaid
+graph LR
+    L[Lender] -->|deposits crypto| P[Lending Pool]
+    P -->|earns interest| L
+    B[Borrower] -->|deposits collateral| P
+    P -->|lends crypto| B
+    B -->|pays interest| P
+    P -->|if collateral drops| LQ[Liquidation]
+
+    style L fill:#059669,stroke:#047857,color:#fff
+    style P fill:#7c3aed,stroke:#5b21b6,color:#fff
+    style B fill:#f59e0b,stroke:#d97706,color:#000
+    style LQ fill:#dc2626,stroke:#991b1b,color:#fff
+```
+
 **If you want to earn interest:**
 1. You deposit your crypto (say, ETH or stablecoins) into a lending pool — a smart contract that holds everyone's deposits together
 2. The protocol lends your crypto out to borrowers

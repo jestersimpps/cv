@@ -79,6 +79,28 @@ That's decentralization. Instead of trusting one institution, you trust math and
 - **Decentralized:** Thousands of participants share control → Bitcoin, Ethereum
 - **The difference:** In a centralized system, you need permission. In a decentralized one, you don't.
 
+```mermaid
+graph LR
+    subgraph Centralized
+        U1[You] -->|send money| B[Bank]
+        B -->|send money| U2[Recipient]
+        B -->|can block| U1
+        B -->|can freeze| U2
+    end
+
+    subgraph Decentralized
+        D1[You] -->|broadcast tx| N[Network of Nodes]
+        N -->|verify & deliver| D2[Recipient]
+    end
+
+    style B fill:#dc2626,stroke:#991b1b,color:#fff
+    style N fill:#7c3aed,stroke:#5b21b6,color:#fff
+    style U1 fill:#1e40af,stroke:#1e3a8a,color:#fff
+    style U2 fill:#1e40af,stroke:#1e3a8a,color:#fff
+    style D1 fill:#059669,stroke:#047857,color:#fff
+    style D2 fill:#059669,stroke:#047857,color:#fff
+```
+
 ![Centralized vs Decentralized vs Distributed networks](https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/Centralised-decentralised-distributed.png/600px-Centralised-decentralised-distributed.png)
 
 ## The Trust Problem (and Why "Trustless" Is a Good Thing)
