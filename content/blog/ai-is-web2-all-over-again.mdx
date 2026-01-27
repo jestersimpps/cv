@@ -1,0 +1,105 @@
+---
+title: "AI Is Web2 All Over Again (And Crypto Might Be the Only Way Out)"
+description: "openai is adding ads, google is reading your emails with gemini, and the zcash founder thinks we're sleepwalking into the same trap. here's why he might be right."
+publishedAt: "2026-01-27"
+author: "Jo V"
+category: "AI"
+tags: ["AI", "Crypto", "Privacy", "Web3", "DeFi"]
+coverImage: "/assets/blog/ai-web2-all-over-again.png"
+featured: true
+---
+
+Here's a pattern I want you to notice.
+
+A new technology emerges. It's exciting, open, and feels like liberation. Early adopters build cool things. Then the platforms show up. They offer convenience, polish, and scale. Users flood in. The platforms lock them in. Then comes the monetization. Ads. Data harvesting. Algorithmic manipulation. The liberating technology becomes a surveillance machine.
+
+This happened with the web. It happened with social media. It happened with mobile. And it's happening right now with AI.
+
+## The Web2 Playbook, Running on GPUs
+
+OpenAI announced it's exploring advertising as a revenue stream. Let that sink in for a moment. The company building the most powerful AI systems on the planet—systems that process your private thoughts, business strategies, medical questions, and creative ideas—is going to start selling ads.
+
+If you've been paying attention to tech history, you know exactly what happens next. The product starts optimizing for engagement instead of accuracy. Responses get subtly shaped to serve advertiser interests. Your conversations become training data for ad targeting. The AI that was supposed to augment your thinking becomes another channel for manipulation.
+
+Google is already further down this road. Gemini is integrating directly into Gmail, Calendar, and Docs. On the surface, it's helpful—summarize this email thread, draft a response, find a time that works. Under the hood, it's the same company that built its empire on reading your emails to serve you ads, now with an AI that understands context orders of magnitude better than keyword matching ever could.
+
+This isn't speculation. This is the business model working as designed.
+
+## The Zcash Founder Called It
+
+I watched a [Bankless interview with Zuko Wilcox](https://www.youtube.com/watch?v=Vii3Pvfby74) (the Zcash creator) this week, and one thing he said hit different:
+
+> "Crypto could be like Linux 15 years from now—something that a couple of mega corporations cost-optimize by using, while 99.9% of people are not empowered or benefited in any way."
+
+He wasn't just talking about crypto. He was talking about every cypherpunk technology that failed to reach normal people. PGP email encryption exists. Tor exists. Self-hosted everything exists. And yet 99% of people use Gmail, Chrome, and WhatsApp because the UX of privacy tools is terrible and the UX of surveillance tools is incredible.
+
+Zuko draws a direct line from this pattern to AI. ChatGPT is already censoring content about privacy tools—Naomi Brockwell documented instances where it refused to help with one-time phone numbers and crypto privacy, not because OpenAI was asked to, but because the model learned that these topics are "problematic." The AI is internalizing the same biases that Web2 platforms enforced through policy.
+
+And here's the kicker about Telegram, where half the crypto world lives:
+
+> "Telegram is a freaking honeypot. It just makes me despair that all the crypto people use Telegram and think it's secure. How dumb can crypto people be?"
+
+He's right. Telegram groups aren't end-to-end encrypted by default. Pavel Durov's organization can read everything. The crypto community's primary communication tool is fundamentally compromised, and most people either don't know or don't care.
+
+## Why This Time Is Different (And Worse)
+
+Here's what makes AI platforms more dangerous than previous Web2 platforms:
+
+**The intimacy of the data is unprecedented.** When you search Google, you reveal what you're curious about. When you use ChatGPT, you reveal how you think. You share half-formed ideas, business plans, personal dilemmas, code with proprietary logic. The depth of understanding an AI platform has about you makes Facebook's social graph look primitive.
+
+**The lock-in is cognitive, not just technical.** Switching from Gmail to ProtonMail is annoying but doable. Switching from an AI assistant you've trained with months of context, preferences, and workflows? That's like changing therapists. Your conversation history, your custom instructions, your fine-tuned workflows—they don't port.
+
+**The feedback loop is self-reinforcing.** Better AI needs more data. More data needs more users. More users need better monetization. Better monetization means ads and data sales. The exact same flywheel that turned Google from "Don't Be Evil" into the world's largest advertising company.
+
+## Moxie Is Back (And Building Private AI)
+
+There's a reason I'm not entirely pessimistic. Moxie Marlinspike—the creator of Signal—is reportedly building a private AI product. If anyone understands how to make encryption invisible and privacy the default, it's him.
+
+Zuko frames Moxie's core insight brilliantly: imagine if every app showed you a truly honest UX—displaying every party with access to your data. The CEO, the sysadmins, the government agencies with subpoena power. Signal "corrects the UX" by making encryption invisible, so the only parties shown are the actual people in the conversation. That's the truth.
+
+AI needs the same treatment. When you talk to ChatGPT, the honest UX would show: you, the model, OpenAI's safety team, OpenAI's training pipeline, potential future advertisers, and whatever government agencies have legal access. A private AI would show: you and the model. That's it.
+
+## What a Crypto-Native AI Stack Could Look Like
+
+This isn't just philosophical. There are concrete technical approaches:
+
+**Inference on encrypted data.** Fully homomorphic encryption (FHE) lets you run computations on encrypted inputs without ever decrypting them. It's still slow, but projects like Zama and Fhenix are making progress. Imagine querying an AI model where even the model operator can't see your prompt.
+
+**Decentralized inference networks.** Instead of one company controlling the model and the data, networks like Bittensor and Ritual distribute inference across independent nodes. No single entity sees the full picture.
+
+**Pay-per-query economics.** Zuko's simplest solution: "People pay for stuff and there's open competition." If you pay directly for AI inference—no ads, no data monetization—the incentives align. Crypto rails make micropayments frictionless. A few cents per query, settled on-chain, with no account required.
+
+```
+// What if AI inference looked like this?
+const response = await privateAI.query({
+  prompt: "Analyze my portfolio allocation",
+  payment: { amount: "0.002", token: "ETH" },
+  encryption: "FHE",  // prompt never visible to operator
+  network: "decentralized"  // no single point of surveillance
+});
+```
+
+This isn't science fiction. Every component exists today in some form. The gap is UX—exactly the problem Zuko identified.
+
+## The 100 Million User Problem
+
+Here's the uncomfortable truth. Privacy tools have existed for decades. They've never reached mass adoption. Not because people don't care about privacy—they do, when you explain what's at stake—but because the convenient option always wins.
+
+Signal has about 40 million users. WhatsApp has 2 billion. The difference isn't encryption quality. It's network effects and UX.
+
+For private AI to matter, it needs to be as good as ChatGPT, as easy to use, and available where people already are. That's a massive challenge. But the Zcash price action is encouraging—ZEC surged from $50 to $750 with zero advertising, purely on organic demand for financial privacy. People will pay for privacy when the product delivers.
+
+## What I'm Actually Doing
+
+I'm not waiting for the perfect private AI to exist. Here's my practical approach:
+
+1. **Self-host what you can.** Running local models (Llama, Mistral) for sensitive tasks. The quality gap with frontier models is shrinking fast.
+2. **Compartmentalize.** Use cloud AI for non-sensitive work. Keep proprietary code, business strategy, and personal data local.
+3. **Pay for products.** Every free AI tool has a business model you can't see. If you're not paying, you're the product. This hasn't changed since 2010.
+4. **Watch what Moxie builds.** Whatever he ships will set the standard for private AI UX.
+
+The Web2 playbook is running again, faster and with higher stakes. The question isn't whether AI platforms will exploit your data—they will, because the incentive structure demands it. The question is whether we'll build alternatives before the lock-in becomes permanent.
+
+We've got maybe two years. The ad-supported AI model is just getting started. The crypto-native alternative hasn't shipped yet. The window is open, but it's closing.
+
+Don't sleep on this one.
