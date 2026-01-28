@@ -2,7 +2,8 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import Link from 'next/link';
+import { useTranslations } from 'next-intl';
+import { Link } from '@/i18n/navigation';
 import { Mail, Phone, MapPin, Github, Linkedin, Globe, MessageCircle, Send, Loader2, CheckCircle, Briefcase, ArrowRight } from 'lucide-react';
 
 const XIcon = ({ className }: { className?: string }) => (
@@ -12,27 +13,6 @@ const XIcon = ({ className }: { className?: string }) => (
 );
 import GradientOrbs from '@/components/ui/GradientOrbs';
 import GridLines from '@/components/ui/GridLines';
-
-const contactInfo = [
-  {
-    icon: Mail,
-    label: 'Email',
-    value: 'jov2all@gmail.com',
-    href: 'mailto:jov2all@gmail.com',
-  },
-  {
-    icon: Phone,
-    label: 'Phone',
-    value: '+32 468 207 619',
-    href: 'tel:+32468207619',
-  },
-  {
-    icon: MapPin,
-    label: 'Location',
-    value: 'Remote / Belgium / Barcelona / Lanhelas Portugal',
-    href: null,
-  },
-];
 
 const socialLinks = [
   {
@@ -65,11 +45,33 @@ const socialLinks = [
 type FormStatus = 'idle' | 'loading' | 'success' | 'error';
 
 export default function ContactSection() {
+  const t = useTranslations('contact');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
   const [status, setStatus] = useState<FormStatus>('idle');
   const [errorMessage, setErrorMessage] = useState('');
+
+  const contactInfo = [
+    {
+      icon: Mail,
+      label: t('email'),
+      value: 'jov2all@gmail.com',
+      href: 'mailto:jov2all@gmail.com',
+    },
+    {
+      icon: Phone,
+      label: t('phone'),
+      value: '+32 468 207 619',
+      href: 'tel:+32468207619',
+    },
+    {
+      icon: MapPin,
+      label: t('location'),
+      value: t('locationValue'),
+      href: null,
+    },
+  ];
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -104,7 +106,7 @@ export default function ContactSection() {
       setTimeout(() => setStatus('idle'), 5000);
     } catch (err) {
       setStatus('error');
-      setErrorMessage(err instanceof Error ? err.message : 'Something went wrong');
+      setErrorMessage(err instanceof Error ? err.message : t('form.error'));
     }
   };
 
@@ -122,11 +124,11 @@ export default function ContactSection() {
         >
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-full mb-4">
             <MessageCircle className="w-4 h-4 text-white" />
-            <span className="text-sm text-neutral-400">Get in Touch</span>
+            <span className="text-sm text-neutral-400">{t('badge')}</span>
           </div>
-          <h2 className="text-4xl font-bold text-white mb-4">Let&apos;s Work Together</h2>
+          <h2 className="text-4xl font-bold text-white mb-4">{t('title')}</h2>
           <p className="text-neutral-400 max-w-2xl mx-auto">
-            Have a project in mind? I&apos;d love to hear about it. Let&apos;s discuss how we can bring your ideas to life.
+            {t('subtitle')}
           </p>
         </motion.div>
 
@@ -138,7 +140,7 @@ export default function ContactSection() {
             viewport={{ once: true }}
             className="space-y-6"
           >
-            <h3 className="text-xl font-semibold text-white mb-6">Contact Information</h3>
+            <h3 className="text-xl font-semibold text-white mb-6">{t('infoTitle')}</h3>
             {contactInfo.map((contact) => (
               <div key={contact.label} className="flex items-center gap-4">
                 <div className="p-3 bg-white/5 border border-white/10 rounded-xl">
@@ -161,7 +163,7 @@ export default function ContactSection() {
             ))}
 
             <div className="pt-6">
-              <h4 className="text-sm text-neutral-500 mb-4">Connect with me</h4>
+              <h4 className="text-sm text-neutral-500 mb-4">{t('connect')}</h4>
               <div className="flex gap-3">
                 {socialLinks.map((social) => (
                   <a
@@ -185,7 +187,7 @@ export default function ContactSection() {
                 className="inline-flex items-center gap-2 text-neutral-300 hover:text-white transition-colors text-sm group"
               >
                 <Briefcase className="w-4 h-4" />
-                <span>Hiring? Try my AI-powered job assessment tool</span>
+                <span>{t('recruiters')}</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </Link>
             </div>
@@ -198,19 +200,19 @@ export default function ContactSection() {
             viewport={{ once: true }}
             className="p-8 bg-white/5 border border-white/10 rounded-2xl"
           >
-            <h3 className="text-xl font-semibold text-white mb-6">Send a Message</h3>
+            <h3 className="text-xl font-semibold text-white mb-6">{t('form.title')}</h3>
 
             {status === 'success' ? (
               <div className="flex flex-col items-center justify-center py-12 text-center">
                 <CheckCircle className="w-12 h-12 text-emerald-500 mb-4" />
-                <h4 className="text-lg font-semibold text-white mb-2">Message Sent!</h4>
-                <p className="text-neutral-400">Thanks for reaching out. I&apos;ll get back to you soon.</p>
+                <h4 className="text-lg font-semibold text-white mb-2">{t('form.success')}</h4>
+                <p className="text-neutral-400">{t('form.successMessage')}</p>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
                   <label htmlFor="name" className="block text-sm text-neutral-400 mb-2">
-                    Name
+                    {t('form.name')}
                   </label>
                   <input
                     type="text"
@@ -219,13 +221,13 @@ export default function ContactSection() {
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-neutral-500 focus:outline-none focus:border-white/30 transition-colors"
-                    placeholder="Your name"
+                    placeholder={t('form.namePlaceholder')}
                     disabled={status === 'loading'}
                   />
                 </div>
                 <div>
                   <label htmlFor="email" className="block text-sm text-neutral-400 mb-2">
-                    Email
+                    {t('form.email')}
                   </label>
                   <input
                     type="email"
@@ -234,13 +236,13 @@ export default function ContactSection() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-neutral-500 focus:outline-none focus:border-white/30 transition-colors"
-                    placeholder="your@email.com"
+                    placeholder={t('form.emailPlaceholder')}
                     disabled={status === 'loading'}
                   />
                 </div>
                 <div>
                   <label htmlFor="message" className="block text-sm text-neutral-400 mb-2">
-                    Message
+                    {t('form.message')}
                   </label>
                   <textarea
                     id="message"
@@ -249,7 +251,7 @@ export default function ContactSection() {
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
                     className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-neutral-500 focus:outline-none focus:border-white/30 transition-colors resize-none"
-                    placeholder="Tell me about your project..."
+                    placeholder={t('form.messagePlaceholder')}
                     disabled={status === 'loading'}
                   />
                 </div>
@@ -266,10 +268,10 @@ export default function ContactSection() {
                   {status === 'loading' ? (
                     <>
                       <Loader2 className="w-4 h-4 animate-spin" />
-                      Sending...
+                      {t('form.sending')}
                     </>
                   ) : (
-                    'Send Message'
+                    t('form.send')
                   )}
                 </button>
               </form>

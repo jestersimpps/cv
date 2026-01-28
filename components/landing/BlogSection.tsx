@@ -2,9 +2,10 @@
 
 import { useMemo } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { BookOpen, Clock, Calendar, ArrowRight } from 'lucide-react';
+import { useTranslations } from 'next-intl';
+import { Link } from '@/i18n/navigation';
 import { BlogPost } from '@/lib/models/blog';
 import { formatDate } from '@/lib/utils/date';
 import SeriesCardStack from '@/components/blog/SeriesCardStack';
@@ -80,6 +81,7 @@ function groupPostsWithSeries(posts: BlogPost[]): DisplayItem[] {
 }
 
 export default function BlogSection({ posts }: BlogSectionProps) {
+  const t = useTranslations('blog');
   const displayItems = useMemo(() => {
     return groupPostsWithSeries(posts).slice(0, 3);
   }, [posts]);
@@ -98,11 +100,11 @@ export default function BlogSection({ posts }: BlogSectionProps) {
         >
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-full mb-4">
             <BookOpen className="w-4 h-4 text-white" />
-            <span className="text-sm text-neutral-400">Latest Articles</span>
+            <span className="text-sm text-neutral-400">{t('badge')}</span>
           </div>
-          <h2 className="text-4xl font-bold text-white mb-4">Blog</h2>
+          <h2 className="text-4xl font-bold text-white mb-4">{t('title')}</h2>
           <p className="text-neutral-400 max-w-2xl mx-auto">
-            Thoughts on development, AI, Web3, and building products
+            {t('subtitle')}
           </p>
         </motion.div>
 
@@ -167,7 +169,7 @@ export default function BlogSection({ posts }: BlogSectionProps) {
                           {formatDate(post.publishedAt)}
                         </div>
                         <span className="flex items-center gap-1 text-xs text-white/70 group-hover:text-white transition-colors">
-                          Read
+                          {t('readMore')}
                           <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                         </span>
                       </div>
@@ -192,7 +194,7 @@ export default function BlogSection({ posts }: BlogSectionProps) {
             href="/blog"
             className="inline-flex items-center gap-2 px-6 py-3 bg-white text-black rounded-full font-medium hover:bg-neutral-200 transition-colors"
           >
-            View all posts
+            {t('viewAll')}
             <ArrowRight className="w-4 h-4" />
           </Link>
         </motion.div>

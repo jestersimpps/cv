@@ -1,8 +1,11 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { useTranslations } from 'next-intl';
 
 export default function Footer() {
+  const t = useTranslations('footer');
+
   return (
     <footer className="bg-black py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -14,7 +17,7 @@ export default function Footer() {
           className="text-center"
         >
           <p className="text-neutral-500 text-sm">
-            &copy; {new Date().getFullYear()} Jo V. All rights reserved.
+            {t('copyright', { year: new Date().getFullYear() })}
           </p>
         </motion.div>
       </div>

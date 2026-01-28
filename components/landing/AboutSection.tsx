@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import { Github, Linkedin, Globe, Mail, MapPin, Send } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 
 const XIcon = ({ className }: { className?: string }) => (
   <svg className={className} viewBox="0 0 24 24" fill="currentColor">
@@ -10,37 +11,6 @@ const XIcon = ({ className }: { className?: string }) => (
 );
 import { motion } from 'framer-motion';
 import GitHubContributionGraph from '@/components/GitHubContributionGraph';
-
-const stats = [
-  { value: '13+', label: 'Years Experience' },
-  { value: '45+', label: 'Projects Completed' },
-  { value: '6', label: 'Languages Spoken' },
-  { value: '10+', label: 'Technologies' },
-];
-
-const personalSkills = {
-  strengths: {
-    label: 'Strengths',
-    skills: ['Customer friendly', 'Fast learner', 'Ship fast', 'Can work autonomously', 'Pro-active', 'Love to automate my work', 'Thinks out of the box'],
-  },
-  workingStyle: {
-    label: 'Working Style',
-    skills: ['Break things', 'Continuously improves code', 'Iterative', 'Fast shipper'],
-  },
-  weaknesses: {
-    label: 'Honest Weaknesses',
-    skills: ['Loses interest fast', 'Not a good planner', 'Hates repetitive work'],
-  },
-};
-
-const languages = [
-  { language: 'Dutch', flag: '🇳🇱', level: 'Native', bars: 5 },
-  { language: 'English', flag: '🇬🇧', level: 'Fluent', bars: 5 },
-  { language: 'French', flag: '🇫🇷', level: 'Good', bars: 4 },
-  { language: 'Spanish', flag: '🇪🇸', level: 'Conversational', bars: 3 },
-  { language: 'German', flag: '🇩🇪', level: 'Basic', bars: 2 },
-  { language: 'Chinese', flag: '🇨🇳', level: 'Basic', bars: 1 },
-];
 
 const socialLinks = [
   { icon: Github, href: 'https://github.com/jestersimpps', label: 'GitHub' },
@@ -51,6 +21,24 @@ const socialLinks = [
 ];
 
 export default function AboutSection() {
+  const t = useTranslations('about');
+
+  const stats = [
+    { value: '13+', label: t('stats.yearsExperience') },
+    { value: '45+', label: t('stats.projectsCompleted') },
+    { value: '6', label: t('stats.languagesSpoken') },
+    { value: '10+', label: t('stats.technologies') },
+  ];
+
+  const languages = [
+    { language: t('languages.dutch'), flag: '🇳🇱', level: t('languages.native'), bars: 5 },
+    { language: t('languages.english'), flag: '🇬🇧', level: t('languages.fluent'), bars: 5 },
+    { language: t('languages.french'), flag: '🇫🇷', level: t('languages.good'), bars: 4 },
+    { language: t('languages.spanish'), flag: '🇪🇸', level: t('languages.conversational'), bars: 3 },
+    { language: t('languages.german'), flag: '🇩🇪', level: t('languages.basic'), bars: 2 },
+    { language: t('languages.chinese'), flag: '🇨🇳', level: t('languages.basic'), bars: 1 },
+  ];
+
   return (
     <section id="about" className="py-24 bg-gradient-to-b from-neutral-900 via-neutral-950 to-black relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -62,11 +50,11 @@ export default function AboutSection() {
           className="text-center mb-16"
         >
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-full mb-4">
-            <span className="text-sm text-neutral-400">About Me</span>
+            <span className="text-sm text-neutral-400">{t('badge')}</span>
           </div>
-          <h2 className="text-4xl font-bold text-white mb-4">Full Stack Developer</h2>
+          <h2 className="text-4xl font-bold text-white mb-4">{t('title')}</h2>
           <p className="text-neutral-400 max-w-2xl mx-auto">
-            Web3 & AI Enthusiast with 13+ years of professional experience
+            {t('subtitle')}
           </p>
         </motion.div>
 
@@ -88,10 +76,7 @@ export default function AboutSection() {
                   />
                 </div>
                 <p className="text-neutral-300 text-lg leading-relaxed flex-1">
-                Over 13 years of experience building ERP, SaaS applications and web platforms.
-                Highly familiar with a wide variety of web development technologies, frameworks and build tools.
-                Currently specializing in TypeScript-first architectures with Angular/Next.js/NestJS/Convex and exploring
-                Web3/blockchain technologies and AI integrations.
+                  {t('bio')}
                 </p>
               </div>
             </div>
