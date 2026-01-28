@@ -1,0 +1,130 @@
+{
+  "meta": {
+    "title": "Jo V - Développeur Full Stack",
+    "description": "Plus de 13 ans d'expérience dans la création de systèmes ERP, de plateformes SaaS et d'applications web modernes"
+  },
+  "nav": {
+    "about": "À propos",
+    "experience": "Expérience",
+    "blog": "Blog",
+    "contact": "Contact"
+  },
+  "hero": {
+    "name": "Jo V",
+    "title": "Développeur Full Stack, Passionné Web3 & IA",
+    "subtitle": "Plus de 13 ans d'expérience dans la création de systèmes ERP, de plateformes SaaS et d'applications web modernes. Spécialisé dans l'intégration IA, le développement blockchain et les architectures évolutives."
+  },
+  "about": {
+    "badge": "À Propos",
+    "title": "Développeur Full Stack",
+    "subtitle": "Passionné Web3 & IA avec plus de 13 ans d'expérience professionnelle",
+    "bio": "Plus de 13 ans d'expérience dans la création d'applications ERP, SaaS et de plateformes web. Grande familiarité avec une variété de technologies, frameworks et outils de développement web. Actuellement spécialisé dans les architectures TypeScript-first avec Angular/Next.js/NestJS/Convex et exploration des technologies Web3/blockchain et des intégrations IA.",
+    "stats": {
+      "yearsExperience": "Années d'Expérience",
+      "projectsCompleted": "Projets Réalisés",
+      "languagesSpoken": "Langues Parlées",
+      "technologies": "Technologies"
+    },
+    "skills": {
+      "strengths": "Points Forts",
+      "workingStyle": "Style de Travail",
+      "weaknesses": "Faiblesses Honnêtes"
+    },
+    "skillItems": {
+      "customerFriendly": "Orienté client",
+      "fastLearner": "Apprend vite",
+      "shipFast": "Livre rapidement",
+      "autonomous": "Autonome",
+      "proactive": "Pro-actif",
+      "automate": "Aime automatiser",
+      "outOfBox": "Pense différemment",
+      "breakThings": "N'a pas peur de casser",
+      "improves": "Améliore le code continuellement",
+      "iterative": "Itératif",
+      "fastShipper": "Livraison rapide",
+      "losesInterest": "Perd vite l'intérêt",
+      "notPlanner": "Pas un bon planificateur",
+      "hatesRepetitive": "Déteste le travail répétitif"
+    },
+    "languages": {
+      "dutch": "Néerlandais",
+      "english": "Anglais",
+      "french": "Français",
+      "spanish": "Espagnol",
+      "german": "Allemand",
+      "chinese": "Chinois",
+      "native": "Langue maternelle",
+      "fluent": "Courant",
+      "good": "Bon",
+      "conversational": "Conversationnel",
+      "basic": "Basique"
+    }
+  },
+  "experience": {
+    "badge": "Parcours",
+    "title": "Expérience Professionnelle",
+    "subtitle": "Un voyage à travers plus de 13 ans de création de produits numériques",
+    "viewProject": "Voir le Projet",
+    "personalProject": "Projet Personnel",
+    "coFounder": "Co-fondateur",
+    "ongoing": "en cours",
+    "present": "Présent"
+  },
+  "blog": {
+    "badge": "Derniers Articles",
+    "title": "Du Blog",
+    "subtitle": "Réflexions sur le développement, l'IA, le Web3 et la création de produits",
+    "readMore": "Lire la Suite",
+    "viewAll": "Voir Tous les Articles",
+    "minRead": "min de lecture",
+    "backToBlog": "Retour au Blog",
+    "tableOfContents": "Table des Matières",
+    "shareArticle": "Partager cet article",
+    "relatedPosts": "Articles Connexes",
+    "newsletter": {
+      "title": "Abonnez-vous à ma newsletter",
+      "description": "Soyez notifié quand je publie de nouveaux articles",
+      "placeholder": "Entrez votre email",
+      "subscribe": "S'abonner",
+      "success": "Merci de votre inscription !",
+      "error": "Une erreur s'est produite"
+    }
+  },
+  "contact": {
+    "badge": "Me Contacter",
+    "title": "Travaillons Ensemble",
+    "subtitle": "Vous avez un projet en tête ? J'aimerais en entendre parler. Discutons de la façon de concrétiser vos idées.",
+    "infoTitle": "Coordonnées",
+    "email": "Email",
+    "phone": "Téléphone",
+    "location": "Localisation",
+    "locationValue": "Télétravail / Belgique / Barcelone / Lanhelas Portugal",
+    "connect": "Me suivre",
+    "recruiters": "Vous recrutez ? Essayez mon outil d'évaluation d'emploi propulsé par l'IA",
+    "form": {
+      "title": "Envoyer un Message",
+      "name": "Nom",
+      "namePlaceholder": "Votre nom",
+      "email": "Email",
+      "emailPlaceholder": "votre@email.com",
+      "message": "Message",
+      "messagePlaceholder": "Parlez-moi de votre projet...",
+      "send": "Envoyer le Message",
+      "sending": "Envoi en cours...",
+      "success": "Message Envoyé !",
+      "successMessage": "Merci de m'avoir contacté. Je vous répondrai bientôt.",
+      "error": "Une erreur s'est produite"
+    }
+  },
+  "footer": {
+    "copyright": "© {year} Jo V. Tous droits réservés.",
+    "builtWith": "Construit avec Next.js et déployé sur Vercel"
+  },
+  "common": {
+    "loading": "Chargement...",
+    "error": "Une erreur s'est produite",
+    "retry": "Réessayer",
+    "close": "Fermer",
+    "language": "Langue"
+  }
+}

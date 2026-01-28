@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import { getAllPosts, getAllTags, getAllSeries } from '@/lib/blog';
 import BlogPageClient from '@/components/blog/BlogPageClient';
+import { setRequestLocale } from 'next-intl/server';
 
 const siteUrl = 'https://www.jovweb.dev';
 
@@ -38,7 +39,14 @@ export const metadata: Metadata = {
   },
 };
 
-export default function BlogPage() {
+type Props = {
+  params: Promise<{ locale: string }>;
+};
+
+export default async function BlogPage({ params }: Props) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+
   const posts = getAllPosts();
   const tags = getAllTags();
   const series = getAllSeries();

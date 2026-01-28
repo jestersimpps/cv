@@ -1,0 +1,130 @@
+{
+  "meta": {
+    "title": "Jo V - Full Stack Developer",
+    "description": "13+ jaar ervaring in het bouwen van ERP-systemen, SaaS-platforms en moderne webapplicaties"
+  },
+  "nav": {
+    "about": "Over mij",
+    "experience": "Ervaring",
+    "blog": "Blog",
+    "contact": "Contact"
+  },
+  "hero": {
+    "name": "Jo V",
+    "title": "Full Stack Developer, Web3 & AI Enthousiasteling",
+    "subtitle": "13+ jaar ervaring in het bouwen van ERP-systemen, SaaS-platforms en moderne webapplicaties. Gespecialiseerd in AI-integratie, blockchain-ontwikkeling en schaalbare architecturen."
+  },
+  "about": {
+    "badge": "Over Mij",
+    "title": "Full Stack Developer",
+    "subtitle": "Web3 & AI Enthousiasteling met 13+ jaar professionele ervaring",
+    "bio": "Meer dan 13 jaar ervaring in het bouwen van ERP-, SaaS-applicaties en webplatformen. Uitgebreide kennis van diverse webontwikkelingstechnologieën, frameworks en build tools. Momenteel gespecialiseerd in TypeScript-first architecturen met Angular/Next.js/NestJS/Convex en verkenning van Web3/blockchain-technologieën en AI-integraties.",
+    "stats": {
+      "yearsExperience": "Jaar Ervaring",
+      "projectsCompleted": "Projecten Afgerond",
+      "languagesSpoken": "Talen Gesproken",
+      "technologies": "Technologieën"
+    },
+    "skills": {
+      "strengths": "Sterktes",
+      "workingStyle": "Werkstijl",
+      "weaknesses": "Eerlijke Zwaktes"
+    },
+    "skillItems": {
+      "customerFriendly": "Klantvriendelijk",
+      "fastLearner": "Snelle leerling",
+      "shipFast": "Levert snel",
+      "autonomous": "Kan zelfstandig werken",
+      "proactive": "Pro-actief",
+      "automate": "Automatiseert graag",
+      "outOfBox": "Denkt buiten de lijntjes",
+      "breakThings": "Breekt dingen",
+      "improves": "Verbetert code continu",
+      "iterative": "Iteratief",
+      "fastShipper": "Snelle levering",
+      "losesInterest": "Verliest snel interesse",
+      "notPlanner": "Geen goede planner",
+      "hatesRepetitive": "Haat repetitief werk"
+    },
+    "languages": {
+      "dutch": "Nederlands",
+      "english": "Engels",
+      "french": "Frans",
+      "spanish": "Spaans",
+      "german": "Duits",
+      "chinese": "Chinees",
+      "native": "Moedertaal",
+      "fluent": "Vloeiend",
+      "good": "Goed",
+      "conversational": "Conversationeel",
+      "basic": "Basis"
+    }
+  },
+  "experience": {
+    "badge": "Carrièrepad",
+    "title": "Professionele Ervaring",
+    "subtitle": "Een reis door 13+ jaar digitale producten bouwen",
+    "viewProject": "Bekijk Project",
+    "personalProject": "Persoonlijk Project",
+    "coFounder": "Medeoprichter",
+    "ongoing": "lopend",
+    "present": "Heden"
+  },
+  "blog": {
+    "badge": "Laatste Artikelen",
+    "title": "Van de Blog",
+    "subtitle": "Gedachten over ontwikkeling, AI, Web3 en het bouwen van producten",
+    "readMore": "Lees Meer",
+    "viewAll": "Bekijk Alle Posts",
+    "minRead": "min lezen",
+    "backToBlog": "Terug naar Blog",
+    "tableOfContents": "Inhoudsopgave",
+    "shareArticle": "Deel dit artikel",
+    "relatedPosts": "Gerelateerde Posts",
+    "newsletter": {
+      "title": "Abonneer op mijn nieuwsbrief",
+      "description": "Word op de hoogte gebracht wanneer ik nieuwe artikelen publiceer",
+      "placeholder": "Vul je email in",
+      "subscribe": "Abonneren",
+      "success": "Bedankt voor je inschrijving!",
+      "error": "Er ging iets mis"
+    }
+  },
+  "contact": {
+    "badge": "Neem Contact Op",
+    "title": "Laten We Samenwerken",
+    "subtitle": "Heb je een project in gedachten? Ik hoor er graag over. Laten we bespreken hoe we je ideeën tot leven kunnen brengen.",
+    "infoTitle": "Contactgegevens",
+    "email": "Email",
+    "phone": "Telefoon",
+    "location": "Locatie",
+    "locationValue": "Remote / België / Barcelona / Lanhelas Portugal",
+    "connect": "Verbind met mij",
+    "recruiters": "Aan het werven? Probeer mijn AI-gestuurde functiebeoordelingstool",
+    "form": {
+      "title": "Stuur een Bericht",
+      "name": "Naam",
+      "namePlaceholder": "Je naam",
+      "email": "Email",
+      "emailPlaceholder": "jouw@email.com",
+      "message": "Bericht",
+      "messagePlaceholder": "Vertel me over je project...",
+      "send": "Verstuur Bericht",
+      "sending": "Versturen...",
+      "success": "Bericht Verzonden!",
+      "successMessage": "Bedankt voor je bericht. Ik neem snel contact op.",
+      "error": "Er ging iets mis"
+    }
+  },
+  "footer": {
+    "copyright": "© {year} Jo V. Alle rechten voorbehouden.",
+    "builtWith": "Gebouwd met Next.js en gedeployed op Vercel"
+  },
+  "common": {
+    "loading": "Laden...",
+    "error": "Er ging iets mis",
+    "retry": "Probeer opnieuw",
+    "close": "Sluiten",
+    "language": "Taal"
+  }
+}

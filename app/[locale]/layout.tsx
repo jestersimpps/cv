@@ -4,6 +4,10 @@ import { Analytics } from "@vercel/analytics/react";
 import { Suspense } from "react";
 import { PostHogPageview } from "@/components/PostHogProvider";
 import CookieConsent from "@/components/CookieConsent";
+import { NextIntlClientProvider } from "next-intl";
+import { getMessages, setRequestLocale } from "next-intl/server";
+import { routing, locales, Locale } from "@/i18n/routing";
+import { notFound } from "next/navigation";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -17,6 +21,10 @@ const geistMono = Geist_Mono({
 });
 
 const siteUrl = "https://www.jovweb.dev";
+
+export function generateStaticParams() {
+  return locales.map((locale) => ({ locale }));
+}
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -126,13 +134,27 @@ const jsonLd = {
   },
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
+type Props = {
   children: React.ReactNode;
-}>) {
+  params: Promise<{ locale: string }>;
+};
+
+export default async function LocaleLayout({ children, params }: Props) {
+  const { locale } = await params;
+
+  // Validate that the incoming locale is valid
+  if (!routing.locales.includes(locale as Locale)) {
+    notFound();
+  }
+
+  // Enable static rendering
+  setRequestLocale(locale);
+
+  // Provide all messages to the client
+  const messages = await getMessages();
+
   return (
-    <html lang="en" className="dark scroll-smooth">
+    <html lang={locale} className="dark scroll-smooth">
       <head>
         <script
           type="application/ld+json"
@@ -142,12 +164,14 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-black text-white`}
       >
-        <Suspense fallback={null}>
-          <PostHogPageview />
-        </Suspense>
-        {children}
-        <CookieConsent />
-        <Analytics />
+        <NextIntlClientProvider messages={messages}>
+          <Suspense fallback={null}>
+            <PostHogPageview />
+          </Suspense>
+          {children}
+          <CookieConsent />
+          <Analytics />
+        </NextIntlClientProvider>
       </body>
     </html>
   );

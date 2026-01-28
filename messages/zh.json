@@ -1,0 +1,130 @@
+{
+  "meta": {
+    "title": "Jo V - 全栈开发工程师",
+    "description": "13年以上ERP系统、SaaS平台和现代Web应用开发经验"
+  },
+  "nav": {
+    "about": "关于我",
+    "experience": "工作经历",
+    "blog": "博客",
+    "contact": "联系方式"
+  },
+  "hero": {
+    "name": "Jo V",
+    "title": "全栈开发工程师，Web3与AI爱好者",
+    "subtitle": "13年以上ERP系统、SaaS平台和现代Web应用开发经验。专注于AI集成、区块链开发和可扩展架构。"
+  },
+  "about": {
+    "badge": "关于我",
+    "title": "全栈开发工程师",
+    "subtitle": "Web3与AI爱好者，拥有13年以上专业经验",
+    "bio": "超过13年的ERP、SaaS应用和Web平台开发经验。熟悉各种Web开发技术、框架和构建工具。目前专注于TypeScript优先的架构，使用Angular/Next.js/NestJS/Convex，并探索Web3/区块链技术和AI集成。",
+    "stats": {
+      "yearsExperience": "年经验",
+      "projectsCompleted": "完成项目",
+      "languagesSpoken": "语言能力",
+      "technologies": "技术栈"
+    },
+    "skills": {
+      "strengths": "优势",
+      "workingStyle": "工作风格",
+      "weaknesses": "坦诚的不足"
+    },
+    "skillItems": {
+      "customerFriendly": "客户友好",
+      "fastLearner": "学习能力强",
+      "shipFast": "快速交付",
+      "autonomous": "独立工作能力强",
+      "proactive": "积极主动",
+      "automate": "热爱自动化",
+      "outOfBox": "创新思维",
+      "breakThings": "勇于尝试",
+      "improves": "持续改进代码",
+      "iterative": "迭代式开发",
+      "fastShipper": "快速发布",
+      "losesInterest": "容易失去兴趣",
+      "notPlanner": "规划能力一般",
+      "hatesRepetitive": "不喜欢重复性工作"
+    },
+    "languages": {
+      "dutch": "荷兰语",
+      "english": "英语",
+      "french": "法语",
+      "spanish": "西班牙语",
+      "german": "德语",
+      "chinese": "中文",
+      "native": "母语",
+      "fluent": "流利",
+      "good": "良好",
+      "conversational": "会话水平",
+      "basic": "基础"
+    }
+  },
+  "experience": {
+    "badge": "职业历程",
+    "title": "工作经历",
+    "subtitle": "13年以上数字产品开发之旅",
+    "viewProject": "查看项目",
+    "personalProject": "个人项目",
+    "coFounder": "联合创始人",
+    "ongoing": "进行中",
+    "present": "至今"
+  },
+  "blog": {
+    "badge": "最新文章",
+    "title": "博客文章",
+    "subtitle": "关于开发、AI、Web3和产品构建的思考",
+    "readMore": "阅读更多",
+    "viewAll": "查看所有文章",
+    "minRead": "分钟阅读",
+    "backToBlog": "返回博客",
+    "tableOfContents": "目录",
+    "shareArticle": "分享文章",
+    "relatedPosts": "相关文章",
+    "newsletter": {
+      "title": "订阅我的通讯",
+      "description": "新文章发布时获得通知",
+      "placeholder": "输入您的邮箱",
+      "subscribe": "订阅",
+      "success": "感谢订阅！",
+      "error": "出现错误"
+    }
+  },
+  "contact": {
+    "badge": "联系我",
+    "title": "让我们一起合作",
+    "subtitle": "有项目想法？我很想听听。让我们讨论如何将您的想法变为现实。",
+    "infoTitle": "联系方式",
+    "email": "邮箱",
+    "phone": "电话",
+    "location": "位置",
+    "locationValue": "远程 / 比利时 / 巴塞罗那 / 葡萄牙Lanhelas",
+    "connect": "关注我",
+    "recruiters": "招聘中？试试我的AI职位评估工具",
+    "form": {
+      "title": "发送消息",
+      "name": "姓名",
+      "namePlaceholder": "您的姓名",
+      "email": "邮箱",
+      "emailPlaceholder": "your@email.com",
+      "message": "消息",
+      "messagePlaceholder": "告诉我您的项目...",
+      "send": "发送消息",
+      "sending": "发送中...",
+      "success": "消息已发送！",
+      "successMessage": "感谢您的联系，我会尽快回复。",
+      "error": "出现错误"
+    }
+  },
+  "footer": {
+    "copyright": "© {year} Jo V. 保留所有权利。",
+    "builtWith": "使用Next.js构建，部署在Vercel"
+  },
+  "common": {
+    "loading": "加载中...",
+    "error": "出现错误",
+    "retry": "重试",
+    "close": "关闭",
+    "language": "语言"
+  }
+}

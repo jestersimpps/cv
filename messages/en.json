@@ -1,0 +1,130 @@
+{
+  "meta": {
+    "title": "Jo V - Full Stack Developer",
+    "description": "13+ years building ERP systems, SaaS platforms, and modern web applications"
+  },
+  "nav": {
+    "about": "About",
+    "experience": "Experience",
+    "blog": "Blog",
+    "contact": "Contact"
+  },
+  "hero": {
+    "name": "Jo V",
+    "title": "Full Stack Developer, Web3 & AI Enthusiast",
+    "subtitle": "13+ years building ERP systems, SaaS platforms, and modern web applications. Specializing in AI integration, blockchain development, and scalable architectures."
+  },
+  "about": {
+    "badge": "About Me",
+    "title": "Full Stack Developer",
+    "subtitle": "Web3 & AI Enthusiast with 13+ years of professional experience",
+    "bio": "Over 13 years of experience building ERP, SaaS applications and web platforms. Highly familiar with a wide variety of web development technologies, frameworks and build tools. Currently specializing in TypeScript-first architectures with Angular/Next.js/NestJS/Convex and exploring Web3/blockchain technologies and AI integrations.",
+    "stats": {
+      "yearsExperience": "Years Experience",
+      "projectsCompleted": "Projects Completed",
+      "languagesSpoken": "Languages Spoken",
+      "technologies": "Technologies"
+    },
+    "skills": {
+      "strengths": "Strengths",
+      "workingStyle": "Working Style",
+      "weaknesses": "Honest Weaknesses"
+    },
+    "skillItems": {
+      "customerFriendly": "Customer friendly",
+      "fastLearner": "Fast learner",
+      "shipFast": "Ship fast",
+      "autonomous": "Can work autonomously",
+      "proactive": "Pro-active",
+      "automate": "Love to automate my work",
+      "outOfBox": "Thinks out of the box",
+      "breakThings": "Break things",
+      "improves": "Continuously improves code",
+      "iterative": "Iterative",
+      "fastShipper": "Fast shipper",
+      "losesInterest": "Loses interest fast",
+      "notPlanner": "Not a good planner",
+      "hatesRepetitive": "Hates repetitive work"
+    },
+    "languages": {
+      "dutch": "Dutch",
+      "english": "English",
+      "french": "French",
+      "spanish": "Spanish",
+      "german": "German",
+      "chinese": "Chinese",
+      "native": "Native",
+      "fluent": "Fluent",
+      "good": "Good",
+      "conversational": "Conversational",
+      "basic": "Basic"
+    }
+  },
+  "experience": {
+    "badge": "Career Path",
+    "title": "Professional Experience",
+    "subtitle": "A journey through 13+ years of building digital products",
+    "viewProject": "View Project",
+    "personalProject": "Personal Project",
+    "coFounder": "Co-Founder",
+    "ongoing": "ongoing",
+    "present": "Present"
+  },
+  "blog": {
+    "badge": "Latest Articles",
+    "title": "From the Blog",
+    "subtitle": "Thoughts on development, AI, Web3, and building products",
+    "readMore": "Read More",
+    "viewAll": "View All Posts",
+    "minRead": "min read",
+    "backToBlog": "Back to Blog",
+    "tableOfContents": "Table of Contents",
+    "shareArticle": "Share this article",
+    "relatedPosts": "Related Posts",
+    "newsletter": {
+      "title": "Subscribe to my newsletter",
+      "description": "Get notified when I publish new articles",
+      "placeholder": "Enter your email",
+      "subscribe": "Subscribe",
+      "success": "Thanks for subscribing!",
+      "error": "Something went wrong"
+    }
+  },
+  "contact": {
+    "badge": "Get in Touch",
+    "title": "Let's Work Together",
+    "subtitle": "Have a project in mind? I'd love to hear about it. Let's discuss how we can bring your ideas to life.",
+    "infoTitle": "Contact Information",
+    "email": "Email",
+    "phone": "Phone",
+    "location": "Location",
+    "locationValue": "Remote / Belgium / Barcelona / Lanhelas Portugal",
+    "connect": "Connect with me",
+    "recruiters": "Hiring? Try my AI-powered job assessment tool",
+    "form": {
+      "title": "Send a Message",
+      "name": "Name",
+      "namePlaceholder": "Your name",
+      "email": "Email",
+      "emailPlaceholder": "your@email.com",
+      "message": "Message",
+      "messagePlaceholder": "Tell me about your project...",
+      "send": "Send Message",
+      "sending": "Sending...",
+      "success": "Message Sent!",
+      "successMessage": "Thanks for reaching out. I'll get back to you soon.",
+      "error": "Something went wrong"
+    }
+  },
+  "footer": {
+    "copyright": "© {year} Jo V. All rights reserved.",
+    "builtWith": "Built with Next.js and deployed on Vercel"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Something went wrong",
+    "retry": "Try again",
+    "close": "Close",
+    "language": "Language"
+  }
+}

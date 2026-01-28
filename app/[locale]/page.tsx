@@ -8,12 +8,22 @@ import ContactSection from "@/components/landing/ContactSection";
 import Footer from "@/components/landing/Footer";
 import SectionDivider from "@/components/ui/SectionDivider";
 import { getAllPosts } from "@/lib/blog";
+import { setRequestLocale } from "next-intl/server";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 
-export default function Home() {
+type Props = {
+  params: Promise<{ locale: string }>;
+};
+
+export default async function Home({ params }: Props) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+
   const posts = getAllPosts();
 
   return (
     <div className="min-h-screen bg-black text-white">
+      <LanguageSwitcher />
       <HeroSection />
       <SectionDivider />
       <AboutSection />

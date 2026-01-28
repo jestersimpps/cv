@@ -1,0 +1,130 @@
+{
+  "meta": {
+    "title": "Jo V - Desarrollador Full Stack",
+    "description": "Más de 13 años construyendo sistemas ERP, plataformas SaaS y aplicaciones web modernas"
+  },
+  "nav": {
+    "about": "Sobre mí",
+    "experience": "Experiencia",
+    "blog": "Blog",
+    "contact": "Contacto"
+  },
+  "hero": {
+    "name": "Jo V",
+    "title": "Desarrollador Full Stack, Entusiasta de Web3 e IA",
+    "subtitle": "Más de 13 años construyendo sistemas ERP, plataformas SaaS y aplicaciones web modernas. Especializado en integración de IA, desarrollo blockchain y arquitecturas escalables."
+  },
+  "about": {
+    "badge": "Sobre Mí",
+    "title": "Desarrollador Full Stack",
+    "subtitle": "Entusiasta de Web3 e IA con más de 13 años de experiencia profesional",
+    "bio": "Más de 13 años de experiencia construyendo aplicaciones ERP, SaaS y plataformas web. Amplio conocimiento de diversas tecnologías de desarrollo web, frameworks y herramientas de construcción. Actualmente especializado en arquitecturas TypeScript-first con Angular/Next.js/NestJS/Convex y explorando tecnologías Web3/blockchain e integraciones de IA.",
+    "stats": {
+      "yearsExperience": "Años de Experiencia",
+      "projectsCompleted": "Proyectos Completados",
+      "languagesSpoken": "Idiomas Hablados",
+      "technologies": "Tecnologías"
+    },
+    "skills": {
+      "strengths": "Fortalezas",
+      "workingStyle": "Estilo de Trabajo",
+      "weaknesses": "Debilidades Honestas"
+    },
+    "skillItems": {
+      "customerFriendly": "Orientado al cliente",
+      "fastLearner": "Aprende rápido",
+      "shipFast": "Entrega rápida",
+      "autonomous": "Trabaja de forma autónoma",
+      "proactive": "Pro-activo",
+      "automate": "Le encanta automatizar",
+      "outOfBox": "Piensa diferente",
+      "breakThings": "Rompe cosas",
+      "improves": "Mejora el código continuamente",
+      "iterative": "Iterativo",
+      "fastShipper": "Entrega rápida",
+      "losesInterest": "Pierde interés rápido",
+      "notPlanner": "No es buen planificador",
+      "hatesRepetitive": "Odia el trabajo repetitivo"
+    },
+    "languages": {
+      "dutch": "Holandés",
+      "english": "Inglés",
+      "french": "Francés",
+      "spanish": "Español",
+      "german": "Alemán",
+      "chinese": "Chino",
+      "native": "Nativo",
+      "fluent": "Fluido",
+      "good": "Bueno",
+      "conversational": "Conversacional",
+      "basic": "Básico"
+    }
+  },
+  "experience": {
+    "badge": "Trayectoria",
+    "title": "Experiencia Profesional",
+    "subtitle": "Un viaje a través de más de 13 años construyendo productos digitales",
+    "viewProject": "Ver Proyecto",
+    "personalProject": "Proyecto Personal",
+    "coFounder": "Co-fundador",
+    "ongoing": "en curso",
+    "present": "Presente"
+  },
+  "blog": {
+    "badge": "Últimos Artículos",
+    "title": "Del Blog",
+    "subtitle": "Reflexiones sobre desarrollo, IA, Web3 y construcción de productos",
+    "readMore": "Leer Más",
+    "viewAll": "Ver Todos los Posts",
+    "minRead": "min de lectura",
+    "backToBlog": "Volver al Blog",
+    "tableOfContents": "Tabla de Contenidos",
+    "shareArticle": "Compartir este artículo",
+    "relatedPosts": "Posts Relacionados",
+    "newsletter": {
+      "title": "Suscríbete a mi newsletter",
+      "description": "Recibe notificaciones cuando publique nuevos artículos",
+      "placeholder": "Introduce tu email",
+      "subscribe": "Suscribirse",
+      "success": "¡Gracias por suscribirte!",
+      "error": "Algo salió mal"
+    }
+  },
+  "contact": {
+    "badge": "Contactar",
+    "title": "Trabajemos Juntos",
+    "subtitle": "¿Tienes un proyecto en mente? Me encantaría escucharlo. Hablemos de cómo dar vida a tus ideas.",
+    "infoTitle": "Información de Contacto",
+    "email": "Email",
+    "phone": "Teléfono",
+    "location": "Ubicación",
+    "locationValue": "Remoto / Bélgica / Barcelona / Lanhelas Portugal",
+    "connect": "Sígueme",
+    "recruiters": "¿Contratando? Prueba mi herramienta de evaluación de empleo con IA",
+    "form": {
+      "title": "Enviar un Mensaje",
+      "name": "Nombre",
+      "namePlaceholder": "Tu nombre",
+      "email": "Email",
+      "emailPlaceholder": "tu@email.com",
+      "message": "Mensaje",
+      "messagePlaceholder": "Cuéntame sobre tu proyecto...",
+      "send": "Enviar Mensaje",
+      "sending": "Enviando...",
+      "success": "¡Mensaje Enviado!",
+      "successMessage": "Gracias por contactarme. Te responderé pronto.",
+      "error": "Algo salió mal"
+    }
+  },
+  "footer": {
+    "copyright": "© {year} Jo V. Todos los derechos reservados.",
+    "builtWith": "Construido con Next.js y desplegado en Vercel"
+  },
+  "common": {
+    "loading": "Cargando...",
+    "error": "Algo salió mal",
+    "retry": "Reintentar",
+    "close": "Cerrar",
+    "language": "Idioma"
+  }
+}
