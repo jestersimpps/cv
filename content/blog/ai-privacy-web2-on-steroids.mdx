@@ -1,0 +1,112 @@
+---
+title: "AI Is Web2 on Steroids: Why Privacy Is the Real Killer App"
+description: "ai companies are speedrunning every mistake big tech made — ads, surveillance, lock-in. the zcash founder thinks crypto's cypherpunk vision is the antidote. he might be right."
+publishedAt: "2026-01-28"
+author: "Jo V"
+category: "AI"
+tags: ["AI", "Privacy", "Crypto", "Cypherpunk", "Zcash", "Signal", "Web3"]
+coverImage: "/assets/blog/ai-privacy-web2-on-steroids/cover.png"
+featured: false
+---
+
+I just watched the Zcash founder Zuko on Bankless drop one of the most clear-eyed takes on AI I've heard this year. His thesis is simple and devastating: **AI is repeating every mistake Web2 made, but faster and with more data.**
+
+And honestly? He's right. Let me explain why this matters — especially if you're building in crypto or AI.
+
+## The Web2 playbook, turbocharged
+
+Here's the pattern we all know by now:
+
+1. Build something useful and free
+2. Get millions of users hooked
+3. Add advertising
+4. Optimize for engagement (read: addiction)
+5. Lock users in, harvest their data
+6. Profit until regulators notice
+
+Google did it. Facebook did it. Every major Web2 company did it.
+
+Now watch what's happening with AI:
+
+- **OpenAI confirmed ads are coming to ChatGPT.** The most intimate digital tool most people use — where they share health concerns, relationship problems, business ideas — is about to get an advertising layer. Let that sink in.
+- **Google's Gemini is being woven into Gmail, Calendar, and Drive.** Your AI assistant reading all your emails, understanding your schedule, knowing your documents. Google calls it "helpful." I call it surveillance infrastructure with a friendly UI.
+- **ChatGPT actively censors privacy tools.** Naomi Brockwell, a well-known privacy educator with over a million subscribers, found that ChatGPT was filtering out information about one-time phone numbers and crypto privacy tools — without OpenAI being asked to do so. The model just... decided privacy information was problematic.
+
+This isn't some dystopian future scenario. This is **right now, January 2026.**
+
+## "Telegram is a freaking honeypot"
+
+One of Zuko's most brutal observations was about crypto's own hypocrisy. Here we are, building decentralized privacy tech, and most of the crypto community coordinates on Telegram — a platform where Pavel Durov's organization receives a copy of everything you type in groups.
+
+> "It just makes me despair that all the crypto people use Telegram and think it's secure. How dumb can crypto people be?" — Zuko
+
+He's not wrong. The crypto community talks about self-sovereignty while sharing alpha, wallet addresses, and strategy on a platform with zero end-to-end encryption for groups. Signal exists. It's free. It works. And yet here we are.
+
+This highlights a broader problem: **we've been building technology for technologists, not for normal humans.** Which brings us to the real issue.
+
+## The Linux problem
+
+Zuko draws a parallel that I can't stop thinking about:
+
+> "Crypto could be like Linux 15 years from now — something that a couple of mega corporations cost-optimize by using, while 99.9% of people are not empowered or benefited in any way."
+
+Linux won the server war. It runs nearly everything. But your mom doesn't use Linux. Your non-tech friends don't use Linux. The "year of the Linux desktop" became a meme precisely because the cypherpunk approach of "build tools for ourselves, then teach the world to be like us" has **always failed.**
+
+Crypto is following the same arc. DeFi is incredible technology — but my parents aren't using Aave. NFTs were supposed to revolutionize ownership — but most people think they're dead JPEGs. The tech is there. The UX isn't.
+
+And this is where Zuko channels Moxie Marlinspike, the Signal creator, who said something profound: **a truly honest UX would show you every party that has access to your data** — not just the recipient, but the CEO, the sysadmins, the intelligence agencies, the advertising partners. Signal "corrects the UX" by making encryption invisible, so the UI showing just you and your contact is actually *true.*
+
+Crypto needs its Signal moment.
+
+## Moxie is back — and building private AI
+
+Here's the news that actually got me excited: **Moxie Marlinspike is reportedly building a private AI product.**
+
+If you don't know who Moxie is — he created Signal, which is arguably the most successful privacy product ever built. Signal proved that you can make privacy invisible, delightful, and used by hundreds of millions of people. No blockchain. No tokens. Just good UX with strong crypto (the math kind) underneath.
+
+Now imagine that same design philosophy applied to AI. An AI assistant that:
+
+- Runs inference in a way where the provider **can't** see your prompts
+- Doesn't store your conversations for training
+- Doesn't have an ad layer
+- Actually shows you only the parties in the conversation (you and the model)
+
+This isn't fantasy. Confidential computing, local inference, and zero-knowledge proofs are all maturing fast enough to make this viable. Apple showed the direction with Private Cloud Compute. Moxie could finish the job.
+
+## What this means for builders
+
+If you're building in AI or crypto right now, here's my take:
+
+**1. Privacy is a feature, not a bug.** Every AI product that doesn't address privacy is building technical debt. When the regulatory hammer drops — and it will — products that baked in privacy from day one will have a massive advantage.
+
+**2. The economics have to work.** Zuko's bluntest take: "My solution to all the world's problems is simple: people pay for stuff and there's open competition." Signal loses money with every user it adds because the model is donations-only. That's noble but not sustainable. Crypto's DeFi has working economic feedback loops. Privacy products need them too.
+
+**3. Stop building for yourself.** The biggest lesson from both Signal and the Linux desktop: if your grandma can't use it, you haven't finished building it. ZEC surged from $50 to $750 with zero advertising — proving demand for financial privacy exists. But onboarding still requires a PhD in key management.
+
+```
+// The UX gap in one code snippet
+// What crypto devs think is acceptable:
+const wallet = await generateHDWallet(entropy, derivationPath);
+await wallet.shield(amount, { memo: encryptedMemo });
+
+// What users need:
+<Button onClick={sendMoney}>Send privately</Button>
+```
+
+**4. AI agents make this urgent.** We're building AI agents that browse the web, manage finances, and coordinate work on our behalf. An AI agent without privacy is a surveillance agent. If your coding assistant sends every keystroke to a company that's about to add advertising, you don't have a tool — you have a liability.
+
+## The bottom line
+
+The AI industry is speedrunning the Web2 playbook: useful product → user lock-in → advertising → data exploitation. We've seen this movie before. We know how it ends.
+
+The difference this time is that AI has access to **far more intimate data** than any Web2 product ever did. Your search history was bad enough. Your AI conversations — about your health, your relationships, your business strategy, your code — are orders of magnitude more sensitive.
+
+The cypherpunk movement got the technology right and the UX wrong. The AI industry is getting the UX right and the privacy catastrophically wrong. Somewhere in the middle is the product that actually wins.
+
+Moxie building private AI. ZEC proving organic demand for privacy. Open-source models getting good enough to run locally. These are early signals — pun intended — that the market is ready.
+
+Privacy isn't a niche feature for paranoid people. It's the most undervalued product category in tech right now. And the builders who figure out how to make it invisible and delightful will own the next decade.
+
+The question is: will that be the crypto community, the AI community, or someone else entirely?
+
+My money's on the people who learned from both.
